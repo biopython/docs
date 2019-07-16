@@ -231,27 +231,35 @@ See: <a class="reference external" href="http://mgltools.scripps.edu/packages/MS
 <p>Residue depth is the average distance of the atoms of a residue from
 the solvent accessible surface.</p>
 <p>Residue Depth:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rd</span> <span class="o">=</span> <span class="n">ResidueDepth</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rd</span><span class="p">[(</span><span class="n">chain_id</span><span class="p">,</span> <span class="n">res_id</span><span class="p">)])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.PDB.ResidueDepth</span> <span class="k">import</span> <span class="n">ResidueDepth</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.PDBParser</span> <span class="k">import</span> <span class="n">PDBParser</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">PDBParser</span><span class="p">()</span>
+<span class="n">structure</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">&quot;1a8o&quot;</span><span class="p">,</span> <span class="s2">&quot;Tests/PDB/1A8O.pdb&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">structure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">rd</span> <span class="o">=</span> <span class="n">ResidueDepth</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rd</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="mi">152</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)])</span>
 </pre></div>
 </div>
 <p>Direct MSMS interface, typical use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span> <span class="o">=</span> <span class="n">PDBParser</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">structure</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s1">&#39;1FAT.pdb&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">structure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">surface</span> <span class="o">=</span> <span class="n">get_surface</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.PDB.ResidueDepth</span> <span class="k">import</span> <span class="n">get_surface</span>
+<span class="n">surface</span> <span class="o">=</span> <span class="n">get_surface</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The surface is a Numeric array with all the surface vertices.</p>
 <p>Distance to surface:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dist</span> <span class="o">=</span> <span class="n">min_dist</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.PDB.ResidueDepth</span> <span class="k">import</span> <span class="n">min_dist</span>
+<span class="n">coord</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.113</span><span class="p">,</span> <span class="mf">35.393</span><span class="p">,</span>  <span class="mf">9.268</span><span class="p">)</span>
+<span class="n">dist</span> <span class="o">=</span> <span class="n">min_dist</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where coord is the coord of an atom within the volume bound by
 the surface (ie. atom depth).</p>
 <p>To calculate the residue depth (average atom depth of the atoms
 in a residue):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rd</span> <span class="o">=</span> <span class="n">residue_depth</span><span class="p">(</span><span class="n">residue</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.PDB.ResidueDepth</span> <span class="k">import</span> <span class="n">residue_depth</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+<span class="n">res152</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">152</span><span class="p">]</span>
+<span class="n">rd</span> <span class="o">=</span> <span class="n">residue_depth</span><span class="p">(</span><span class="n">res152</span><span class="p">,</span> <span class="n">surface</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="class">

@@ -238,9 +238,19 @@ J Mol Biol. 2002 323(2):297-307.</p>
 <p>You need these files to use this module.</p>
 <p>The following example uses the library with 10 fragments of length 5.
 The library files can be found in directory ‘fragment_data’.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">structure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fm</span> <span class="o">=</span> <span class="n">FragmentMapper</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">lsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">flength</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;fragment_data&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">fragment</span> <span class="o">=</span> <span class="n">fm</span><span class="p">[</span><span class="n">residue</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.PDB.PDBParser</span> <span class="k">import</span> <span class="n">PDBParser</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.PDB.FragmentMapper</span> <span class="k">import</span> <span class="n">FragmentMapper</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parser</span> <span class="o">=</span> <span class="n">PDBParser</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">structure</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">&quot;1a8o&quot;</span><span class="p">,</span> <span class="s2">&quot;PDB/1A8O.pdb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">structure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fm</span> <span class="o">=</span> <span class="n">FragmentMapper</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">lsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">flength</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">fdir</span><span class="o">=</span><span class="s2">&quot;PDB&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res152</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">152</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res157</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[</span><span class="mi">157</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res152</span> <span class="ow">in</span> <span class="n">fm</span> <span class="c1"># is res152 mapped? (fragment of a C-alpha polypeptide)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res157</span> <span class="ow">in</span> <span class="n">fm</span> <span class="c1"># is res157 mapped? (fragment of a C-alpha polypeptide)</span>
+<span class="go">True</span>
 </pre></div>
 </div>
 <dl class="class">
