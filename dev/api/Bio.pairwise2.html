@@ -309,6 +309,22 @@ together with the starting positions.</p>
 <span class="go">  Score=3</span>
 </pre></div>
 </div>
+<p>To restore the ‘historic’ behaviour of <code class="docutils literal notranslate"><span class="pre">format_alignemt</span></code>, i.e., showing
+also the un-aligned parts of both sequences, use the new keyword parameter
+<code class="docutils literal notranslate"><span class="pre">full_sequences</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">pairwise2</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">localxx</span><span class="p">(</span><span class="s2">&quot;ACCGT&quot;</span><span class="p">,</span> <span class="s2">&quot;ACG&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">format_alignment</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="n">full_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="go">ACCGT</span>
+<span class="go">| || </span>
+<span class="go">A-CG-</span>
+<span class="go">  Score=3</span>
+
+<span class="go">ACCGT</span>
+<span class="go">|| | </span>
+<span class="go">AC-G-</span>
+<span class="go">  Score=3</span>
+</pre></div>
+</div>
 </li>
 <li><p>Do a global alignment. Identical characters are given 2 points, 1 point is
 deducted for each non-identical character. Don’t penalize gaps.</p>
@@ -450,7 +466,7 @@ residue 2) and the values are the match scores between those residues.</p></li>
 
 <dl class="function">
 <dt id="Bio.pairwise2.format_alignment">
-<code class="sig-prename descclassname">Bio.pairwise2.</code><code class="sig-name descname">format_alignment</code><span class="sig-paren">(</span><em class="sig-param">align1</em>, <em class="sig-param">align2</em>, <em class="sig-param">score</em>, <em class="sig-param">begin</em>, <em class="sig-param">end</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.pairwise2.format_alignment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.pairwise2.</code><code class="sig-name descname">format_alignment</code><span class="sig-paren">(</span><em class="sig-param">align1</em>, <em class="sig-param">align2</em>, <em class="sig-param">score</em>, <em class="sig-param">begin</em>, <em class="sig-param">end</em>, <em class="sig-param">full_sequences=False</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.pairwise2.format_alignment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Format the alignment prettily into a string.</p>
 <p>IMPORTANT: Gap symbol must be “-” (or [‘-‘] for lists)!</p>
 <p>Since Biopython 1.71 identical matches are shown with a pipe
@@ -465,6 +481,10 @@ n-th base/amino acid in the <em>un-aligned</em> sequence.</p>
 <p>NOTE: This is different to the alignment’s begin/end values,
 which give the Python indices (0-based) of the bases/amino acids
 in the <em>aligned</em> sequences.</p>
+<p>If you want to restore the ‘historic’ behaviour, that means
+displaying the whole sequences (including the non-aligned parts),
+use <code class="docutils literal notranslate"><span class="pre">full_sequences=True</span></code>. In this case, the non-aligned leading
+and trailing parts are also indicated by spaces in the match-line.</p>
 </dd></dl>
 
 <dl class="class">
