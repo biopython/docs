@@ -416,15 +416,18 @@ count() method is much for efficient.</p>
 <dt id="Bio.Seq.MutableSeq.index">
 <code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">item</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return first occurrence position of a single entry (i.e. letter).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ACTCGACGTCG&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACTCGACGTCG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
 <span class="go">0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;T&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">))</span>
 <span class="go">2</span>
 </pre></div>
 </div>
 <p>Note unlike a Biopython Seq object, or Python string, multi-letter
-subsequences are not supported.</p>
+subsequences are not supported.  Instead this acts like an array or
+a list of the entries. There is therefore no <code class="docutils literal notranslate"><span class="pre">.rindex()</span></code> method.</p>
 </dd></dl>
 
 <dl class="method">
@@ -568,20 +571,26 @@ not applicable to sequences with a protein alphabet).</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#Bio.Seq.Seq.find" title="Bio.Seq.Seq.find"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code></a>(self, sub[, start, end])</p></td>
 <td><p>Find method, like that of a python string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.Seq.Seq.join" title="Bio.Seq.Seq.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a>(self, other)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.Seq.Seq.index" title="Bio.Seq.Seq.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(self, sub[, start, end])</p></td>
+<td><p>Like find() but raise ValueError when the substring is not found.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.Seq.Seq.join" title="Bio.Seq.Seq.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a>(self, other)</p></td>
 <td><p>Return a merge of the sequences in other, spaced by the sequence from self.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.Seq.Seq.lower" title="Bio.Seq.Seq.lower"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lower</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.Seq.Seq.lower" title="Bio.Seq.Seq.lower"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lower</span></code></a>(self)</p></td>
 <td><p>Return a lower case copy of the sequence.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.Seq.Seq.lstrip" title="Bio.Seq.Seq.lstrip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lstrip</span></code></a>(self[, chars])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.Seq.Seq.lstrip" title="Bio.Seq.Seq.lstrip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lstrip</span></code></a>(self[, chars])</p></td>
 <td><p>Return a new Seq object with leading (left) end stripped.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.Seq.Seq.reverse_complement" title="Bio.Seq.Seq.reverse_complement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse_complement</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.Seq.Seq.reverse_complement" title="Bio.Seq.Seq.reverse_complement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse_complement</span></code></a>(self)</p></td>
 <td><p>Return the reverse complement sequence by creating a new Seq object.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.Seq.Seq.rfind" title="Bio.Seq.Seq.rfind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rfind</span></code></a>(self, sub[, start, end])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.Seq.Seq.rfind" title="Bio.Seq.Seq.rfind"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rfind</span></code></a>(self, sub[, start, end])</p></td>
 <td><p>Find from right method, like that of a python string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.Seq.Seq.rindex" title="Bio.Seq.Seq.rindex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rindex</span></code></a>(self, sub[, start, end])</p></td>
+<td><p>Like rfind() but raise ValueError when the substring is not found.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#Bio.Seq.Seq.rsplit" title="Bio.Seq.Seq.rsplit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rsplit</span></code></a>(self[, sep, maxsplit])</p></td>
 <td><p>Do a right split method, like that of a python string.</p></td>
@@ -823,6 +832,22 @@ argument sub in the (sub)sequence given by [start:end].</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="Bio.Seq.Seq.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">sub</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=9223372036854775807</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like find() but raise ValueError when the substring is not found.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="k">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_rna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GUCAUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAGUUG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_rna</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="go">-1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_rna</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+           <span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">substring not found...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="Bio.Seq.Seq.join">
 <code class="sig-name descname">join</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">other</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.join" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a merge of the sequences in other, spaced by the sequence from self.</p>
@@ -927,6 +952,12 @@ substring argument sub in the (sub)sequence given by [start:end].</p>
 <span class="go">15</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Seq.Seq.rindex">
+<code class="sig-name descname">rindex</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">sub</em>, <em class="sig-param">start=0</em>, <em class="sig-param">end=9223372036854775807</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.rindex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Like rfind() but raise ValueError when the substring is not found.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1344,20 +1375,26 @@ ordinary Seq object:</p>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find</span></code>(self, sub[, start, end])</p></td>
 <td><p>Find method, like that of a python string.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.Seq.UnknownSeq.join" title="Bio.Seq.UnknownSeq.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a>(self, other)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code>(self, sub[, start, end])</p></td>
+<td><p>Like find() but raise ValueError when the substring is not found.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.Seq.UnknownSeq.join" title="Bio.Seq.UnknownSeq.join"><code class="xref py py-obj docutils literal notranslate"><span class="pre">join</span></code></a>(self, other)</p></td>
 <td><p>Return a merge of the sequences in other, spaced by the sequence from self.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.Seq.UnknownSeq.lower" title="Bio.Seq.UnknownSeq.lower"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lower</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.Seq.UnknownSeq.lower" title="Bio.Seq.UnknownSeq.lower"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lower</span></code></a>(self)</p></td>
 <td><p>Return a lower case copy of the sequence.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lstrip</span></code>(self[, chars])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lstrip</span></code>(self[, chars])</p></td>
 <td><p>Return a new Seq object with leading (left) end stripped.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.Seq.UnknownSeq.reverse_complement" title="Bio.Seq.UnknownSeq.reverse_complement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse_complement</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.Seq.UnknownSeq.reverse_complement" title="Bio.Seq.UnknownSeq.reverse_complement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse_complement</span></code></a>(self)</p></td>
 <td><p>Return the reverse complement of an unknown sequence.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rfind</span></code>(self, sub[, start, end])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rfind</span></code>(self, sub[, start, end])</p></td>
 <td><p>Find from right method, like that of a python string.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rindex</span></code>(self, sub[, start, end])</p></td>
+<td><p>Like rfind() but raise ValueError when the substring is not found.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rsplit</span></code>(self[, sep, maxsplit])</p></td>
 <td><p>Do a right split method, like that of a python string.</p></td>
