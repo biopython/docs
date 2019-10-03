@@ -249,24 +249,66 @@
 <a class="reference external" href="http://fields.scripps.edu/DTASelect/20010710-pI-Algorithm.pdf">http://fields.scripps.edu/DTASelect/20010710-pI-Algorithm.pdf</a></p>
 <dl class="class">
 <dt id="Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqUtils.IsoelectricPoint.</code><code class="sig-name descname">IsoelectricPoint</code><span class="sig-paren">(</span><em class="sig-param">ProteinSequence</em>, <em class="sig-param">AminoAcidsContent</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqUtils.IsoelectricPoint.</code><code class="sig-name descname">IsoelectricPoint</code><span class="sig-paren">(</span><em class="sig-param">protein_sequence</em>, <em class="sig-param">aa_content=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A class with one public method to calculate the pI of a protein.</p>
-<p>Access this class through ProtParam.ProteinAnalysis class.
-First make a ProteinAnalysis object and then call its isoelectric_point
-method.</p>
+<p>A class for calculating the IEP or charge at given pH of a protein.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>:protein_sequence: A ``Bio.Seq`` or string object containing a protein</strong></dt><dd><p>sequence.</p>
+</dd>
+<dt><strong>:aa_content: A dictionary with amino acid letters as keys and it’s</strong></dt><dd><p>occurences as integers, e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;A&quot;:</span> <span class="pre">3,</span> <span class="pre">&quot;C&quot;:</span> <span class="pre">0,</span> <span class="pre">...}</span></code>.
+Default: <code class="docutils literal notranslate"><span class="pre">None</span></code>. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the dic will be calculated
+from the given sequence.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>The methods of this class can either be accessed from the class itself
+or from a <code class="docutils literal notranslate"><span class="pre">ProtParam.ProteinAnalysis</span></code> object (with partially different
+names):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils.IsoelectricPoint</span> <span class="k">import</span> <span class="n">IsoelectricPoint</span> <span class="k">as</span> <span class="n">IP</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein</span> <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="s2">&quot;INGAR&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IEP of peptide </span><span class="si">{}</span><span class="s2"> is </span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protein</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span> <span class="n">protein</span><span class="o">.</span><span class="n">pi</span><span class="p">()))</span>
+<span class="go">IEP of peptide INGAR is 9.75</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;It&#39;s charge at pH 7 is </span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protein</span><span class="o">.</span><span class="n">charge_at_pH</span><span class="p">(</span><span class="mf">7.0</span><span class="p">)))</span>
+<span class="go">It&#39;s charge at pH 7 is 0.76</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils.ProtParam</span> <span class="k">import</span> <span class="n">ProteinAnalysis</span> <span class="k">as</span> <span class="n">PA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein</span> <span class="o">=</span> <span class="n">PA</span><span class="p">(</span><span class="s2">&quot;PETER&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IEP of </span><span class="si">{}</span><span class="s2">: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protein</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span>
+<span class="gp">... </span>                                 <span class="n">protein</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">()))</span>
+<span class="go">IEP of PETER: 4.53</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Charge at pH 4.53: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
+<span class="gp">... </span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protein</span><span class="o">.</span><span class="n">charge_at_pH</span><span class="p">(</span><span class="mf">4.53</span><span class="p">)))</span>
+<span class="go">Charge at pH 4.53: 0.00</span>
+</pre></div>
+</div>
 <p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
+<col style="width: 88%" />
+<col style="width: 12%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint.pi" title="Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint.pi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pi</span></code></a>(self)</p></td>
-<td><p>Calculate and return the isoelectric point as float.</p></td>
+<tr class="row-odd"><td><p><strong>:charge_at_pH(pH):  Calculates the charge of the protein for a given pH</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>:pi():              Calculates the isoelectric point</strong></p></td>
+<td></td>
 </tr>
 </tbody>
 </table>
+<dl class="method">
+<dt id="Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint.charge_at_pH">
+<code class="sig-name descname">charge_at_pH</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">pH</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint.charge_at_pH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the charge of a protein at given pH.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint.pi">
 <code class="sig-name descname">pi</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint.pi" title="Permalink to this definition">¶</a></dt>
