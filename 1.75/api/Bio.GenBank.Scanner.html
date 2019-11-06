@@ -1,0 +1,737 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bio.GenBank.Scanner module &mdash; Biopython 1.75 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.GenBank.utils module" href="Bio.GenBank.utils.html" />
+    <link rel="prev" title="Bio.GenBank.Record module" href="Bio.GenBank.Record.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.75
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Alphabet.html">Bio.Alphabet package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Crystal.html">Bio.Crystal package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.FSSP.html">Bio.FSSP package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="Bio.GenBank.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.GenBank.html#module-Bio.GenBank">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KDTree.html">Bio.KDTree package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Statistics.html">Bio.Statistics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SubsMat.html">Bio.SubsMat package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="Bio.html">Bio package</a> &raquo;</li>
+        
+          <li><a href="Bio.GenBank.html">Bio.GenBank package</a> &raquo;</li>
+        
+      <li>Bio.GenBank.Scanner module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/GenBank/Scanner.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="Bio.GenBank.utils.html" class="btn btn-neutral float-right" title="Bio.GenBank.utils module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.GenBank.Record.html" class="btn btn-neutral float-left" title="Bio.GenBank.Record module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Bio.GenBank.Scanner">
+<span id="bio-genbank-scanner-module"></span><h1>Bio.GenBank.Scanner module<a class="headerlink" href="#module-Bio.GenBank.Scanner" title="Permalink to this headline">¶</a></h1>
+<p>Internal code for parsing GenBank and EMBL files (PRIVATE).</p>
+<p>This code is NOT intended for direct use.  It provides a basic scanner
+(for use with a event consumer such as Bio.GenBank._FeatureConsumer)
+to parse a GenBank or EMBL file (with their shared INSDC feature table).</p>
+<p>It is used by Bio.GenBank to parse GenBank files
+It is also used by Bio.SeqIO to parse GenBank and EMBL files</p>
+<p>Feature Table Documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.insdc.org/files/feature_table.html">http://www.insdc.org/files/feature_table.html</a></p></li>
+<li><p><a class="reference external" href="http://www.ncbi.nlm.nih.gov/projects/collab/FT/index.html">http://www.ncbi.nlm.nih.gov/projects/collab/FT/index.html</a></p></li>
+<li><p><a class="reference external" href="ftp://ftp.ncbi.nih.gov/genbank/docs/">ftp://ftp.ncbi.nih.gov/genbank/docs/</a></p></li>
+</ul>
+<dl class="class">
+<dt id="Bio.GenBank.Scanner.EmblScanner">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.GenBank.Scanner.</code><code class="sig-name descname">EmblScanner</code><span class="sig-paren">(</span><em class="sig-param">debug=0</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner" title="Bio.GenBank.Scanner.InsdcScanner"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.GenBank.Scanner.InsdcScanner</span></code></a></p>
+<p>For extracting chunks of information in EMBL files.</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">feed</span></code>(self, handle, consumer[, do_features])</p></td>
+<td><p>Feed a set of data into the consumer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_start</span></code>(self)</p></td>
+<td><p>Read in lines until find the ID/LOCUS line, which is returned.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code>(self, handle[, do_features])</p></td>
+<td><p>Return a SeqRecord (with SeqFeatures if do_features=True).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_cds_features</span></code>(self, handle[, alphabet, …])</p></td>
+<td><p>Parse CDS features, return SeqRecord object iterator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_feature</span></code>(self, feature_key, lines)</p></td>
+<td><p>Parse a feature given as a list of strings into a tuple.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_features</span></code>(self[, skip])</p></td>
+<td><p>Return list of tuples for the features (if present).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.EmblScanner.parse_footer" title="Bio.GenBank.Scanner.EmblScanner.parse_footer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_footer</span></code></a>(self)</p></td>
+<td><p>Return a tuple containing a list of any misc strings, and the sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_header</span></code>(self)</p></td>
+<td><p>Return list of strings making up the header.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_records</span></code>(self, handle[, do_features])</p></td>
+<td><p>Parse records, return a SeqRecord object iterator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_handle</span></code>(self, handle)</p></td>
+<td><p>Set the handle attribute.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.EmblScanner.EMBL_INDENT">
+<code class="sig-name descname">EMBL_INDENT</code><em class="property"> = 5</em><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner.EMBL_INDENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.EmblScanner.EMBL_SPACER">
+<code class="sig-name descname">EMBL_SPACER</code><em class="property"> = '     '</em><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner.EMBL_SPACER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.EmblScanner.FEATURE_END_MARKERS">
+<code class="sig-name descname">FEATURE_END_MARKERS</code><em class="property"> = ['XX']</em><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner.FEATURE_END_MARKERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.EmblScanner.FEATURE_QUALIFIER_INDENT">
+<code class="sig-name descname">FEATURE_QUALIFIER_INDENT</code><em class="property"> = 21</em><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner.FEATURE_QUALIFIER_INDENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.EmblScanner.FEATURE_QUALIFIER_SPACER">
+<code class="sig-name descname">FEATURE_QUALIFIER_SPACER</code><em class="property"> = 'FT                   '</em><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner.FEATURE_QUALIFIER_SPACER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.EmblScanner.FEATURE_START_MARKERS">
+<code class="sig-name descname">FEATURE_START_MARKERS</code><em class="property"> = ['FH   Key             Location/Qualifiers', 'FH']</em><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner.FEATURE_START_MARKERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.EmblScanner.HEADER_WIDTH">
+<code class="sig-name descname">HEADER_WIDTH</code><em class="property"> = 5</em><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner.HEADER_WIDTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.EmblScanner.RECORD_START">
+<code class="sig-name descname">RECORD_START</code><em class="property"> = 'ID   '</em><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner.RECORD_START" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.EmblScanner.SEQUENCE_HEADERS">
+<code class="sig-name descname">SEQUENCE_HEADERS</code><em class="property"> = ['SQ', 'CO']</em><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner.SEQUENCE_HEADERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.EmblScanner.parse_footer">
+<code class="sig-name descname">parse_footer</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.EmblScanner.parse_footer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a tuple containing a list of any misc strings, and the sequence.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.GenBank.Scanner.GenBankScanner">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.GenBank.Scanner.</code><code class="sig-name descname">GenBankScanner</code><span class="sig-paren">(</span><em class="sig-param">debug=0</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner" title="Bio.GenBank.Scanner.InsdcScanner"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.GenBank.Scanner.InsdcScanner</span></code></a></p>
+<p>For extracting chunks of information in GenBank files.</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">feed</span></code>(self, handle, consumer[, do_features])</p></td>
+<td><p>Feed a set of data into the consumer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_start</span></code>(self)</p></td>
+<td><p>Read in lines until find the ID/LOCUS line, which is returned.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code>(self, handle[, do_features])</p></td>
+<td><p>Return a SeqRecord (with SeqFeatures if do_features=True).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_cds_features</span></code>(self, handle[, alphabet, …])</p></td>
+<td><p>Parse CDS features, return SeqRecord object iterator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_feature</span></code>(self, feature_key, lines)</p></td>
+<td><p>Parse a feature given as a list of strings into a tuple.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_features</span></code>(self[, skip])</p></td>
+<td><p>Return list of tuples for the features (if present).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.GenBankScanner.parse_footer" title="Bio.GenBank.Scanner.GenBankScanner.parse_footer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_footer</span></code></a>(self)</p></td>
+<td><p>Return a tuple containing a list of any misc strings, and the sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_header</span></code>(self)</p></td>
+<td><p>Return list of strings making up the header.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_records</span></code>(self, handle[, do_features])</p></td>
+<td><p>Parse records, return a SeqRecord object iterator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_handle</span></code>(self, handle)</p></td>
+<td><p>Set the handle attribute.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.FEATURE_END_MARKERS">
+<code class="sig-name descname">FEATURE_END_MARKERS</code><em class="property"> = []</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.FEATURE_END_MARKERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.FEATURE_QUALIFIER_INDENT">
+<code class="sig-name descname">FEATURE_QUALIFIER_INDENT</code><em class="property"> = 21</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.FEATURE_QUALIFIER_INDENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.FEATURE_QUALIFIER_SPACER">
+<code class="sig-name descname">FEATURE_QUALIFIER_SPACER</code><em class="property"> = '                     '</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.FEATURE_QUALIFIER_SPACER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.FEATURE_START_MARKERS">
+<code class="sig-name descname">FEATURE_START_MARKERS</code><em class="property"> = ['FEATURES             Location/Qualifiers', 'FEATURES']</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.FEATURE_START_MARKERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.GENBANK_INDENT">
+<code class="sig-name descname">GENBANK_INDENT</code><em class="property"> = 12</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.GENBANK_INDENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.GENBANK_SPACER">
+<code class="sig-name descname">GENBANK_SPACER</code><em class="property"> = '            '</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.GENBANK_SPACER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.HEADER_WIDTH">
+<code class="sig-name descname">HEADER_WIDTH</code><em class="property"> = 12</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.HEADER_WIDTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.RECORD_START">
+<code class="sig-name descname">RECORD_START</code><em class="property"> = 'LOCUS       '</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.RECORD_START" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.SEQUENCE_HEADERS">
+<code class="sig-name descname">SEQUENCE_HEADERS</code><em class="property"> = ['CONTIG', 'ORIGIN', 'BASE COUNT', 'WGS', 'TSA']</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.SEQUENCE_HEADERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.STRUCTURED_COMMENT_DELIM">
+<code class="sig-name descname">STRUCTURED_COMMENT_DELIM</code><em class="property"> = ' :: '</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.STRUCTURED_COMMENT_DELIM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.STRUCTURED_COMMENT_END">
+<code class="sig-name descname">STRUCTURED_COMMENT_END</code><em class="property"> = '-END##'</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.STRUCTURED_COMMENT_END" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.STRUCTURED_COMMENT_START">
+<code class="sig-name descname">STRUCTURED_COMMENT_START</code><em class="property"> = '-START##'</em><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.STRUCTURED_COMMENT_START" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.GenBankScanner.parse_footer">
+<code class="sig-name descname">parse_footer</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.GenBankScanner.parse_footer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a tuple containing a list of any misc strings, and the sequence.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.GenBank.Scanner.InsdcScanner">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.GenBank.Scanner.</code><code class="sig-name descname">InsdcScanner</code><span class="sig-paren">(</span><em class="sig-param">debug=0</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Basic functions for breaking up a GenBank/EMBL file into sub sections.</p>
+<p>The International Nucleotide Sequence Database Collaboration (INSDC)
+between the DDBJ, EMBL, and GenBank.  These organisations all use the
+same “Feature Table” layout in their plain text flat file formats.</p>
+<p>However, the header and sequence sections of an EMBL file are very
+different in layout to those produced by GenBank/DDBJ.</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner.feed" title="Bio.GenBank.Scanner.InsdcScanner.feed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">feed</span></code></a>(self, handle, consumer[, do_features])</p></td>
+<td><p>Feed a set of data into the consumer.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner.find_start" title="Bio.GenBank.Scanner.InsdcScanner.find_start"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_start</span></code></a>(self)</p></td>
+<td><p>Read in lines until find the ID/LOCUS line, which is returned.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner.parse" title="Bio.GenBank.Scanner.InsdcScanner.parse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse</span></code></a>(self, handle[, do_features])</p></td>
+<td><p>Return a SeqRecord (with SeqFeatures if do_features=True).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner.parse_cds_features" title="Bio.GenBank.Scanner.InsdcScanner.parse_cds_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_cds_features</span></code></a>(self, handle[, alphabet, …])</p></td>
+<td><p>Parse CDS features, return SeqRecord object iterator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner.parse_feature" title="Bio.GenBank.Scanner.InsdcScanner.parse_feature"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_feature</span></code></a>(self, feature_key, lines)</p></td>
+<td><p>Parse a feature given as a list of strings into a tuple.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner.parse_features" title="Bio.GenBank.Scanner.InsdcScanner.parse_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_features</span></code></a>(self[, skip])</p></td>
+<td><p>Return list of tuples for the features (if present).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner.parse_footer" title="Bio.GenBank.Scanner.InsdcScanner.parse_footer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_footer</span></code></a>(self)</p></td>
+<td><p>Return a tuple containing a list of any misc strings, and the sequence.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner.parse_header" title="Bio.GenBank.Scanner.InsdcScanner.parse_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_header</span></code></a>(self)</p></td>
+<td><p>Return list of strings making up the header.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner.parse_records" title="Bio.GenBank.Scanner.InsdcScanner.parse_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_records</span></code></a>(self, handle[, do_features])</p></td>
+<td><p>Parse records, return a SeqRecord object iterator.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.GenBank.Scanner.InsdcScanner.set_handle" title="Bio.GenBank.Scanner.InsdcScanner.set_handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_handle</span></code></a>(self, handle)</p></td>
+<td><p>Set the handle attribute.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.FEATURE_END_MARKERS">
+<code class="sig-name descname">FEATURE_END_MARKERS</code><em class="property"> = ['XXX***END FEATURES***XXX']</em><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.FEATURE_END_MARKERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.FEATURE_QUALIFIER_INDENT">
+<code class="sig-name descname">FEATURE_QUALIFIER_INDENT</code><em class="property"> = 0</em><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.FEATURE_QUALIFIER_INDENT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.FEATURE_QUALIFIER_SPACER">
+<code class="sig-name descname">FEATURE_QUALIFIER_SPACER</code><em class="property"> = ''</em><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.FEATURE_QUALIFIER_SPACER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.FEATURE_START_MARKERS">
+<code class="sig-name descname">FEATURE_START_MARKERS</code><em class="property"> = ['XXX***FEATURES***XXX']</em><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.FEATURE_START_MARKERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.HEADER_WIDTH">
+<code class="sig-name descname">HEADER_WIDTH</code><em class="property"> = 3</em><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.HEADER_WIDTH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.RECORD_START">
+<code class="sig-name descname">RECORD_START</code><em class="property"> = 'XXX'</em><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.RECORD_START" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.SEQUENCE_HEADERS">
+<code class="sig-name descname">SEQUENCE_HEADERS</code><em class="property"> = ['XXX']</em><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.SEQUENCE_HEADERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.feed">
+<code class="sig-name descname">feed</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">handle</em>, <em class="sig-param">consumer</em>, <em class="sig-param">do_features=True</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.feed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feed a set of data into the consumer.</p>
+<p>This method is intended for use with the “old” code in Bio.GenBank</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle - A handle with the information to parse.</p></li>
+<li><p>consumer - The consumer that should be informed of events.</p></li>
+<li><p>do_features - Boolean, should the features be parsed?
+Skipping the features can be much faster.</p></li>
+</ul>
+</dd>
+<dt>Return values:</dt><dd><ul class="simple">
+<li><p>true  - Passed a record</p></li>
+<li><p>false - Did not find a record</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.find_start">
+<code class="sig-name descname">find_start</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.find_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read in lines until find the ID/LOCUS line, which is returned.</p>
+<p>Any preamble (such as the header used by the NCBI on <code class="docutils literal notranslate"><span class="pre">*.seq.gz</span></code> archives)
+will we ignored.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">handle</em>, <em class="sig-param">do_features=True</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a SeqRecord (with SeqFeatures if do_features=True).</p>
+<p>See also the method parse_records() for use on multi-record files.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.parse_cds_features">
+<code class="sig-name descname">parse_cds_features</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">handle</em>, <em class="sig-param">alphabet=ProteinAlphabet()</em>, <em class="sig-param">tags2id=('protein_id'</em>, <em class="sig-param">'locus_tag'</em>, <em class="sig-param">'product')</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.parse_cds_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse CDS features, return SeqRecord object iterator.</p>
+<p>Each CDS feature becomes a SeqRecord.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>alphabet - Used for any sequence found in a translation field.</p></li>
+<li><p>tags2id  - Tupple of three strings, the feature keys to use
+for the record id, name and description,</p></li>
+</ul>
+</dd>
+</dl>
+<p>This method is intended for use in Bio.SeqIO</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.parse_feature">
+<code class="sig-name descname">parse_feature</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">feature_key</em>, <em class="sig-param">lines</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.parse_feature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a feature given as a list of strings into a tuple.</p>
+<p>Expects a feature as a list of strings, returns a tuple (key, location,
+qualifiers)</p>
+<p>For example given this GenBank feature:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CDS</span>             <span class="n">complement</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="mf">490883.</span><span class="o">.</span><span class="mi">490885</span><span class="p">,</span><span class="mf">1.</span><span class="o">.</span><span class="mi">879</span><span class="p">))</span>
+                <span class="o">/</span><span class="n">locus_tag</span><span class="o">=</span><span class="s2">&quot;NEQ001&quot;</span>
+                <span class="o">/</span><span class="n">note</span><span class="o">=</span><span class="s2">&quot;conserved hypothetical [Methanococcus jannaschii];</span>
+                <span class="n">COG1583</span><span class="p">:</span><span class="n">Uncharacterized</span> <span class="n">ACR</span><span class="p">;</span> <span class="n">IPR001472</span><span class="p">:</span><span class="n">Bipartite</span> <span class="n">nuclear</span>
+                <span class="n">localization</span> <span class="n">signal</span><span class="p">;</span> <span class="n">IPR002743</span><span class="p">:</span> <span class="n">Protein</span> <span class="n">of</span> <span class="n">unknown</span>
+                <span class="n">function</span> <span class="n">DUF57</span><span class="s2">&quot;</span>
+                <span class="o">/</span><span class="n">codon_start</span><span class="o">=</span><span class="mi">1</span>
+                <span class="o">/</span><span class="n">transl_table</span><span class="o">=</span><span class="mi">11</span>
+                <span class="o">/</span><span class="n">product</span><span class="o">=</span><span class="s2">&quot;hypothetical protein&quot;</span>
+                <span class="o">/</span><span class="n">protein_id</span><span class="o">=</span><span class="s2">&quot;NP_963295.1&quot;</span>
+                <span class="o">/</span><span class="n">db_xref</span><span class="o">=</span><span class="s2">&quot;GI:41614797&quot;</span>
+                <span class="o">/</span><span class="n">db_xref</span><span class="o">=</span><span class="s2">&quot;GeneID:2732620&quot;</span>
+                <span class="o">/</span><span class="n">translation</span><span class="o">=</span><span class="s2">&quot;MRLLLELKALNSIDKKQLSNYLIQGFIYNILKNTEYSWLHNWKK</span>
+                <span class="n">EKYFNFTLIPKKDIIENKRYYLIISSPDKRFIEVLHNKIKDLDIITIGLAQFQLRKTK</span>
+                <span class="n">KFDPKLRFPWVTITPIVLREGKIVILKGDKYYKVFVKRLEELKKYNLIKKKEPILEEP</span>
+                <span class="n">IEISLNQIKDGWKIIDVKDRYYDFRNKSFSAFSNWLRDLKEQSLRKYNNFCGKNFYFE</span>
+                <span class="n">EAIFEGFTFYKTVSIRIRINRGEAVYIGTLWKELNVYRKLDKEEREFYKFLYDCGLGS</span>
+                <span class="n">LNSMGFGFVNTKKNSAR</span><span class="s2">&quot;</span>
+</pre></div>
+</div>
+<p>Then should give input key=”CDS” and the rest of the data as a list of strings
+lines=[“complement(join(490883..490885,1..879))”, …, “LNSMGFGFVNTKKNSAR”]
+where the leading spaces and trailing newlines have been removed.</p>
+<p>Returns tuple containing: (key as string, location string, qualifiers as list)
+as follows for this example:</p>
+<p>key = “CDS”, string
+location = “complement(join(490883..490885,1..879))”, string
+qualifiers = list of string tuples:</p>
+<dl class="simple">
+<dt>[(‘locus_tag’, ‘“NEQ001”’),</dt><dd><p>(‘note’, ‘“conserved hypothetical [Methanococcus jannaschii];nCOG1583:…”’),
+(‘codon_start’, ‘1’),
+(‘transl_table’, ‘11’),
+(‘product’, ‘“hypothetical protein”’),
+(‘protein_id’, ‘“NP_963295.1”’),
+(‘db_xref’, ‘“GI:41614797”’),
+(‘db_xref’, ‘“GeneID:2732620”’),
+(‘translation’, ‘“MRLLLELKALNSIDKKQLSNYLIQGFIYNILKNTEYSWLHNWKKnEKYFNFT…”’)]</p>
+</dd>
+</dl>
+<p>In the above example, the “note” and “translation” were edited for compactness,
+and they would contain multiple new line characters (displayed above as n)</p>
+<p>If a qualifier is quoted (in this case, everything except codon_start and
+transl_table) then the quotes are NOT removed.</p>
+<p>Note that no whitespace is removed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.parse_features">
+<code class="sig-name descname">parse_features</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">skip=False</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.parse_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of tuples for the features (if present).</p>
+<p>Each feature is returned as a tuple (key, location, qualifiers)
+where key and location are strings (e.g. “CDS” and
+“complement(join(490883..490885,1..879))”) while qualifiers
+is a list of two string tuples (feature qualifier keys and values).</p>
+<p>Assumes you have already read to the start of the features table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.parse_footer">
+<code class="sig-name descname">parse_footer</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.parse_footer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a tuple containing a list of any misc strings, and the sequence.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.parse_header">
+<code class="sig-name descname">parse_header</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.parse_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of strings making up the header.</p>
+<p>New line characters are removed.</p>
+<p>Assumes you have just read in the ID/LOCUS line.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.parse_records">
+<code class="sig-name descname">parse_records</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">handle</em>, <em class="sig-param">do_features=True</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.parse_records" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse records, return a SeqRecord object iterator.</p>
+<p>Each record (from the ID/LOCUS line to the // line) becomes a SeqRecord</p>
+<p>The SeqRecord objects include SeqFeatures if do_features=True</p>
+<p>This method is intended for use in Bio.SeqIO</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.GenBank.Scanner.InsdcScanner.set_handle">
+<code class="sig-name descname">set_handle</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Scanner.InsdcScanner.set_handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the handle attribute.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Bio.GenBank.utils.html" class="btn btn-neutral float-right" title="Bio.GenBank.utils module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.GenBank.Record.html" class="btn btn-neutral float-left" title="Bio.GenBank.Record module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 1999-2017, The Biopython Contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

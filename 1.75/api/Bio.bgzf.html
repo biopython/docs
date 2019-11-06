@@ -1,0 +1,824 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bio.bgzf module &mdash; Biopython 1.75 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.kNN module" href="Bio.kNN.html" />
+    <link rel="prev" title="Bio.SeqRecord module" href="Bio.SeqRecord.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.75
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.File.html">Bio.File module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Index.html">Bio.Index module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.LogisticRegression.html">Bio.LogisticRegression module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.MarkovModel.html">Bio.MarkovModel module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.MaxEntropy.html">Bio.MaxEntropy module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NaiveBayes.html">Bio.NaiveBayes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Seq.html">Bio.Seq module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqFeature.html">Bio.SeqFeature module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqRecord.html">Bio.SeqRecord module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Bio.bgzf module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#aim-of-this-module">Aim of this module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#technical-introduction-to-bgzf">Technical Introduction to BGZF</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#warning-about-namespaces">Warning about namespaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.kNN.html">Bio.kNN module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.pairwise2.html">Bio.pairwise2 module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.triefind.html">Bio.triefind module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="Bio.html">Bio package</a> &raquo;</li>
+        
+      <li>Bio.bgzf module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/bgzf.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="Bio.kNN.html" class="btn btn-neutral float-right" title="Bio.kNN module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.SeqRecord.html" class="btn btn-neutral float-left" title="Bio.SeqRecord module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Bio.bgzf">
+<span id="bio-bgzf-module"></span><h1>Bio.bgzf module<a class="headerlink" href="#module-Bio.bgzf" title="Permalink to this headline">¶</a></h1>
+<p>Read and write BGZF compressed files (the GZIP variant used in BAM).</p>
+<p>The SAM/BAM file format (Sequence Alignment/Map) comes in a plain text
+format (SAM), and a compressed binary format (BAM). The latter uses a
+modified form of gzip compression called BGZF (Blocked GNU Zip Format),
+which can be applied to any file format to provide compression with
+efficient random access. BGZF is described together with the SAM/BAM
+file format at <a class="reference external" href="http://samtools.sourceforge.net/SAM1.pdf">http://samtools.sourceforge.net/SAM1.pdf</a></p>
+<p>Please read the text below about ‘virtual offsets’ before using BGZF
+files for random access.</p>
+<div class="section" id="aim-of-this-module">
+<h2>Aim of this module<a class="headerlink" href="#aim-of-this-module" title="Permalink to this headline">¶</a></h2>
+<p>The Python gzip library can be used to read BGZF files, since for
+decompression they are just (specialised) gzip files. What this
+module aims to facilitate is random access to BGZF files (using the
+‘virtual offset’ idea), and writing BGZF files (which means using
+suitably sized gzip blocks and writing the extra ‘BC’ field in the
+gzip headers). As in the gzip library, the zlib library is used
+internally.</p>
+<p>In addition to being required for random access to and writing of
+BAM files, the BGZF format can also be used on other sequential
+data (in the sense of one record after another), such as most of
+the sequence data formats supported in Bio.SeqIO (like FASTA,
+FASTQ, GenBank, etc) or large MAF alignments.</p>
+<p>The Bio.SeqIO indexing functions use this module to support BGZF files.</p>
+</div>
+<div class="section" id="technical-introduction-to-bgzf">
+<h2>Technical Introduction to BGZF<a class="headerlink" href="#technical-introduction-to-bgzf" title="Permalink to this headline">¶</a></h2>
+<p>The gzip file format allows multiple compressed blocks, each of which
+could be a stand alone gzip file. As an interesting bonus, this means
+you can use Unix <code class="docutils literal notranslate"><span class="pre">cat</span></code> to combine two or more gzip files into one by
+concatenating them. Also, each block can have one of several compression
+levels (including uncompressed, which actually takes up a little bit
+more space due to the gzip header).</p>
+<p>What the BAM designers realised was that while random access to data
+stored in traditional gzip files was slow, breaking the file into
+gzip blocks would allow fast random access to each block. To access
+a particular piece of the decompressed data, you just need to know
+which block it starts in (the offset of the gzip block start), and
+how far into the (decompressed) contents of the block you need to
+read.</p>
+<p>One problem with this is finding the gzip block sizes efficiently.
+You can do it with a standard gzip file, but it requires every block
+to be decompressed – and that would be rather slow. Additionally
+typical gzip files may use very large blocks.</p>
+<p>All that differs in BGZF is that compressed size of each gzip block
+is limited to 2^16 bytes, and an extra ‘BC’ field in the gzip header
+records this size. Traditional decompression tools can ignore this,
+and unzip the file just like any other gzip file.</p>
+<p>The point of this is you can look at the first BGZF block, find out
+how big it is from this ‘BC’ header, and thus seek immediately to
+the second block, and so on.</p>
+<p>The BAM indexing scheme records read positions using a 64 bit
+‘virtual offset’, comprising <code class="docutils literal notranslate"><span class="pre">coffset</span> <span class="pre">&lt;&lt;</span> <span class="pre">16</span> <span class="pre">|</span> <span class="pre">uoffset</span></code>, where <code class="docutils literal notranslate"><span class="pre">coffset</span></code>
+is the file offset of the BGZF block containing the start of the read
+(unsigned integer using up to 64-16 = 48 bits), and <code class="docutils literal notranslate"><span class="pre">uoffset</span></code> is the
+offset within the (decompressed) block (unsigned 16 bit integer).</p>
+<p>This limits you to BAM files where the last block starts by 2^48
+bytes, or 256 petabytes, and the decompressed size of each block
+is at most 2^16 bytes, or 64kb. Note that this matches the BGZF
+‘BC’ field size which limits the compressed size of each block to
+2^16 bytes, allowing for BAM files to use BGZF with no gzip
+compression (useful for intermediate files in memory to reduce
+CPU load).</p>
+</div>
+<div class="section" id="warning-about-namespaces">
+<h2>Warning about namespaces<a class="headerlink" href="#warning-about-namespaces" title="Permalink to this headline">¶</a></h2>
+<p>It is considered a bad idea to use “from XXX import <code class="docutils literal notranslate"><span class="pre">*</span></code>” in Python, because
+it pollutes the namespace. This is a real issue with Bio.bgzf (and the
+standard Python library gzip) because they contain a function called open
+i.e. Suppose you do this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.bgzf</span> <span class="k">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">open</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
+<span class="go">Bio.bgzf</span>
+</pre></div>
+</div>
+<p>Or,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gzip</span> <span class="k">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">open</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
+<span class="go">gzip</span>
+</pre></div>
+</div>
+<p>Notice that the open function has been replaced. You can “fix” this if you
+need to by importing the built-in open function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">__builtin__</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 2</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 3</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>However, what we recommend instead is to use the explicit namespace, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="k">import</span> <span class="n">bgzf</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bgzf</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
+<span class="go">Bio.bgzf</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>This is an ordinary GenBank file compressed using BGZF, so it can
+be decompressed using gzip,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gzip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">0</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">80</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">143</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">70000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">70143</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We can also access the file using the BGZF reader - but pay
+attention to the file offsets which will be explained below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">0</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+<span class="go">LOCUS       NC_000932             154478 bp    DNA     circular PLN 15-APR-2009</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">80</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+<span class="go">DEFINITION  Arabidopsis thaliana chloroplast, complete genome.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">143</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">70000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">987828735</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+<span class="go">f=&quot;GeneID:844718&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+<span class="go">     CDS             complement(join(84337..84771,85454..85843))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">offset</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">55074</span><span class="p">,</span> <span class="mi">126</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+<span class="go">    68521 tatgtcattc gaaattgtat aaagacaact cctatttaat agagctattt gtgcaagtat</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Notice the handle’s offset looks different as a BGZF file. This
+brings us to the key point about BGZF, which is the block structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
+<span class="go">Raw start 0, raw length 15073; data start 0, data length 65536</span>
+<span class="go">Raw start 15073, raw length 17857; data start 65536, data length 65536</span>
+<span class="go">Raw start 32930, raw length 22144; data start 131072, data length 65536</span>
+<span class="go">Raw start 55074, raw length 22230; data start 196608, data length 65536</span>
+<span class="go">Raw start 77304, raw length 14939; data start 262144, data length 43478</span>
+<span class="go">Raw start 92243, raw length 28; data start 305622, data length 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this example the first three blocks are ‘full’ and hold 65536 bytes
+of uncompressed data. The fourth block isn’t full and holds 43478 bytes.
+Finally there is a special empty fifth block which takes 28 bytes on
+disk and serves as an ‘end of file’ (EOF) marker. If this is missing,
+it is possible your BGZF file is incomplete.</p>
+<p>By reading ahead 70,000 bytes we moved into the second BGZF block,
+and at that point the BGZF virtual offsets start to look different
+to a simple offset into the decompressed data as exposed by the gzip
+library.</p>
+<p>As an example, consider seeking to the decompressed position 196734.
+Since 196734 = 65536 + 65536 + 65536 + 126 = 65536*3 + 126, this
+is equivalent to jumping the first three blocks (which in this
+specific example are all size 65536 after decompression - which
+does not always hold) and starting at byte 126 of the fourth block
+(after decompression). For BGZF, we need to know the fourth block’s
+offset of 55074 and the offset within the block of 126 to get the
+BGZF virtual offset.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="mi">55074</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span> <span class="o">|</span> <span class="mi">126</span><span class="p">)</span>
+<span class="go">3609329790</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bgzf</span><span class="o">.</span><span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">55074</span><span class="p">,</span> <span class="mi">126</span><span class="p">))</span>
+<span class="go">3609329790</span>
+</pre></div>
+</div>
+<p>Thus for this BGZF file, decompressed position 196734 corresponds
+to the virtual offset 3609329790. However, another BGZF file with
+different contents would have compressed more or less efficiently,
+so the compressed blocks would be different sizes. What this means
+is the mapping between the uncompressed offset and the compressed
+virtual offset depends on the BGZF file you are using.</p>
+<p>If you are accessing a BGZF file via this module, just use the
+handle.tell() method to note the virtual offset of a position you
+may later want to return to using handle.seek().</p>
+<p>The catch with BGZF virtual offsets is while they can be compared
+(which offset comes first in the file), you cannot safely subtract
+them to get the size of the data between them, nor add/subtract
+a relative offset.</p>
+<p>Of course you can parse this file with Bio.SeqIO using BgzfReader,
+although there isn’t any benefit over using gzip.open(…), unless
+you want to index BGZF compressed sequence files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="k">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="go">NC_000932.1</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="Bio.bgzf.BgzfBlocks">
+<code class="sig-prename descclassname">Bio.bgzf.</code><code class="sig-name descname">BgzfBlocks</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfBlocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Low level debugging function to inspect BGZF blocks.</p>
+<p>Expects a BGZF compressed file opened in binary read mode using
+the builtin open function. Do not use a handle from this bgzf
+module or the gzip module’s open function which will decompress
+the file.</p>
+<p>Returns the block start offset (see virtual offsets), the block
+length (add these for the start of the next block), and the
+decompressed length of the blocks contents (limited to 65536 in
+BGZF), as an iterator - one tuple per BGZF block.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">__builtin__</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 2</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 3</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
+<span class="go">Raw start 0, raw length 18239; data start 0, data length 65536</span>
+<span class="go">Raw start 18239, raw length 18223; data start 65536, data length 65536</span>
+<span class="go">Raw start 36462, raw length 18017; data start 131072, data length 65536</span>
+<span class="go">Raw start 54479, raw length 17342; data start 196608, data length 65536</span>
+<span class="go">Raw start 71821, raw length 17715; data start 262144, data length 65536</span>
+<span class="go">Raw start 89536, raw length 17728; data start 327680, data length 65536</span>
+<span class="go">Raw start 107264, raw length 17292; data start 393216, data length 63398</span>
+<span class="go">Raw start 124556, raw length 28; data start 456614, data length 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Indirectly we can tell this file came from an old version of
+samtools because all the blocks (except the final one and the
+dummy empty EOF marker block) are 65536 bytes.  Later versions
+avoid splitting a read between two blocks, and give the header
+its own block (useful to speed up replacing the header). You
+can see this in ex1_refresh.bam created using samtools 0.1.18:</p>
+<p>samtools view -b ex1.bam &gt; ex1_refresh.bam</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1_refresh.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
+<span class="go">Raw start 0, raw length 53; data start 0, data length 38</span>
+<span class="go">Raw start 53, raw length 18195; data start 38, data length 65434</span>
+<span class="go">Raw start 18248, raw length 18190; data start 65472, data length 65409</span>
+<span class="go">Raw start 36438, raw length 18004; data start 130881, data length 65483</span>
+<span class="go">Raw start 54442, raw length 17353; data start 196364, data length 65519</span>
+<span class="go">Raw start 71795, raw length 17708; data start 261883, data length 65411</span>
+<span class="go">Raw start 89503, raw length 17709; data start 327294, data length 65466</span>
+<span class="go">Raw start 107212, raw length 17390; data start 392760, data length 63854</span>
+<span class="go">Raw start 124602, raw length 28; data start 456614, data length 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The above example has no embedded SAM header (thus the first block
+is very small at just 38 bytes of decompressed data), while the next
+example does (a larger block of 103 bytes). Notice that the rest of
+the blocks show the same sizes (they contain the same read data):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1_header.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
+<span class="go">Raw start 0, raw length 104; data start 0, data length 103</span>
+<span class="go">Raw start 104, raw length 18195; data start 103, data length 65434</span>
+<span class="go">Raw start 18299, raw length 18190; data start 65537, data length 65409</span>
+<span class="go">Raw start 36489, raw length 18004; data start 130946, data length 65483</span>
+<span class="go">Raw start 54493, raw length 17353; data start 196429, data length 65519</span>
+<span class="go">Raw start 71846, raw length 17708; data start 261948, data length 65411</span>
+<span class="go">Raw start 89554, raw length 17709; data start 327359, data length 65466</span>
+<span class="go">Raw start 107263, raw length 17390; data start 392825, data length 63854</span>
+<span class="go">Raw start 124653, raw length 28; data start 456679, data length 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.bgzf.BgzfReader">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.bgzf.</code><code class="sig-name descname">BgzfReader</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em>, <em class="sig-param">mode='r'</em>, <em class="sig-param">fileobj=None</em>, <em class="sig-param">max_cache=100</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>BGZF reader, acts like a read only handle but seek/tell differ.</p>
+<p>Let’s use the BgzfBlocks function to have a peak at the BGZF blocks
+in an example BAM file,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">__builtin__</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 2</span>
+<span class="gp">... </span><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 3</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
+<span class="go">Raw start 0, raw length 18239; data start 0, data length 65536</span>
+<span class="go">Raw start 18239, raw length 18223; data start 65536, data length 65536</span>
+<span class="go">Raw start 36462, raw length 18017; data start 131072, data length 65536</span>
+<span class="go">Raw start 54479, raw length 17342; data start 196608, data length 65536</span>
+<span class="go">Raw start 71821, raw length 17715; data start 262144, data length 65536</span>
+<span class="go">Raw start 89536, raw length 17728; data start 327680, data length 65536</span>
+<span class="go">Raw start 107264, raw length 17292; data start 393216, data length 63398</span>
+<span class="go">Raw start 124556, raw length 28; data start 456614, data length 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now let’s see how to use this block information to jump to
+specific parts of the decompressed BAM file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">0</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">magic</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">4</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>So far nothing so strange, we got the magic marker used at the
+start of a decompressed BAM file, and the handle position makes
+sense. Now however, let’s jump to the end of this block and 4
+bytes into the next block by reading 65536 bytes,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">65536</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">65536</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">1195311108</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Expecting 4 + 65536 = 65540 were you? Well this is a BGZF 64-bit
+virtual offset, which means:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">split_virtual_offset</span><span class="p">(</span><span class="mi">1195311108</span><span class="p">)</span>
+<span class="go">(18239, 4)</span>
+</pre></div>
+</div>
+<p>You should spot 18239 as the start of the second BGZF block, while
+the 4 is the offset into this block. See also make_virtual_offset,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">18239</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="go">1195311108</span>
+</pre></div>
+</div>
+<p>Let’s jump back to almost the start of the file,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that you can use the max_cache argument to limit the number of
+BGZF blocks cached in memory. The default is 100, and since each
+block can be up to 64kb, the default cache could take up to 6MB of
+RAM. The cache is not important for reading through the file in one
+pass, but is important for improving performance of random access.</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfReader.close" title="Bio.bgzf.BgzfReader.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>(self)</p></td>
+<td><p>Close BGZF file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfReader.fileno" title="Bio.bgzf.BgzfReader.fileno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fileno</span></code></a>(self)</p></td>
+<td><p>Return integer file descriptor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfReader.isatty" title="Bio.bgzf.BgzfReader.isatty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isatty</span></code></a>(self)</p></td>
+<td><p>Return True if connected to a TTY device.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfReader.read" title="Bio.bgzf.BgzfReader.read"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code></a>(self[, size])</p></td>
+<td><p>Read method for the BGZF module.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfReader.readline" title="Bio.bgzf.BgzfReader.readline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readline</span></code></a>(self)</p></td>
+<td><p>Read a single line for the BGZF file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfReader.seek" title="Bio.bgzf.BgzfReader.seek"><code class="xref py py-obj docutils literal notranslate"><span class="pre">seek</span></code></a>(self, virtual_offset)</p></td>
+<td><p>Seek to a 64-bit unsigned BGZF virtual offset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfReader.seekable" title="Bio.bgzf.BgzfReader.seekable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">seekable</span></code></a>(self)</p></td>
+<td><p>Return True indicating the BGZF supports random access.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfReader.tell" title="Bio.bgzf.BgzfReader.tell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tell</span></code></a>(self)</p></td>
+<td><p>Return a 64-bit unsigned BGZF virtual offset.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Bio.bgzf.BgzfReader.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close BGZF file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfReader.fileno">
+<code class="sig-name descname">fileno</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.fileno" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return integer file descriptor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfReader.isatty">
+<code class="sig-name descname">isatty</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.isatty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if connected to a TTY device.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfReader.read">
+<code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">size=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read method for the BGZF module.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfReader.readline">
+<code class="sig-name descname">readline</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.readline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a single line for the BGZF file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfReader.seek">
+<code class="sig-name descname">seek</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">virtual_offset</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.seek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Seek to a 64-bit unsigned BGZF virtual offset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfReader.seekable">
+<code class="sig-name descname">seekable</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.seekable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True indicating the BGZF supports random access.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfReader.tell">
+<code class="sig-name descname">tell</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.tell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a 64-bit unsigned BGZF virtual offset.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.bgzf.BgzfWriter">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.bgzf.</code><code class="sig-name descname">BgzfWriter</code><span class="sig-paren">(</span><em class="sig-param">filename=None</em>, <em class="sig-param">mode='w'</em>, <em class="sig-param">fileobj=None</em>, <em class="sig-param">compresslevel=6</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Define a BGZFWriter object.</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfWriter.close" title="Bio.bgzf.BgzfWriter.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>(self)</p></td>
+<td><p>Flush data, write 28 bytes BGZF EOF marker, and close BGZF file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfWriter.fileno" title="Bio.bgzf.BgzfWriter.fileno"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fileno</span></code></a>(self)</p></td>
+<td><p>Return integer file descriptor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfWriter.flush" title="Bio.bgzf.BgzfWriter.flush"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flush</span></code></a>(self)</p></td>
+<td><p>Flush data explicitally.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfWriter.isatty" title="Bio.bgzf.BgzfWriter.isatty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">isatty</span></code></a>(self)</p></td>
+<td><p>Return True if connected to a TTY device.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfWriter.seekable" title="Bio.bgzf.BgzfWriter.seekable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">seekable</span></code></a>(self)</p></td>
+<td><p>Return True indicating the BGZF supports random access.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfWriter.tell" title="Bio.bgzf.BgzfWriter.tell"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tell</span></code></a>(self)</p></td>
+<td><p>Return a BGZF 64-bit virtual offset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.bgzf.BgzfWriter.write" title="Bio.bgzf.BgzfWriter.write"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write</span></code></a>(self, data)</p></td>
+<td><p>Write method for the class.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Bio.bgzf.BgzfWriter.close">
+<code class="sig-name descname">close</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flush data, write 28 bytes BGZF EOF marker, and close BGZF file.</p>
+<p>samtools will look for a magic EOF marker, just a 28 byte empty BGZF
+block, and if it is missing warns the BAM file may be truncated. In
+addition to samtools writing this block, so too does bgzip - so this
+implementation does too.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfWriter.fileno">
+<code class="sig-name descname">fileno</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.fileno" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return integer file descriptor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfWriter.flush">
+<code class="sig-name descname">flush</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flush data explicitally.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfWriter.isatty">
+<code class="sig-name descname">isatty</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.isatty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if connected to a TTY device.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfWriter.seekable">
+<code class="sig-name descname">seekable</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.seekable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True indicating the BGZF supports random access.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfWriter.tell">
+<code class="sig-name descname">tell</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.tell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a BGZF 64-bit virtual offset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.bgzf.BgzfWriter.write">
+<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">data</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write method for the class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="Bio.bgzf.make_virtual_offset">
+<code class="sig-prename descclassname">Bio.bgzf.</code><code class="sig-name descname">make_virtual_offset</code><span class="sig-paren">(</span><em class="sig-param">block_start_offset</em>, <em class="sig-param">within_block_offset</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.make_virtual_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a BGZF virtual offset from block start and within block offsets.</p>
+<p>The BAM indexing scheme records read positions using a 64 bit
+‘virtual offset’, comprising in C terms:</p>
+<p>block_start_offset &lt;&lt; 16 | within_block_offset</p>
+<p>Here block_start_offset is the file offset of the BGZF block
+start (unsigned integer using up to 64-16 = 48 bits), and
+within_block_offset within the (decompressed) block (unsigned
+16 bit integer).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">65535</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">Require 0 &lt;= within_block_offset &lt; 2**16, got 65536</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">65536</span> <span class="o">==</span> <span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">65537</span> <span class="o">==</span> <span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">131071</span> <span class="o">==</span> <span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">16</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="mi">6553600000</span> <span class="o">==</span> <span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">6553600001</span> <span class="o">==</span> <span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">6553600010</span> <span class="o">==</span> <span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">48</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">Require 0 &lt;= block_start_offset &lt; 2**48, got 281474976710656</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="Bio.bgzf.open">
+<code class="sig-prename descclassname">Bio.bgzf.</code><code class="sig-name descname">open</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">mode='rb'</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a BGZF file for reading, writing or appending.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Bio.bgzf.split_virtual_offset">
+<code class="sig-prename descclassname">Bio.bgzf.</code><code class="sig-name descname">split_virtual_offset</code><span class="sig-paren">(</span><em class="sig-param">virtual_offset</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.split_virtual_offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divides a 64-bit BGZF virtual offset into block start &amp; within block offsets.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">split_virtual_offset</span><span class="p">(</span><span class="mi">6553600000</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="n">split_virtual_offset</span><span class="p">(</span><span class="mi">6553600010</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Bio.kNN.html" class="btn btn-neutral float-right" title="Bio.kNN module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.SeqRecord.html" class="btn btn-neutral float-left" title="Bio.SeqRecord module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 1999-2017, The Biopython Contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
