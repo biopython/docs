@@ -239,10 +239,17 @@ FASTA files. For more Information see <a class="reference external" href="http:/
 (2011), <a class="reference external" href="https://doi.org/10.1093/bib/bbr025">https://doi.org/10.1093/bib/bbr025</a></p>
 <dl class="class">
 <dt id="Bio.SeqIO.SeqXmlIO.SeqXmlIterator">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.SeqXmlIO.</code><code class="sig-name descname">SeqXmlIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.SeqXmlIO.SeqXmlIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Bio.SeqIO.SeqXmlIO.XMLRecordIterator" title="Bio.SeqIO.SeqXmlIO.XMLRecordIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.SeqXmlIO.XMLRecordIterator</span></code></a></p>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.SeqXmlIO.</code><code class="sig-name descname">SeqXmlIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">namespace=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.SeqXmlIO.SeqXmlIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Breaks seqXML file into SeqRecords.</p>
-<p>Assumes valid seqXML please validate beforehand.</p>
+<p>Assumes valid seqXML please validate beforehand.
+It is assumed that all information for one record can be found within a
+record element or above. Two types of methods are called when the start
+tag of an element is reached. To receive only the attributes of an
+element before its end tag is reached implement _attr_TAGNAME.
+To get an element and its children as a DOM tree implement _elem_TAGNAME.
+Everything that is part of the DOM tree will not trigger any further
+method calls.</p>
 </dd></dl>
 
 <dl class="class">
@@ -298,20 +305,6 @@ Bio.Alphapet.DNAAlphabet or Bio.Alphapet.ProteinAlphabet.</p>
 <dd><p>Write one record.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="class">
-<dt id="Bio.SeqIO.SeqXmlIO.XMLRecordIterator">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.SeqXmlIO.</code><code class="sig-name descname">XMLRecordIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">recordTag</em>, <em class="sig-param">namespace=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.SeqXmlIO.XMLRecordIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Base class for building iterators for record style XML formats.</p>
-<p>It is assumed that all information for one record can be found within a
-record element or above. Two types of methods are called when the start
-tag of an element is reached. To receive only the attributes of an
-element before its end tag is reached implement _attr_TAGNAME.
-To get an element and its children as a DOM tree implement _elem_TAGNAME.
-Everything that is part of the DOM tree will not trigger any further
-method calls.</p>
 </dd></dl>
 
 </div>
