@@ -251,28 +251,260 @@ PubMed PMID: 14530136.</p>
 New Algorithms and Methods to Estimate Maximum-Likelihood Phylogenies: Assessing
 the Performance of PhyML 3.0.
 Systematic Biology, 2010 59(3):307-21.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameters</strong></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(self[, stdin, stdout, stderr, cwd, env])</p></td>
-<td><p>Execute command, wait for it to finish, return (stdout, stderr).</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_parameter</span></code>(self, name[, value])</p></td>
-<td><p>Set a commandline option for a program (OBSOLETE).</p></td>
-</tr>
-</tbody>
-</table>
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.alpha">
+<em class="property">property </em><code class="sig-name descname">alpha</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Distribution of the gamma distribution shape parameter.</p>
+<blockquote>
+<div><p>Can be a fixed positive value, or ‘e’ to get the
+maximum-likelihood estimate.</p>
+</div></blockquote>
+<p>This controls the addition of the -a parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.bootstrap">
+<em class="property">property </em><code class="sig-name descname">bootstrap</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.bootstrap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of bootstrap replicates, if value is &gt; 0.</p>
+<blockquote>
+<div><p>Otherwise:</p>
+<p>0: neither approximate likelihood ratio test nor bootstrap
+values are computed.</p>
+<p>-1: approximate likelihood ratio test returning aLRT statistics.</p>
+<p>-2: approximate likelihood ratio test returning Chi2-based
+parametric branch supports.</p>
+<p>-4: SH-like branch supports alone.</p>
+</div></blockquote>
+<p>This controls the addition of the -b parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.datatype">
+<em class="property">property </em><code class="sig-name descname">datatype</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.datatype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Datatype ‘nt’ for nucleotide (default) or ‘aa’ for amino-acids.</p>
+<p>This controls the addition of the -d parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.frequencies">
+<em class="property">property </em><code class="sig-name descname">frequencies</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.frequencies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Character frequencies.</p>
+<blockquote>
+<div><p>-f e, m, or “fA fC fG fT”</p>
+<p>e : Empirical frequencies, determined as follows :</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Nucleotide sequences: (Empirical) the equilibrium base
+frequencies are estimated by counting the occurrence
+of the different bases in the alignment.</p></li>
+<li><p>Amino-acid sequences: (Empirical) the equilibrium
+amino-acid frequencies are estimated by counting the
+occurrence of the different amino-acids in the alignment.</p></li>
+</ul>
+</div></blockquote>
+<p>m : ML/model-based frequencies, determined as follows :</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Nucleotide sequences: (ML) the equilibrium base
+frequencies are estimated using maximum likelihood</p></li>
+<li><p>Amino-acid sequences: (Model) the equilibrium amino-acid
+frequencies are estimated using the frequencies defined by
+the substitution model.</p></li>
+</ul>
+</div></blockquote>
+<p>“fA fC fG fT” : only valid for nucleotide-based models.
+fA, fC, fG and fT are floating-point numbers that correspond
+to the frequencies of A, C, G and T, respectively.</p>
+</div></blockquote>
+<p>This controls the addition of the -f parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.input">
+<em class="property">property </em><code class="sig-name descname">input</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.input" title="Permalink to this definition">¶</a></dt>
+<dd><p>PHYLIP format input nucleotide or amino-acid sequence filenam.</p>
+<p>This controls the addition of the -i parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.input_tree">
+<em class="property">property </em><code class="sig-name descname">input_tree</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.input_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starting tree filename. The tree must be in Newick format.</p>
+<p>This controls the addition of the -u parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.model">
+<em class="property">property </em><code class="sig-name descname">model</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitution model name.</p>
+<blockquote>
+<div><p>Nucleotide-based models:</p>
+<p>HKY85 (default) | JC69 | K80 | F81 | F84 | TN93 | GTR | custom</p>
+<p>For the custom option, a string of six digits identifies the
+model. For instance, 000000 corresponds to F81 (or JC69,
+provided the distribution of nucleotide frequencies is uniform).
+012345 corresponds to GTR. This option can be used for encoding
+any model that is a nested within GTR.</p>
+<p>Amino-acid based models:</p>
+<p>LG (default) | WAG | JTT | MtREV | Dayhoff | DCMut | RtREV |
+CpREV | VT | Blosum62 | MtMam | MtArt | HIVw | HIVb | custom</p>
+</div></blockquote>
+<p>This controls the addition of the -m parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.multiple">
+<em class="property">property </em><code class="sig-name descname">multiple</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.multiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of data sets to analyse (integer).</p>
+<p>This controls the addition of the -n parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.n_rand_starts">
+<em class="property">property </em><code class="sig-name descname">n_rand_starts</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.n_rand_starts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of initial random trees to be used.</p>
+<blockquote>
+<div><p>Only valid if SPR searches are to be performed.</p>
+</div></blockquote>
+<p>This controls the addition of the –n_rand_starts parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.nclasses">
+<em class="property">property </em><code class="sig-name descname">nclasses</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.nclasses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of relative substitution rate categories.</p>
+<blockquote>
+<div><p>Default 1. Must be a positive integer.</p>
+</div></blockquote>
+<p>This controls the addition of the -c parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.optimize">
+<em class="property">property </em><code class="sig-name descname">optimize</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specific parameter optimisation.</p>
+<blockquote>
+<div><p>tlr : tree topology (t), branch length (l) and
+rate parameters (r) are optimised.</p>
+<p>tl  : tree topology and branch length are optimised.</p>
+<p>lr  : branch length and rate parameters are optimised.</p>
+<p>l   : branch length are optimised.</p>
+<p>r   : rate parameters are optimised.</p>
+<p>n   : no parameter is optimised.</p>
+</div></blockquote>
+<p>This controls the addition of the -o parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.pars">
+<em class="property">property </em><code class="sig-name descname">pars</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.pars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a minimum parsimony starting tree.</p>
+<blockquote>
+<div><p>This option is taken into account when the ‘-u’ option is absent
+and when tree topology modifications are to be done.</p>
+</div></blockquote>
+<p>This property controls the addition of the -p switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.print_site_lnl">
+<em class="property">property </em><code class="sig-name descname">print_site_lnl</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.print_site_lnl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the likelihood for each site in file *_phyml_lk.txt.</p>
+<p>This property controls the addition of the –print_site_lnl switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.print_trace">
+<em class="property">property </em><code class="sig-name descname">print_trace</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.print_trace" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Print each phylogeny explored during the tree search process
+in file *_phyml_trace.txt.</p>
+</div></blockquote>
+<p>This property controls the addition of the –print_trace switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.prop_invar">
+<em class="property">property </em><code class="sig-name descname">prop_invar</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.prop_invar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Proportion of invariable sites.</p>
+<blockquote>
+<div><p>Can be a fixed value in the range [0,1], or ‘e’ to get the
+maximum-likelihood estimate.</p>
+</div></blockquote>
+<p>This controls the addition of the -v parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.quiet">
+<em class="property">property </em><code class="sig-name descname">quiet</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.quiet" title="Permalink to this definition">¶</a></dt>
+<dd><p>No interactive questions (for running in batch mode).</p>
+<p>This property controls the addition of the –quiet switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.r_seed">
+<em class="property">property </em><code class="sig-name descname">r_seed</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.r_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Seed used to initiate the random number generator.</p>
+<blockquote>
+<div><p>Must be an integer.</p>
+</div></blockquote>
+<p>This controls the addition of the –r_seed parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.rand_start">
+<em class="property">property </em><code class="sig-name descname">rand_start</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.rand_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the initial tree to random.</p>
+<blockquote>
+<div><p>Only valid if SPR searches are to be performed.</p>
+</div></blockquote>
+<p>This property controls the addition of the –rand_start switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.run_id">
+<em class="property">property </em><code class="sig-name descname">run_id</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.run_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append the given string at the end of each PhyML output file.</p>
+<blockquote>
+<div><p>This option may be useful when running simulations involving
+PhyML.</p>
+</div></blockquote>
+<p>This controls the addition of the –run_id parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.search">
+<em class="property">property </em><code class="sig-name descname">search</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tree topology search operation option.</p>
+<blockquote>
+<div><p>Can be one of:</p>
+<blockquote>
+<div><p>NNI : default, fast</p>
+<p>SPR : a bit slower than NNI</p>
+<p>BEST : best of NNI and SPR search</p>
+</div></blockquote>
+</div></blockquote>
+<p>This controls the addition of the -s parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.sequential">
+<em class="property">property </em><code class="sig-name descname">sequential</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.sequential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes interleaved format (default) to sequential format.</p>
+<p>This property controls the addition of the -q switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.PhymlCommandline.ts_tv_ratio">
+<em class="property">property </em><code class="sig-name descname">ts_tv_ratio</code><a class="headerlink" href="#Bio.Phylo.Applications.PhymlCommandline.ts_tv_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transition/transversion ratio. (DNA sequences only.)</p>
+<blockquote>
+<div><p>Can be a fixed positive value (ex:4.0) or e to get the
+maximum-likelihood estimate.</p>
+</div></blockquote>
+<p>This controls the addition of the -t parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -299,28 +531,302 @@ Bioinformatics 2006, 22(21):2688-2690.</p>
 </div>
 <p>You would typically run the command line with raxml_cline() or via
 the Python subprocess module, as described in the Biopython tutorial.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameters</strong></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(self[, stdin, stdout, stderr, cwd, env])</p></td>
-<td><p>Execute command, wait for it to finish, return (stdout, stderr).</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_parameter</span></code>(self, name[, value])</p></td>
-<td><p>Set a commandline option for a program (OBSOLETE).</p></td>
-</tr>
-</tbody>
-</table>
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.algorithm">
+<em class="property">property </em><code class="sig-name descname">algorithm</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Select algorithm:</p>
+<p>a: Rapid Bootstrap analysis and search for best-scoring ML
+tree in one program run.</p>
+<p>b: Draw bipartition information on a tree provided with ‘-t’
+based on multiple trees (e.g. form a bootstrap) in a file
+specifed by ‘-z’.</p>
+<p>c: Check if the alignment can be properly read by RAxML.</p>
+<p>d: New rapid hill-climbing (DEFAULT).</p>
+<p>e: Optimize model+branch lengths for given input tree under
+GAMMA/GAMMAI only.</p>
+<p>g: Compute per site log Likelihoods for one ore more trees
+passed via ‘-z’ and write them to a file that can be read
+by CONSEL.</p>
+<p>h: Compute log likelihood test (SH-test) between best tree
+passed via ‘-t’ and a bunch of other trees passed via ‘-z’.</p>
+<p>i: Perform a really thorough bootstrap, refinement of final
+bootstrap tree under GAMMA and a more exhaustive algorithm.</p>
+<p>j: Generate a bunch of bootstrapped alignment files from an
+original alignemnt file.</p>
+<p>m: Compare bipartitions between two bunches of trees passed
+via ‘-t’ and ‘-z’ respectively. This will return the
+Pearson correlation between all bipartitions found in the
+two tree files. A file called
+RAxML_bipartitionFrequencies.outputFileName will be
+printed that contains the pair-wise bipartition
+frequencies of the two sets.</p>
+<p>n: Compute the log likelihood score of all trees contained
+in a tree file provided by ‘-z’ under GAMMA or
+GAMMA+P-Invar.</p>
+<p>o: Old and slower rapid hill-climbing.</p>
+<p>p: Perform pure stepwise MP addition of new sequences to an
+incomplete starting tree.</p>
+<p>s: Split up a multi-gene partitioned alignment into the
+respective subalignments.</p>
+<p>t: Do randomized tree searches on one fixed starting tree.</p>
+<p>w: Compute ELW test on a bunch of trees passed via ‘-z’.</p>
+<p>x: Compute pair-wise ML distances, ML model parameters will
+be estimated on an MP starting tree or a user-defined
+tree passed via ‘-t’, only allowed for GAMMA-based models
+of rate heterogeneity.</p>
+</div></blockquote>
+<p>This controls the addition of the -f parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.binary_constraint">
+<em class="property">property </em><code class="sig-name descname">binary_constraint</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.binary_constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>File name of a binary constraint tree. This tree does not need to be comprehensive, i.e. contain all taxa.</p>
+<p>This controls the addition of the -r parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.bipartition_filename">
+<em class="property">property </em><code class="sig-name descname">bipartition_filename</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.bipartition_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of a file containing multiple trees, e.g. from a bootstrap run, that shall be used to draw bipartition values onto a tree provided with ‘-t’. It can also be used to compute per-site log likelihoods in combination with ‘-f g’, and to read a bunch of trees for a couple of other options (‘-f h’, ‘-f m’, ‘-f n’).</p>
+<p>This controls the addition of the -z parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.bootstrap_branch_lengths">
+<em class="property">property </em><code class="sig-name descname">bootstrap_branch_lengths</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.bootstrap_branch_lengths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print bootstrapped trees with branch lengths. The bootstraps will run a bit longer, because model parameters will be optimized at the end of each run. Use with CATMIX/PROTMIX or GAMMA/GAMMAI.</p>
+<p>This property controls the addition of the -k switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.bootstrap_seed">
+<em class="property">property </em><code class="sig-name descname">bootstrap_seed</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.bootstrap_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Random seed for bootstrapping.</p>
+<p>This controls the addition of the -b parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.checkpoints">
+<em class="property">property </em><code class="sig-name descname">checkpoints</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.checkpoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write checkpoints (intermediate tree topologies).</p>
+<p>This property controls the addition of the -j switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.cluster_threshold">
+<em class="property">property </em><code class="sig-name descname">cluster_threshold</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.cluster_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Threshold for sequence similarity clustering. RAxML will then print out an alignment to a file called sequenceFileName.reducedBy.threshold that only contains sequences &lt;= the specified threshold that must be between 0.0 and 1.0. RAxML uses the QT-clustering algorithm to perform this task. In addition, a file called RAxML_reducedList.outputFileName will be written that contains clustering information.</p>
+<p>This controls the addition of the -l parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.cluster_threshold_fast">
+<em class="property">property </em><code class="sig-name descname">cluster_threshold_fast</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.cluster_threshold_fast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same functionality as ‘-l’, but uses a less exhaustive and thus faster clustering algorithm. This is intended for very large datasets with more than 20,000-30,000 sequences.</p>
+<p>This controls the addition of the -L parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.epsilon">
+<em class="property">property </em><code class="sig-name descname">epsilon</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.epsilon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set model optimization precision in log likelihood units for final optimization of tree topology under MIX/MIXI or GAMMA/GAMMAI.Default: 0.1 for models not using proportion of invariant sites estimate; 0.001 for models using proportion of invariant sites estimate.</p>
+<p>This controls the addition of the -e parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.exclude_filename">
+<em class="property">property </em><code class="sig-name descname">exclude_filename</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.exclude_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>An exclude file name, containing a specification of alignment positions you wish to exclude.  Format is similar to Nexus, the file shall contain entries like ‘100-200 300-400’; to exclude a single column write, e.g., ‘100-100’. If you use a mixed model, an appropriately adapted model file will be written.</p>
+<p>This controls the addition of the -E parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.grouping_constraint">
+<em class="property">property </em><code class="sig-name descname">grouping_constraint</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.grouping_constraint" title="Permalink to this definition">¶</a></dt>
+<dd><p>File name of a multifurcating constraint tree. this tree does not need to be comprehensive, i.e. contain all taxa.</p>
+<p>This controls the addition of the -g parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.model">
+<em class="property">property </em><code class="sig-name descname">model</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model of Nucleotide or Amino Acid Substitution:</p>
+<blockquote>
+<div><p>NUCLEOTIDES:</p>
+<p>GTRCAT         : GTR + Optimization of substitution rates + Optimization of site-specific
+evolutionary rates which are categorized into numberOfCategories distinct
+rate categories for greater computational efficiency
+if you do a multiple analysis with  ‘-#’ or ‘-N’ but without bootstrapping the program
+will use GTRMIX instead</p>
+<p>GTRGAMMA       : GTR + Optimization of substitution rates + GAMMA model of rate
+heterogeneity (alpha parameter will be estimated)</p>
+<p>GTRMIX         : Inference of the tree under GTRCAT
+and thereafter evaluation of the final tree topology under GTRGAMMA</p>
+<p>GTRCAT_GAMMA   : Inference of the tree with site-specific evolutionary rates.
+However, here rates are categorized using the 4 discrete GAMMA rates.
+Evaluation of the final tree topology under GTRGAMMA</p>
+<p>GTRGAMMAI      : Same as GTRGAMMA, but with estimate of proportion of invariable sites</p>
+<p>GTRMIXI        : Same as GTRMIX, but with estimate of proportion of invariable sites</p>
+<p>GTRCAT_GAMMAI  : Same as GTRCAT_GAMMA, but with estimate of proportion of invariable sites</p>
+<p>AMINO ACIDS:</p>
+<p>PROTCATmatrixName[F]    : specified AA matrix + Optimization of substitution rates + Optimization of site-specific
+evolutionary rates which are categorized into numberOfCategories distinct
+rate categories for greater computational efficiency
+if you do a multiple analysis with  ‘-#’ or ‘-N’ but without bootstrapping the program
+will use PROTMIX… instead</p>
+<p>PROTGAMMAmatrixName[F]  : specified AA matrix + Optimization of substitution rates + GAMMA model of rate
+heterogeneity (alpha parameter will be estimated)</p>
+<p>PROTMIXmatrixName[F]    : Inference of the tree under specified AA matrix + CAT
+and thereafter evaluation of the final tree topology under specified AA matrix + GAMMA</p>
+<p>PROTCAT_GAMMAmatrixName[F] : Inference of the tree under specified AA matrix and site-specific evolutionary rates.
+However, here rates are categorized using the 4 discrete GAMMA rates.
+Evaluation of the final tree topology under specified AA matrix + GAMMA</p>
+<p>PROTGAMMAImatrixName[F] : Same as PROTGAMMAmatrixName[F], but with estimate of proportion of invariable sites</p>
+<p>PROTMIXImatrixName[F]   : Same as PROTMIXmatrixName[F], but with estimate of proportion of invariable sites</p>
+<p>PROTCAT_GAMMAImatrixName[F] : Same as PROTCAT_GAMMAmatrixName[F], but with estimate of proportion of invariable sites</p>
+<p>Available AA substitution models: DAYHOFF, DCMUT, JTT, MTREV, WAG, RTREV, CPREV, VT, BLOSUM62, MTMAM, GTR
+With the optional ‘F’ appendix you can specify if you want to use empirical base frequencies
+Please not that for mixed models you can in addition specify the per-gene AA model in
+the mixed model file (see manual for details)</p>
+</div></blockquote>
+<p>This controls the addition of the -m parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name used in the output files.</p>
+<p>This controls the addition of the -n parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.num_bootstrap_searches">
+<em class="property">property </em><code class="sig-name descname">num_bootstrap_searches</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.num_bootstrap_searches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of multiple bootstrap searches per replicate. Use this to obtain better ML trees for each replicate. Default: 1 ML search per bootstrap replicate.</p>
+<p>This controls the addition of the -u parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.num_categories">
+<em class="property">property </em><code class="sig-name descname">num_categories</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.num_categories" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of distinct rate categories for RAxML when evolution model is set to GTRCAT or GTRMIX.Individual per-site rates are categorized into this many rate categories to accelerate computations. Default: 25.</p>
+<p>This controls the addition of the -c parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.num_replicates">
+<em class="property">property </em><code class="sig-name descname">num_replicates</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.num_replicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of alternative runs on distinct starting trees. In combination with the ‘-b’ option, this will invoke a multiple bootstrap analysis. DEFAULT: 1 single analysis.Note that ‘-N’ has been added as an alternative since ‘-#’ sometimes caused problems with certain MPI job submission systems, since ‘-#’ is often used to start comments.</p>
+<p>This controls the addition of the -N parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.outgroup">
+<em class="property">property </em><code class="sig-name descname">outgroup</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.outgroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of a single outgroup or a comma-separated list of outgroups, eg ‘-o Rat’ or ‘-o Rat,Mouse’. In case that multiple outgroups are not monophyletic the first name in the list will be selected as outgroup. Don’t leave spaces between taxon names!</p>
+<p>This controls the addition of the -o parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.parsimony">
+<em class="property">property </em><code class="sig-name descname">parsimony</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.parsimony" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only compute a parsimony starting tree, then exit.</p>
+<p>This property controls the addition of the -y switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.parsimony_seed">
+<em class="property">property </em><code class="sig-name descname">parsimony_seed</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.parsimony_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Random number seed for the parsimony inferences. This allows you to reproduce your results and will help developers debug the program. This option HAS NO EFFECT in the parallel MPI version.</p>
+<p>This controls the addition of the -p parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.partition_branch_lengths">
+<em class="property">property </em><code class="sig-name descname">partition_branch_lengths</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.partition_branch_lengths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch on estimation of individual per-partition branch lengths. Only has effect when used in combination with ‘partition_filename’ (‘-q’). Branch lengths for individual partitions will be printed to separate files.  A weighted average of the branch lengths is computed by using the respective partition lengths.</p>
+<p>This property controls the addition of the -M switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.partition_filename">
+<em class="property">property </em><code class="sig-name descname">partition_filename</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.partition_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>File name containing the assignment of models to alignment partitions for multiple models of substitution. For the syntax of this file please consult the RAxML manual.</p>
+<p>This controls the addition of the -q parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.protein_model">
+<em class="property">property </em><code class="sig-name descname">protein_model</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.protein_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>File name of a user-defined AA (Protein) substitution model. This file must contain 420 entries, the first 400 being the AA substitution rates (this must be a symmetric matrix) and the last 20 are the empirical base frequencies.</p>
+<p>This controls the addition of the -P parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.random_starting_tree">
+<em class="property">property </em><code class="sig-name descname">random_starting_tree</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.random_starting_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start ML optimization from random starting tree.</p>
+<p>This property controls the addition of the -d switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.rapid_bootstrap_seed">
+<em class="property">property </em><code class="sig-name descname">rapid_bootstrap_seed</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.rapid_bootstrap_seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Random seed for rapid bootstrapping.</p>
+<p>This controls the addition of the -x parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.rearrangements">
+<em class="property">property </em><code class="sig-name descname">rearrangements</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.rearrangements" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initial rearrangement setting for the subsequent application of topological changes phase.</p>
+<p>This controls the addition of the -i parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.sequences">
+<em class="property">property </em><code class="sig-name descname">sequences</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.sequences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the alignment data file, in PHYLIP format.</p>
+<p>This controls the addition of the -s parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.starting_tree">
+<em class="property">property </em><code class="sig-name descname">starting_tree</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.starting_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>File name of a user starting tree, in Newick format.</p>
+<p>This controls the addition of the -t parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.threads">
+<em class="property">property </em><code class="sig-name descname">threads</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.threads" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of threads to run. PTHREADS VERSION ONLY! Make sure to set this at most the number of CPUs you have on your machine, otherwise, there will be a huge performance decrease!</p>
+<p>This controls the addition of the -T parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.version">
+<em class="property">property </em><code class="sig-name descname">version</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display version information.</p>
+<p>This property controls the addition of the -v switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.weight_filename">
+<em class="property">property </em><code class="sig-name descname">weight_filename</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.weight_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of a column weight file to assign individual weights to each column of the alignment. Those weights must be integers separated by any type and number of whitespaces within a separate file.</p>
+<p>This controls the addition of the -a parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.RaxmlCommandline.working_dir">
+<em class="property">property </em><code class="sig-name descname">working_dir</code><a class="headerlink" href="#Bio.Phylo.Applications.RaxmlCommandline.working_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the working directory where RAxML will write its output files. Default: current directory.</p>
+<p>This controls the addition of the -w parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -349,28 +855,646 @@ Maximum-Likelihood Trees for Large Alignments. PLoS ONE, 5(3):e9490.
 <span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameters</strong></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(self[, stdin, stdout, stderr, cwd, env])</p></td>
-<td><p>Execute command, wait for it to finish, return (stdout, stderr).</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_parameter</span></code>(self, name[, value])</p></td>
-<td><p>Set a commandline option for a program (OBSOLETE).</p></td>
-</tr>
-</tbody>
-</table>
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.bionj">
+<em class="property">property </em><code class="sig-name descname">bionj</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.bionj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join options: weighted joins as in BIONJ.</p>
+<blockquote>
+<div><p>FastTree will also weight joins during NNIs.</p>
+</div></blockquote>
+<p>This property controls the addition of the -bionj switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.boot">
+<em class="property">property </em><code class="sig-name descname">boot</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.boot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify the number of resamples for support values.</p>
+<blockquote>
+<div><p>Support value options:
+By default, FastTree computes local support values by resampling the site
+likelihoods 1,000 times and the Shimodaira Hasegawa test. If you specify -nome,
+it will compute minimum-evolution bootstrap supports instead
+In either case, the support values are proportions ranging from 0 to 1</p>
+<p>Use -nosupport to turn off support values or -boot 100 to use just 100 resamples.</p>
+</div></blockquote>
+<p>This controls the addition of the -boot parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.cat">
+<em class="property">property </em><code class="sig-name descname">cat</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.cat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum likelihood model options.</p>
+<blockquote>
+<div><p>Specify the number of rate categories of sites (default 20).</p>
+</div></blockquote>
+<p>This controls the addition of the -cat parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.close">
+<em class="property">property </em><code class="sig-name descname">close</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modify the close heuristic for the top-hit list</p>
+<blockquote>
+<div><p>Top-hit heuristics:
+By default, FastTree uses a top-hit list to speed up search
+-close 0.75 – modify the close heuristic, lower is more conservative.</p>
+</div></blockquote>
+<p>This controls the addition of the -close parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.constraintWeight">
+<em class="property">property </em><code class="sig-name descname">constraintWeight</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.constraintWeight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weight strength of contraints in topology searching.</p>
+<blockquote>
+<div><p>Constrained topology search options:
+-constraintWeight – how strongly to weight the constraints. A value of 1
+means a penalty of 1 in tree length for violating a constraint
+Default: 100.0</p>
+</div></blockquote>
+<p>This controls the addition of the -constraintWeight parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.constraints">
+<em class="property">property </em><code class="sig-name descname">constraints</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.constraints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies an alignment file for use with constrained topology searching</p>
+<blockquote>
+<div><p>Constrained topology search options:
+-constraints alignmentfile – an alignment with values of 0, 1, and -
+Not all sequences need be present. A column of 0s and 1s defines a
+constrained split. Some constraints may be violated
+(see ‘violating constraints:’ in standard error).</p>
+</div></blockquote>
+<p>This controls the addition of the -constraints parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.expert">
+<em class="property">property </em><code class="sig-name descname">expert</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.expert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the expert level help.</p>
+<p>This property controls the addition of the -expert switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.fastest">
+<em class="property">property </em><code class="sig-name descname">fastest</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.fastest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search the visible set (the top hit for each node) only.</p>
+<blockquote>
+<div><p>Searching for the best join:
+By default, FastTree combines the ‘visible set’ of fast neighbor-joining with
+local hill-climbing as in relaxed neighbor-joining
+-fastest – search the visible set (the top hit for each node) only
+Unlike the original fast neighbor-joining, -fastest updates visible(C)
+after joining A and B if join(AB,C) is better than join(C,visible(C))
+-fastest also updates out-distances in a very lazy way,
+-fastest sets -2nd on as well, use -fastest -no2nd to avoid this</p>
+</div></blockquote>
+<p>This property controls the addition of the -fastest switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.gamma">
+<em class="property">property </em><code class="sig-name descname">gamma</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.gamma" title="Permalink to this definition">¶</a></dt>
+<dd><p>Report the likelihood under the discrete gamma model.</p>
+<blockquote>
+<div><p>Maximum likelihood model options:
+-gamma – after the final round of optimizing branch lengths with the CAT model,
+report the likelihood under the discrete gamma model with the same
+number of categories. FastTree uses the same branch lengths but
+optimizes the gamma shape parameter and the scale of the lengths.
+The final tree will have rescaled lengths. Used with -log, this
+also generates per-site likelihoods for use with CONSEL, see
+GammaLogToPaup.pl and documentation on the FastTree web site.</p>
+</div></blockquote>
+<p>This property controls the addition of the -gamma switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.gtr">
+<em class="property">property </em><code class="sig-name descname">gtr</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.gtr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum likelihood model options.</p>
+<blockquote>
+<div><p>Use generalized time-reversible instead of (default)
+Jukes-Cantor (nt only)</p>
+</div></blockquote>
+<p>This property controls the addition of the -gtr switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.gtrfreq">
+<em class="property">property </em><code class="sig-name descname">gtrfreq</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.gtrfreq" title="Permalink to this definition">¶</a></dt>
+<dd><p>-gtrfreq A C G T</p>
+<p>This controls the addition of the -gtrfreq parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.gtrrates">
+<em class="property">property </em><code class="sig-name descname">gtrrates</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.gtrrates" title="Permalink to this definition">¶</a></dt>
+<dd><p>-gtrrates ac ag at cg ct gt</p>
+<p>This controls the addition of the -gtrrates parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.help">
+<em class="property">property </em><code class="sig-name descname">help</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the help.</p>
+<p>This property controls the addition of the -help switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.input">
+<em class="property">property </em><code class="sig-name descname">input</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enter &lt;input file&gt;</p>
+<blockquote>
+<div><p>An input file of sequence alignments in fasta or phylip format
+is needed.  By default FastTree expects protein
+alignments, use -nt for nucleotides.</p>
+</div></blockquote>
+<p>This controls the addition of the input parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.intree">
+<em class="property">property </em><code class="sig-name descname">intree</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.intree" title="Permalink to this definition">¶</a></dt>
+<dd><p>-intree newickfile – read the starting tree in from newickfile.</p>
+<blockquote>
+<div><p>Any branch lengths in the starting trees are ignored.
+-intree with -n will read a separate starting tree for each alignment.</p>
+</div></blockquote>
+<p>This controls the addition of the -intree parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.intree1">
+<em class="property">property </em><code class="sig-name descname">intree1</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.intree1" title="Permalink to this definition">¶</a></dt>
+<dd><p>intree1 newickfile – read the same starting tree for each alignment.</p>
+<p>This controls the addition of the -intree1 parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.log">
+<em class="property">property </em><code class="sig-name descname">log</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create log files of data such as intermediate trees and per-site rates</p>
+<blockquote>
+<div><p>-log logfile – save intermediate trees so you can extract
+the trees and restart long-running jobs if they crash
+-log also reports the per-site rates (1 means slowest category).</p>
+</div></blockquote>
+<p>This controls the addition of the -log parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.makematrix">
+<em class="property">property </em><code class="sig-name descname">makematrix</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.makematrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>-makematrix [alignment]</p>
+<p>This controls the addition of the -makematrix parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.matrix">
+<em class="property">property </em><code class="sig-name descname">matrix</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify a matrix for nucleotide or amino acid distances</p>
+<blockquote>
+<div><p>Distances:
+Default: For protein sequences, log-corrected distances and an
+amino acid dissimilarity matrix derived from BLOSUM45
+or for nucleotide sequences, Jukes-Cantor distances
+To specify a different matrix, use -matrix FilePrefix or -nomatrix</p>
+</div></blockquote>
+<p>This controls the addition of the -matrix parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.mlacc">
+<em class="property">property </em><code class="sig-name descname">mlacc</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.mlacc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Option for optimization of branches at each NNI.</p>
+<blockquote>
+<div><p>Topology refinement:
+By default, FastTree tries to improve the tree with up to 4*log2(N)
+rounds of minimum-evolution nearest-neighbor interchanges (NNI),
+where N is the number of unique sequences, 2 rounds of
+subtree-prune-regraft (SPR) moves (also min. evo.), and
+up to 2*log(N) rounds of maximum-likelihood NNIs.
+Use -nni to set the number of rounds of min. evo. NNIs,
+and -spr to set the rounds of SPRs.
+Use -mlacc 2 or -mlacc 3 to always optimize all 5 branches at each NNI,
+and to optimize all 5 branches in 2 or 3 rounds.</p>
+</div></blockquote>
+<p>This controls the addition of the -mlacc parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.mllen">
+<em class="property">property </em><code class="sig-name descname">mllen</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.mllen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimize branch lengths on a fixed topology.</p>
+<blockquote>
+<div><p>Topology refinement:
+By default, FastTree tries to improve the tree with up to 4*log2(N)
+rounds of minimum-evolution nearest-neighbor interchanges (NNI),
+where N is the number of unique sequences, 2 rounds of
+subtree-prune-regraft (SPR) moves (also min. evo.), and
+up to 2*log(N) rounds of maximum-likelihood NNIs.
+Use -nni to set the number of rounds of min. evo. NNIs,
+and -spr to set the rounds of SPRs.
+Use -mllen to optimize branch lengths without ML NNIs
+Use -mllen -nome with -intree to optimize branch lengths on a fixed topology.</p>
+</div></blockquote>
+<p>This property controls the addition of the -mllen switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.mlnni">
+<em class="property">property </em><code class="sig-name descname">mlnni</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.mlnni" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the number of rounds of maximum-likelihood NNIs.</p>
+<blockquote>
+<div><p>Topology refinement:
+By default, FastTree tries to improve the tree with up to 4*log2(N)
+rounds of minimum-evolution nearest-neighbor interchanges (NNI),
+where N is the number of unique sequences, 2 rounds of
+subtree-prune-regraft (SPR) moves (also min. evo.), and
+up to 2*log(N) rounds of maximum-likelihood NNIs.
+Use -nni to set the number of rounds of min. evo. NNIs,
+and -spr to set the rounds of SPRs.
+Use -mlnni to set the number of rounds of maximum-likelihood NNIs.</p>
+</div></blockquote>
+<p>This controls the addition of the -mlnni parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.n">
+<em class="property">property </em><code class="sig-name descname">n</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>-n – read N multiple alignments in.</p>
+<blockquote>
+<div><p>This only works with phylip interleaved format. For example, you can
+use it with the output from phylip’s seqboot. If you use -n, FastTree
+will write 1 tree per line to standard output.</p>
+</div></blockquote>
+<p>This controls the addition of the -n parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.nj">
+<em class="property">property </em><code class="sig-name descname">nj</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.nj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join options: regular (unweighted) neighbor-joining (default)</p>
+<p>This property controls the addition of the -nj switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.nni">
+<em class="property">property </em><code class="sig-name descname">nni</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.nni" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the rounds of minimum-evolution nearest-neighbor interchanges</p>
+<blockquote>
+<div><p>Topology refinement:
+By default, FastTree tries to improve the tree with up to 4*log2(N)
+rounds of minimum-evolution nearest-neighbor interchanges (NNI),
+where N is the number of unique sequences, 2 rounds of
+subtree-prune-regraft (SPR) moves (also min. evo.), and
+up to 2*log(N) rounds of maximum-likelihood NNIs.
+Use -nni to set the number of rounds of min. evo. NNIs.</p>
+</div></blockquote>
+<p>This controls the addition of the -nni parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.no2nd">
+<em class="property">property </em><code class="sig-name descname">no2nd</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.no2nd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn 2nd-level top hits heuristic off.</p>
+<blockquote>
+<div><p>Top-hit heuristics:
+By default, FastTree uses a top-hit list to speed up search
+Use -notop (or -slow) to turn this feature off
+and compare all leaves to each other,
+and all new joined nodes to each other</p>
+<p>-2nd or -no2nd to turn 2nd-level top hits heuristic on or off
+This reduces memory usage and running time but may lead to
+marginal reductions in tree quality.
+(By default, -fastest turns on -2nd.)</p>
+</div></blockquote>
+<p>This property controls the addition of the -no2nd switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.nocat">
+<em class="property">property </em><code class="sig-name descname">nocat</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.nocat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum likelihood model options: No CAT model (just 1 category)</p>
+<p>This property controls the addition of the -nocat switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.nomatrix">
+<em class="property">property </em><code class="sig-name descname">nomatrix</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.nomatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specify that no matrix should be used for nucleotide or amino acid distances</p>
+<blockquote>
+<div><p>Distances:
+Default: For protein sequences, log-corrected distances and an
+amino acid dissimilarity matrix derived from BLOSUM45
+or for nucleotide sequences, Jukes-Cantor distances
+To specify a different matrix, use -matrix FilePrefix or -nomatrix</p>
+</div></blockquote>
+<p>This property controls the addition of the -nomatrix switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.nome">
+<em class="property">property </em><code class="sig-name descname">nome</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.nome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes support values calculation to a minimum-evolution bootstrap method.</p>
+<blockquote>
+<div><p>Topology refinement:
+By default, FastTree tries to improve the tree with up to 4*log2(N)
+rounds of minimum-evolution nearest-neighbor interchanges (NNI),
+where N is the number of unique sequences, 2 rounds of
+subtree-prune-regraft (SPR) moves (also min. evo.), and
+up to 2*log(N) rounds of maximum-likelihood NNIs.
+Use -nni to set the number of rounds of min. evo. NNIs,
+and -spr to set the rounds of SPRs.
+Use -mllen to optimize branch lengths without ML NNIs
+Use -mllen -nome with -intree to optimize branch lengths on a fixed topology</p>
+<p>Support value options:
+By default, FastTree computes local support values by resampling the site
+likelihoods 1,000 times and the Shimodaira Hasegawa test. If you specify -nome,
+it will compute minimum-evolution bootstrap supports instead
+In either case, the support values are proportions ranging from 0 to 1.</p>
+</div></blockquote>
+<p>This property controls the addition of the -nome switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.noml">
+<em class="property">property </em><code class="sig-name descname">noml</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.noml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deactivate min-evo NNIs and SPRs.</p>
+<blockquote>
+<div><p>Topology refinement:
+By default, FastTree tries to improve the tree with up to 4*log2(N)
+rounds of minimum-evolution nearest-neighbor interchanges (NNI),
+where N is the number of unique sequences, 2 rounds of
+subtree-prune-regraft (SPR) moves (also min. evo.), and
+up to 2*log(N) rounds of maximum-likelihood NNIs.
+Use -nni to set the number of rounds of min. evo. NNIs,
+and -spr to set the rounds of SPRs.
+Use -noml to turn off both min-evo NNIs and SPRs (useful if refining
+an approximately maximum-likelihood tree with further NNIs).</p>
+</div></blockquote>
+<p>This property controls the addition of the -noml switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.nopr">
+<em class="property">property </em><code class="sig-name descname">nopr</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.nopr" title="Permalink to this definition">¶</a></dt>
+<dd><p>-nopr – do not write the progress indicator to stderr.</p>
+<p>This property controls the addition of the -nopr switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.nosupport">
+<em class="property">property </em><code class="sig-name descname">nosupport</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.nosupport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn off support values.</p>
+<blockquote>
+<div><p>Support value options:
+By default, FastTree computes local support values by resampling the site
+likelihoods 1,000 times and the Shimodaira Hasegawa test. If you specify -nome,
+it will compute minimum-evolution bootstrap supports instead
+In either case, the support values are proportions ranging from 0 to 1</p>
+<p>Use -nosupport to turn off support values or -boot 100 to use just 100 resamples.</p>
+</div></blockquote>
+<p>This property controls the addition of the -nosupport switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.notop">
+<em class="property">property </em><code class="sig-name descname">notop</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.notop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn off top-hit list to speed up search</p>
+<blockquote>
+<div><p>Top-hit heuristics:
+By default, FastTree uses a top-hit list to speed up search
+Use -notop (or -slow) to turn this feature off
+and compare all leaves to each other,
+and all new joined nodes to each other.</p>
+</div></blockquote>
+<p>This property controls the addition of the -notop switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.nt">
+<em class="property">property </em><code class="sig-name descname">nt</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.nt" title="Permalink to this definition">¶</a></dt>
+<dd><p>By default FastTree expects protein alignments, use -nt for nucleotides</p>
+<p>This property controls the addition of the -nt switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.out">
+<em class="property">property </em><code class="sig-name descname">out</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enter &lt;output file&gt;</p>
+<blockquote>
+<div><p>The path to a Newick Tree output file needs to be specified.</p>
+</div></blockquote>
+<p>This controls the addition of the -out parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.pseudo">
+<em class="property">property </em><code class="sig-name descname">pseudo</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.pseudo" title="Permalink to this definition">¶</a></dt>
+<dd><p>-pseudo [weight] – Pseudocounts are used with sequence distance estimation.</p>
+<blockquote>
+<div><p>Use pseudocounts to estimate distances between sequences with little or no
+overlap. (Off by default.) Recommended if analyzing the alignment has
+sequences with little or no overlap.
+If the weight is not specified, it is 1.0</p>
+</div></blockquote>
+<p>This controls the addition of the -pseudo parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.quiet">
+<em class="property">property </em><code class="sig-name descname">quiet</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.quiet" title="Permalink to this definition">¶</a></dt>
+<dd><p>-quiet – do not write to standard error during normal operation</p>
+<blockquote>
+<div><p>(no progress indicator, no options summary, no likelihood values, etc.)</p>
+</div></blockquote>
+<p>This property controls the addition of the -quiet switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.quote">
+<em class="property">property </em><code class="sig-name descname">quote</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.quote" title="Permalink to this definition">¶</a></dt>
+<dd><p>-quote – add quotes to sequence names in output.</p>
+<blockquote>
+<div><p>Quote sequence names in the output and allow spaces, commas,
+parentheses, and colons in them but not ‘ characters (fasta files only).</p>
+</div></blockquote>
+<p>This property controls the addition of the -quote switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.rawdist">
+<em class="property">property </em><code class="sig-name descname">rawdist</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.rawdist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn off or adjust log-correction in AA or NT distances.</p>
+<blockquote>
+<div><p>Use -rawdist to turn the log-correction off or to use
+%different instead of Jukes-Cantor in AA or NT distances</p>
+<p>Distances:
+Default: For protein sequences, log-corrected distances and an
+amino acid dissimilarity matrix derived from BLOSUM45
+or for nucleotide sequences, Jukes-Cantor distances
+To specify a different matrix, use -matrix FilePrefix or -nomatrix</p>
+</div></blockquote>
+<p>This property controls the addition of the -rawdist switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.refresh">
+<em class="property">property </em><code class="sig-name descname">refresh</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.refresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter for conditions that joined nodes are compared to other nodes</p>
+<blockquote>
+<div><p>Top-hit heuristics:
+By default, FastTree uses a top-hit list to speed up search
+-refresh 0.8 – compare a joined node to all other nodes if its
+top-hit list is less than 80% of the desired length,
+or if the age of the top-hit list is log2(m) or greater.</p>
+</div></blockquote>
+<p>This controls the addition of the -refresh parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.second">
+<em class="property">property </em><code class="sig-name descname">second</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.second" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn 2nd-level top hits heuristic on.</p>
+<blockquote>
+<div><p>Top-hit heuristics:
+By default, FastTree uses a top-hit list to speed up search
+Use -notop (or -slow) to turn this feature off
+and compare all leaves to each other,
+and all new joined nodes to each other</p>
+<p>-2nd or -no2nd to turn 2nd-level top hits heuristic on or off
+This reduces memory usage and running time but may lead to
+marginal reductions in tree quality.
+(By default, -fastest turns on -2nd.)</p>
+</div></blockquote>
+<p>This property controls the addition of the -2nd switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.seed">
+<em class="property">property </em><code class="sig-name descname">seed</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.seed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use -seed to initialize the random number generator.</p>
+<blockquote>
+<div><p>Support value options:
+By default, FastTree computes local support values by resampling the site
+likelihoods 1,000 times and the Shimodaira Hasegawa test. If you specify -nome,
+it will compute minimum-evolution bootstrap supports instead
+In either case, the support values are proportions ranging from 0 to 1.</p>
+</div></blockquote>
+<p>This controls the addition of the -seed parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.slow">
+<em class="property">property </em><code class="sig-name descname">slow</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.slow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use an exhaustive search.</p>
+<blockquote>
+<div><p>Searching for the best join:
+By default, FastTree combines the ‘visible set’ of fast neighbor-joining with
+local hill-climbing as in relaxed neighbor-joining
+-slow – exhaustive search (like NJ or BIONJ, but different gap handling)
+-slow takes half an hour instead of 8 seconds for 1,250 proteins</p>
+</div></blockquote>
+<p>This property controls the addition of the -slow switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.slownni">
+<em class="property">property </em><code class="sig-name descname">slownni</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.slownni" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn off heuristics to avoid constant subtrees with NNIs.</p>
+<blockquote>
+<div><p>Topology refinement:
+By default, FastTree tries to improve the tree with up to 4*log2(N)
+rounds of minimum-evolution nearest-neighbor interchanges (NNI),
+where N is the number of unique sequences, 2 rounds of
+subtree-prune-regraft (SPR) moves (also min. evo.), and
+up to 2*log(N) rounds of maximum-likelihood NNIs.
+Use -nni to set the number of rounds of min. evo. NNIs,
+and -spr to set the rounds of SPRs.
+Use -slownni to turn off heuristics to avoid constant subtrees
+(affects both ML and ME NNIs).</p>
+</div></blockquote>
+<p>This property controls the addition of the -slownni switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.spr">
+<em class="property">property </em><code class="sig-name descname">spr</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.spr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the rounds of subtree-prune-regraft moves</p>
+<blockquote>
+<div><p>Topology refinement:
+By default, FastTree tries to improve the tree with up to 4*log2(N)
+rounds of minimum-evolution nearest-neighbor interchanges (NNI),
+where N is the number of unique sequences, 2 rounds of
+subtree-prune-regraft (SPR) moves (also min. evo.), and
+up to 2*log(N) rounds of maximum-likelihood NNIs.
+Use -nni to set the number of rounds of min. evo. NNIs,
+and -spr to set the rounds of SPRs.</p>
+</div></blockquote>
+<p>This controls the addition of the -spr parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.sprlength">
+<em class="property">property </em><code class="sig-name descname">sprlength</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.sprlength" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set maximum SPR move length in topology refinement (default 10).</p>
+<blockquote>
+<div><p>Topology refinement:
+By default, FastTree tries to improve the tree with up to 4*log2(N)
+rounds of minimum-evolution nearest-neighbor interchanges (NNI),
+where N is the number of unique sequences, 2 rounds of
+subtree-prune-regraft (SPR) moves (also min. evo.), and
+up to 2*log(N) rounds of maximum-likelihood NNIs.
+Use -nni to set the number of rounds of min. evo. NNIs,
+and -spr to set the rounds of SPRs.</p>
+</div></blockquote>
+<p>This controls the addition of the -sprlength parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.top">
+<em class="property">property </em><code class="sig-name descname">top</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.top" title="Permalink to this definition">¶</a></dt>
+<dd><p>Top-hit list to speed up search</p>
+<blockquote>
+<div><p>Top-hit heuristics:
+By default, FastTree uses a top-hit list to speed up search
+Use -notop (or -slow) to turn this feature off
+and compare all leaves to each other,
+and all new joined nodes to each other.</p>
+</div></blockquote>
+<p>This property controls the addition of the -top switch, treat this property as a boolean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.topm">
+<em class="property">property </em><code class="sig-name descname">topm</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.topm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change the top hits calculation method</p>
+<blockquote>
+<div><p>Top-hit heuristics:
+By default, FastTree uses a top-hit list to speed up search
+-topm 1.0 – set the top-hit list size to parameter*sqrt(N)
+FastTree estimates the top m hits of a leaf from the
+top 2*m hits of a ‘close’ neighbor, where close is
+defined as d(seed,close) &lt; 0.75 * d(seed, hit of rank 2*m),
+and updates the top-hits as joins proceed.</p>
+</div></blockquote>
+<p>This controls the addition of the -topm parameter and its associated value.  Set this property to the argument value required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.Phylo.Applications.FastTreeCommandline.wag">
+<em class="property">property </em><code class="sig-name descname">wag</code><a class="headerlink" href="#Bio.Phylo.Applications.FastTreeCommandline.wag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum likelihood model options.</p>
+<blockquote>
+<div><p>Whelan-And-Goldman 2001 model instead of (default)
+Jones-Taylor-Thorton 1992 model (a.a. only)</p>
+</div></blockquote>
+<p>This property controls the addition of the -wag switch, treat this property as a boolean.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
