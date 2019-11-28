@@ -233,13 +233,13 @@ the second indicates the parameters for gap penalties.</p>
 </div>
 <p>All the different alignment functions are contained in an object
 <code class="docutils literal notranslate"><span class="pre">align</span></code>. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="k">import</span> <span class="n">pairwise2</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">pairwise2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">pairwise2</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">globalxx</span><span class="p">(</span><span class="s2">&quot;ACCGT&quot;</span><span class="p">,</span> <span class="s2">&quot;ACG&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>will return a list of the alignments between the two strings. For a nice
 printout, use the <code class="docutils literal notranslate"><span class="pre">format_alignment</span></code> method of the module:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.pairwise2</span> <span class="k">import</span> <span class="n">format_alignment</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.pairwise2</span> <span class="kn">import</span> <span class="n">format_alignment</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">format_alignment</span><span class="p">(</span><span class="o">*</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
 <span class="go">ACCGT</span>
 <span class="go">| || </span>
@@ -379,7 +379,7 @@ penalty:</p>
 </li>
 <li><p>The alignment function can also use known matrices already included in
 Biopython (<code class="docutils literal notranslate"><span class="pre">MatrixInfo</span></code> from <code class="docutils literal notranslate"><span class="pre">Bio.SubsMat</span></code>):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SubsMat</span> <span class="k">import</span> <span class="n">MatrixInfo</span> <span class="k">as</span> <span class="n">matlist</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SubsMat</span> <span class="kn">import</span> <span class="n">MatrixInfo</span> <span class="k">as</span> <span class="n">matlist</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matlist</span><span class="o">.</span><span class="n">blosum62</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">pairwise2</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">globaldx</span><span class="p">(</span><span class="s2">&quot;KEVLA&quot;</span><span class="p">,</span> <span class="s2">&quot;EVL&quot;</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">format_alignment</span><span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">))</span>
@@ -392,7 +392,7 @@ Biopython (<code class="docutils literal notranslate"><span class="pre">MatrixIn
 </li>
 <li><p>With the parameter <code class="docutils literal notranslate"><span class="pre">c</span></code> you can define your own match- and gap functions.
 E.g. to define an affine logarithmic gap function and using it:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">log</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">gap_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>  <span class="c1"># x is gap position in seq, y is gap length</span>
 <span class="gp">... </span>    <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># No gap</span>
 <span class="gp">... </span>        <span class="k">return</span> <span class="mi">0</span>

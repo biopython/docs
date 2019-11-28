@@ -269,13 +269,13 @@ CPU load).</p>
 it pollutes the namespace. This is a real issue with Bio.bgzf (and the
 standard Python library gzip) because they contain a function called open
 i.e. Suppose you do this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.bgzf</span> <span class="k">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.bgzf</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">open</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
 <span class="go">Bio.bgzf</span>
 </pre></div>
 </div>
 <p>Or,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gzip</span> <span class="k">import</span> <span class="o">*</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gzip</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">open</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
 <span class="go">gzip</span>
 </pre></div>
@@ -283,14 +283,14 @@ i.e. Suppose you do this:</p>
 <p>Notice that the open function has been replaced. You can “fix” this if you
 need to by importing the built-in open function:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">__builtin__</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 2</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">__builtin__</span> <span class="kn">import</span> <span class="nb">open</span> <span class="c1"># Python 2</span>
 <span class="gp">... </span><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 3</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">open</span> <span class="c1"># Python 3</span>
 <span class="gp">...</span>
 </pre></div>
 </div>
 <p>However, what we recommend instead is to use the explicit namespace, e.g.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="k">import</span> <span class="n">bgzf</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">bgzf</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bgzf</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
 <span class="go">Bio.bgzf</span>
 </pre></div>
@@ -387,7 +387,7 @@ a relative offset.</p>
 <p>Of course you can parse this file with Bio.SeqIO using BgzfReader,
 although there isn’t any benefit over using gzip.open(…), unless
 you want to index BGZF compressed sequence files:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="k">import</span> <span class="n">SeqIO</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -408,9 +408,9 @@ length (add these for the start of the next block), and the
 decompressed length of the blocks contents (limited to 65536 in
 BGZF), as an iterator - one tuple per BGZF block.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">__builtin__</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 2</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">__builtin__</span> <span class="kn">import</span> <span class="nb">open</span> <span class="c1"># Python 2</span>
 <span class="gp">... </span><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 3</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">open</span> <span class="c1"># Python 3</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
@@ -477,9 +477,9 @@ the blocks show the same sizes (they contain the same read data):</p>
 <p>Let’s use the BgzfBlocks function to have a peak at the BGZF blocks
 in an example BAM file,</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">__builtin__</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 2</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">__builtin__</span> <span class="kn">import</span> <span class="nb">open</span> <span class="c1"># Python 2</span>
 <span class="gp">... </span><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">builtins</span> <span class="k">import</span> <span class="nb">open</span> <span class="c1"># Python 3</span>
+<span class="gp">... </span>    <span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">open</span> <span class="c1"># Python 3</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
