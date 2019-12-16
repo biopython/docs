@@ -252,7 +252,7 @@ Bio.SeqIO functions if you want to work directly with the gapped sequences).</p>
 </div>
 <p>This is a single multiple sequence alignment, so you would probably load this
 using the Bio.AlignIO.read() function:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Stockholm/simple.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
 <span class="go">SingleLetterAlphabet() alignment with 2 rows and 104 columns</span>
@@ -268,7 +268,7 @@ using the Bio.AlignIO.read() function:</p>
 (and the SeqRecord objects it holds) to reflect this, rather than simple using
 the default single letter alphabet as shown above.  You can do this with an
 optional argument to the Bio.AlignIO.read() function:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_rna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Stockholm/simple.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">,</span>
 <span class="gp">... </span>                     <span class="n">alphabet</span><span class="o">=</span><span class="n">generic_rna</span><span class="p">)</span>
@@ -281,7 +281,7 @@ optional argument to the Bio.AlignIO.read() function:</p>
 <p>In addition to the sequences themselves, this example alignment also includes
 some GR lines for the secondary structure of the sequences.  These are
 strings, with one character for each letter in the associated sequence:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s1">&#39;secondary_structure&#39;</span><span class="p">])</span>
@@ -297,7 +297,7 @@ strings, with one character for each letter in the associated sequence:</p>
 dictionary.  Any per-column annotation for the entire alignment in in the
 alignment’s column annotations dictionary, such as the secondary structure
 consensus in this example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">align</span><span class="o">.</span><span class="n">column_annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">align</span><span class="o">.</span><span class="n">column_annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="go">[&#39;secondary_structure&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">column_annotations</span><span class="p">[</span><span class="s2">&quot;secondary_structure&quot;</span><span class="p">]</span>
 <span class="go">&#39;.................&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;...&lt;&lt;&lt;&lt;&lt;&lt;&lt;........&gt;&gt;&gt;&gt;&gt;&gt;&gt;........&lt;&lt;&lt;&lt;&lt;&lt;&lt;.......&gt;&gt;&gt;&gt;&gt;&gt;&gt;..&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;...............&#39;</span>
@@ -305,7 +305,7 @@ consensus in this example:</p>
 </div>
 <p>You can output this alignment in many different file formats
 using Bio.AlignIO.write(), or the MultipleSeqAlignment object’s format method:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
 <span class="go">&gt;AP001509.1</span>
 <span class="go">UUAAUCGAGCUCAACACUCUUCGUAUAUCCUC-UCAAUAUGG-GAUGAGGGUCUCUAC-A</span>
 <span class="go">GGUA-CCGUAAA-UACCUAGCUACGAAAAGAAUGCAGUUAAUGU</span>
@@ -316,7 +316,7 @@ using Bio.AlignIO.write(), or the MultipleSeqAlignment object’s format method:
 </div>
 <p>Most output formats won’t be able to hold the annotation possible in a
 Stockholm file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;stockholm&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;stockholm&quot;</span><span class="p">))</span>
 <span class="go"># STOCKHOLM 1.0</span>
 <span class="go">#=GF SQ 2</span>
 <span class="go">AP001509.1 UUAAUCGAGCUCAACACUCUUCGUAUAUCCUC-UCAAUAUGG-GAUGAGGGUCUCUAC-AGGUA-CCGUAAA-UACCUAGCUACGAAAAGAAUGCAGUUAAUGU</span>
@@ -338,7 +338,7 @@ tools.</p>
 <p>Finally, as an aside, it can sometimes be useful to use Bio.SeqIO.parse() to
 iterate over the alignment rows as SeqRecord objects - rather than working
 with Alignnment objects. Again, if you want to you can specify this is RNA:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_rna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Stockholm/simple.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">,</span>
 <span class="gp">... </span>                          <span class="n">alphabet</span><span class="o">=</span><span class="n">generic_rna</span><span class="p">):</span>
@@ -355,7 +355,7 @@ with Alignnment objects. Again, if you want to you can specify this is RNA:</p>
 </div>
 <p>Remember that if you slice a SeqRecord, the per-letter-annotations like the
 secondary structure string here, are also sliced:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub_record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
 <span class="go">AUCGUUUUAC</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub_record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s1">&#39;secondary_structure&#39;</span><span class="p">])</span>
@@ -364,7 +364,7 @@ secondary structure string here, are also sliced:</p>
 </div>
 <p>Likewise with the alignment object, as long as you are not dropping any rows,
 slicing specific columns of an alignment will slice any per-column-annotations:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">column_annotations</span><span class="p">[</span><span class="s2">&quot;secondary_structure&quot;</span><span class="p">]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">column_annotations</span><span class="p">[</span><span class="s2">&quot;secondary_structure&quot;</span><span class="p">]</span>
 <span class="go">&#39;.................&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;...&lt;&lt;&lt;&lt;&lt;&lt;&lt;........&gt;&gt;&gt;&gt;&gt;&gt;&gt;........&lt;&lt;&lt;&lt;&lt;&lt;&lt;.......&gt;&gt;&gt;&gt;&gt;&gt;&gt;..&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;...............&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">part_align</span> <span class="o">=</span> <span class="n">align</span><span class="p">[:,</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">part_align</span><span class="o">.</span><span class="n">column_annotations</span><span class="p">[</span><span class="s2">&quot;secondary_structure&quot;</span><span class="p">]</span>
@@ -372,7 +372,7 @@ slicing specific columns of an alignment will slice any per-column-annotations:<
 </pre></div>
 </div>
 <p>You can also see this in the Stockholm output of this partial-alignment:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">part_align</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;stockholm&quot;</span><span class="p">))</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">part_align</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;stockholm&quot;</span><span class="p">))</span>
 <span class="go"># STOCKHOLM 1.0</span>
 <span class="go">#=GF SQ 2</span>
 <span class="go">AP001509.1 UCAACACUCU</span>

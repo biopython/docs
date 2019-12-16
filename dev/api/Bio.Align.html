@@ -269,7 +269,7 @@ padding). The data can then be regarded as a matrix of letters, with well
 defined columns.</p>
 <p>You would typically create an MSA by loading an alignment file with the
 AlignIO module:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Clustalw/opuntia.aln&quot;</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
 <span class="go">SingleLetterAlphabet() alignment with 7 rows and 156 columns</span>
@@ -285,7 +285,7 @@ AlignIO module:</p>
 <p>In some respects you can treat these objects as lists of SeqRecord objects,
 each representing a row of the alignment. Iterating over an alignment gives
 the SeqRecord object for each row:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
 <span class="go">7</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
@@ -300,19 +300,19 @@ the SeqRecord object for each row:</p>
 </pre></div>
 </div>
 <p>You can also access individual rows as SeqRecord objects via their index:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="go">gi|6273285|gb|AF191659.1|AF191</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="go">gi|6273291|gb|AF191665.1|AF191</span>
 </pre></div>
 </div>
 <p>And extract columns as strings:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="go">AAAAAAA</span>
 </pre></div>
 </div>
 <p>Or, take just the first ten columns as a sub-alignment:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">])</span>
 <span class="go">SingleLetterAlphabet() alignment with 7 rows and 10 columns</span>
 <span class="go">TATACATTAA gi|6273285|gb|AF191659.1|AF191</span>
 <span class="go">TATACATTAA gi|6273284|gb|AF191658.1|AF191</span>
@@ -326,7 +326,7 @@ the SeqRecord object for each row:</p>
 <p>Combining this alignment slicing with alignment addition allows you to
 remove a section of the alignment. For example, taking just the first
 and last ten columns:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">+</span> <span class="n">align</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">10</span><span class="p">:])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">+</span> <span class="n">align</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">10</span><span class="p">:])</span>
 <span class="go">SingleLetterAlphabet() alignment with 7 rows and 20 columns</span>
 <span class="go">TATACATTAAGTGTACCAGA gi|6273285|gb|AF191659.1|AF191</span>
 <span class="go">TATACATTAAGTGTACCAGA gi|6273284|gb|AF191658.1|AF191</span>
@@ -378,7 +378,7 @@ no weight, 1.0 =&gt; highest weight)</p></li>
 <p>This must have the same length as the original alignment (unless this is
 the first record), and have an alphabet compatible with the alignment’s
 alphabet.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Clustalw/opuntia.aln&quot;</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
 <span class="go">SingleLetterAlphabet() alignment with 7 rows and 156 columns</span>
@@ -394,13 +394,13 @@ alphabet.</p>
 </pre></div>
 </div>
 <p>We’ll now construct a dummy record to append as an example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">dummy</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="o">*</span><span class="mi">156</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;dummy&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Now append this to the alignment,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dummy</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dummy</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
 <span class="go">SingleLetterAlphabet() alignment with 8 rows and 156 columns</span>
 <span class="go">TATACATTAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273285|gb|AF191659.1|AF191</span>
@@ -429,7 +429,7 @@ alphabet.</p>
 <dd><p>Add more SeqRecord objects to the alignment as rows.</p>
 <p>They must all have the same length as the original alignment, and have
 alphabets compatible with the alignment’s alphabet. For example,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
@@ -441,7 +441,7 @@ alphabets compatible with the alignment’s alphabet. For example,</p>
 </pre></div>
 </div>
 <p>First we create a small alignment (three rows):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
 <span class="go">DNAAlphabet() alignment with 3 rows and 7 columns</span>
 <span class="go">AAAACGT Alpha</span>
@@ -450,7 +450,7 @@ alphabets compatible with the alignment’s alphabet. For example,</p>
 </pre></div>
 </div>
 <p>Now we can extend this alignment with another two rows:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">])</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
 <span class="go">DNAAlphabet() alignment with 5 rows and 7 columns</span>
 <span class="go">AAAACGT Alpha</span>
@@ -474,7 +474,7 @@ format by Bio.AlignIO (such as “fasta”, “clustal”, “phylip”,
 “stockholm”, etc), which is used to turn the alignment into a
 string.</p>
 <p>e.g.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([],</span> <span class="n">Gapped</span><span class="p">(</span><span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGCTAG&quot;</span><span class="p">)</span>
@@ -505,7 +505,7 @@ string.</p>
 <p>All objects in the alignment should (hopefully) have the same
 length. This function will go through and find this length
 by finding the maximum length of sequences in the alignment.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([],</span> <span class="n">Gapped</span><span class="p">(</span><span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGCTAG&quot;</span><span class="p">)</span>
@@ -517,7 +517,7 @@ by finding the maximum length of sequences in the alignment.</p>
 </div>
 <p>If you want to know the number of sequences in the alignment,
 use len(align) instead:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
 <span class="go">3</span>
 </pre></div>
 </div>
@@ -532,7 +532,7 @@ default. The sorting can be controlled by supplying a key function
 which must map each SeqRecord to a sort value.</p>
 <p>This is useful if you want to add two alignments which use the same
 record identifiers, but in a different order. For example,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
@@ -549,7 +549,7 @@ record identifiers, but in a different order. For example,</p>
 </pre></div>
 </div>
 <p>If you simple try and add these without sorting, you get this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align1</span> <span class="o">+</span> <span class="n">align2</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align1</span> <span class="o">+</span> <span class="n">align2</span><span class="p">)</span>
 <span class="go">DNAAlphabet() alignment with 3 rows and 8 columns</span>
 <span class="go">ACGTCGGT &lt;unknown id&gt;</span>
 <span class="go">ACGGCGTT &lt;unknown id&gt;</span>
@@ -560,7 +560,7 @@ record identifiers, but in a different order. For example,</p>
 default value when annotation like the identifier doesn’t match up.
 However, if we sort the alignments first, then add them we get the
 desired result:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align1</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align1</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">align2</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align1</span> <span class="o">+</span> <span class="n">align2</span><span class="p">)</span>
 <span class="go">DNAAlphabet() alignment with 3 rows and 8 columns</span>
@@ -571,7 +571,7 @@ desired result:</p>
 </div>
 <p>As an example using a different sort order, you could sort on the
 GC content of each sequence.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">GC</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">GC</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align1</span><span class="p">)</span>
 <span class="go">DNAAlphabet() alignment with 3 rows and 4 columns</span>
 <span class="go">ACGC Chicken</span>
@@ -587,7 +587,7 @@ GC content of each sequence.</p>
 </div>
 <p>There is also a reverse argument, so if you wanted to sort by ID
 but backwards:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align1</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align1</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align1</span><span class="p">)</span>
 <span class="go">DNAAlphabet() alignment with 3 rows and 4 columns</span>
 <span class="go">ACGG Mouse</span>
@@ -622,7 +622,7 @@ Calling the “align” method on the aligner with two sequences as arguments
 will return a generator yielding the alignments between the two
 sequences.</p>
 <p>Some examples:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">PairwiseAligner</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;TACCG&quot;</span><span class="p">,</span> <span class="s2">&quot;ACG&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">alignments</span><span class="p">):</span>
@@ -641,7 +641,7 @@ sequences.</p>
 </pre></div>
 </div>
 <p>Specify the aligner mode as local to generate local alignments:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;local&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;local&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;TACCG&quot;</span><span class="p">,</span> <span class="s2">&quot;ACG&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">alignments</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score = </span><span class="si">%.1f</span><span class="s2">:&quot;</span> <span class="o">%</span> <span class="n">alignment</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
@@ -660,7 +660,7 @@ sequences.</p>
 </div>
 <p>Do a global alignment.  Identical characters are given 2 points,
 1 point is deducted for each non-identical character.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;global&#39;</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;global&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">match_score</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mismatch_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;TACCG&quot;</span><span class="p">,</span> <span class="s2">&quot;ACG&quot;</span><span class="p">):</span>
@@ -680,7 +680,7 @@ sequences.</p>
 </div>
 <p>Same as above, except now 0.5 points are deducted when opening a
 gap, and 0.1 points are deducted when extending it.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">open_gap_score</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">open_gap_score</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">extend_gap_score</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">target_end_gap_score</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">query_end_gap_score</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -701,7 +701,7 @@ gap, and 0.1 points are deducted when extending it.</p>
 </div>
 <p>The alignment function can also use known matrices already included in
 Biopython:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">substitution_matrices</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">substitution_matrices</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">PairwiseAligner</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">substitution_matrix</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;BLOSUM62&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;KEVLA&quot;</span><span class="p">,</span> <span class="s2">&quot;EVL&quot;</span><span class="p">)</span>
@@ -754,7 +754,7 @@ chunks, you get two tuples of length N:</p>
 </dl>
 </div></blockquote>
 <p>For example,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">PairwiseAligner</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;GAACT&quot;</span><span class="p">,</span> <span class="s2">&quot;GAT&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -778,7 +778,7 @@ chunks, you get two tuples of length N:</p>
 <p>Note that different alignments may have the same subsequences
 aligned to each other. In particular, this may occur if alignments
 differ from each other in terms of their gap placement only:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mismatch_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mismatch_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;AAACAAA&quot;</span><span class="p">,</span> <span class="s2">&quot;AAAGAAA&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
 <span class="go">2</span>
