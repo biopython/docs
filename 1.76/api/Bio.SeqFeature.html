@@ -1,0 +1,1171 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bio.SeqFeature module &mdash; Biopython 1.76 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.SeqRecord module" href="Bio.SeqRecord.html" />
+    <link rel="prev" title="Bio.Seq module" href="Bio.Seq.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.76
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.File.html">Bio.File module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Index.html">Bio.Index module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.LogisticRegression.html">Bio.LogisticRegression module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.MarkovModel.html">Bio.MarkovModel module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.MaxEntropy.html">Bio.MaxEntropy module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NaiveBayes.html">Bio.NaiveBayes module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Seq.html">Bio.Seq module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Bio.SeqFeature module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#base-class-to-hold-a-feature">Base class to hold a Feature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hold-information-about-a-reference">Hold information about a Reference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#specify-locations-of-a-feature-on-a-sequence">Specify locations of a feature on a Sequence</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqRecord.html">Bio.SeqRecord module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.bgzf.html">Bio.bgzf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.kNN.html">Bio.kNN module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.pairwise2.html">Bio.pairwise2 module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.triefind.html">Bio.triefind module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="Bio.html">Bio package</a> &raquo;</li>
+        
+      <li>Bio.SeqFeature module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/SeqFeature.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="Bio.SeqRecord.html" class="btn btn-neutral float-right" title="Bio.SeqRecord module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.Seq.html" class="btn btn-neutral float-left" title="Bio.Seq module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Bio.SeqFeature">
+<span id="bio-seqfeature-module"></span><h1>Bio.SeqFeature module<a class="headerlink" href="#module-Bio.SeqFeature" title="Permalink to this headline">¶</a></h1>
+<p>Represent a Sequence Feature holding info about a part of a sequence.</p>
+<p>This is heavily modeled after the Biocorba SeqFeature objects, and
+may be pretty biased towards GenBank stuff since I’m writing it
+for the GenBank parser output…</p>
+<p>What’s here:</p>
+<div class="section" id="base-class-to-hold-a-feature">
+<h2>Base class to hold a Feature<a class="headerlink" href="#base-class-to-hold-a-feature" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>Classes:</dt><dd><ul class="simple">
+<li><p>SeqFeature</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="hold-information-about-a-reference">
+<h2>Hold information about a Reference<a class="headerlink" href="#hold-information-about-a-reference" title="Permalink to this headline">¶</a></h2>
+<p>This is an attempt to create a General class to hold Reference type
+information.</p>
+<dl class="simple">
+<dt>Classes:</dt><dd><ul class="simple">
+<li><p>Reference</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="specify-locations-of-a-feature-on-a-sequence">
+<h2>Specify locations of a feature on a Sequence<a class="headerlink" href="#specify-locations-of-a-feature-on-a-sequence" title="Permalink to this headline">¶</a></h2>
+<p>This aims to handle, in Ewan Birney’s words, ‘the dreaded fuzziness issue’.
+This has the advantages of allowing us to handle fuzzy stuff in case anyone
+needs it, and also be compatible with BioPerl etc and BioSQL.</p>
+<dl class="simple">
+<dt>Classes:</dt><dd><ul class="simple">
+<li><p>FeatureLocation - Specify the start and end location of a feature.</p></li>
+<li><p>CompoundLocation - Collection of FeatureLocation objects (for joins etc).</p></li>
+<li><p>ExactPosition - Specify the position as being exact.</p></li>
+<li><p>WithinPosition - Specify a position occurring within some range.</p></li>
+<li><p>BetweenPosition - Specify a position occurring between a range (OBSOLETE?).</p></li>
+<li><p>BeforePosition - Specify the position as being found before some base.</p></li>
+<li><p>AfterPosition - Specify the position as being found after some base.</p></li>
+<li><p>OneOfPosition - Specify a position where the location can be multiple positions.</p></li>
+<li><p>UnknownPosition - Represents missing information like ‘?’ in UniProt.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="class">
+<dt id="Bio.SeqFeature.AbstractPosition">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">AbstractPosition</code><a class="headerlink" href="#Bio.SeqFeature.AbstractPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Abstract base class representing a position.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.AfterPosition">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">AfterPosition</code><a class="headerlink" href="#Bio.SeqFeature.AfterPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<p>Specify a position where the actual location is found after it.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>position - The lower boundary of where the location can occur.</p></li>
+<li><p>extension - An optional argument which must be zero since we don’t
+have an extension. The argument is provided so that the same number
+of arguments can be passed to all position types.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This is used to specify positions like (&gt;10..100) where the location
+occurs somewhere after position 10.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">AfterPosition</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
+<span class="go">AfterPosition(7)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">&gt;7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">+</span> <span class="mi">10</span>
+<span class="go">17</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">AfterPosition</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">AbstractPosition</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Note this potentially surprising behaviour:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="n">ExactPosition</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="n">BeforePosition</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Just remember that for equality and sorting the position objects act
+like integers.</p>
+<dl class="method">
+<dt id="Bio.SeqFeature.AfterPosition.extension">
+<em class="property">property </em><code class="sig-name descname">extension</code><a class="headerlink" href="#Bio.SeqFeature.AfterPosition.extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get extension (zero) as integer (OBSOLETE).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.AfterPosition.position">
+<em class="property">property </em><code class="sig-name descname">position</code><a class="headerlink" href="#Bio.SeqFeature.AfterPosition.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get position as integer (OBSOLETE).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.BeforePosition">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">BeforePosition</code><a class="headerlink" href="#Bio.SeqFeature.BeforePosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<p>Specify a position where the actual location occurs before it.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>position - The upper boundary of where the location can occur.</p></li>
+<li><p>extension - An optional argument which must be zero since we don’t
+have an extension. The argument is provided so that the same number
+of arguments can be passed to all position types.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This is used to specify positions like (&lt;10..100) where the location
+occurs somewhere before position 10.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">BeforePosition</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
+<span class="go">BeforePosition(5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">&lt;5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">+</span> <span class="mi">10</span>
+<span class="go">15</span>
+</pre></div>
+</div>
+<p>Note this potentially surprising behaviour:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="n">ExactPosition</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="n">AfterPosition</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Just remember that for equality and sorting the position objects act
+like integers.</p>
+<dl class="method">
+<dt id="Bio.SeqFeature.BeforePosition.extension">
+<em class="property">property </em><code class="sig-name descname">extension</code><a class="headerlink" href="#Bio.SeqFeature.BeforePosition.extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get extension (zero) as integer (OBSOLETE).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.BeforePosition.position">
+<em class="property">property </em><code class="sig-name descname">position</code><a class="headerlink" href="#Bio.SeqFeature.BeforePosition.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get position as integer (OBSOLETE).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.BetweenPosition">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">BetweenPosition</code><a class="headerlink" href="#Bio.SeqFeature.BetweenPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<p>Specify the position of a boundary between two coordinates (OBSOLETE?).</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>position - The default integer position</p></li>
+<li><p>left - The start (left) position of the boundary</p></li>
+<li><p>right - The end (right) position of the boundary</p></li>
+</ul>
+</dd>
+</dl>
+<p>This allows dealing with a position like 123^456. This
+indicates that the start of the sequence is somewhere between
+123 and 456. It is up to the parser to set the position argument
+to either boundary point (depending on if this is being used as
+a start or end of the feature). For example as a feature end:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">BetweenPosition</span><span class="p">(</span><span class="mi">456</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">456</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
+<span class="go">BetweenPosition(456, left=123, right=456)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">(123^456)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">456</span>
+</pre></div>
+</div>
+<p>Integer equality and comparison use the given position,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">456</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">455</span><span class="p">,</span> <span class="mi">456</span><span class="p">,</span> <span class="mi">457</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">&gt;</span> <span class="mi">300</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The old legacy properties of position and extension give the
+starting/lower/left position as an integer, and the distance
+to the ending/higher/right position as an integer. Note that
+the position object will act like either the left or the right
+end-point depending on how it was created:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">BetweenPosition</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">456</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="mi">123</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">extension</span>
+<span class="go">333</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span><span class="o">.</span><span class="n">extension</span>
+<span class="go">333</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="mi">333</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">456</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">==</span> <span class="mi">123</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Note this potentially surprising behaviour:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">BetweenPosition</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">456</span><span class="p">)</span> <span class="o">==</span> <span class="n">ExactPosition</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">BetweenPosition</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">456</span><span class="p">)</span> <span class="o">==</span> <span class="n">BeforePosition</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">BetweenPosition</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">456</span><span class="p">)</span> <span class="o">==</span> <span class="n">AfterPosition</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>i.e. For equality (and sorting) the position objects behave like
+integers.</p>
+<dl class="method">
+<dt id="Bio.SeqFeature.BetweenPosition.extension">
+<em class="property">property </em><code class="sig-name descname">extension</code><a class="headerlink" href="#Bio.SeqFeature.BetweenPosition.extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get extension (from left to right) as an integer (OBSOLETE).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.BetweenPosition.position">
+<em class="property">property </em><code class="sig-name descname">position</code><a class="headerlink" href="#Bio.SeqFeature.BetweenPosition.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get (left) position as integer (OBSOLETE).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.CompoundLocation">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">CompoundLocation</code><span class="sig-paren">(</span><em class="sig-param">parts</em>, <em class="sig-param">operator='join'</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>For handling joins etc where a feature location has several parts.</p>
+<dl class="method">
+<dt id="Bio.SeqFeature.CompoundLocation.end">
+<em class="property">property </em><code class="sig-name descname">end</code><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation.end" title="Permalink to this definition">¶</a></dt>
+<dd><p>End location - right most (maximum) value, regardless of strand.</p>
+<p>Read only, returns an integer like position object, possibly a fuzzy
+position.</p>
+<p>For the special case of a CompoundLocation wrapping the origin of
+a circular genome this will match the genome length (minus one
+given how Python counts from zero).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.CompoundLocation.extract">
+<code class="sig-name descname">extract</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">parent_sequence</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the sequence from supplied parent sequence using the CompoundLocation object.</p>
+<p>The parent_sequence can be a Seq like object or a string, and will
+generally return an object of the same type. The exception to this is
+a MutableSeq as the parent sequence will return a Seq object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">FeatureLocation</span><span class="p">,</span> <span class="n">CompoundLocation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fl1</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fl2</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fl3</span> <span class="o">=</span> <span class="n">CompoundLocation</span><span class="p">([</span><span class="n">fl1</span><span class="p">,</span><span class="n">fl2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fl3</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">Seq(&#39;QHKAMILIVIC&#39;, ProteinAlphabet())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.CompoundLocation.nofuzzy_end">
+<em class="property">property </em><code class="sig-name descname">nofuzzy_end</code><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation.nofuzzy_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>End position (integer, approximated if fuzzy, read only) (OBSOLETE).</p>
+<p>This is an alias for int(feature.end), which should be used in
+preference – unless you are trying to support old versions of
+Biopython.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.CompoundLocation.nofuzzy_start">
+<em class="property">property </em><code class="sig-name descname">nofuzzy_start</code><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation.nofuzzy_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start position (integer, approximated if fuzzy, read only) (OBSOLETE).</p>
+<p>This is an alias for int(feature.start), which should be used in
+preference – unless you are trying to support old versions of
+Biopython.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.CompoundLocation.ref">
+<em class="property">property </em><code class="sig-name descname">ref</code><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation.ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not present in CompoundLocation, dummy method for API compatibility.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.CompoundLocation.ref_db">
+<em class="property">property </em><code class="sig-name descname">ref_db</code><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation.ref_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not present in CompoundLocation, dummy method for API compatibility.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.CompoundLocation.start">
+<em class="property">property </em><code class="sig-name descname">start</code><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start location - left most (minimum) value, regardless of strand.</p>
+<p>Read only, returns an integer like position object, possibly a fuzzy
+position.</p>
+<p>For the special case of a CompoundLocation wrapping the origin of a
+circular genome, this will return zero.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.CompoundLocation.strand">
+<em class="property">property </em><code class="sig-name descname">strand</code><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation.strand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overall strand of the compound location.</p>
+<p>If all the parts have the same strand, that is returned. Otherwise
+for mixed strands, this returns None.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">FeatureLocation</span><span class="p">,</span> <span class="n">CompoundLocation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f1</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="n">strand</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f2</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">strand</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">f1</span> <span class="o">+</span> <span class="n">f2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f1</span><span class="o">.</span><span class="n">strand</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f2</span><span class="o">.</span><span class="n">strand</span>
+<span class="go">-1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">strand</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">strand</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>If you set the strand of a CompoundLocation, this is applied to
+all the parts - use with caution:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">strand</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f1</span><span class="o">.</span><span class="n">strand</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f2</span><span class="o">.</span><span class="n">strand</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">strand</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.ExactPosition">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">ExactPosition</code><a class="headerlink" href="#Bio.SeqFeature.ExactPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<p>Specify the specific position of a boundary.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>position - The position of the boundary.</p></li>
+<li><p>extension - An optional argument which must be zero since we don’t
+have an extension. The argument is provided so that the same number
+of arguments can be passed to all position types.</p></li>
+</ul>
+</dd>
+</dl>
+<p>In this case, there is no fuzziness associated with the position.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">ExactPosition</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
+<span class="go">ExactPosition(5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">AbstractPosition</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Integer comparisons and operations should work as expected:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">5</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">&lt;</span> <span class="mi">6</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">5</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">+</span> <span class="mi">10</span>
+<span class="go">15</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="Bio.SeqFeature.ExactPosition.extension">
+<em class="property">property </em><code class="sig-name descname">extension</code><a class="headerlink" href="#Bio.SeqFeature.ExactPosition.extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not present in this object, return zero (OBSOLETE).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.ExactPosition.position">
+<em class="property">property </em><code class="sig-name descname">position</code><a class="headerlink" href="#Bio.SeqFeature.ExactPosition.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get position as integer (OBSOLETE).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.FeatureLocation">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">FeatureLocation</code><span class="sig-paren">(</span><em class="sig-param">start</em>, <em class="sig-param">end</em>, <em class="sig-param">strand=None</em>, <em class="sig-param">ref=None</em>, <em class="sig-param">ref_db=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.FeatureLocation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Specify the location of a feature along a sequence.</p>
+<p>The FeatureLocation is used for simple continuous features, which can
+be described as running from a start position to and end position
+(optionally with a strand and reference information).  More complex
+locations made up from several non-continuous parts (e.g. a coding
+sequence made up of several exons) are described using a SeqFeature
+with a CompoundLocation.</p>
+<p>Note that the start and end location numbering follow Python’s scheme,
+thus a GenBank entry of 123..150 (one based counting) becomes a location
+of [122:150] (zero based counting).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">FeatureLocation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="go">[122:150]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+<span class="go">122</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+<span class="go">150</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+<p>Note the strand defaults to None. If you are working with nucleotide
+sequences you’d want to be explicit if it is the forward strand:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">FeatureLocation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="n">strand</span><span class="o">=+</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="go">[122:150](+)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<p>Note that for a parent sequence of length n, the FeatureLocation
+start and end must satisfy the inequality 0 &lt;= start &lt;= end &lt;= n.
+This means even for features on the reverse strand of a nucleotide
+sequence, we expect the ‘start’ coordinate to be less than the
+‘end’.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">FeatureLocation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="n">strand</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="go">[122:150](-)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+<span class="go">122</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+<span class="go">150</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">strand</span><span class="p">)</span>
+<span class="go">-1</span>
+</pre></div>
+</div>
+<p>i.e. Rather than thinking of the ‘start’ and ‘end’ biologically in a
+strand aware manner, think of them as the ‘left most’ or ‘minimum’
+boundary, and the ‘right most’ or ‘maximum’ boundary of the region
+being described. This is particularly important with compound
+locations describing non-continuous regions.</p>
+<p>In the example above we have used standard exact positions, but there
+are also specialised position objects used to represent fuzzy positions
+as well, for example a GenBank location like complement(&lt;123..150)
+would use a BeforePosition object for the start.</p>
+<dl class="method">
+<dt id="Bio.SeqFeature.FeatureLocation.end">
+<em class="property">property </em><code class="sig-name descname">end</code><a class="headerlink" href="#Bio.SeqFeature.FeatureLocation.end" title="Permalink to this definition">¶</a></dt>
+<dd><p>End location - right most (maximum) value, regardless of strand.</p>
+<p>Read only, returns an integer like position object, possibly a fuzzy
+position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.FeatureLocation.extract">
+<code class="sig-name descname">extract</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">parent_sequence</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.FeatureLocation.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the sequence from supplied parent sequence using the FeatureLocation object.</p>
+<p>The parent_sequence can be a Seq like object or a string, and will
+generally return an object of the same type. The exception to this is
+a MutableSeq as the parent sequence will return a Seq object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">FeatureLocation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_loc</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature_loc</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">Seq(&#39;VALIVIC&#39;, ProteinAlphabet())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.FeatureLocation.nofuzzy_end">
+<em class="property">property </em><code class="sig-name descname">nofuzzy_end</code><a class="headerlink" href="#Bio.SeqFeature.FeatureLocation.nofuzzy_end" title="Permalink to this definition">¶</a></dt>
+<dd><p>End position (integer, approximated if fuzzy, read only) (OBSOLETE).</p>
+<p>This is now an alias for int(feature.end), which should be
+used in preference – unless you are trying to support old
+versions of Biopython.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.FeatureLocation.nofuzzy_start">
+<em class="property">property </em><code class="sig-name descname">nofuzzy_start</code><a class="headerlink" href="#Bio.SeqFeature.FeatureLocation.nofuzzy_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start position (integer, approximated if fuzzy, read only) (OBSOLETE).</p>
+<p>This is now an alias for int(feature.start), which should be
+used in preference – unless you are trying to support old
+versions of Biopython.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.FeatureLocation.parts">
+<em class="property">property </em><code class="sig-name descname">parts</code><a class="headerlink" href="#Bio.SeqFeature.FeatureLocation.parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read only list of sections (always one, the FeatureLocation object).</p>
+<p>This is a convenience property allowing you to write code handling
+both simple FeatureLocation objects (with one part) and more complex
+CompoundLocation objects (with multiple parts) interchangeably.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.FeatureLocation.start">
+<em class="property">property </em><code class="sig-name descname">start</code><a class="headerlink" href="#Bio.SeqFeature.FeatureLocation.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start location - left most (minimum) value, regardless of strand.</p>
+<p>Read only, returns an integer like position object, possibly a fuzzy
+position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.FeatureLocation.strand">
+<em class="property">property </em><code class="sig-name descname">strand</code><a class="headerlink" href="#Bio.SeqFeature.FeatureLocation.strand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Strand of the location (+1, -1, 0 or None).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.OneOfPosition">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">OneOfPosition</code><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<p>Specify a position where the location can be multiple positions.</p>
+<p>This models the GenBank ‘one-of(1888,1901)’ function, and tries
+to make this fit within the Biopython Position models. If this was
+a start position it should act like 1888, but as an end position 1901.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">OneOfPosition</span><span class="p">(</span><span class="mi">1888</span><span class="p">,</span> <span class="p">[</span><span class="n">ExactPosition</span><span class="p">(</span><span class="mi">1888</span><span class="p">),</span> <span class="n">ExactPosition</span><span class="p">(</span><span class="mi">1901</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
+<span class="go">OneOfPosition(1888, choices=[ExactPosition(1888), ExactPosition(1901)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">1888</span>
+</pre></div>
+</div>
+<p>Interget comparisons and operators act like using int(p),</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">1888</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">1888</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">&gt;</span> <span class="mi">1888</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">+</span> <span class="mi">100</span>
+<span class="go">1988</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">OneOfPosition</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">AbstractPosition</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The old legacy properties of position and extension give the
+starting/lowest/left-most position as an integer, and the
+distance to the ending/highest/right-most position as an integer.
+Note that the position object will act like one of the list of
+possible locations depending on how it was created:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">OneOfPosition</span><span class="p">(</span><span class="mi">1901</span><span class="p">,</span> <span class="p">[</span><span class="n">ExactPosition</span><span class="p">(</span><span class="mi">1888</span><span class="p">),</span> <span class="n">ExactPosition</span><span class="p">(</span><span class="mi">1901</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="mi">1888</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="mi">13</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">1888</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">==</span> <span class="mi">1901</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="Bio.SeqFeature.OneOfPosition.extension">
+<em class="property">property </em><code class="sig-name descname">extension</code><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get extension as integer (OBSOLETE).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.OneOfPosition.position">
+<em class="property">property </em><code class="sig-name descname">position</code><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get (left) position as integer (OBSOLETE).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.PositionGap">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">PositionGap</code><span class="sig-paren">(</span><em class="sig-param">gap_size</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.PositionGap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Simple class to hold information about a gap between positions.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.Reference">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">Reference</code><a class="headerlink" href="#Bio.SeqFeature.Reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represent a Generic Reference object.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>location - A list of Location objects specifying regions of
+the sequence that the references correspond to. If no locations are
+specified, the entire sequence is assumed.</p></li>
+<li><p>authors - A big old string, or a list split by author, of authors
+for the reference.</p></li>
+<li><p>title - The title of the reference.</p></li>
+<li><p>journal - Journal the reference was published in.</p></li>
+<li><p>medline_id - A medline reference for the article.</p></li>
+<li><p>pubmed_id - A pubmed reference for the article.</p></li>
+<li><p>comment - A place to stick any comments about the reference.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.SeqFeature">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">SeqFeature</code><span class="sig-paren">(</span><em class="sig-param">location=None</em>, <em class="sig-param">type=''</em>, <em class="sig-param">location_operator=''</em>, <em class="sig-param">strand=None</em>, <em class="sig-param">id='&lt;unknown id&gt;'</em>, <em class="sig-param">qualifiers=None</em>, <em class="sig-param">sub_features=None</em>, <em class="sig-param">ref=None</em>, <em class="sig-param">ref_db=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.SeqFeature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represent a Sequence Feature on an object.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>location - the location of the feature on the sequence (FeatureLocation)</p></li>
+<li><p>type - the specified type of the feature (ie. CDS, exon, repeat…)</p></li>
+<li><p>location_operator - a string specifying how this SeqFeature may
+be related to others. For example, in the example GenBank feature
+shown below, the location_operator would be “join”. This is a proxy
+for feature.location.operator and only applies to compound locations.</p></li>
+<li><p>strand - A value specifying on which strand (of a DNA sequence, for
+instance) the feature deals with. 1 indicates the plus strand, -1
+indicates the minus strand, 0 indicates stranded but unknown (? in GFF3),
+while the default of None indicates that strand doesn’t apply (dot in GFF3,
+e.g. features on proteins). Note this is a shortcut for accessing the
+strand property of the feature’s location.</p></li>
+<li><p>id - A string identifier for the feature.</p></li>
+<li><p>ref - A reference to another sequence. This could be an accession
+number for some different sequence. Note this is a shortcut for the
+reference property of the feature’s location.</p></li>
+<li><p>ref_db - A different database for the reference accession number.
+Note this is a shortcut for the reference property of the location</p></li>
+<li><p>qualifiers - A dictionary of qualifiers on the feature. These are
+analogous to the qualifiers from a GenBank feature table. The keys of
+the dictionary are qualifier names, the values are the qualifier
+values. As of Biopython 1.69 this is an ordered dictionary.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="Bio.SeqFeature.SeqFeature.extract">
+<code class="sig-name descname">extract</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">parent_sequence</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.SeqFeature.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the feature’s sequence from supplied parent sequence.</p>
+<p>The parent_sequence can be a Seq like object or a string, and will
+generally return an object of the same type. The exception to this is
+a MutableSeq as the parent sequence will return a Seq object.</p>
+<p>This should cope with complex locations including complements, joins
+and fuzzy positions. Even mixed strand features should work! This
+also covers features on protein sequences (e.g. domains), although
+here reverse strand features are not permitted.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">FeatureLocation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;domain&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">Seq(&#39;VALIVIC&#39;, ProteinAlphabet())</span>
+</pre></div>
+</div>
+<p>If the FeatureLocation is None, e.g. when parsing invalid locus
+locations in the GenBank parser, extract() will raise a ValueError.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;domain&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+   <span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">The feature&#39;s .location is None. Check the sequence file for a valid location.</span>
+</pre></div>
+</div>
+<p>Note - currently only compound features of type “join” are supported.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.SeqFeature.location_operator">
+<em class="property">property </em><code class="sig-name descname">location_operator</code><a class="headerlink" href="#Bio.SeqFeature.SeqFeature.location_operator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Location operator for compound locations (e.g. join).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.SeqFeature.ref">
+<em class="property">property </em><code class="sig-name descname">ref</code><a class="headerlink" href="#Bio.SeqFeature.SeqFeature.ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feature location reference (e.g. accession).</p>
+<p>This is a shortcut for feature.location.ref</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.SeqFeature.ref_db">
+<em class="property">property </em><code class="sig-name descname">ref_db</code><a class="headerlink" href="#Bio.SeqFeature.SeqFeature.ref_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feature location reference’s database.</p>
+<p>This is a shortcut for feature.location.ref_db</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.SeqFeature.strand">
+<em class="property">property </em><code class="sig-name descname">strand</code><a class="headerlink" href="#Bio.SeqFeature.SeqFeature.strand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Feature’s strand</p>
+<p>This is a shortcut for feature.location.strand</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.SeqFeature.translate">
+<code class="sig-name descname">translate</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">parent_sequence</em>, <em class="sig-param">table='Standard'</em>, <em class="sig-param">start_offset=None</em>, <em class="sig-param">stop_symbol='*'</em>, <em class="sig-param">to_stop=False</em>, <em class="sig-param">cds=None</em>, <em class="sig-param">gap=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.SeqFeature.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a translation of the feature’s sequence.</p>
+<p>This method is intended for CDS or other features that code proteins
+and is a shortcut that will both extract the feature and
+translate it, taking into account the codon_start and transl_table
+qualifiers, if they are present. If they are not present the
+value of the arguments “table” and “start_offset” are used.</p>
+<p>The “cds” parameter is set to “True” if the feature is of type
+“CDS” but can be overridden by giving an explicit argument.</p>
+<p>The arguments stop_symbol, to_stop and gap have the same meaning
+as Seq.translate, refer to that documentation for further information.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>parent_sequence - This method will translate DNA or RNA sequences,
+and those with a nucleotide or generic alphabet. Trying to
+translate a protein sequence raises an exception.</p></li>
+<li><p>table - Which codon table to use if there is no transl_table
+qualifier for this feature. This can be either a name
+(string), an NCBI identifier (integer), or a CodonTable
+object (useful for non-standard genetic codes).  This
+defaults to the “Standard” table.</p></li>
+<li><p>start_offset - offset at which the first complete codon of a
+coding feature can be found, relative to the first base of
+that feature. Has a valid value of 0, 1 or 2. NOTE: this
+uses python’s 0-based numbering whereas the codon_start
+qualifier in files from NCBI use 1-based numbering.
+Will override a codon_start qualifier</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">FeatureLocation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GGTTACACTTACCGATAATGTCTCTGATGA&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;CDS&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">qualifiers</span><span class="p">[</span><span class="s1">&#39;transl_table&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Note that features of type CDS are subject to the usual
+checks at translation. But you can override this behaviour
+by giving explicit arguments:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">cds</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">Seq(&#39;GYTYR*CL**&#39;, HasStopCodon(ExtendedIUPACProtein(), &#39;*&#39;))</span>
+</pre></div>
+</div>
+<p>Now use the start_offset argument to change the frame. Note
+this uses python 0-based numbering.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">start_offset</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cds</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">Seq(&#39;VTLTDNVSD&#39;, ExtendedIUPACProtein())</span>
+</pre></div>
+</div>
+<p>Alternatively use the codon_start qualifier to do the same
+thing. Note: this uses 1-based numbering, which is found
+in files from NCBI.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">qualifiers</span><span class="p">[</span><span class="s1">&#39;codon_start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">cds</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">Seq(&#39;VTLTDNVSD&#39;, ExtendedIUPACProtein())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.UncertainPosition">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">UncertainPosition</code><a class="headerlink" href="#Bio.SeqFeature.UncertainPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.SeqFeature.ExactPosition" title="Bio.SeqFeature.ExactPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.ExactPosition</span></code></a></p>
+<p>Specify a specific position which is uncertain.</p>
+<p>This is used in UniProt, e.g. ?222 for uncertain position 222, or in the
+XML format explicitly marked as uncertain. Does not apply to GenBank/EMBL.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.UnknownPosition">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">UnknownPosition</code><a class="headerlink" href="#Bio.SeqFeature.UnknownPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<p>Specify a specific position which is unknown (has no position).</p>
+<p>This is used in UniProt, e.g. ? or in the XML as unknown.</p>
+<dl class="method">
+<dt id="Bio.SeqFeature.UnknownPosition.extension">
+<em class="property">property </em><code class="sig-name descname">extension</code><a class="headerlink" href="#Bio.SeqFeature.UnknownPosition.extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get extension (zero) as integer (OBSOLETE).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.UnknownPosition.position">
+<em class="property">property </em><code class="sig-name descname">position</code><a class="headerlink" href="#Bio.SeqFeature.UnknownPosition.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get location (None) (OBSOLETE).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Bio.SeqFeature.WithinPosition">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqFeature.</code><code class="sig-name descname">WithinPosition</code><a class="headerlink" href="#Bio.SeqFeature.WithinPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<p>Specify the position of a boundary within some coordinates.</p>
+<p>Arguments:
+- position - The default integer position
+- left - The start (left) position of the boundary
+- right - The end (right) position of the boundary</p>
+<p>This allows dealing with a location like ((1.4)..100). This
+indicates that the start of the sequence is somewhere between 1
+and 4. Since this is a start coordinate, it should acts like
+it is at position 1 (or in Python counting, 0).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">WithinPosition</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
+<span class="go">WithinPosition(10, left=10, right=13)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">(10.13)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">10</span>
+</pre></div>
+</div>
+<p>Basic integer comparisons and operations should work as though
+this were a plain integer:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">10</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">&lt;</span> <span class="mi">11</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">+</span> <span class="mi">10</span>
+<span class="go">20</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">WithinPosition</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">AbstractPosition</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Note this also applies for comparison to other position objects,
+where again the integer behaviour is used:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">10</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="n">ExactPosition</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="n">BeforePosition</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="n">AfterPosition</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>If this were an end point, you would want the position to be 13:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">WithinPosition</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span>
+<span class="go">WithinPosition(13, left=10, right=13)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+<span class="go">(10.13)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">==</span> <span class="mi">13</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">==</span> <span class="n">ExactPosition</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The old legacy properties of position and extension give the
+starting/lower/left position as an integer, and the distance
+to the ending/higher/right position as an integer. Note that
+the position object will act like either the left or the right
+end-point depending on how it was created:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="mi">10</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">10</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">==</span> <span class="mi">13</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="Bio.SeqFeature.WithinPosition.extension">
+<em class="property">property </em><code class="sig-name descname">extension</code><a class="headerlink" href="#Bio.SeqFeature.WithinPosition.extension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get extension (from left to right) as an integer (OBSOLETE).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqFeature.WithinPosition.position">
+<em class="property">property </em><code class="sig-name descname">position</code><a class="headerlink" href="#Bio.SeqFeature.WithinPosition.position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Legacy attribute to get (left) position as integer (OBSOLETE).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Bio.SeqRecord.html" class="btn btn-neutral float-right" title="Bio.SeqRecord module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.Seq.html" class="btn btn-neutral float-left" title="Bio.Seq module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 1999-2017, The Biopython Contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
