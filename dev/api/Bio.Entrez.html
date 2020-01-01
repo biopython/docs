@@ -251,7 +251,12 @@ in this case a remote network connection, and provides methods like
 <code class="docutils literal notranslate"><span class="pre">.read()</span></code> or offers iteration over the contents line by line. See
 also “What the heck is a handle?” in the Biopython Tutorial and
 Cookbook: <a class="reference external" href="http://biopython.org/DIST/docs/tutorial/Tutorial.html">http://biopython.org/DIST/docs/tutorial/Tutorial.html</a>
-<a class="reference external" href="http://biopython.org/DIST/docs/tutorial/Tutorial.pdf">http://biopython.org/DIST/docs/tutorial/Tutorial.pdf</a></p>
+<a class="reference external" href="http://biopython.org/DIST/docs/tutorial/Tutorial.pdf">http://biopython.org/DIST/docs/tutorial/Tutorial.pdf</a>
+The handle returned by these functions can be either in text mode or
+in binary mode, depending on the data requested and the results
+returned by NCBI Entrez. Typically, XML data will be in binary mode
+while other data will be in text mode, as required by the downstream
+parser to parse the data.</p>
 <p>Unlike a handle to a file on disk from the <code class="docutils literal notranslate"><span class="pre">open(filename)</span></code> function,
 which has a <code class="docutils literal notranslate"><span class="pre">.name</span></code> attribute giving the filename, the handles from
 <code class="docutils literal notranslate"><span class="pre">Bio.Entrez</span></code> all have a <code class="docutils literal notranslate"><span class="pre">.url</span></code> attribute instead giving the URL
@@ -306,6 +311,7 @@ using Global Query.</p></li>
 <li><p>ecitmatch    Retrieves PubMed IDs (PMIDs) that correspond to a set of
 input citation strings.</p></li>
 <li><p>read         Parses the XML results returned by any of the above functions.
+Alternatively, the XML data can be read from a file opened in binary mode.
 Typical usage is:</p>
 <blockquote>
 <div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
@@ -562,6 +568,22 @@ useful for parsing large files.</p>
 <p>Most XML files returned by NCBI’s Entrez Utilities can be parsed by
 this function, provided its DTD is available. Biopython includes the
 DTDs for most commonly used Entrez Utilities.</p>
+<p>The handle must be in binary mode. This allows the parser to detect the
+encoding from the XML file, and to use it to convert all text in the XML
+to the correct Unicode string. The functions in Bio.Entrez to access NCBI
+Entrez will automatically return XML data in binary mode. For files,
+please use mode “rb” when opening the file, as in</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Entrez/pubmed1.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;MedlineCitation&#39;</span><span class="p">][</span><span class="s1">&#39;Article&#39;</span><span class="p">][</span><span class="s1">&#39;Journal&#39;</span><span class="p">][</span><span class="s1">&#39;Title&#39;</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="go">Social justice (San Francisco, Calif.)</span>
+<span class="go">Biochimica et biophysica acta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>If validate is True (default), the parser will validate the XML file
 against the DTD, and raise an error if the XML file contains tags that
 are not represented in the DTD. If validate is False, the parser will
@@ -586,6 +608,19 @@ returning a multilevel data structure of Python lists and dictionaries.
 Most XML files returned by NCBI’s Entrez Utilities can be parsed by
 this function, provided its DTD is available. Biopython includes the
 DTDs for most commonly used Entrez Utilities.</p>
+<p>The handle must be in binary mode. This allows the parser to detect the
+encoding from the XML file, and to use it to convert all text in the XML
+to the correct Unicode string. The functions in Bio.Entrez to access NCBI
+Entrez will automatically return XML data in binary mode. For files,
+please use mode “rb” when opening the file, as in</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Entrez/esearch1.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;QueryTranslation&#39;</span><span class="p">])</span>
+<span class="go">biopython[All Fields]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
 <p>If validate is True (default), the parser will validate the XML file
 against the DTD, and raise an error if the XML file contains tags that
 are not represented in the DTD. If validate is False, the parser will
