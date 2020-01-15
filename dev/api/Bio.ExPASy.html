@@ -266,9 +266,7 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">in_handle</span> <span class="o">=</span> <span class="n">ExPASy</span><span class="o">.</span><span class="n">get_prodoc_entry</span><span class="p">(</span><span class="s1">&#39;PDOC00001&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">html</span> <span class="o">=</span> <span class="n">in_handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">in_handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;myprodocrecord.html&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="c1"># Python2/3 docstring workaround: Revise for &#39;Python 3 only&#39;</span>
 <span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">out_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;myprodocrecord.html&quot;</span><span class="p">)</span>  <span class="c1"># tidy up</span>
@@ -287,9 +285,7 @@ containing this text: ‘There is currently no PROSITE entry for’</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">in_handle</span> <span class="o">=</span> <span class="n">ExPASy</span><span class="o">.</span><span class="n">get_prosite_entry</span><span class="p">(</span><span class="s1">&#39;PS00001&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">html</span> <span class="o">=</span> <span class="n">in_handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">in_handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;myprositerecord.html&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="c1"># Python 2/3 docstring workaround: Revise for &#39;Python 3 only&#39;</span>
 <span class="gp">... </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">out_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;myprositerecord.html&quot;</span><span class="p">)</span>  <span class="c1"># tidy up</span>
@@ -314,13 +310,11 @@ website.</p>
 <span class="go">PS00001</span>
 </pre></div>
 </div>
-<p>For a non-existing key, ExPASy returns an error:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Python 2/3 docstring workaround: Revise for &#39;Python 3 only&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>   <span class="n">handle</span> <span class="o">=</span> <span class="n">ExPASy</span><span class="o">.</span><span class="n">get_prosite_raw</span><span class="p">(</span><span class="s2">&quot;does_not_exist&quot;</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HTTPError: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">e</span><span class="p">)</span>
-<span class="go">HTTPError: ... Error 404: Not Found</span>
+<p>This function raises a ValueError if the identifier does not exist:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">ExPASy</span><span class="o">.</span><span class="n">get_prosite_raw</span><span class="p">(</span><span class="s2">&quot;DOES_NOT_EXIST&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">Failed to find entry &#39;DOES_NOT_EXIST&#39; on ExPASy</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -340,13 +334,11 @@ website.</p>
 <span class="go">CHS3_BROFI</span>
 </pre></div>
 </div>
-<p>For a non-existing identifier, UniProt returns an error:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Python2/3 docstring workaround: Revise for &#39;Python 3 only&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
-<span class="gp">... </span>   <span class="n">ExPASy</span><span class="o">.</span><span class="n">get_sprot_raw</span><span class="p">(</span><span class="s2">&quot;DOES_NOT_EXIST&quot;</span><span class="p">)</span>
-<span class="gp">... </span><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;HTTPError: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">e</span><span class="p">)</span>
-<span class="go">HTTPError: ... Error 404: </span>
+<p>This function raises a ValueError if the identifier does not exist:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ExPASy</span><span class="o">.</span><span class="n">get_sprot_raw</span><span class="p">(</span><span class="s2">&quot;DOES_NOT_EXIST&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">Failed to find SwissProt entry &#39;DOES_NOT_EXIST&#39;</span>
 </pre></div>
 </div>
 </dd></dl>
