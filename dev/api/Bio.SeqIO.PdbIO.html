@@ -234,7 +234,7 @@
 <p>Bio.SeqIO support for accessing sequences in PDB and mmCIF files.</p>
 <dl class="function">
 <dt id="Bio.SeqIO.PdbIO.AtomIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.PdbIO.</code><code class="sig-name descname">AtomIterator</code><span class="sig-paren">(</span><em class="sig-param">pdb_id</em>, <em class="sig-param">struct</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.AtomIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.PdbIO.</code><code class="sig-name descname">AtomIterator</code><span class="sig-paren">(</span><em class="sig-param">pdb_id</em>, <em class="sig-param">structure</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.AtomIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return SeqRecords from Structure objects.</p>
 <p>Base function for sequence parsers that read structures Bio.PDB parsers.</p>
 <p>Once a parser from Bio.PDB has been used to load a structure into a
@@ -249,10 +249,11 @@ details.</p>
 
 <dl class="function">
 <dt id="Bio.SeqIO.PdbIO.CifAtomIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.PdbIO.</code><code class="sig-name descname">CifAtomIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.CifAtomIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return SeqRecord objects for each chain in a PDB file.</p>
-<p>The sequences are derived from the 3D structure (ATOM records), not the
-SEQRES lines in the PDB file header.</p>
+<code class="sig-prename descclassname">Bio.SeqIO.PdbIO.</code><code class="sig-name descname">CifAtomIterator</code><span class="sig-paren">(</span><em class="sig-param">source</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.CifAtomIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return SeqRecord objects for each chain in an mmCIF file.</p>
+<p>Argument source is a file-like object or a path to a file.</p>
+<p>The sequences are derived from the 3D structure (_atom_site.* fields)
+in the mmCIF file.</p>
 <p>Unrecognised three letter amino acid codes (e.g. “CSD”) from HETATM entries
 are converted to “X” in the sequence.</p>
 <p>In addition to information from the PDB header (which is the same for all
@@ -289,8 +290,9 @@ of the PDB file format:</p>
 
 <dl class="function">
 <dt id="Bio.SeqIO.PdbIO.CifSeqresIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.PdbIO.</code><code class="sig-name descname">CifSeqresIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.CifSeqresIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.PdbIO.</code><code class="sig-name descname">CifSeqresIterator</code><span class="sig-paren">(</span><em class="sig-param">source</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.CifSeqresIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return SeqRecord objects for each chain in an mmCIF file.</p>
+<p>Argument source is a file-like object or a path to a file.</p>
 <p>The sequences are derived from the _entity_poly_seq entries in the mmCIF
 file, not the atoms of the 3D structure.</p>
 <p>Specifically, these mmCIF records are handled: _pdbx_poly_seq_scheme and
@@ -327,8 +329,9 @@ _struct_ref_seq entries are recorded in the database cross-references list.</p>
 
 <dl class="function">
 <dt id="Bio.SeqIO.PdbIO.PdbAtomIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.PdbIO.</code><code class="sig-name descname">PdbAtomIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.PdbAtomIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.PdbIO.</code><code class="sig-name descname">PdbAtomIterator</code><span class="sig-paren">(</span><em class="sig-param">source</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.PdbAtomIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return SeqRecord objects for each chain in a PDB file.</p>
+<p>Argument source is a file-like object or a path to a file.</p>
 <p>The sequences are derived from the 3D structure (ATOM records), not the
 SEQRES lines in the PDB file header.</p>
 <p>Unrecognised three letter amino acid codes (e.g. “CSD”) from HETATM entries
