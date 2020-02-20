@@ -247,10 +247,17 @@ wish to redefine the __init__ method as well.</p>
 <dt id="Bio.SeqIO.Interfaces.SequenceWriter">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.Interfaces.</code><code class="sig-name descname">SequenceWriter</code><span class="sig-paren">(</span><em class="sig-param">target</em>, <em class="sig-param">mode='w'</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Base class for building SeqRecord writers.</p>
-<p>Interlaced file formats (e.g. Clustal) should subclass directly.</p>
-<p>Sequential file formats (e.g. Fasta, GenBank) should subclass the
-SequentialSequenceWriter class instead.</p>
+<p>Base class for sequence writers. This class should be subclassed.</p>
+<p>It is intended for sequential file formats with an (optional)
+header, repeated records, and an (optional) footer, as well
+as for interlaced file formats such as Clustal.</p>
+<p>The user may call the write_file() method to write a complete
+file containing the sequences.</p>
+<p>Alternatively, users may call the write_header(), followed
+by multiple calls to write_record() and/or write_records(),
+followed finally by write_footer().</p>
+<p>Note that write_header() cannot require any assumptions about
+the number of records.</p>
 <dl class="method">
 <dt id="Bio.SeqIO.Interfaces.SequenceWriter.clean">
 <code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.clean" title="Permalink to this definition">¶</a></dt>
@@ -259,11 +266,37 @@ SequentialSequenceWriter class instead.</p>
 
 <dl class="method">
 <dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_file">
-<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">records</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use this to write an entire file containing the given records.</p>
+<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">records</em>, <em class="sig-param">mincount=0</em>, <em class="sig-param">maxcount=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a complete file with the records, and return the number of records.</p>
 <p>records - A list or iterator returning SeqRecord objects</p>
-<p>Should return the number of records (as an integer).</p>
-<p>This method can only be called once.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_footer">
+<code class="sig-name descname">write_footer</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_footer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the file footer to the output file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_header">
+<code class="sig-name descname">write_header</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the file header to the output file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_record">
+<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a single record to the output file.</p>
+<p>record - a SeqRecord object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_records">
+<code class="sig-name descname">write_records</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">records</em>, <em class="sig-param">maxcount=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_records" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write records to the output file, and return the number of records.</p>
+<p>records - A list or iterator returning SeqRecord objects
+maxcount - The maximum number of records allowed by the
+file format, or None if there is no maximum.</p>
 </dd></dl>
 
 </dd></dl>
@@ -272,7 +305,7 @@ SequentialSequenceWriter class instead.</p>
 <dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.Interfaces.</code><code class="sig-name descname">SequentialSequenceWriter</code><span class="sig-paren">(</span><em class="sig-param">target</em>, <em class="sig-param">mode='w'</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Bio.SeqIO.Interfaces.SequenceWriter" title="Bio.SeqIO.Interfaces.SequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequenceWriter</span></code></a></p>
-<p>Base class for sequence writers. This class should be subclassed.</p>
+<p>Base class for sequence writers (OBSOLETE). This class should be subclassed.</p>
 <p>It is intended for sequential file formats with an (optional)
 header, repeated records, and an (optional) footer.</p>
 <p>In this case (as with interlaced file formats), the user may
