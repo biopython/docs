@@ -270,21 +270,17 @@ or from a <code class="docutils literal notranslate"><span class="pre">ProtParam
 names):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils.IsoelectricPoint</span> <span class="kn">import</span> <span class="n">IsoelectricPoint</span> <span class="k">as</span> <span class="n">IP</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">protein</span> <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="s2">&quot;INGAR&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IEP of peptide </span><span class="si">{}</span><span class="s2"> is </span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
-<span class="gp">... </span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protein</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span> <span class="n">protein</span><span class="o">.</span><span class="n">pi</span><span class="p">()))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;IEP of peptide </span><span class="si">{protein.sequence}</span><span class="s2"> is {protein.pi():.2f}&quot;</span><span class="p">)</span>
 <span class="go">IEP of peptide INGAR is 9.75</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;It&#39;s charge at pH 7 is </span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
-<span class="gp">... </span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protein</span><span class="o">.</span><span class="n">charge_at_pH</span><span class="p">(</span><span class="mf">7.0</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;It&#39;s charge at pH 7 is {protein.charge_at_pH(7.0):.2f}&quot;</span><span class="p">)</span>
 <span class="go">It&#39;s charge at pH 7 is 0.76</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils.ProtParam</span> <span class="kn">import</span> <span class="n">ProteinAnalysis</span> <span class="k">as</span> <span class="n">PA</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">protein</span> <span class="o">=</span> <span class="n">PA</span><span class="p">(</span><span class="s2">&quot;PETER&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;IEP of </span><span class="si">{}</span><span class="s2">: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protein</span><span class="o">.</span><span class="n">sequence</span><span class="p">,</span>
-<span class="gp">... </span>                                 <span class="n">protein</span><span class="o">.</span><span class="n">isoelectric_point</span><span class="p">()))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;IEP of </span><span class="si">{protein.sequence}</span><span class="s2">: {protein.isoelectric_point():.2f}&quot;</span><span class="p">)</span>
 <span class="go">IEP of PETER: 4.53</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Charge at pH 4.53: </span><span class="si">{:.2f}</span><span class="s2">&quot;</span>
-<span class="gp">... </span>      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">protein</span><span class="o">.</span><span class="n">charge_at_pH</span><span class="p">(</span><span class="mf">4.53</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Charge at pH 4.53: {protein.charge_at_pH(4.53):.2f}&quot;</span><span class="p">)</span>
 <span class="go">Charge at pH 4.53: 0.00</span>
 </pre></div>
 </div>
@@ -311,8 +307,23 @@ names):</p>
 
 <dl class="method">
 <dt id="Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint.pi">
-<code class="sig-name descname">pi</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint.pi" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pi</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">pH=7.775</em>, <em class="sig-param">min_=4.05</em>, <em class="sig-param">max_=12</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.IsoelectricPoint.IsoelectricPoint.pi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate and return the isoelectric point as float.</p>
+<p>This is a recursive function that uses bisection method.
+Wiki on bisection: <a class="reference external" href="https://en.wikipedia.org/wiki/Bisection_method">https://en.wikipedia.org/wiki/Bisection_method</a></p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>pH: the pH at which the current charge of the protein is computed.
+This pH lies at the centre of the interval (mean of <cite>min_</cite> and <cite>max_</cite>).</p></li>
+<li><p>min_: the minimum of the interval. Initial value defaults to 4.05,
+which is below the theoretical minimum, when the protein is composed
+exclusively of aspartate.</p></li>
+<li><p>max_: the maximum of the the interval. Initial value defaults to 12,
+which is above the theoretical maximum, when the protein is composed
+exclusively of arginine.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
