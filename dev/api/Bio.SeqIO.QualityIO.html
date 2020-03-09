@@ -565,8 +565,14 @@ the Illumina 1.3 to 1.7 format - high quality PHRED scores and Solexa scores
 are approximately equal.</p>
 <dl class="function">
 <dt id="Bio.SeqIO.QualityIO.FastqGeneralIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqGeneralIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqGeneralIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqGeneralIterator</code><span class="sig-paren">(</span><em class="sig-param">source</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqGeneralIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over Fastq records as string tuples (not as SeqRecord objects).</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>source - input stream opened in text mode, or a path to a file</p></li>
+</ul>
+</dd>
+</dl>
 <p>This code does not try to interpret the quality string numerically.  It
 just returns tuples of the title, sequence and quality as strings.  For
 the sequence and quality, any whitespace (such as new lines) is removed.</p>
@@ -650,7 +656,7 @@ would prevent the above problem with the “&#64;” character.</p>
 
 <dl class="function">
 <dt id="Bio.SeqIO.QualityIO.FastqIlluminaIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqIlluminaIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqIlluminaIterator</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse Illumina 1.3 to 1.7 FASTQ like files (which differ in the quality mapping).</p>
 <p>The optional arguments are the same as those for the FastqPhredIterator.</p>
 <p>For each sequence in Illumina 1.3+ FASTQ files there is a matching string
@@ -713,11 +719,11 @@ warning is issued.</p>
 
 <dl class="function">
 <dt id="Bio.SeqIO.QualityIO.FastqPhredIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqPhredIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqPhredIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqPhredIterator</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqPhredIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over FASTQ records as SeqRecord objects.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>handle - input file</p></li>
+<li><p>source - input stream opened in text mode, or a path to a file</p></li>
 <li><p>alphabet - optional alphabet</p></li>
 <li><p>title2ids - A function that, when given the title line from the FASTQ
 file (without the beginning &gt;), will return the id, name and
@@ -830,7 +836,7 @@ temporary file now:</p>
 
 <dl class="function">
 <dt id="Bio.SeqIO.QualityIO.FastqSolexaIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqSolexaIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqSolexaIterator</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse old Solexa/Illumina FASTQ like files (which differ in the quality mapping).</p>
 <p>The optional arguments are the same as those for the FastqPhredIterator.</p>
 <p>For each sequence in Solexa/Illumina FASTQ files there is a matching string
@@ -1015,7 +1021,7 @@ a warning is issued.</p>
 
 <dl class="function">
 <dt id="Bio.SeqIO.QualityIO.PairedFastaQualIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">PairedFastaQualIterator</code><span class="sig-paren">(</span><em class="sig-param">fasta_handle</em>, <em class="sig-param">qual_handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.PairedFastaQualIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">PairedFastaQualIterator</code><span class="sig-paren">(</span><em class="sig-param">fasta_source</em>, <em class="sig-param">qual_source</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.PairedFastaQualIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over matched FASTA and QUAL files as SeqRecord objects.</p>
 <p>For example, consider this short QUAL file with PHRED quality scores:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_413_324</span>
@@ -1081,7 +1087,7 @@ this function to convert paired FASTA and QUAL files into FASTQ files:</p>
 
 <dl class="function">
 <dt id="Bio.SeqIO.QualityIO.QualPhredIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">QualPhredIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.QualPhredIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">QualPhredIterator</code><span class="sig-paren">(</span><em class="sig-param">source</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.QualPhredIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>For QUAL files which include PHRED quality scores, but no sequence.</p>
 <p>For example, consider this short QUAL file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_413_324</span>
