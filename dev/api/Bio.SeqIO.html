@@ -583,6 +583,19 @@ making up each alignment as SeqRecords.</p>
 </dl>
 <p><strong>NOTE</strong> - If you provide an output filename, it will be opened which will
 overwrite any existing file without warning.</p>
+<p>The idea here is that while doing this will work:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">in_handle</span><span class="p">,</span> <span class="n">in_format</span><span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="n">out_format</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>it is shorter to write:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">in_handle</span><span class="p">,</span> <span class="n">in_format</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="n">out_format</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also, Bio.SeqIO.convert is faster for some conversions as it can make some
+optimisations.</p>
 <p>For example, going from a filename to a handle:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
