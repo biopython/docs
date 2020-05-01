@@ -248,57 +248,30 @@ International Nucleotide Sequence Database Collaboration
 <a class="reference external" href="http://imgt.cines.fr/download/LIGM-DB/userman_doc.html">http://imgt.cines.fr/download/LIGM-DB/userman_doc.html</a>
 <a class="reference external" href="http://imgt.cines.fr/download/LIGM-DB/ftable_doc.html">http://imgt.cines.fr/download/LIGM-DB/ftable_doc.html</a>
 <a class="reference external" href="http://www.ebi.ac.uk/imgt/hla/docs/manual.html">http://www.ebi.ac.uk/imgt/hla/docs/manual.html</a></p>
-<dl class="py function">
+<dl class="py class">
 <dt id="Bio.SeqIO.InsdcIO.EmblCdsFeatureIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.InsdcIO.</code><code class="sig-name descname">EmblCdsFeatureIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">ProteinAlphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.EmblCdsFeatureIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Break up a EMBL file into SeqRecord objects for each CDS feature.</p>
-<p>Argument source is a file-like object opened in text mode or a path to a file.</p>
-<p>Every section from the LOCUS line to the terminating // can contain
-many CDS features.  These are returned as with the stated amino acid
-translation sequence (if given).</p>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.InsdcIO.</code><code class="sig-name descname">EmblCdsFeatureIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">ProteinAlphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.EmblCdsFeatureIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequenceIterator</span></code></a></p>
+<p>Parser for EMBL files, creating a SeqRecord for each CDS feature.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.InsdcIO.EmblCdsFeatureIterator.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.EmblCdsFeatureIterator.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start parsing the file, and return a SeqRecord generator.</p>
 </dd></dl>
 
-<dl class="py function">
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.SeqIO.InsdcIO.EmblIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.InsdcIO.</code><code class="sig-name descname">EmblIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.EmblIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Break up an EMBL file into SeqRecord objects.</p>
-<p>Argument source is a file-like object opened in text mode or a path to a file.
-Every section from the LOCUS line to the terminating // becomes
-a single SeqRecord with associated annotation and features.</p>
-<p>Note that for genomes or chromosomes, there is typically only
-one record.</p>
-<p>This gets called internally by Bio.SeqIO for the EMBL file format:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;EMBL/epo_prt_selection.embl&quot;</span><span class="p">,</span> <span class="s2">&quot;embl&quot;</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">A00022.1</span>
-<span class="go">A00028.1</span>
-<span class="go">A00031.1</span>
-<span class="go">A00034.1</span>
-<span class="go">A00060.1</span>
-<span class="go">A00071.1</span>
-<span class="go">A00072.1</span>
-<span class="go">A00078.1</span>
-<span class="go">CQ797900.1</span>
-</pre></div>
-</div>
-<p>Equivalently,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;EMBL/epo_prt_selection.embl&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">EmblIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">A00022.1</span>
-<span class="go">A00028.1</span>
-<span class="go">A00031.1</span>
-<span class="go">A00034.1</span>
-<span class="go">A00060.1</span>
-<span class="go">A00071.1</span>
-<span class="go">A00072.1</span>
-<span class="go">A00078.1</span>
-<span class="go">CQ797900.1</span>
-</pre></div>
-</div>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.InsdcIO.</code><code class="sig-name descname">EmblIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.EmblIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequenceIterator</span></code></a></p>
+<p>Parser for EMBL files.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.InsdcIO.EmblIterator.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.EmblIterator.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start parsing the file, and return a SeqRecord generator.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -359,51 +332,30 @@ one record.</p>
 
 </dd></dl>
 
-<dl class="py function">
+<dl class="py class">
 <dt id="Bio.SeqIO.InsdcIO.GenBankCdsFeatureIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.InsdcIO.</code><code class="sig-name descname">GenBankCdsFeatureIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">ProteinAlphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.GenBankCdsFeatureIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Break up a Genbank file into SeqRecord objects for each CDS feature.</p>
-<p>Argument source is a file-like object opened in text mode or a path to a file.</p>
-<p>Every section from the LOCUS line to the terminating // can contain
-many CDS features.  These are returned as with the stated amino acid
-translation sequence (if given).</p>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.InsdcIO.</code><code class="sig-name descname">GenBankCdsFeatureIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">ProteinAlphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.GenBankCdsFeatureIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequenceIterator</span></code></a></p>
+<p>Parser for GenBank files, creating a SeqRecord for each CDS feature.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.InsdcIO.GenBankCdsFeatureIterator.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.GenBankCdsFeatureIterator.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start parsing the file, and return a SeqRecord generator.</p>
 </dd></dl>
 
-<dl class="py function">
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.SeqIO.InsdcIO.GenBankIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.InsdcIO.</code><code class="sig-name descname">GenBankIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.GenBankIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Break up a Genbank file into SeqRecord objects.</p>
-<p>Argument source is a file-like object opened in text mode or a path to a file.</p>
-<p>Every section from the LOCUS line to the terminating // becomes
-a single SeqRecord with associated annotation and features.</p>
-<p>Note that for genomes or chromosomes, there is typically only
-one record.</p>
-<p>This gets called internally by Bio.SeqIO for the GenBank file format:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;GenBank/cor6_6.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">X55053.1</span>
-<span class="go">X62281.1</span>
-<span class="go">M81224.1</span>
-<span class="go">AJ237582.1</span>
-<span class="go">L31939.1</span>
-<span class="go">AF297471.1</span>
-</pre></div>
-</div>
-<p>Equivalently,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;GenBank/cor6_6.gb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">GenBankIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">X55053.1</span>
-<span class="go">X62281.1</span>
-<span class="go">M81224.1</span>
-<span class="go">AJ237582.1</span>
-<span class="go">L31939.1</span>
-<span class="go">AF297471.1</span>
-</pre></div>
-</div>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.InsdcIO.</code><code class="sig-name descname">GenBankIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.GenBankIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequenceIterator</span></code></a></p>
+<p>Parser for GenBank files.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.InsdcIO.GenBankIterator.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.GenBankIterator.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start parsing the file, and return a SeqRecord generator.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -454,15 +406,17 @@ one record.</p>
 
 </dd></dl>
 
-<dl class="py function">
+<dl class="py class">
 <dt id="Bio.SeqIO.InsdcIO.ImgtIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.InsdcIO.</code><code class="sig-name descname">ImgtIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.ImgtIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Break up an IMGT file into SeqRecord objects.</p>
-<p>Argument source is a file-like object opened in text mode or a path to a file.
-Every section from the LOCUS line to the terminating // becomes
-a single SeqRecord with associated annotation and features.</p>
-<p>Note that for genomes or chromosomes, there is typically only
-one record.</p>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.InsdcIO.</code><code class="sig-name descname">ImgtIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">source</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.ImgtIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequenceIterator</span></code></a></p>
+<p>Parser for IMGT files.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.InsdcIO.ImgtIterator.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.InsdcIO.ImgtIterator.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start parsing the file, and return a SeqRecord generator.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
