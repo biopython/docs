@@ -293,6 +293,27 @@ on the perl TFBS::DB::JASPAR5 module.</p>
 Unlike the perl module, we will not attempt to implement any methods to
 store JASPAR motifs or create a new DB at this time.</p>
 <dl class="py method">
+<dt id="Bio.motifs.jaspar.db.JASPAR5.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">host</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">user</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">password</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.jaspar.db.JASPAR5.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a JASPAR5 instance and connect to specified DB.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>host - host name of the the JASPAR DB server</p></li>
+<li><p>name - name of the JASPAR database</p></li>
+<li><p>user - user name to connect to the JASPAR DB</p></li>
+<li><p>password - JASPAR DB password</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.motifs.jaspar.db.JASPAR5.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.jaspar.db.JASPAR5.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string represention of the JASPAR5 DB connection.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.motifs.jaspar.db.JASPAR5.fetch_motif_by_id">
 <code class="sig-name descname">fetch_motif_by_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.jaspar.db.JASPAR5.fetch_motif_by_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fetch a single JASPAR motif from the DB by it’s JASPAR matrix ID.</p>
@@ -318,6 +339,25 @@ to return (PFM, PWM, ICM) but matrices are always stored in JASPAR as
 PFMs so this does not really belong here. Once a PFM is fetched the
 pwm() and pssm() methods can be called to return the normalized and
 log-odds matrices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.motifs.jaspar.db.JASPAR5.fetch_motifs_by_name">
+<code class="sig-name descname">fetch_motifs_by_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.jaspar.db.JASPAR5.fetch_motifs_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch a list of JASPAR motifs from a JASPAR DB by the given TF name(s).</p>
+<p>Arguments:
+name - a single name or list of names
+Returns:
+A list of Bio.motifs.jaspar.Motif objects</p>
+<p>Notes:
+Names are not guaranteed to be unique. There may be more than one
+motif with the same name. Therefore even if name specifies a single
+name, a list of motifs is returned. This just calls
+self.fetch_motifs(collection = None, tf_name = name).</p>
+<p>This behaviour is different from the TFBS perl module’s
+get_Matrix_by_name() method which always returns a single matrix,
+issuing a warning message and returning the first matrix retrieved
+in the case where multiple matrices have the same name.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -381,25 +421,6 @@ log-odds matrices.</p>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.motifs.jaspar.db.JASPAR5.fetch_motifs_by_name">
-<code class="sig-name descname">fetch_motifs_by_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.jaspar.db.JASPAR5.fetch_motifs_by_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch a list of JASPAR motifs from a JASPAR DB by the given TF name(s).</p>
-<p>Arguments:
-name - a single name or list of names
-Returns:
-A list of Bio.motifs.jaspar.Motif objects</p>
-<p>Notes:
-Names are not guaranteed to be unique. There may be more than one
-motif with the same name. Therefore even if name specifies a single
-name, a list of motifs is returned. This just calls
-self.fetch_motifs(collection = None, tf_name = name).</p>
-<p>This behaviour is different from the TFBS perl module’s
-get_Matrix_by_name() method which always returns a single matrix,
-issuing a warning message and returning the first matrix retrieved
-in the case where multiple matrices have the same name.</p>
 </dd></dl>
 
 </dd></dl>

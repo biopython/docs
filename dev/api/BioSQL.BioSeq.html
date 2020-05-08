@@ -194,6 +194,40 @@ a biopython-like SeqRecord and Seq interface.</p>
 <dd><p>Bases: <a class="reference internal" href="Bio.Seq.html#Bio.Seq.Seq" title="Bio.Seq.Seq"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Seq.Seq</span></code></a></p>
 <p>BioSQL equivalent of the Biopython Seq object.</p>
 <dl class="py method">
+<dt id="BioSQL.BioSeq.DBSeq.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">primary_id</span></em>, <em class="sig-param"><span class="n">adaptor</span></em>, <em class="sig-param"><span class="n">alphabet</span></em>, <em class="sig-param"><span class="n">start</span></em>, <em class="sig-param"><span class="n">length</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new DBSeq object referring to a BioSQL entry.</p>
+<p>You wouldn’t normally create a DBSeq object yourself, this is done
+for you when retreiving a DBSeqRecord object from the database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="BioSQL.BioSeq.DBSeq.__len__">
+<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the length of the sequence.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="BioSQL.BioSeq.DBSeq.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a subsequence or single letter.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="BioSQL.BioSeq.DBSeq.tostring">
+<code class="sig-name descname">tostring</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.tostring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the full sequence as a python string (DEPRECATED).</p>
+<p>You are now encouraged to use str(my_seq) instead of
+my_seq.tostring().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="BioSQL.BioSeq.DBSeq.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the full sequence as a python string.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="BioSQL.BioSeq.DBSeq.data">
 <em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sequence as string (DEPRECATED)</p>
@@ -206,11 +240,43 @@ a biopython-like SeqRecord and Seq interface.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="BioSQL.BioSeq.DBSeq.tostring">
-<code class="sig-name descname">tostring</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.tostring" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the full sequence as a python string (DEPRECATED).</p>
-<p>You are now encouraged to use str(my_seq) instead of
-my_seq.tostring().</p>
+<dt id="BioSQL.BioSeq.DBSeq.__add__">
+<code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add another sequence or string to this sequence.</p>
+<p>The sequence is first converted to a Seq object before the addition.
+The returned object is a Seq object, not a DBSeq object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="BioSQL.BioSeq.DBSeq.__radd__">
+<code class="sig-name descname">__radd__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.__radd__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add another sequence or string to the left.</p>
+<p>The sequence is first converted to a Seq object before the addition.
+The returned object is a Seq object, not a DBSeq object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="BioSQL.BioSeq.DBSeq.__mul__">
+<code class="sig-name descname">__mul__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply sequence by an integer.</p>
+<p>The sequence is first converted to a Seq object before multiplication.
+The returned object is a Seq object, not a DBSeq object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="BioSQL.BioSeq.DBSeq.__rmul__">
+<code class="sig-name descname">__rmul__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply integer by a sequence.</p>
+<p>The sequence is first converted to a Seq object before multiplication.
+The returned object is a Seq object, not a DBSeq object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="BioSQL.BioSeq.DBSeq.__imul__">
+<code class="sig-name descname">__imul__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeq.__imul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply sequence by integer in-place.</p>
+<p>The sequence is first converted to a Seq object before multiplication.
+The returned object is a Seq object, not a DBSeq object.</p>
 </dd></dl>
 
 </dd></dl>
@@ -221,9 +287,24 @@ my_seq.tostring().</p>
 <dd><p>Bases: <a class="reference internal" href="Bio.SeqRecord.html#Bio.SeqRecord.SeqRecord" title="Bio.SeqRecord.SeqRecord"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqRecord.SeqRecord</span></code></a></p>
 <p>BioSQL equivalent of the Biopython SeqRecord object.</p>
 <dl class="py method">
-<dt id="BioSQL.BioSeq.DBSeqRecord.annotations">
-<em class="property">property </em><code class="sig-name descname">annotations</code><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord.annotations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Annotations</p>
+<dt id="BioSQL.BioSeq.DBSeqRecord.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">adaptor</span></em>, <em class="sig-param"><span class="n">primary_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a DBSeqRecord object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>adaptor - A BioSQL.BioSeqDatabase.Adaptor object</p></li>
+<li><p>primary_id - An internal integer ID used by BioSQL</p></li>
+</ul>
+</dd>
+</dl>
+<p>You wouldn’t normally create a DBSeqRecord object yourself,
+this is done for you when using a BioSeqDatabase object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="BioSQL.BioSeq.DBSeqRecord.seq">
+<em class="property">property </em><code class="sig-name descname">seq</code><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord.seq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Seq object</p>
 </dd></dl>
 
 <dl class="py method">
@@ -239,9 +320,9 @@ my_seq.tostring().</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="BioSQL.BioSeq.DBSeqRecord.seq">
-<em class="property">property </em><code class="sig-name descname">seq</code><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord.seq" title="Permalink to this definition">¶</a></dt>
-<dd><p>Seq object</p>
+<dt id="BioSQL.BioSeq.DBSeqRecord.annotations">
+<em class="property">property </em><code class="sig-name descname">annotations</code><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord.annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotations</p>
 </dd></dl>
 
 </dd></dl>

@@ -253,6 +253,109 @@
 </ul>
 </dd>
 </dl>
+<dl class="py exception">
+<dt id="Bio.SwissProt.SwissProtParserError">
+<em class="property">exception </em><code class="sig-prename descclassname">Bio.SwissProt.</code><code class="sig-name descname">SwissProtParserError</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">line</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SwissProt.SwissProtParserError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>An error occurred while parsing a SwissProt file.</p>
+<dl class="py method">
+<dt id="Bio.SwissProt.SwissProtParserError.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">\*args</em>, <em class="sig-param">line=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SwissProt.SwissProtParserError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a SwissProtParserError object with the offending line.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.SwissProt.Record">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SwissProt.</code><code class="sig-name descname">Record</code><a class="headerlink" href="#Bio.SwissProt.Record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds information from a SwissProt record.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>entry_name        Name of this entry, e.g. RL1_ECOLI.</p></li>
+<li><p>data_class        Either ‘STANDARD’ or ‘PRELIMINARY’.</p></li>
+<li><p>molecule_type     Type of molecule, ‘PRT’,</p></li>
+<li><p>sequence_length   Number of residues.</p></li>
+<li><p>accessions        List of the accession numbers, e.g. [‘P00321’]</p></li>
+<li><p>created           A tuple of (date, release).</p></li>
+<li><p>sequence_update   A tuple of (date, release).</p></li>
+<li><p>annotation_update A tuple of (date, release).</p></li>
+<li><p>description       Free-format description.</p></li>
+<li><p>gene_name         Gene name.  See userman.txt for description.</p></li>
+<li><p>organism          The source of the sequence.</p></li>
+<li><p>organelle         The origin of the sequence.</p></li>
+<li><p>organism_classification  The taxonomy classification.  List of strings.
+(<a class="reference external" href="http://www.ncbi.nlm.nih.gov/Taxonomy/">http://www.ncbi.nlm.nih.gov/Taxonomy/</a>)</p></li>
+<li><p>taxonomy_id       A list of NCBI taxonomy id’s.</p></li>
+<li><p>host_organism     A list of names of the hosts of a virus, if any.</p></li>
+<li><p>host_taxonomy_id  A list of NCBI taxonomy id’s of the hosts, if any.</p></li>
+<li><p>references        List of Reference objects.</p></li>
+<li><p>comments          List of strings.</p></li>
+<li><p>cross_references  List of tuples (db, id1[, id2][, id3]).  See the docs.</p></li>
+<li><p>keywords          List of the keywords.</p></li>
+<li><p>features          List of tuples (key name, from, to, description).
+from and to can be either integers for the residue
+numbers, ‘&lt;’, ‘&gt;’, or ‘?’</p></li>
+<li><p>protein_existence Numerical value describing the evidence for the existence of the protein.</p></li>
+<li><p>seqinfo           tuple of (length, molecular weight, CRC32 value)</p></li>
+<li><p>sequence          The sequence.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SwissProt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example_filename</span> <span class="o">=</span> <span class="s2">&quot;SwissProt/sp008&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">example_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">records</span> <span class="o">=</span> <span class="n">SwissProt</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">entry_name</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">accessions</span><span class="p">))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">keywords</span><span class="p">)</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">organism</span><span class="p">))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">sequence</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">1A02_HUMAN</span>
+<span class="go">P01892,P06338,P30514,P30444,P30445,P30446,Q29680,Q29899,Q95352,Q29837,Q95380</span>
+<span class="go">[&#39;MHC I&#39;, &#39;Transmembrane&#39;, &#39;Glycoprotein&#39;, &#39;Signal&#39;, &#39;Polymorphism&#39;, &#39;3D-structure&#39;]</span>
+<span class="go">&#39;Homo sapiens (Human).&#39;</span>
+<span class="go">MAVMAPRTLVLLLSGALALT...</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="Bio.SwissProt.Record.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SwissProt.Record.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.SwissProt.Reference">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SwissProt.</code><code class="sig-name descname">Reference</code><a class="headerlink" href="#Bio.SwissProt.Reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds information from one reference in a SwissProt entry.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>number      Number of reference in an entry.</p></li>
+<li><p>evidence    Evidence code.  List of strings.</p></li>
+<li><p>positions   Describes extent of work.  List of strings.</p></li>
+<li><p>comments    Comments.  List of (token, text).</p></li>
+<li><p>references  References.  List of (dbname, identifier).</p></li>
+<li><p>authors     The authors of the work.</p></li>
+<li><p>title       Title of the work.</p></li>
+<li><p>location    A citation for the work.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="Bio.SwissProt.Reference.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SwissProt.Reference.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt id="Bio.SwissProt.FeatureTable">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.SwissProt.</code><code class="sig-name descname">FeatureTable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">location</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">type</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">location_operator</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">strand</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">'&lt;unknown id&gt;'</span></em>, <em class="sig-param"><span class="n">qualifiers</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sub_features</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ref</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ref_db</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SwissProt.FeatureTable" title="Permalink to this definition">¶</a></dt>
@@ -334,91 +437,6 @@ feature identifier code (FTId) as a qualifier, it is stored as the
 attribute ID of the FeatureTable object.</p></li>
 </ul>
 </div></blockquote>
-</dd></dl>
-
-<dl class="py class">
-<dt id="Bio.SwissProt.Record">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SwissProt.</code><code class="sig-name descname">Record</code><a class="headerlink" href="#Bio.SwissProt.Record" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Holds information from a SwissProt record.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><ul class="simple">
-<li><p>entry_name        Name of this entry, e.g. RL1_ECOLI.</p></li>
-<li><p>data_class        Either ‘STANDARD’ or ‘PRELIMINARY’.</p></li>
-<li><p>molecule_type     Type of molecule, ‘PRT’,</p></li>
-<li><p>sequence_length   Number of residues.</p></li>
-<li><p>accessions        List of the accession numbers, e.g. [‘P00321’]</p></li>
-<li><p>created           A tuple of (date, release).</p></li>
-<li><p>sequence_update   A tuple of (date, release).</p></li>
-<li><p>annotation_update A tuple of (date, release).</p></li>
-<li><p>description       Free-format description.</p></li>
-<li><p>gene_name         Gene name.  See userman.txt for description.</p></li>
-<li><p>organism          The source of the sequence.</p></li>
-<li><p>organelle         The origin of the sequence.</p></li>
-<li><p>organism_classification  The taxonomy classification.  List of strings.
-(<a class="reference external" href="http://www.ncbi.nlm.nih.gov/Taxonomy/">http://www.ncbi.nlm.nih.gov/Taxonomy/</a>)</p></li>
-<li><p>taxonomy_id       A list of NCBI taxonomy id’s.</p></li>
-<li><p>host_organism     A list of names of the hosts of a virus, if any.</p></li>
-<li><p>host_taxonomy_id  A list of NCBI taxonomy id’s of the hosts, if any.</p></li>
-<li><p>references        List of Reference objects.</p></li>
-<li><p>comments          List of strings.</p></li>
-<li><p>cross_references  List of tuples (db, id1[, id2][, id3]).  See the docs.</p></li>
-<li><p>keywords          List of the keywords.</p></li>
-<li><p>features          List of tuples (key name, from, to, description).
-from and to can be either integers for the residue
-numbers, ‘&lt;’, ‘&gt;’, or ‘?’</p></li>
-<li><p>protein_existence Numerical value describing the evidence for the existence of the protein.</p></li>
-<li><p>seqinfo           tuple of (length, molecular weight, CRC32 value)</p></li>
-<li><p>sequence          The sequence.</p></li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SwissProt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">example_filename</span> <span class="o">=</span> <span class="s2">&quot;SwissProt/sp008&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">example_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">records</span> <span class="o">=</span> <span class="n">SwissProt</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">entry_name</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">accessions</span><span class="p">))</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">keywords</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">organism</span><span class="p">))</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">sequence</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">1A02_HUMAN</span>
-<span class="go">P01892,P06338,P30514,P30444,P30445,P30446,Q29680,Q29899,Q95352,Q29837,Q95380</span>
-<span class="go">[&#39;MHC I&#39;, &#39;Transmembrane&#39;, &#39;Glycoprotein&#39;, &#39;Signal&#39;, &#39;Polymorphism&#39;, &#39;3D-structure&#39;]</span>
-<span class="go">&#39;Homo sapiens (Human).&#39;</span>
-<span class="go">MAVMAPRTLVLLLSGALALT...</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py class">
-<dt id="Bio.SwissProt.Reference">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SwissProt.</code><code class="sig-name descname">Reference</code><a class="headerlink" href="#Bio.SwissProt.Reference" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Holds information from one reference in a SwissProt entry.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><ul class="simple">
-<li><p>number      Number of reference in an entry.</p></li>
-<li><p>evidence    Evidence code.  List of strings.</p></li>
-<li><p>positions   Describes extent of work.  List of strings.</p></li>
-<li><p>comments    Comments.  List of (token, text).</p></li>
-<li><p>references  References.  List of (dbname, identifier).</p></li>
-<li><p>authors     The authors of the work.</p></li>
-<li><p>title       Title of the work.</p></li>
-<li><p>location    A citation for the work.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py exception">
-<dt id="Bio.SwissProt.SwissProtParserError">
-<em class="property">exception </em><code class="sig-prename descclassname">Bio.SwissProt.</code><code class="sig-name descname">SwissProtParserError</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="n">line</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SwissProt.SwissProtParserError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
-<p>An error occurred while parsing a SwissProt file.</p>
 </dd></dl>
 
 <dl class="py function">

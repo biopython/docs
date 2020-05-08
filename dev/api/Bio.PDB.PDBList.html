@@ -263,81 +263,36 @@ export HTTP_PROXY=’<a class="reference external" href="http://realproxy.charit
 <dd></dd></dl>
 
 <dl class="py method">
-<dt id="Bio.PDB.PDBList.PDBList.download_entire_pdb">
-<code class="sig-name descname">download_entire_pdb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">listfile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_format</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_entire_pdb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve all PDB entries not present in the local PDB copy.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>listfile</strong> – filename to which all PDB codes will be written (optional)</p></li>
-<li><p><strong>file_format</strong> – <p>File format. Available options:</p>
-<ul>
-<li><p>”mmCif” (default, PDBx/mmCif file),</p></li>
-<li><p>”pdb” (format PDB),</p></li>
-<li><p>”xml” (PMDML/XML format),</p></li>
-<li><p>”mmtf” (highly compressed),</p></li>
-<li><p>”bundle” (PDB formatted archive for large structure}</p></li>
-</ul>
-</p></li>
-</ul>
-</dd>
-</dl>
-<p>NOTE. The default download format has changed from PDB to PDBx/mmCif</p>
+<dt id="Bio.PDB.PDBList.PDBList.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">server</span><span class="o">=</span><span class="default_value">'ftp://ftp.wwpdb.org'</span></em>, <em class="sig-param"><span class="n">pdb</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">obsolete_pdb</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class with the default server or a custom one.</p>
+<p>Argument pdb is the local path to use, defaulting to the current
+directory at the moment of initialisation.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.PDB.PDBList.PDBList.download_obsolete_entries">
-<code class="sig-name descname">download_obsolete_entries</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">listfile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_format</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_obsolete_entries" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve all obsolete PDB entries not present in local obsolete PDB copy.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>listfile</strong> – filename to which all PDB codes will be written (optional)</p></li>
-<li><p><strong>file_format</strong> – file format. Available options:
-“mmCif” (default, PDBx/mmCif file),
-“pdb” (format PDB),
-“xml” (PMDML/XML format),</p></li>
-</ul>
-</dd>
-</dl>
-<p>NOTE. The default download format has changed from PDB to PDBx/mmCif</p>
+<dt id="Bio.PDB.PDBList.PDBList.get_status_list">
+<em class="property">static </em><code class="sig-name descname">get_status_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.get_status_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve a list of pdb codes in the weekly pdb status file from given URL.</p>
+<p>Used by get_recent_changes. Typical contents of the list files parsed
+by this method is now very simply - one PDB name per line.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.PDB.PDBList.PDBList.download_pdb_files">
-<code class="sig-name descname">download_pdb_files</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pdb_codes</span></em>, <em class="sig-param"><span class="n">obsolete</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">pdir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">overwrite</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_pdb_files" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch set of PDB structure files from the PDB server and stores them locally.</p>
-<p>The PDB structure’s file name is returned as a single string.
-If obsolete <code class="docutils literal notranslate"><span class="pre">==</span></code> True, the files will be saved in a special file tree.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pdb_codes</strong> (<em>list of strings</em>) – a list of 4-symbols structure Ids from PDB</p></li>
-<li><p><strong>file_format</strong> – <p>File format. Available options:</p>
-<ul>
-<li><p>”mmCif” (default, PDBx/mmCif file),</p></li>
-<li><p>”pdb” (format PDB),</p></li>
-<li><p>”xml” (PMDML/XML format),</p></li>
-<li><p>”mmtf” (highly compressed),</p></li>
-<li><p>”bundle” (PDB formatted archive for large structure}</p></li>
-</ul>
-</p></li>
-<li><p><strong>overwrite</strong> (<em>bool</em>) – if set to True, existing structure files will be overwritten. Default: False</p></li>
-<li><p><strong>obsolete</strong> (<em>bool</em>) – Has a meaning only for obsolete structures.
-If True, download the obsolete structure
-to ‘obsolete’ folder, otherwise download won’t be performed.
-This option doesn’t work for mmtf format as obsoleted structures are not availbe as mmtf.
-(default: False)</p></li>
-<li><p><strong>pdir</strong> (<em>string</em>) – put the file in this directory (default: create a PDB-style directory tree)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>filenames</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>string</p>
-</dd>
-</dl>
+<dt id="Bio.PDB.PDBList.PDBList.get_recent_changes">
+<code class="sig-name descname">get_recent_changes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.get_recent_changes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return three lists of the newest weekly files (added,mod,obsolete).</p>
+<p>Reads the directories with changed entries from the PDB server and
+returns a tuple of three URL’s to the files of new, modified and
+obsolete entries from the most recent list. The directory with the
+largest numerical name is used.
+Returns None if something goes wrong.</p>
+<p>Contents of the data/status dir (20031013 would be used);:</p>
+<blockquote>
+<div><p>drwxrwxr-x   2 1002     sysadmin     512 Oct  6 18:28 20031006
+drwxrwxr-x   2 1002     sysadmin     512 Oct 14 02:14 20031013
+-rw-r–r–   1 1002     sysadmin    1327 Mar 12  2001 README</p>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
@@ -369,37 +324,6 @@ like this:</p>
 <span class="o">...</span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PDB.PDBList.PDBList.get_recent_changes">
-<code class="sig-name descname">get_recent_changes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.get_recent_changes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return three lists of the newest weekly files (added,mod,obsolete).</p>
-<p>Reads the directories with changed entries from the PDB server and
-returns a tuple of three URL’s to the files of new, modified and
-obsolete entries from the most recent list. The directory with the
-largest numerical name is used.
-Returns None if something goes wrong.</p>
-<p>Contents of the data/status dir (20031013 would be used);:</p>
-<blockquote>
-<div><p>drwxrwxr-x   2 1002     sysadmin     512 Oct  6 18:28 20031006
-drwxrwxr-x   2 1002     sysadmin     512 Oct 14 02:14 20031013
--rw-r–r–   1 1002     sysadmin    1327 Mar 12  2001 README</p>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PDB.PDBList.PDBList.get_seqres_file">
-<code class="sig-name descname">get_seqres_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">savefile</span><span class="o">=</span><span class="default_value">'pdb_seqres.txt'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.get_seqres_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve and save a (big) file containing all the sequences of PDB entries.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PDB.PDBList.PDBList.get_status_list">
-<em class="property">static </em><code class="sig-name descname">get_status_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">url</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.get_status_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve a list of pdb codes in the weekly pdb status file from given URL.</p>
-<p>Used by get_recent_changes. Typical contents of the list files parsed
-by this method is now very simply - one PDB name per line.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -451,6 +375,90 @@ Default: False</p></li>
 It gets the weekly lists of new and modified pdb entries and
 automatically downloads the according PDB files.
 You can call this module as a weekly cron job.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.PDBList.PDBList.download_pdb_files">
+<code class="sig-name descname">download_pdb_files</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pdb_codes</span></em>, <em class="sig-param"><span class="n">obsolete</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">pdir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">overwrite</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_pdb_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch set of PDB structure files from the PDB server and stores them locally.</p>
+<p>The PDB structure’s file name is returned as a single string.
+If obsolete <code class="docutils literal notranslate"><span class="pre">==</span></code> True, the files will be saved in a special file tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdb_codes</strong> (<em>list of strings</em>) – a list of 4-symbols structure Ids from PDB</p></li>
+<li><p><strong>file_format</strong> – <p>File format. Available options:</p>
+<ul>
+<li><p>”mmCif” (default, PDBx/mmCif file),</p></li>
+<li><p>”pdb” (format PDB),</p></li>
+<li><p>”xml” (PMDML/XML format),</p></li>
+<li><p>”mmtf” (highly compressed),</p></li>
+<li><p>”bundle” (PDB formatted archive for large structure}</p></li>
+</ul>
+</p></li>
+<li><p><strong>overwrite</strong> (<em>bool</em>) – if set to True, existing structure files will be overwritten. Default: False</p></li>
+<li><p><strong>obsolete</strong> (<em>bool</em>) – Has a meaning only for obsolete structures.
+If True, download the obsolete structure
+to ‘obsolete’ folder, otherwise download won’t be performed.
+This option doesn’t work for mmtf format as obsoleted structures are not availbe as mmtf.
+(default: False)</p></li>
+<li><p><strong>pdir</strong> (<em>string</em>) – put the file in this directory (default: create a PDB-style directory tree)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>filenames</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.PDBList.PDBList.download_entire_pdb">
+<code class="sig-name descname">download_entire_pdb</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">listfile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_format</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_entire_pdb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all PDB entries not present in the local PDB copy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>listfile</strong> – filename to which all PDB codes will be written (optional)</p></li>
+<li><p><strong>file_format</strong> – <p>File format. Available options:</p>
+<ul>
+<li><p>”mmCif” (default, PDBx/mmCif file),</p></li>
+<li><p>”pdb” (format PDB),</p></li>
+<li><p>”xml” (PMDML/XML format),</p></li>
+<li><p>”mmtf” (highly compressed),</p></li>
+<li><p>”bundle” (PDB formatted archive for large structure}</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+<p>NOTE. The default download format has changed from PDB to PDBx/mmCif</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.PDBList.PDBList.download_obsolete_entries">
+<code class="sig-name descname">download_obsolete_entries</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">listfile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">file_format</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_obsolete_entries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve all obsolete PDB entries not present in local obsolete PDB copy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>listfile</strong> – filename to which all PDB codes will be written (optional)</p></li>
+<li><p><strong>file_format</strong> – file format. Available options:
+“mmCif” (default, PDBx/mmCif file),
+“pdb” (format PDB),
+“xml” (PMDML/XML format),</p></li>
+</ul>
+</dd>
+</dl>
+<p>NOTE. The default download format has changed from PDB to PDBx/mmCif</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.PDBList.PDBList.get_seqres_file">
+<code class="sig-name descname">get_seqres_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">savefile</span><span class="o">=</span><span class="default_value">'pdb_seqres.txt'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.get_seqres_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve and save a (big) file containing all the sequences of PDB entries.</p>
 </dd></dl>
 
 </dd></dl>

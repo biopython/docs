@@ -237,43 +237,6 @@
 functions which return summary type information about alignments should
 be put into classes in this module.</p>
 <dl class="py class">
-<dt id="Bio.Align.AlignInfo.PSSM">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.Align.AlignInfo.</code><code class="sig-name descname">PSSM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pssm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Represent a position specific score matrix.</p>
-<p>This class is meant to make it easy to access the info within a PSSM
-and also make it easy to print out the information in a nice table.</p>
-<p>Let’s say you had an alignment like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GTATC</span>
-<span class="n">AT</span><span class="o">--</span><span class="n">C</span>
-<span class="n">CTGTC</span>
-</pre></div>
-</div>
-<p>The position specific score matrix (when printed) looks like:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">G</span> <span class="n">A</span> <span class="n">T</span> <span class="n">C</span>
-<span class="n">G</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span>
-<span class="n">T</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">0</span>
-<span class="n">A</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span>
-<span class="n">T</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">0</span>
-<span class="n">C</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span>
-</pre></div>
-</div>
-<p>You can access a single element of the PSSM using the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">your_pssm</span><span class="p">[</span><span class="n">sequence_number</span><span class="p">][</span><span class="n">residue_count_name</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>For instance, to get the ‘T’ residue for the second element in the
-above alignment you would need to do:</p>
-<p>your_pssm[1][‘T’]</p>
-<dl class="py method">
-<dt id="Bio.Align.AlignInfo.PSSM.get_residue">
-<code class="sig-name descname">get_residue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM.get_residue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the residue letter at the specified position.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt id="Bio.Align.AlignInfo.SummaryInfo">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.Align.AlignInfo.</code><code class="sig-name descname">SummaryInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alignment</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -281,6 +244,13 @@ above alignment you would need to do:</p>
 <p>This class should be used to caclculate information summarizing the
 results of an alignment. This may either be straight consensus info
 or more complicated things.</p>
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">alignment</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize with the alignment to calculate information on.</p>
+<p>ic_vector attribute. A list of ic content for each column number.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="Bio.Align.AlignInfo.SummaryInfo.dumb_consensus">
 <code class="sig-name descname">dumb_consensus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">ambiguous</span><span class="o">=</span><span class="default_value">'X'</span></em>, <em class="sig-param"><span class="n">consensus_alpha</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">require_multiple</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.dumb_consensus" title="Permalink to this definition">¶</a></dt>
@@ -326,67 +296,6 @@ it takes the same as input.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.Align.AlignInfo.SummaryInfo.get_column">
-<code class="sig-name descname">get_column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">col</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.get_column" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return column of alignment.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Align.AlignInfo.SummaryInfo.information_content">
-<code class="sig-name descname">information_content</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e_freq_table</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">log_base</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">chars_to_ignore</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pseudo_count</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.information_content" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the information content for each residue along an alignment.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>start, end - The starting an ending points to calculate the
-information content. These points should be relative to the first
-sequence in the alignment, starting at zero (ie. even if the ‘real’
-first position in the seq is 203 in the initial sequence, for
-the info content, we need to use zero). This defaults to the entire
-length of the first sequence.</p></li>
-<li><p>e_freq_table - A FreqTable object specifying the expected frequencies
-for each letter in the alphabet we are using (e.g. {‘G’ : 0.4,
-‘C’ : 0.4, ‘T’ : 0.1, ‘A’ : 0.1}). Gap characters should not be
-included, since these should not have expected frequencies.</p></li>
-<li><p>log_base - The base of the logathrim to use in calculating the
-information content. This defaults to 2 so the info is in bits.</p></li>
-<li><p>chars_to_ignore - A listing of characters which should be ignored
-in calculating the info content. Defaults to none.</p></li>
-</ul>
-</dd>
-<dt>Returns:</dt><dd><ul class="simple">
-<li><p>A number representing the info content for the specified region.</p></li>
-</ul>
-</dd>
-</dl>
-<p>Please see the Biopython manual for more information on how information
-content is calculated.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Align.AlignInfo.SummaryInfo.pos_specific_score_matrix">
-<code class="sig-name descname">pos_specific_score_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">axis_seq</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chars_to_ignore</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.pos_specific_score_matrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a position specific score matrix object for the alignment.</p>
-<p>This creates a position specific score matrix (pssm) which is an
-alternative method to look at a consensus sequence.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>chars_to_ignore - A list of all characters not to include in
-the pssm.  If the alignment alphabet declares a gap character,
-then it will be excluded automatically.</p></li>
-<li><p>axis_seq - An optional argument specifying the sequence to
-put on the axis of the PSSM. This should be a Seq object. If nothing
-is specified, the consensus sequence, calculated with default
-parameters, will be used.</p></li>
-</ul>
-</dd>
-<dt>Returns:</dt><dd><ul class="simple">
-<li><p>A PSSM (position specific score matrix) object.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="Bio.Align.AlignInfo.SummaryInfo.replacement_dictionary">
 <code class="sig-name descname">replacement_dictionary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">skip_chars</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.replacement_dictionary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a replacement dictionary to plug into a substitution matrix.</p>
@@ -423,6 +332,125 @@ This defaults to an empty list.</p></li>
 </dl>
 <p>For instance, you might have Xs (screened stuff) or Ns, and not want
 to include the ambiguity characters in the dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.pos_specific_score_matrix">
+<code class="sig-name descname">pos_specific_score_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">axis_seq</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chars_to_ignore</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.pos_specific_score_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a position specific score matrix object for the alignment.</p>
+<p>This creates a position specific score matrix (pssm) which is an
+alternative method to look at a consensus sequence.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>chars_to_ignore - A list of all characters not to include in
+the pssm.  If the alignment alphabet declares a gap character,
+then it will be excluded automatically.</p></li>
+<li><p>axis_seq - An optional argument specifying the sequence to
+put on the axis of the PSSM. This should be a Seq object. If nothing
+is specified, the consensus sequence, calculated with default
+parameters, will be used.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>A PSSM (position specific score matrix) object.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.information_content">
+<code class="sig-name descname">information_content</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e_freq_table</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">log_base</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">chars_to_ignore</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pseudo_count</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.information_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the information content for each residue along an alignment.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>start, end - The starting an ending points to calculate the
+information content. These points should be relative to the first
+sequence in the alignment, starting at zero (ie. even if the ‘real’
+first position in the seq is 203 in the initial sequence, for
+the info content, we need to use zero). This defaults to the entire
+length of the first sequence.</p></li>
+<li><p>e_freq_table - A FreqTable object specifying the expected frequencies
+for each letter in the alphabet we are using (e.g. {‘G’ : 0.4,
+‘C’ : 0.4, ‘T’ : 0.1, ‘A’ : 0.1}). Gap characters should not be
+included, since these should not have expected frequencies.</p></li>
+<li><p>log_base - The base of the logathrim to use in calculating the
+information content. This defaults to 2 so the info is in bits.</p></li>
+<li><p>chars_to_ignore - A listing of characters which should be ignored
+in calculating the info content. Defaults to none.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>A number representing the info content for the specified region.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Please see the Biopython manual for more information on how information
+content is calculated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.get_column">
+<code class="sig-name descname">get_column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">col</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.get_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return column of alignment.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.Align.AlignInfo.PSSM">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.Align.AlignInfo.</code><code class="sig-name descname">PSSM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pssm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represent a position specific score matrix.</p>
+<p>This class is meant to make it easy to access the info within a PSSM
+and also make it easy to print out the information in a nice table.</p>
+<p>Let’s say you had an alignment like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GTATC</span>
+<span class="n">AT</span><span class="o">--</span><span class="n">C</span>
+<span class="n">CTGTC</span>
+</pre></div>
+</div>
+<p>The position specific score matrix (when printed) looks like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">G</span> <span class="n">A</span> <span class="n">T</span> <span class="n">C</span>
+<span class="n">G</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="n">T</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">0</span>
+<span class="n">A</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="n">T</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">0</span>
+<span class="n">C</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>You can access a single element of the PSSM using the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">your_pssm</span><span class="p">[</span><span class="n">sequence_number</span><span class="p">][</span><span class="n">residue_count_name</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For instance, to get the ‘T’ residue for the second element in the
+above alignment you would need to do:</p>
+<p>your_pssm[1][‘T’]</p>
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.PSSM.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pssm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize with pssm data to represent.</p>
+<p>The pssm passed should be a list with the following structure:</p>
+<p>list[0] - The letter of the residue being represented (for instance,
+from the example above, the first few list[0]s would be GTAT…
+list[1] - A dictionary with the letter substitutions and counts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.PSSM.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.PSSM.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.PSSM.get_residue">
+<code class="sig-name descname">get_residue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM.get_residue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the residue letter at the specified position.</p>
 </dd></dl>
 
 </dd></dl>

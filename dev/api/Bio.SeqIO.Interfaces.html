@@ -241,6 +241,42 @@ use this module.  It provides base classes to try and simplify things.</p>
 <p>Base class for building SeqRecord iterators.</p>
 <p>You should write a parse method that returns a SeqRecord generator.  You
 may wish to redefine the __init__ method as well.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequenceIterator.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">Alphabet()</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'t'</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a SequenceIterator object.</p>
+<p>Arguments:
+- source - input file stream, or path to input file
+- alphabet - optional, e.g. Bio.Alphabet.generic_protein</p>
+<p>This method MAY be overridden by any subclass.</p>
+<p>Note when subclassing:
+- there should be a single non-optional argument, the source.
+- you do not have to require an alphabet.
+- you can add additional optional arguments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequenceIterator.__next__">
+<code class="sig-name descname">__next__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.__next__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequenceIterator.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over the entries as a SeqRecord objects.</p>
+<p>Example usage for Fasta files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example.fasta&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myFile</span><span class="p">:</span>
+    <span class="n">myFastaReader</span> <span class="o">=</span> <span class="n">FastaIterator</span><span class="p">(</span><span class="n">myFile</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">myFastaReader</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method SHOULD NOT be overridden by any subclass. It should be
+left as is, which will call the subclass implementation of __next__
+to actually parse the file.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -259,28 +295,27 @@ followed finally by write_footer().</p>
 <p>Note that write_header() cannot require any assumptions about
 the number of records.</p>
 <dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequenceWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'w'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the writer object.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.SeqIO.Interfaces.SequenceWriter.clean">
 <code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.clean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use this to avoid getting newlines in the output.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_file">
-<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em>, <em class="sig-param"><span class="n">mincount</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">maxcount</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write a complete file with the records, and return the number of records.</p>
-<p>records - A list or iterator returning SeqRecord objects</p>
+<dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_header">
+<code class="sig-name descname">write_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the file header to the output file.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_footer">
 <code class="sig-name descname">write_footer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_footer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the file footer to the output file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_header">
-<code class="sig-name descname">write_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write the file header to the output file.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -297,6 +332,13 @@ the number of records.</p>
 <p>records - A list or iterator returning SeqRecord objects
 maxcount - The maximum number of records allowed by the
 file format, or None if there is no maximum.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_file">
+<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em>, <em class="sig-param"><span class="n">mincount</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">maxcount</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a complete file with the records, and return the number of records.</p>
+<p>records - A list or iterator returning SeqRecord objects</p>
 </dd></dl>
 
 </dd></dl>
@@ -320,22 +362,9 @@ switching the output format.</p>
 <p>Note that write_header() cannot require any assumptions about
 the number of records.</p>
 <dl class="py method">
-<dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_file">
-<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use this to write an entire file containing the given records.</p>
-<p>records - A list or iterator returning SeqRecord objects</p>
-<p>This method can only be called once.  Returns the number of records
-written.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_footer">
-<code class="sig-name descname">write_footer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_footer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write the file footer.</p>
-<p>If your file format defines a footer, you should implement this method
-in order to write the footer after all the records.</p>
-<p>The default implementation checks the private attribute ._footer_written
-to ensure the footer is only written once.</p>
+<dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'w'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -346,6 +375,16 @@ to ensure the footer is only written once.</p>
 in order to write the header before any of the records.</p>
 <p>The default implementation checks the private attribute ._header_written
 to ensure the header is only written once.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_footer">
+<code class="sig-name descname">write_footer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_footer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the file footer.</p>
+<p>If your file format defines a footer, you should implement this method
+in order to write the footer after all the records.</p>
+<p>The default implementation checks the private attribute ._footer_written
+to ensure the footer is only written once.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -367,6 +406,15 @@ write_footer() and close().</p>
 and/or write_records() as many times as needed.  Then call
 write_footer() and close().</p>
 <p>Returns the number of records written.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_file">
+<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use this to write an entire file containing the given records.</p>
+<p>records - A list or iterator returning SeqRecord objects</p>
+<p>This method can only be called once.  Returns the number of records
+written.</p>
 </dd></dl>
 
 </dd></dl>

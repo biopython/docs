@@ -924,6 +924,67 @@
 of freely available Python tools for computational molecular biology.</p>
 <p><a class="reference external" href="http://biopython.org">http://biopython.org</a></p>
 <dl class="py exception">
+<dt id="Bio.MissingExternalDependencyError">
+<em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">MissingExternalDependencyError</code><a class="headerlink" href="#Bio.MissingExternalDependencyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Missing an external dependency.</p>
+<p>Used for things like missing command line tools. Important for our unit
+tests to allow skipping tests with missing external dependencies.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="Bio.MissingPythonDependencyError">
+<em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">MissingPythonDependencyError</code><a class="headerlink" href="#Bio.MissingPythonDependencyError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.MissingExternalDependencyError" title="Bio.MissingExternalDependencyError"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.MissingExternalDependencyError</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ImportError</span></code></p>
+<p>Missing an external python dependency (subclass of ImportError).</p>
+<p>Used for missing Python modules (rather than just a typical ImportError).
+Important for our unit tests to allow skipping tests with missing external
+python dependencies, while also allowing the exception to be caught as an
+ImportError.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="Bio.StreamModeError">
+<em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">StreamModeError</code><a class="headerlink" href="#Bio.StreamModeError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>Incorrect stream mode (text vs binary).</p>
+<p>This error should be raised when a stream (file or file-like object)
+argument is in text mode while the receiving function expects binary mode,
+or vice versa.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="Bio.BiopythonWarning">
+<em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">BiopythonWarning</code><a class="headerlink" href="#Bio.BiopythonWarning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Warning</span></code></p>
+<p>Biopython warning.</p>
+<p>Biopython should use this warning (or subclasses of it), making it easy to
+silence all our warning messages should you wish to:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">BiopythonWarning</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">BiopythonWarning</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Consult the warnings module documentation for more details.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="Bio.BiopythonParserWarning">
+<em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">BiopythonParserWarning</code><a class="headerlink" href="#Bio.BiopythonParserWarning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.BiopythonWarning" title="Bio.BiopythonWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.BiopythonWarning</span></code></a></p>
+<p>Biopython parser warning.</p>
+<p>Some in-valid data files cannot be parsed and will trigger an exception.
+Where a reasonable interpretation is possible, Biopython will issue this
+warning to indicate a potential problem. To silence these warnings, use:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">BiopythonParserWarning</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">BiopythonParserWarning</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Consult the warnings module documentation for more details.</p>
+</dd></dl>
+
+<dl class="py exception">
 <dt id="Bio.BiopythonDeprecationWarning">
 <em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">BiopythonDeprecationWarning</code><a class="headerlink" href="#Bio.BiopythonDeprecationWarning" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Bio.BiopythonWarning" title="Bio.BiopythonWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.BiopythonWarning</span></code></a></p>
@@ -960,67 +1021,6 @@ feedback on this code, and to be alerted of changes to it.</p></li>
 </ul>
 <p>If all goes well, experimental code would be promoted to stable in
 a subsequent release, and this warning removed from it.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt id="Bio.BiopythonParserWarning">
-<em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">BiopythonParserWarning</code><a class="headerlink" href="#Bio.BiopythonParserWarning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Bio.BiopythonWarning" title="Bio.BiopythonWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.BiopythonWarning</span></code></a></p>
-<p>Biopython parser warning.</p>
-<p>Some in-valid data files cannot be parsed and will trigger an exception.
-Where a reasonable interpretation is possible, Biopython will issue this
-warning to indicate a potential problem. To silence these warnings, use:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">warnings</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">BiopythonParserWarning</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">BiopythonParserWarning</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Consult the warnings module documentation for more details.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt id="Bio.BiopythonWarning">
-<em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">BiopythonWarning</code><a class="headerlink" href="#Bio.BiopythonWarning" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Warning</span></code></p>
-<p>Biopython warning.</p>
-<p>Biopython should use this warning (or subclasses of it), making it easy to
-silence all our warning messages should you wish to:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">warnings</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">BiopythonWarning</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">BiopythonWarning</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Consult the warnings module documentation for more details.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt id="Bio.MissingExternalDependencyError">
-<em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">MissingExternalDependencyError</code><a class="headerlink" href="#Bio.MissingExternalDependencyError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Missing an external dependency.</p>
-<p>Used for things like missing command line tools. Important for our unit
-tests to allow skipping tests with missing external dependencies.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt id="Bio.MissingPythonDependencyError">
-<em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">MissingPythonDependencyError</code><a class="headerlink" href="#Bio.MissingPythonDependencyError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Bio.MissingExternalDependencyError" title="Bio.MissingExternalDependencyError"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.MissingExternalDependencyError</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ImportError</span></code></p>
-<p>Missing an external python dependency (subclass of ImportError).</p>
-<p>Used for missing Python modules (rather than just a typical ImportError).
-Important for our unit tests to allow skipping tests with missing external
-python dependencies, while also allowing the exception to be caught as an
-ImportError.</p>
-</dd></dl>
-
-<dl class="py exception">
-<dt id="Bio.StreamModeError">
-<em class="property">exception </em><code class="sig-prename descclassname">Bio.</code><code class="sig-name descname">StreamModeError</code><a class="headerlink" href="#Bio.StreamModeError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
-<p>Incorrect stream mode (text vs binary).</p>
-<p>This error should be raised when a stream (file or file-like object)
-argument is in text mode while the receiving function expects binary mode,
-or vice versa.</p>
 </dd></dl>
 
 </div>

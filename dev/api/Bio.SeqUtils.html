@@ -291,6 +291,103 @@ and the size of the window.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="Bio.SeqUtils.xGC_skew">
+<code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">xGC_skew</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">window</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">zoom</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">r</span><span class="o">=</span><span class="default_value">300</span></em>, <em class="sig-param"><span class="n">px</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">py</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.xGC_skew" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate and plot normal and accumulated GC skew (GRAPHICS !!!).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqUtils.nt_search">
+<code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">nt_search</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">subseq</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.nt_search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for a DNA subseq in sequence, return list of [subseq, positions].</p>
+<p>Use ambiguous values (like N = A or T or C or G, R = A or G etc.),
+searches only on forward strand.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqUtils.seq3">
+<code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">seq3</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">custom_map</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">undef_code</span><span class="o">=</span><span class="default_value">'Xaa'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.seq3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert protein sequence from one-letter to three-letter code.</p>
+<p>The single required input argument ‘seq’ should be a protein sequence using
+single letter codes, either as a Python string or as a Seq or MutableSeq
+object.</p>
+<p>This function returns the amino acid sequence as a string using the three
+letter amino acid codes. Output follows the IUPAC standard (including
+ambiguous characters B for “Asx”, J for “Xle” and X for “Xaa”, and also U
+for “Sel” and O for “Pyl”) plus “Ter” for a terminator given as an
+asterisk. Any unknown character (including possible gap characters),
+is changed into ‘Xaa’ by default.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">seq3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq3</span><span class="p">(</span><span class="s2">&quot;MAIVMGRWKGAR*&quot;</span><span class="p">)</span>
+<span class="go">&#39;MetAlaIleValMetGlyArgTrpLysGlyAlaArgTer&#39;</span>
+</pre></div>
+</div>
+<p>You can set a custom translation of the codon termination code using the
+dictionary “custom_map” argument (which defaults to {‘*’: ‘Ter’}), e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq3</span><span class="p">(</span><span class="s2">&quot;MAIVMGRWKGAR*&quot;</span><span class="p">,</span> <span class="n">custom_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="s2">&quot;***&quot;</span><span class="p">})</span>
+<span class="go">&#39;MetAlaIleValMetGlyArgTrpLysGlyAlaArg***&#39;</span>
+</pre></div>
+</div>
+<p>You can also set a custom translation for non-amino acid characters, such
+as ‘-‘, using the “undef_code” argument, e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq3</span><span class="p">(</span><span class="s2">&quot;MAIVMGRWKGA--R*&quot;</span><span class="p">,</span> <span class="n">undef_code</span><span class="o">=</span><span class="s1">&#39;---&#39;</span><span class="p">)</span>
+<span class="go">&#39;MetAlaIleValMetGlyArgTrpLysGlyAla------ArgTer&#39;</span>
+</pre></div>
+</div>
+<p>If not given, “undef_code” defaults to “Xaa”, e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq3</span><span class="p">(</span><span class="s2">&quot;MAIVMGRWKGA--R*&quot;</span><span class="p">)</span>
+<span class="go">&#39;MetAlaIleValMetGlyArgTrpLysGlyAlaXaaXaaArgTer&#39;</span>
+</pre></div>
+</div>
+<p>This function was inspired by BioPerl’s seq3.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqUtils.seq1">
+<code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">seq1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">custom_map</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">undef_code</span><span class="o">=</span><span class="default_value">'X'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.seq1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert protein sequence from three-letter to one-letter code.</p>
+<p>The single required input argument ‘seq’ should be a protein sequence
+using three-letter codes, either as a Python string or as a Seq or
+MutableSeq object.</p>
+<p>This function returns the amino acid sequence as a string using the one
+letter amino acid codes. Output follows the IUPAC standard (including
+ambiguous characters “B” for “Asx”, “J” for “Xle”, “X” for “Xaa”, “U” for
+“Sel”, and “O” for “Pyl”) plus “*” for a terminator given the “Ter” code.
+Any unknown character (including possible gap characters), is changed
+into ‘-‘ by default.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">seq1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span><span class="p">(</span><span class="s2">&quot;MetAlaIleValMetGlyArgTrpLysGlyAlaArgTer&quot;</span><span class="p">)</span>
+<span class="go">&#39;MAIVMGRWKGAR*&#39;</span>
+</pre></div>
+</div>
+<p>The input is case insensitive, e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">seq1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span><span class="p">(</span><span class="s2">&quot;METalaIlEValMetGLYArgtRplysGlyAlaARGTer&quot;</span><span class="p">)</span>
+<span class="go">&#39;MAIVMGRWKGAR*&#39;</span>
+</pre></div>
+</div>
+<p>You can set a custom translation of the codon termination code using the
+dictionary “custom_map” argument (defaulting to {‘Ter’: ‘*’}), e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span><span class="p">(</span><span class="s2">&quot;MetAlaIleValMetGlyArgTrpLysGlyAla***&quot;</span><span class="p">,</span> <span class="n">custom_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;***&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">})</span>
+<span class="go">&#39;MAIVMGRWKGA*&#39;</span>
+</pre></div>
+</div>
+<p>You can also set a custom translation for non-amino acid characters, such
+as ‘-‘, using the “undef_code” argument, e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span><span class="p">(</span><span class="s2">&quot;MetAlaIleValMetGlyArgTrpLysGlyAla------ArgTer&quot;</span><span class="p">,</span> <span class="n">undef_code</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">)</span>
+<span class="go">&#39;MAIVMGRWKGA??R*&#39;</span>
+</pre></div>
+</div>
+<p>If not given, “undef_code” defaults to “X”, e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span><span class="p">(</span><span class="s2">&quot;MetAlaIleValMetGlyArgTrpLysGlyAla------ArgTer&quot;</span><span class="p">)</span>
+<span class="go">&#39;MAIVMGRWKGAXXR*&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="Bio.SeqUtils.molecular_weight">
 <code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">molecular_weight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">seq_type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">double_stranded</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">circular</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">monoisotopic</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.molecular_weight" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the molecular mass of DNA, RNA or protein sequences as float.</p>
@@ -350,97 +447,6 @@ give an exception:</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="Bio.SeqUtils.nt_search">
-<code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">nt_search</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">subseq</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.nt_search" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search for a DNA subseq in sequence, return list of [subseq, positions].</p>
-<p>Use ambiguous values (like N = A or T or C or G, R = A or G etc.),
-searches only on forward strand.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SeqUtils.seq1">
-<code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">seq1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">custom_map</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">undef_code</span><span class="o">=</span><span class="default_value">'X'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.seq1" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert protein sequence from three-letter to one-letter code.</p>
-<p>The single required input argument ‘seq’ should be a protein sequence
-using three-letter codes, either as a Python string or as a Seq or
-MutableSeq object.</p>
-<p>This function returns the amino acid sequence as a string using the one
-letter amino acid codes. Output follows the IUPAC standard (including
-ambiguous characters “B” for “Asx”, “J” for “Xle”, “X” for “Xaa”, “U” for
-“Sel”, and “O” for “Pyl”) plus “*” for a terminator given the “Ter” code.
-Any unknown character (including possible gap characters), is changed
-into ‘-‘ by default.</p>
-<p>e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">seq1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span><span class="p">(</span><span class="s2">&quot;MetAlaIleValMetGlyArgTrpLysGlyAlaArgTer&quot;</span><span class="p">)</span>
-<span class="go">&#39;MAIVMGRWKGAR*&#39;</span>
-</pre></div>
-</div>
-<p>The input is case insensitive, e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">seq1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span><span class="p">(</span><span class="s2">&quot;METalaIlEValMetGLYArgtRplysGlyAlaARGTer&quot;</span><span class="p">)</span>
-<span class="go">&#39;MAIVMGRWKGAR*&#39;</span>
-</pre></div>
-</div>
-<p>You can set a custom translation of the codon termination code using the
-dictionary “custom_map” argument (defaulting to {‘Ter’: ‘*’}), e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span><span class="p">(</span><span class="s2">&quot;MetAlaIleValMetGlyArgTrpLysGlyAla***&quot;</span><span class="p">,</span> <span class="n">custom_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;***&quot;</span><span class="p">:</span> <span class="s2">&quot;*&quot;</span><span class="p">})</span>
-<span class="go">&#39;MAIVMGRWKGA*&#39;</span>
-</pre></div>
-</div>
-<p>You can also set a custom translation for non-amino acid characters, such
-as ‘-‘, using the “undef_code” argument, e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span><span class="p">(</span><span class="s2">&quot;MetAlaIleValMetGlyArgTrpLysGlyAla------ArgTer&quot;</span><span class="p">,</span> <span class="n">undef_code</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">)</span>
-<span class="go">&#39;MAIVMGRWKGA??R*&#39;</span>
-</pre></div>
-</div>
-<p>If not given, “undef_code” defaults to “X”, e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span><span class="p">(</span><span class="s2">&quot;MetAlaIleValMetGlyArgTrpLysGlyAla------ArgTer&quot;</span><span class="p">)</span>
-<span class="go">&#39;MAIVMGRWKGAXXR*&#39;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SeqUtils.seq3">
-<code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">seq3</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">custom_map</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">undef_code</span><span class="o">=</span><span class="default_value">'Xaa'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.seq3" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert protein sequence from one-letter to three-letter code.</p>
-<p>The single required input argument ‘seq’ should be a protein sequence using
-single letter codes, either as a Python string or as a Seq or MutableSeq
-object.</p>
-<p>This function returns the amino acid sequence as a string using the three
-letter amino acid codes. Output follows the IUPAC standard (including
-ambiguous characters B for “Asx”, J for “Xle” and X for “Xaa”, and also U
-for “Sel” and O for “Pyl”) plus “Ter” for a terminator given as an
-asterisk. Any unknown character (including possible gap characters),
-is changed into ‘Xaa’ by default.</p>
-<p>e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">seq3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq3</span><span class="p">(</span><span class="s2">&quot;MAIVMGRWKGAR*&quot;</span><span class="p">)</span>
-<span class="go">&#39;MetAlaIleValMetGlyArgTrpLysGlyAlaArgTer&#39;</span>
-</pre></div>
-</div>
-<p>You can set a custom translation of the codon termination code using the
-dictionary “custom_map” argument (which defaults to {‘*’: ‘Ter’}), e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq3</span><span class="p">(</span><span class="s2">&quot;MAIVMGRWKGAR*&quot;</span><span class="p">,</span> <span class="n">custom_map</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;*&quot;</span><span class="p">:</span> <span class="s2">&quot;***&quot;</span><span class="p">})</span>
-<span class="go">&#39;MetAlaIleValMetGlyArgTrpLysGlyAlaArg***&#39;</span>
-</pre></div>
-</div>
-<p>You can also set a custom translation for non-amino acid characters, such
-as ‘-‘, using the “undef_code” argument, e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq3</span><span class="p">(</span><span class="s2">&quot;MAIVMGRWKGA--R*&quot;</span><span class="p">,</span> <span class="n">undef_code</span><span class="o">=</span><span class="s1">&#39;---&#39;</span><span class="p">)</span>
-<span class="go">&#39;MetAlaIleValMetGlyArgTrpLysGlyAla------ArgTer&#39;</span>
-</pre></div>
-</div>
-<p>If not given, “undef_code” defaults to “Xaa”, e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq3</span><span class="p">(</span><span class="s2">&quot;MAIVMGRWKGA--R*&quot;</span><span class="p">)</span>
-<span class="go">&#39;MetAlaIleValMetGlyArgTrpLysGlyAlaXaaXaaArgTer&#39;</span>
-</pre></div>
-</div>
-<p>This function was inspired by BioPerl’s seq3.</p>
-</dd></dl>
-
-<dl class="py function">
 <dt id="Bio.SeqUtils.six_frame_translations">
 <code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">six_frame_translations</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">genetic_code</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.six_frame_translations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return pretty string showing the 6 frame translations and GC content.</p>
@@ -464,12 +470,6 @@ similar to DNA Striders six-frame translation</p>
 
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SeqUtils.xGC_skew">
-<code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">xGC_skew</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">window</span><span class="o">=</span><span class="default_value">1000</span></em>, <em class="sig-param"><span class="n">zoom</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">r</span><span class="o">=</span><span class="default_value">300</span></em>, <em class="sig-param"><span class="n">px</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">py</span><span class="o">=</span><span class="default_value">100</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.xGC_skew" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate and plot normal and accumulated GC skew (GRAPHICS !!!).</p>
 </dd></dl>
 
 </div>

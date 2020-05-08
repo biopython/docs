@@ -249,21 +249,21 @@ You are expected to use this via the parse or read functions.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">_end_TAG</span></code> called when the end tag is found</p></li>
 </ul>
 <dl class="py method">
+<dt id="Bio.Blast.NCBIXML.BlastParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">debug</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.BlastParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the parser.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>debug - integer, amount of debug information to print</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Blast.NCBIXML.BlastParser.reset">
 <code class="sig-name descname">reset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.BlastParser.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset all the data allowing reuse of the BlastParser() object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Blast.NCBIXML.BlastParser.set_hit_accession">
-<code class="sig-name descname">set_hit_accession</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.BlastParser.set_hit_accession" title="Permalink to this definition">¶</a></dt>
-<dd><p>Record the accession value of the database sequence (PRIVATE).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Blast.NCBIXML.BlastParser.set_hit_def">
-<code class="sig-name descname">set_hit_def</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.BlastParser.set_hit_def" title="Permalink to this definition">¶</a></dt>
-<dd><p>Record the definition line of the database sequence (PRIVATE).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -273,11 +273,34 @@ You are expected to use this via the parse or read functions.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="Bio.Blast.NCBIXML.BlastParser.set_hit_def">
+<code class="sig-name descname">set_hit_def</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.BlastParser.set_hit_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Record the definition line of the database sequence (PRIVATE).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Blast.NCBIXML.BlastParser.set_hit_accession">
+<code class="sig-name descname">set_hit_accession</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.BlastParser.set_hit_accession" title="Permalink to this definition">¶</a></dt>
+<dd><p>Record the accession value of the database sequence (PRIVATE).</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Blast.NCBIXML.BlastParser.set_hit_len">
 <code class="sig-name descname">set_hit_len</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.BlastParser.set_hit_len" title="Permalink to this definition">¶</a></dt>
 <dd><p>Record the length of the hit.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.Blast.NCBIXML.read">
+<code class="sig-prename descclassname">Bio.Blast.NCBIXML.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">debug</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a single Blast record (assumes just one query).</p>
+<p>Uses the BlastParser internally.</p>
+<p>This function is for use when there is one and only one BLAST
+result in your XML file.</p>
+<p>Use the Bio.Blast.NCBIXML.parse() function if you expect more than
+one BLAST record (i.e. if you have more than one query sequence).</p>
 </dd></dl>
 
 <dl class="py function">
@@ -297,17 +320,6 @@ for multiple query records.</p>
 <p>Should also cope with XML output from older versions BLAST which
 gave multiple XML files concatenated together (giving a single file
 which strictly speaking wasn’t valid XML).</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.Blast.NCBIXML.read">
-<code class="sig-prename descclassname">Bio.Blast.NCBIXML.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">debug</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a single Blast record (assumes just one query).</p>
-<p>Uses the BlastParser internally.</p>
-<p>This function is for use when there is one and only one BLAST
-result in your XML file.</p>
-<p>Use the Bio.Blast.NCBIXML.parse() function if you expect more than
-one BLAST record (i.e. if you have more than one query sequence).</p>
 </dd></dl>
 
 </div>

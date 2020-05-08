@@ -568,207 +568,21 @@ write to all of them.</p>
 “phylip” and “stockholm”, which gives you access to the individual sequences
 making up each alignment as SeqRecords.</p>
 <dl class="py function">
-<dt id="Bio.SeqIO.convert">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_file</span></em>, <em class="sig-param"><span class="n">in_format</span></em>, <em class="sig-param"><span class="n">out_file</span></em>, <em class="sig-param"><span class="n">out_format</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert between two sequence file formats, return number of records.</p>
+<dt id="Bio.SeqIO.write">
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sequences</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write complete set of sequences to a file.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>in_file - an input handle or filename</p></li>
-<li><p>in_format - input file format, lower case string</p></li>
-<li><p>out_file - an output handle or filename</p></li>
-<li><p>out_format - output file format, lower case string</p></li>
-<li><p>alphabet - optional alphabet to assume</p></li>
+<li><p>sequences - A list (or iterator) of SeqRecord objects, or a single
+SeqRecord.</p></li>
+<li><p>handle    - File handle object to write to, or filename as string.</p></li>
+<li><p>format    - lower case string describing the file format to write.</p></li>
 </ul>
 </dd>
 </dl>
-<p><strong>NOTE</strong> - If you provide an output filename, it will be opened which will
-overwrite any existing file without warning.</p>
-<p>The idea here is that while doing this will work:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">in_handle</span><span class="p">,</span> <span class="n">in_format</span><span class="p">)</span>
-<span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="n">out_format</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>it is shorter to write:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">in_handle</span><span class="p">,</span> <span class="n">in_format</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="n">out_format</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Also, Bio.SeqIO.convert is faster for some conversions as it can make some
-optimisations.</p>
-<p>For example, going from a filename to a handle:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
-<span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
-<span class="go">&gt;EAS54_6_R1_2_1_413_324</span>
-<span class="go">CCCTTCTTGTCTTCAGCGTTTCTCC</span>
-<span class="go">&gt;EAS54_6_R1_2_1_540_792</span>
-<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
-<span class="go">&gt;EAS54_6_R1_2_1_443_348</span>
-<span class="go">GTTGCTTCTGGCGTGGGTGGGGGGG</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SeqIO.index">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">format</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">key_function</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Indexes a sequence file and returns a dictionary like object.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>filename - string giving name of file to be indexed</p></li>
-<li><p>format   - lower case string describing the file format</p></li>
-<li><p>alphabet - optional Alphabet object, useful when the sequence type
-cannot be automatically inferred from the file itself
-(e.g. format=”fasta” or “tab”)</p></li>
-<li><p>key_function - Optional callback function which when given a
-SeqRecord identifier string should return a unique key for the
-dictionary.</p></li>
-</ul>
-</dd>
-</dl>
-<p>This indexing function will return a dictionary like object, giving the
-SeqRecord objects as values.</p>
-<p>As of Biopython 1.69, this will preserve the ordering of the records in
-file when iterating over the entries.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
-<span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>  <span class="c1"># make a list of the keys</span>
-<span class="go">[&#39;EAS54_6_R1_2_1_413_324&#39;, &#39;EAS54_6_R1_2_1_540_792&#39;, &#39;EAS54_6_R1_2_1_443_348&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;EAS54_6_R1_2_1_540_792&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
-<span class="go">&gt;EAS54_6_R1_2_1_540_792</span>
-<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;EAS54_6_R1_2_1_540_792&quot;</span> <span class="ow">in</span> <span class="n">records</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Missing&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-<span class="go">None</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>If the file is BGZF compressed, this is detected automatically. Ordinary
-GZIP files are not supported:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
-<span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;EAS54_6_R1_2_1_540_792&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
-<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>When you call the index function, it will scan through the file, noting
-the location of each record. When you access a particular record via the
-dictionary methods, the code will jump to the appropriate part of the
-file and then parse that section into a SeqRecord.</p>
-<p>Note that not all the input formats supported by Bio.SeqIO can be used
-with this index function. It is designed to work only with sequential
-file formats (e.g. “fasta”, “gb”, “fastq”) and is not suitable for any
-interlaced file format (e.g. alignment formats such as “clustal”).</p>
-<p>For small files, it may be more efficient to use an in memory Python
-dictionary, e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
-<span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>  <span class="c1"># make a list of the keys</span>
-<span class="go">[&#39;EAS54_6_R1_2_1_413_324&#39;, &#39;EAS54_6_R1_2_1_540_792&#39;, &#39;EAS54_6_R1_2_1_443_348&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;EAS54_6_R1_2_1_540_792&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
-<span class="go">&gt;EAS54_6_R1_2_1_540_792</span>
-<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
-</pre></div>
-</div>
-<p>As with the to_dict() function, by default the id string of each record
-is used as the key. You can specify a callback function to transform
-this (the record identifier string) into your preferred key. For example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">make_tuple</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">parts</span> <span class="o">=</span> <span class="n">identifier</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                      <span class="n">key_function</span><span class="o">=</span><span class="n">make_tuple</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
-<span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>  <span class="c1"># make a list of the keys</span>
-<span class="go">[(413, 324), (540, 792), (443, 348)]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="p">[(</span><span class="mi">540</span><span class="p">,</span> <span class="mi">792</span><span class="p">)]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
-<span class="go">&gt;EAS54_6_R1_2_1_540_792</span>
-<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">540</span><span class="p">,</span> <span class="mi">792</span><span class="p">)</span> <span class="ow">in</span> <span class="n">records</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;EAS54_6_R1_2_1_540_792&quot;</span> <span class="ow">in</span> <span class="n">records</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Missing&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
-<span class="go">None</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Another common use case would be indexing an NCBI style FASTA file,
-where you might want to extract the GI number from the FASTA identifier
-to use as the dictionary key.</p>
-<p>Notice that unlike the to_dict() function, here the key_function does
-not get given the full SeqRecord to use to generate the key. Doing so
-would impose a severe performance penalty as it would require the file
-to be completely parsed while building the index. Right now this is
-usually avoided.</p>
-<p>See Also: Bio.SeqIO.index_db() and Bio.SeqIO.to_dict()</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SeqIO.index_db">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">index_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index_filename</span></em>, <em class="sig-param"><span class="n">filenames</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">key_function</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.index_db" title="Permalink to this definition">¶</a></dt>
-<dd><p>Index several sequence files and return a dictionary like object.</p>
-<p>The index is stored in an SQLite database rather than in memory (as in the
-Bio.SeqIO.index(…) function).</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>index_filename - Where to store the SQLite index</p></li>
-<li><p>filenames - list of strings specifying file(s) to be indexed, or when
-indexing a single file this can be given as a string.
-(optional if reloading an existing index, but must match)</p></li>
-<li><p>format   - lower case string describing the file format
-(optional if reloading an existing index, but must match)</p></li>
-<li><p>alphabet - optional Alphabet object, useful when the sequence type
-cannot be automatically inferred from the file itself
-(e.g. format=”fasta” or “tab”)</p></li>
-<li><p>key_function - Optional callback function which when given a
-SeqRecord identifier string should return a unique
-key for the dictionary.</p></li>
-</ul>
-</dd>
-</dl>
-<p>This indexing function will return a dictionary like object, giving the
-SeqRecord objects as values:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GenBank/NC_000932.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;GenBank/NC_005816.faa&quot;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_gi</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">parts</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="n">i</span> <span class="o">=</span> <span class="n">parts</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;gi&quot;</span><span class="p">)</span>
-<span class="gp">... </span>    <span class="k">assert</span> <span class="n">i</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span>
-<span class="gp">... </span>    <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">idx_name</span> <span class="o">=</span> <span class="s2">&quot;:memory:&quot;</span> <span class="c1">#use an in memory SQLite DB for this test</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index_db</span><span class="p">(</span><span class="n">idx_name</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">,</span> <span class="n">get_gi</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
-<span class="go">95</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;7525076&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
-<span class="go">&#39;gi|7525076|ref|NP_051101.1| Ycf2 [Arabidopsis thaliana]&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;45478717&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
-<span class="go">&#39;gi|45478717|ref|NP_995572.1| pesticin [Yersinia pestis biovar Microtus str. 91001]&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>In this example the two files contain 85 and 10 records respectively.</p>
-<p>BGZF compressed files are supported, and detected automatically. Ordinary
-GZIP compressed files are not supported.</p>
-<p>See Also: Bio.SeqIO.index() and Bio.SeqIO.to_dict(), and the Python module
-glob which is useful for building lists of files.</p>
+<p>Note if providing a file handle, your code should close the handle
+after calling this function (to ensure the data gets flushed to disk).</p>
+<p>Returns the number of records written (as an integer).</p>
 </dd></dl>
 
 <dl class="py function">
@@ -937,21 +751,207 @@ OrderedDict so that you can always assume the record order is preserved.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="Bio.SeqIO.write">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sequences</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.write" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write complete set of sequences to a file.</p>
+<dt id="Bio.SeqIO.index">
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">format</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">key_function</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indexes a sequence file and returns a dictionary like object.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>sequences - A list (or iterator) of SeqRecord objects, or a single
-SeqRecord.</p></li>
-<li><p>handle    - File handle object to write to, or filename as string.</p></li>
-<li><p>format    - lower case string describing the file format to write.</p></li>
+<li><p>filename - string giving name of file to be indexed</p></li>
+<li><p>format   - lower case string describing the file format</p></li>
+<li><p>alphabet - optional Alphabet object, useful when the sequence type
+cannot be automatically inferred from the file itself
+(e.g. format=”fasta” or “tab”)</p></li>
+<li><p>key_function - Optional callback function which when given a
+SeqRecord identifier string should return a unique key for the
+dictionary.</p></li>
 </ul>
 </dd>
 </dl>
-<p>Note if providing a file handle, your code should close the handle
-after calling this function (to ensure the data gets flushed to disk).</p>
-<p>Returns the number of records written (as an integer).</p>
+<p>This indexing function will return a dictionary like object, giving the
+SeqRecord objects as values.</p>
+<p>As of Biopython 1.69, this will preserve the ordering of the records in
+file when iterating over the entries.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>  <span class="c1"># make a list of the keys</span>
+<span class="go">[&#39;EAS54_6_R1_2_1_413_324&#39;, &#39;EAS54_6_R1_2_1_540_792&#39;, &#39;EAS54_6_R1_2_1_443_348&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;EAS54_6_R1_2_1_540_792&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+<span class="go">&gt;EAS54_6_R1_2_1_540_792</span>
+<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;EAS54_6_R1_2_1_540_792&quot;</span> <span class="ow">in</span> <span class="n">records</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Missing&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If the file is BGZF compressed, this is detected automatically. Ordinary
+GZIP files are not supported:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;EAS54_6_R1_2_1_540_792&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>When you call the index function, it will scan through the file, noting
+the location of each record. When you access a particular record via the
+dictionary methods, the code will jump to the appropriate part of the
+file and then parse that section into a SeqRecord.</p>
+<p>Note that not all the input formats supported by Bio.SeqIO can be used
+with this index function. It is designed to work only with sequential
+file formats (e.g. “fasta”, “gb”, “fastq”) and is not suitable for any
+interlaced file format (e.g. alignment formats such as “clustal”).</p>
+<p>For small files, it may be more efficient to use an in memory Python
+dictionary, e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>  <span class="c1"># make a list of the keys</span>
+<span class="go">[&#39;EAS54_6_R1_2_1_413_324&#39;, &#39;EAS54_6_R1_2_1_540_792&#39;, &#39;EAS54_6_R1_2_1_443_348&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;EAS54_6_R1_2_1_540_792&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+<span class="go">&gt;EAS54_6_R1_2_1_540_792</span>
+<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
+</pre></div>
+</div>
+<p>As with the to_dict() function, by default the id string of each record
+is used as the key. You can specify a callback function to transform
+this (the record identifier string) into your preferred key. For example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">make_tuple</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">parts</span> <span class="o">=</span> <span class="n">identifier</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                      <span class="n">key_function</span><span class="o">=</span><span class="n">make_tuple</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>  <span class="c1"># make a list of the keys</span>
+<span class="go">[(413, 324), (540, 792), (443, 348)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="p">[(</span><span class="mi">540</span><span class="p">,</span> <span class="mi">792</span><span class="p">)]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+<span class="go">&gt;EAS54_6_R1_2_1_540_792</span>
+<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">540</span><span class="p">,</span> <span class="mi">792</span><span class="p">)</span> <span class="ow">in</span> <span class="n">records</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;EAS54_6_R1_2_1_540_792&quot;</span> <span class="ow">in</span> <span class="n">records</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Missing&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Another common use case would be indexing an NCBI style FASTA file,
+where you might want to extract the GI number from the FASTA identifier
+to use as the dictionary key.</p>
+<p>Notice that unlike the to_dict() function, here the key_function does
+not get given the full SeqRecord to use to generate the key. Doing so
+would impose a severe performance penalty as it would require the file
+to be completely parsed while building the index. Right now this is
+usually avoided.</p>
+<p>See Also: Bio.SeqIO.index_db() and Bio.SeqIO.to_dict()</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqIO.index_db">
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">index_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index_filename</span></em>, <em class="sig-param"><span class="n">filenames</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">key_function</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.index_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Index several sequence files and return a dictionary like object.</p>
+<p>The index is stored in an SQLite database rather than in memory (as in the
+Bio.SeqIO.index(…) function).</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>index_filename - Where to store the SQLite index</p></li>
+<li><p>filenames - list of strings specifying file(s) to be indexed, or when
+indexing a single file this can be given as a string.
+(optional if reloading an existing index, but must match)</p></li>
+<li><p>format   - lower case string describing the file format
+(optional if reloading an existing index, but must match)</p></li>
+<li><p>alphabet - optional Alphabet object, useful when the sequence type
+cannot be automatically inferred from the file itself
+(e.g. format=”fasta” or “tab”)</p></li>
+<li><p>key_function - Optional callback function which when given a
+SeqRecord identifier string should return a unique
+key for the dictionary.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This indexing function will return a dictionary like object, giving the
+SeqRecord objects as values:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GenBank/NC_000932.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;GenBank/NC_005816.faa&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_gi</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">parts</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">i</span> <span class="o">=</span> <span class="n">parts</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;gi&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">assert</span> <span class="n">i</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">idx_name</span> <span class="o">=</span> <span class="s2">&quot;:memory:&quot;</span> <span class="c1">#use an in memory SQLite DB for this test</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index_db</span><span class="p">(</span><span class="n">idx_name</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">,</span> <span class="n">get_gi</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="go">95</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;7525076&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;gi|7525076|ref|NP_051101.1| Ycf2 [Arabidopsis thaliana]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;45478717&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;gi|45478717|ref|NP_995572.1| pesticin [Yersinia pestis biovar Microtus str. 91001]&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this example the two files contain 85 and 10 records respectively.</p>
+<p>BGZF compressed files are supported, and detected automatically. Ordinary
+GZIP compressed files are not supported.</p>
+<p>See Also: Bio.SeqIO.index() and Bio.SeqIO.to_dict(), and the Python module
+glob which is useful for building lists of files.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqIO.convert">
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_file</span></em>, <em class="sig-param"><span class="n">in_format</span></em>, <em class="sig-param"><span class="n">out_file</span></em>, <em class="sig-param"><span class="n">out_format</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert between two sequence file formats, return number of records.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>in_file - an input handle or filename</p></li>
+<li><p>in_format - input file format, lower case string</p></li>
+<li><p>out_file - an output handle or filename</p></li>
+<li><p>out_format - output file format, lower case string</p></li>
+<li><p>alphabet - optional alphabet to assume</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>NOTE</strong> - If you provide an output filename, it will be opened which will
+overwrite any existing file without warning.</p>
+<p>The idea here is that while doing this will work:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">in_handle</span><span class="p">,</span> <span class="n">in_format</span><span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="n">out_format</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>it is shorter to write:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">in_handle</span><span class="p">,</span> <span class="n">in_format</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="n">out_format</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also, Bio.SeqIO.convert is faster for some conversions as it can make some
+optimisations.</p>
+<p>For example, going from a filename to a handle:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
+<span class="go">&gt;EAS54_6_R1_2_1_413_324</span>
+<span class="go">CCCTTCTTGTCTTCAGCGTTTCTCC</span>
+<span class="go">&gt;EAS54_6_R1_2_1_540_792</span>
+<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
+<span class="go">&gt;EAS54_6_R1_2_1_443_348</span>
+<span class="go">GTTGCTTCTGGCGTGGGTGGGGGGG</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>

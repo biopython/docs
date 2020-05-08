@@ -247,6 +247,23 @@ will be displayed using a color scheme.</p>
 the chromosome will be especially abundant in the counts, and you
 want to pick those out.</p>
 <dl class="py method">
+<dt id="Bio.Graphics.DisplayRepresentation.ChromosomeCounts.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">segment_names</span></em>, <em class="sig-param"><span class="n">color_scheme</span><span class="o">=</span><span class="default_value">{1, 1: Color(0.933333, 0.509804, 0.933333, 1), 2, 2: Color(0.294118, 0, 0.509804, 1), 3, 3: Color(0, 0, 1, 1), 4, 4: Color(0, 0.501961, 0, 1), 5, 5: Color(1, 1, 0, 1), 6, 6: Color(1, 0.647059, 0, 1), 7, 20: Color(1, 0, 0, 1)}</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Graphics.DisplayRepresentation.ChromosomeCounts.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a representation of chromosome counts.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>segment_names - An ordered list of all segment names along
+the chromosome. The count and other information will be added
+to these.</p></li>
+<li><p>color_scheme - A coloring scheme to use in the counts. This
+should be a dictionary mapping count ranges to colors (specified
+in reportlab.lib.colors).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Graphics.DisplayRepresentation.ChromosomeCounts.add_count">
 <code class="sig-name descname">add_count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">segment_name</span></em>, <em class="sig-param"><span class="n">count</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Graphics.DisplayRepresentation.ChromosomeCounts.add_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add counts to the given segment name.</p>
@@ -262,10 +279,37 @@ a single count.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt id="Bio.Graphics.DisplayRepresentation.ChromosomeCounts.scale_segment_value">
+<code class="sig-name descname">scale_segment_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">segment_name</span></em>, <em class="sig-param"><span class="n">scale_value</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Graphics.DisplayRepresentation.ChromosomeCounts.scale_segment_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide the counts for a segment by some kind of scale value.</p>
+<p>This is useful if segments aren’t represented by raw counts, but
+are instead counts divided by some number.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Graphics.DisplayRepresentation.ChromosomeCounts.add_label">
 <code class="sig-name descname">add_label</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">segment_name</span></em>, <em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Graphics.DisplayRepresentation.ChromosomeCounts.add_label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a label to a specific segment.</p>
 <p>Raises a KeyError is the specified segment name is not found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Graphics.DisplayRepresentation.ChromosomeCounts.set_scale">
+<code class="sig-name descname">set_scale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">segment_name</span></em>, <em class="sig-param"><span class="n">scale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Graphics.DisplayRepresentation.ChromosomeCounts.set_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the scale for a specific chromosome segment.</p>
+<p>By default all segments have the same scale – this allows scaling
+by the size of the segment.</p>
+<p>Raises a KeyError is the specified segment name is not found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Graphics.DisplayRepresentation.ChromosomeCounts.get_segment_info">
+<code class="sig-name descname">get_segment_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Graphics.DisplayRepresentation.ChromosomeCounts.get_segment_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the color and label info about the segments.</p>
+<p>Returns a list consiting of two tuples specifying the counts and
+label name for each segment. The list is ordered according to the
+original listing of names. Labels are set as None if no label
+was specified.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -284,33 +328,6 @@ fill in the chromosome. The information is derived from the
 label and count information, with counts transformed to the
 specified color map.</p>
 <p>Returns the chromosome with all of the segments added.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Graphics.DisplayRepresentation.ChromosomeCounts.get_segment_info">
-<code class="sig-name descname">get_segment_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Graphics.DisplayRepresentation.ChromosomeCounts.get_segment_info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve the color and label info about the segments.</p>
-<p>Returns a list consiting of two tuples specifying the counts and
-label name for each segment. The list is ordered according to the
-original listing of names. Labels are set as None if no label
-was specified.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Graphics.DisplayRepresentation.ChromosomeCounts.scale_segment_value">
-<code class="sig-name descname">scale_segment_value</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">segment_name</span></em>, <em class="sig-param"><span class="n">scale_value</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Graphics.DisplayRepresentation.ChromosomeCounts.scale_segment_value" title="Permalink to this definition">¶</a></dt>
-<dd><p>Divide the counts for a segment by some kind of scale value.</p>
-<p>This is useful if segments aren’t represented by raw counts, but
-are instead counts divided by some number.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Graphics.DisplayRepresentation.ChromosomeCounts.set_scale">
-<code class="sig-name descname">set_scale</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">segment_name</span></em>, <em class="sig-param"><span class="n">scale</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Graphics.DisplayRepresentation.ChromosomeCounts.set_scale" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the scale for a specific chromosome segment.</p>
-<p>By default all segments have the same scale – this allows scaling
-by the size of the segment.</p>
-<p>Raises a KeyError is the specified segment name is not found.</p>
 </dd></dl>
 
 </dd></dl>

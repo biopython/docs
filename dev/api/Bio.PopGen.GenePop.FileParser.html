@@ -247,6 +247,13 @@ here: <a class="reference external" href="http://wbiomed.curtin.edu.au/genepop/h
 </dd>
 </dl>
 <p>Functions:</p>
+<dl class="py function">
+<dt id="Bio.PopGen.GenePop.FileParser.read">
+<code class="sig-prename descclassname">Bio.PopGen.GenePop.FileParser.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a file containing a GenePop file.</p>
+<p>fname is a file name that contains a GenePop record.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt id="Bio.PopGen.GenePop.FileParser.FileRecord">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.PopGen.GenePop.FileParser.</code><code class="sig-name descname">FileRecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord" title="Permalink to this definition">¶</a></dt>
@@ -271,6 +278,51 @@ if the list ended).</p>
 </pre></div>
 </div>
 <dl class="py method">
+<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return (reconstructs) a GenePop textual representation.</p>
+<p>This might take a lot of memory.
+Marker length will be 3.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.start_read">
+<code class="sig-name descname">start_read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.start_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start parsing a file containing a GenePop file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.skip_header">
+<code class="sig-name descname">skip_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.skip_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Skip the Header. To be done after a re-open.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.seek_position">
+<code class="sig-name descname">seek_position</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pop</span></em>, <em class="sig-param"><span class="n">indiv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.seek_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Seek a certain position in the file.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>pop - pop position (0 is first)</p></li>
+<li><p>indiv - individual in pop</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.skip_population">
+<code class="sig-name descname">skip_population</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.skip_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Skip the current population. Returns true if there is another pop.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.PopGen.GenePop.FileParser.FileRecord.get_individual">
 <code class="sig-name descname">get_individual</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.get_individual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the next individual.</p>
@@ -283,13 +335,26 @@ Returns False if at end of file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.remove_loci_by_name">
-<code class="sig-name descname">remove_loci_by_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">names</span></em>, <em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.remove_loci_by_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a loci list (by name).</p>
+<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.remove_population">
+<code class="sig-name descname">remove_population</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pos</span></em>, <em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.remove_population" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a population (by position).</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>names - names</p></li>
-<li><p>fname - file to be created with loci removed</p></li>
+<li><p>pos - position</p></li>
+<li><p>fname - file to be created with population removed</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.remove_locus_by_position">
+<code class="sig-name descname">remove_locus_by_position</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pos</span></em>, <em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.remove_locus_by_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a locus by position.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>pos - position</p></li>
+<li><p>fname - file to be created with locus removed</p></li>
 </ul>
 </dd>
 </dl>
@@ -322,69 +387,18 @@ Returns False if at end of file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.remove_locus_by_position">
-<code class="sig-name descname">remove_locus_by_position</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pos</span></em>, <em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.remove_locus_by_position" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a locus by position.</p>
+<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.remove_loci_by_name">
+<code class="sig-name descname">remove_loci_by_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">names</span></em>, <em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.remove_loci_by_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a loci list (by name).</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>pos - position</p></li>
-<li><p>fname - file to be created with locus removed</p></li>
+<li><p>names - names</p></li>
+<li><p>fname - file to be created with loci removed</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.remove_population">
-<code class="sig-name descname">remove_population</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pos</span></em>, <em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.remove_population" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove a population (by position).</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>pos - position</p></li>
-<li><p>fname - file to be created with population removed</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.seek_position">
-<code class="sig-name descname">seek_position</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pop</span></em>, <em class="sig-param"><span class="n">indiv</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.seek_position" title="Permalink to this definition">¶</a></dt>
-<dd><p>Seek a certain position in the file.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>pop - pop position (0 is first)</p></li>
-<li><p>indiv - individual in pop</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.skip_header">
-<code class="sig-name descname">skip_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.skip_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Skip the Header. To be done after a re-open.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.skip_population">
-<code class="sig-name descname">skip_population</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.skip_population" title="Permalink to this definition">¶</a></dt>
-<dd><p>Skip the current population. Returns true if there is another pop.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PopGen.GenePop.FileParser.FileRecord.start_read">
-<code class="sig-name descname">start_read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.FileRecord.start_read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start parsing a file containing a GenePop file.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.PopGen.GenePop.FileParser.read">
-<code class="sig-prename descclassname">Bio.PopGen.GenePop.FileParser.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fname</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PopGen.GenePop.FileParser.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse a file containing a GenePop file.</p>
-<p>fname is a file name that contains a GenePop record.</p>
 </dd></dl>
 
 </div>

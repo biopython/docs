@@ -234,6 +234,64 @@
 <span id="bio-pdb-pdbio-module"></span><h1>Bio.PDB.PDBIO module<a class="headerlink" href="#module-Bio.PDB.PDBIO" title="Permalink to this headline">¶</a></h1>
 <p>Output of PDB files.</p>
 <dl class="py class">
+<dt id="Bio.PDB.PDBIO.Select">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.PDBIO.</code><code class="sig-name descname">Select</code><a class="headerlink" href="#Bio.PDB.PDBIO.Select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Select everything for PDB output (for use as a base class).</p>
+<p>Default selection (everything) during writing - can be used as base class
+to implement selective output. This selects which entities will be written out.</p>
+<dl class="py method">
+<dt id="Bio.PDB.PDBIO.Select.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.Select.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represent the output as a string for debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.PDBIO.Select.accept_model">
+<code class="sig-name descname">accept_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.Select.accept_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overload this to reject models for output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.PDBIO.Select.accept_chain">
+<code class="sig-name descname">accept_chain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">chain</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.Select.accept_chain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overload this to reject chains for output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.PDBIO.Select.accept_residue">
+<code class="sig-name descname">accept_residue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">residue</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.Select.accept_residue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overload this to reject residues for output.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.PDBIO.Select.accept_atom">
+<code class="sig-name descname">accept_atom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">atom</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.Select.accept_atom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overload this to reject atoms for output.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.PDB.PDBIO.StructureIO">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.PDBIO.</code><code class="sig-name descname">StructureIO</code><a class="headerlink" href="#Bio.PDB.PDBIO.StructureIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class to derive structure file format writers from.</p>
+<dl class="py method">
+<dt id="Bio.PDB.PDBIO.StructureIO.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.StructureIO.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.PDBIO.StructureIO.set_structure">
+<code class="sig-name descname">set_structure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pdb_object</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.StructureIO.set_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check what the user is providing and build a structure.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.PDB.PDBIO.PDBIO">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.PDBIO.</code><code class="sig-name descname">PDBIO</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">use_model_flag</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">is_pqr</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.PDBIO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Bio.PDB.PDBIO.StructureIO" title="Bio.PDB.PDBIO.StructureIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.PDB.PDBIO.StructureIO</span></code></a></p>
@@ -250,6 +308,20 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;bio-pdb-pdbio-out.pdb&quot;</span><span class="p">)</span>  <span class="c1"># tidy up</span>
 </pre></div>
 </div>
+<dl class="py method">
+<dt id="Bio.PDB.PDBIO.PDBIO.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">use_model_flag</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">is_pqr</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.PDBIO.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the PDBIO object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>use_model_flag</strong> (<em>int</em>) – if 1, force use of the MODEL record in output.</p></li>
+<li><p><strong>is_pqr</strong> (<em>Boolean</em>) – if True, build PQR file. Otherwise build PDB file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="Bio.PDB.PDBIO.PDBIO.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">file</em>, <em class="sig-param">select=&lt;Select all&gt;</em>, <em class="sig-param">write_end=True</em>, <em class="sig-param">preserve_atom_numbering=False</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.PDBIO.save" title="Permalink to this definition">¶</a></dt>
@@ -275,52 +347,6 @@ have the following methods:</p>
 <p>These methods should return 1 if the entity is to be
 written out, 0 otherwise.</p>
 <p>Typically select is a subclass of L{Select}.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="Bio.PDB.PDBIO.Select">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.PDBIO.</code><code class="sig-name descname">Select</code><a class="headerlink" href="#Bio.PDB.PDBIO.Select" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Select everything for PDB output (for use as a base class).</p>
-<p>Default selection (everything) during writing - can be used as base class
-to implement selective output. This selects which entities will be written out.</p>
-<dl class="py method">
-<dt id="Bio.PDB.PDBIO.Select.accept_atom">
-<code class="sig-name descname">accept_atom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">atom</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.Select.accept_atom" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overload this to reject atoms for output.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PDB.PDBIO.Select.accept_chain">
-<code class="sig-name descname">accept_chain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">chain</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.Select.accept_chain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overload this to reject chains for output.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PDB.PDBIO.Select.accept_model">
-<code class="sig-name descname">accept_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.Select.accept_model" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overload this to reject models for output.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PDB.PDBIO.Select.accept_residue">
-<code class="sig-name descname">accept_residue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">residue</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.Select.accept_residue" title="Permalink to this definition">¶</a></dt>
-<dd><p>Overload this to reject residues for output.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="Bio.PDB.PDBIO.StructureIO">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.PDBIO.</code><code class="sig-name descname">StructureIO</code><a class="headerlink" href="#Bio.PDB.PDBIO.StructureIO" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Base class to derive structure file format writers from.</p>
-<dl class="py method">
-<dt id="Bio.PDB.PDBIO.StructureIO.set_structure">
-<code class="sig-name descname">set_structure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pdb_object</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBIO.StructureIO.set_structure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check what the user is providing and build a structure.</p>
 </dd></dl>
 
 </dd></dl>

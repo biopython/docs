@@ -245,20 +245,54 @@ ascii alphabetic character, a-z, A-Z). e.g. “1”, “10A”, “1010b”, “
 <p>Dictionary <cite>protein_letters_3to1</cite> provides a mapping from the 3-letter amino
 acid codes found in PDB files to 1-letter codes.  The 3-letter codes include
 chemically modified residues.</p>
+<dl class="py function">
+<dt id="Bio.SCOP.Raf.normalize_letters">
+<code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">normalize_letters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">one_letter_code</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.normalize_letters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert RAF one-letter amino acid codes into IUPAC standard codes.</p>
+<p>Letters are uppercased, and “.” (“Unknown”) is converted to “X”.</p>
+</dd></dl>
+
 <dl class="py class">
-<dt id="Bio.SCOP.Raf.Res">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">Res</code><a class="headerlink" href="#Bio.SCOP.Raf.Res" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A single residue mapping from a RAF record.</p>
+<dt id="Bio.SCOP.Raf.SeqMapIndex">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">SeqMapIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>An RAF file index.</p>
+<p>The RAF file itself is about 50 MB. This index provides rapid, random
+access of RAF records without having to load the entire file into memory.</p>
+<p>The index key is a concatenation of the  PDB ID and chain ID. e.g
+“2drcA”, <code class="docutils literal notranslate"><span class="pre">&quot;155c_&quot;</span></code>. RAF uses an underscore to indicate blank
+chain IDs.</p>
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMapIndex.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the RAF file index.</p>
 <dl class="simple">
-<dt>Attributes:</dt><dd><ul class="simple">
-<li><p>chainid – A single character chain ID.</p></li>
-<li><p>resid   – The residue ID.</p></li>
-<li><p>atom    – amino acid one-letter code from ATOM records.</p></li>
-<li><p>seqres  – amino acid one-letter code from SEQRES records.</p></li>
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>filename  – The file to index</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMapIndex.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an item from the indexed file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMapIndex.getSeqMap">
+<code class="sig-name descname">getSeqMap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">residues</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex.getSeqMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the sequence map for a collection of residues.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>residues – A Residues instance, or a string that can be
+converted into a Residues instance.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -280,6 +314,24 @@ together with extend().</p>
 </dd>
 </dl>
 <dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMap.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">line</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMap.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">resid</span></em>, <em class="sig-param"><span class="n">chainid</span><span class="o">=</span><span class="default_value">'_'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the index of the SeqMap for the given resid and chainid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMap.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a single Res object from the SeqMap.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.SCOP.Raf.SeqMap.append">
 <code class="sig-name descname">append</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">res</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.append" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append another Res object onto the list of residue mappings.</p>
@@ -292,6 +344,18 @@ together with extend().</p>
 <p>Both SeqMaps must have the same PDB ID, PDB datestamp and
 RAF version.  The RAF flags are erased if they are inconsistent. This
 may happen when fragments are taken from different chains.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMap.__iadd__">
+<code class="sig-name descname">__iadd__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd><p>In place addition of SeqMap objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMap.__add__">
+<code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Addition of SeqMap objects.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -313,44 +377,28 @@ residue subset.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt id="Bio.SCOP.Raf.SeqMap.index">
-<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">resid</span></em>, <em class="sig-param"><span class="n">chainid</span><span class="o">=</span><span class="default_value">'_'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the index of the SeqMap for the given resid and chainid.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
-<dt id="Bio.SCOP.Raf.SeqMapIndex">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">SeqMapIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>An RAF file index.</p>
-<p>The RAF file itself is about 50 MB. This index provides rapid, random
-access of RAF records without having to load the entire file into memory.</p>
-<p>The index key is a concatenation of the  PDB ID and chain ID. e.g
-“2drcA”, <code class="docutils literal notranslate"><span class="pre">&quot;155c_&quot;</span></code>. RAF uses an underscore to indicate blank
-chain IDs.</p>
-<dl class="py method">
-<dt id="Bio.SCOP.Raf.SeqMapIndex.getSeqMap">
-<code class="sig-name descname">getSeqMap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">residues</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex.getSeqMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the sequence map for a collection of residues.</p>
+<dt id="Bio.SCOP.Raf.Res">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">Res</code><a class="headerlink" href="#Bio.SCOP.Raf.Res" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A single residue mapping from a RAF record.</p>
 <dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>residues – A Residues instance, or a string that can be
-converted into a Residues instance.</p></li>
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>chainid – A single character chain ID.</p></li>
+<li><p>resid   – The residue ID.</p></li>
+<li><p>atom    – amino acid one-letter code from ATOM records.</p></li>
+<li><p>seqres  – amino acid one-letter code from SEQRES records.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.Res.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.Res.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SCOP.Raf.normalize_letters">
-<code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">normalize_letters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">one_letter_code</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.normalize_letters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert RAF one-letter amino acid codes into IUPAC standard codes.</p>
-<p>Letters are uppercased, and “.” (“Unknown”) is converted to “X”.</p>
 </dd></dl>
 
 <dl class="py function">

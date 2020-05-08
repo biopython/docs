@@ -344,6 +344,205 @@ in next generation sequencing with multiple sequencing reads which are
 much shorter than the alignment, and where there is usually a consensus or
 reference sequence with special status.</p>
 <dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">annotations</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">column_annotations</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a new MultipleSeqAlignment object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>records - A list (or iterator) of SeqRecord objects, whose</dt><dd><p>sequences are all the same length.  This may be an be an
+empty list.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>alphabet - The alphabet for the whole alignment, typically a gapped</dt><dd><p>alphabet, which should be a super-set of the individual
+record alphabets.  If omitted, a consensus alphabet is
+used.</p>
+</dd>
+</dl>
+</li>
+<li><p>annotations - Information about the whole alignment (dictionary).</p></li>
+<li><dl class="simple">
+<dt>column_annotations - Per column annotation (restricted dictionary).</dt><dd><p>This holds Python sequences (lists, strings, tuples)
+whose length matches the number of columns. A typical
+use would be a secondary structure consensus string.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>You would normally load a MSA from a file using Bio.AlignIO, but you
+can do this from a list of SeqRecord objects too:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAAACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Alpha&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAA-CGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Beta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAAAGGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Gamma&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span>
+<span class="gp">... </span>                             <span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tool&quot;</span><span class="p">:</span> <span class="s2">&quot;demo&quot;</span><span class="p">},</span>
+<span class="gp">... </span>                             <span class="n">column_annotations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;stats&quot;</span><span class="p">:</span> <span class="s2">&quot;CCCXCCC&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">DNAAlphabet() alignment with 3 rows and 7 columns</span>
+<span class="go">AAAACGT Alpha</span>
+<span class="go">AAA-CGT Beta</span>
+<span class="go">AAAAGGT Gamma</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">annotations</span>
+<span class="go">{&#39;tool&#39;: &#39;demo&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">column_annotations</span>
+<span class="go">{&#39;stats&#39;: &#39;CCCXCCC&#39;}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.column_annotations">
+<em class="property">property </em><code class="sig-name descname">column_annotations</code><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.column_annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of per-letter-annotation for the sequence.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a multi-line string summary of the alignment.</p>
+<p>This output is intended to be readable, but large alignments are
+shown truncated.  A maximum of 20 rows (sequences) and 50 columns
+are shown, with the record identifiers.  This should fit nicely on a
+single screen. e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([],</span> <span class="n">Gapped</span><span class="p">(</span><span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGCTAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Beta&quot;</span><span class="p">,</span>  <span class="s2">&quot;ACT-CTAGCTAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGATAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">Gapped(IUPACUnambiguousDNA(), &#39;-&#39;) alignment with 3 rows and 12 columns</span>
+<span class="go">ACTGCTAGCTAG Alpha</span>
+<span class="go">ACT-CTAGCTAG Beta</span>
+<span class="go">ACTGCTAGATAG Gamma</span>
+</pre></div>
+</div>
+<p>See also the alignment’s format method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a representation of the object for debugging.</p>
+<p>The representation cannot be used with eval() to recreate the object,
+which is usually possible with simple python ojects.  For example:</p>
+<p>&lt;Bio.Align.MultipleSeqAlignment instance (2 records of length 14,
+SingleLetterAlphabet()) at a3c184c&gt;</p>
+<p>The hex string is the memory address of the object, see help(id).
+This provides a simple way to visually distinguish alignments of
+the same size.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.format">
+<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">format_spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the alignment as a string in the specified file format [DEPRECATED].</p>
+<p>This method is deprecated; instead of alignment.format(format_spec),
+please use format(alignment, format_spec) or an f-string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.__format__">
+<code class="sig-name descname">__format__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">format_spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.__format__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the alignment as a string in the specified file format.</p>
+<p>The format should be a lower case string supported as an output
+format by Bio.AlignIO (such as “fasta”, “clustal”, “phylip”,
+“stockholm”, etc), which is used to turn the alignment into a
+string.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([],</span> <span class="n">Gapped</span><span class="p">(</span><span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGCTAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Beta&quot;</span><span class="p">,</span>  <span class="s2">&quot;ACT-CTAGCTAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGATAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">align</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+<span class="go">&gt;Alpha</span>
+<span class="go">ACTGCTAGCTAG</span>
+<span class="go">&gt;Beta</span>
+<span class="go">ACT-CTAGCTAG</span>
+<span class="go">&gt;Gamma</span>
+<span class="go">ACTGCTAGATAG</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">align</span><span class="p">,</span> <span class="s2">&quot;phylip&quot;</span><span class="p">))</span>
+<span class="go"> 3 12</span>
+<span class="go">Alpha      ACTGCTAGCT AG</span>
+<span class="go">Beta       ACT-CTAGCT AG</span>
+<span class="go">Gamma      ACTGCTAGAT AG</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over alignment rows as SeqRecord objects.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([],</span> <span class="n">Gapped</span><span class="p">(</span><span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGCTAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Beta&quot;</span><span class="p">,</span>  <span class="s2">&quot;ACT-CTAGCTAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGATAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Alpha</span>
+<span class="go">ACTGCTAGCTAG</span>
+<span class="go">Beta</span>
+<span class="go">ACT-CTAGCTAG</span>
+<span class="go">Gamma</span>
+<span class="go">ACTGCTAGATAG</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.__len__">
+<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of sequences in the alignment.</p>
+<p>Use len(alignment) to get the number of sequences (i.e. the number of
+rows), and alignment.get_alignment_length() to get the length of the
+longest sequence (i.e. the number of columns).</p>
+<p>This is easy to remember if you think of the alignment as being like a
+list of SeqRecord objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.get_alignment_length">
+<code class="sig-name descname">get_alignment_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.get_alignment_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the maximum length of the alignment.</p>
+<p>All objects in the alignment should (hopefully) have the same
+length. This function will go through and find this length
+by finding the maximum length of sequences in the alignment.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([],</span> <span class="n">Gapped</span><span class="p">(</span><span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGCTAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Beta&quot;</span><span class="p">,</span>  <span class="s2">&quot;ACT-CTAGCTAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGATAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">get_alignment_length</span><span class="p">()</span>
+<span class="go">12</span>
+</pre></div>
+</div>
+<p>If you want to know the number of sequences in the alignment,
+use len(align) instead:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Align.MultipleSeqAlignment.add_sequence">
 <code class="sig-name descname">add_sequence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">descriptor</span></em>, <em class="sig-param"><span class="n">sequence</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">weight</span><span class="o">=</span><span class="default_value">1.0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.add_sequence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a sequence to the alignment.</p>
@@ -369,6 +568,48 @@ no weight, 1.0 =&gt; highest weight)</p></li>
 </dd>
 </dl>
 <p>In general providing a SeqRecord and calling .append is preferred.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.extend">
+<code class="sig-name descname">extend</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.extend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add more SeqRecord objects to the alignment as rows.</p>
+<p>They must all have the same length as the original alignment, and have
+alphabets compatible with the alignment’s alphabet. For example,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAAACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Alpha&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAA-CGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Beta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAAAGGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Gamma&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAAACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Delta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAA-GGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Epsilon&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>First we create a small alignment (three rows):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">DNAAlphabet() alignment with 3 rows and 7 columns</span>
+<span class="go">AAAACGT Alpha</span>
+<span class="go">AAA-CGT Beta</span>
+<span class="go">AAAAGGT Gamma</span>
+</pre></div>
+</div>
+<p>Now we can extend this alignment with another two rows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">DNAAlphabet() alignment with 5 rows and 7 columns</span>
+<span class="go">AAAACGT Alpha</span>
+<span class="go">AAA-CGT Beta</span>
+<span class="go">AAAAGGT Gamma</span>
+<span class="go">AAAACGT Delta</span>
+<span class="go">AAA-GGT Epsilon</span>
+</pre></div>
+</div>
+<p>Because the alignment object allows iteration over the rows as
+SeqRecords, you can use the extend method with a second alignment
+(provided its sequences have the same length as the original alignment).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -418,17 +659,98 @@ alphabet.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.Align.MultipleSeqAlignment.column_annotations">
-<em class="property">property </em><code class="sig-name descname">column_annotations</code><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.column_annotations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dictionary of per-letter-annotation for the sequence.</p>
+<dt id="Bio.Align.MultipleSeqAlignment.__add__">
+<code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine two alignments with the same number of rows by adding them.</p>
+<p>If you have two multiple sequence alignments (MSAs), there are two ways to think
+about adding them - by row or by column. Using the extend method adds by row.
+Using the addition operator adds by column. For example,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a1</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAAAC&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Alpha&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b1</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAA-C&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Beta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAAAG&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Gamma&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a2</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Alpha&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b2</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Beta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Gamma&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">left</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([</span><span class="n">a1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">c1</span><span class="p">],</span>
+<span class="gp">... </span>                            <span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tool&quot;</span><span class="p">:</span> <span class="s2">&quot;demo&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;start&quot;</span><span class="p">},</span>
+<span class="gp">... </span>                            <span class="n">column_annotations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;stats&quot;</span><span class="p">:</span> <span class="s2">&quot;CCCXC&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">right</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([</span><span class="n">a2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">c2</span><span class="p">],</span>
+<span class="gp">... </span>                            <span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;tool&quot;</span><span class="p">:</span> <span class="s2">&quot;demo&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;end&quot;</span><span class="p">},</span>
+<span class="gp">... </span>                            <span class="n">column_annotations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;stats&quot;</span><span class="p">:</span> <span class="s2">&quot;CC&quot;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Now, let’s look at these two alignments:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+<span class="go">DNAAlphabet() alignment with 3 rows and 5 columns</span>
+<span class="go">AAAAC Alpha</span>
+<span class="go">AAA-C Beta</span>
+<span class="go">AAAAG Gamma</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+<span class="go">DNAAlphabet() alignment with 3 rows and 2 columns</span>
+<span class="go">GT Alpha</span>
+<span class="go">GT Beta</span>
+<span class="go">GT Gamma</span>
+</pre></div>
+</div>
+<p>And add them:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">combined</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="n">right</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span>
+<span class="go">DNAAlphabet() alignment with 3 rows and 7 columns</span>
+<span class="go">AAAACGT Alpha</span>
+<span class="go">AAA-CGT Beta</span>
+<span class="go">AAAAGGT Gamma</span>
+</pre></div>
+</div>
+<p>For this to work, both alignments must have the same number of records (here
+they both have 3 rows):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">combined</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>The individual rows are SeqRecord objects, and these can be added together. Refer
+to the SeqRecord documentation for details of how the annotation is handled. This
+example is a special case in that both original alignments shared the same names,
+meaning when the rows are added they also get the same name.</p>
+<p>Any common annotations are preserved, but differing annotation is lost. This is
+the same behaviour used in the SeqRecord annotations and is designed to prevent
+accidental propagation of inappropriate values:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">combined</span><span class="o">.</span><span class="n">annotations</span>
+<span class="go">{&#39;tool&#39;: &#39;demo&#39;}</span>
+</pre></div>
+</div>
+<p>Similarly any common per-column-annotations are combined:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">combined</span><span class="o">.</span><span class="n">column_annotations</span>
+<span class="go">{&#39;stats&#39;: &#39;CCCXCCC&#39;}</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.Align.MultipleSeqAlignment.extend">
-<code class="sig-name descname">extend</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.extend" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add more SeqRecord objects to the alignment as rows.</p>
-<p>They must all have the same length as the original alignment, and have
-alphabets compatible with the alignment’s alphabet. For example,</p>
+<dt id="Bio.Align.MultipleSeqAlignment.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Access part of the alignment.</p>
+<p>Depending on the indices, you can get a SeqRecord object
+(representing a single row), a Seq object (for a single columns),
+a string (for a single characters) or another alignment
+(representing some part or all of the alignment).</p>
+<p>align[r,c] gives a single character as a string
+align[r] gives a row as a SeqRecord
+align[r,:] gives a row as a SeqRecord
+align[:,c] gives a column as a Seq (using the alignment’s alphabet)</p>
+<p>align[:] and align[:,:] give a copy of the alignment</p>
+<p>Anything else gives a sub alignment, e.g.
+align[0:2] or align[0:2,:] uses only row 0 and 1
+align[:,1:3] uses only columns 1 and 2
+align[0:2,1:3] uses only rows 0 &amp; 1 and only cols 1 &amp; 2</p>
+<p>We’ll use the following example alignment here for illustration:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
@@ -438,64 +760,87 @@ alphabets compatible with the alignment’s alphabet. For example,</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAAAGGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Gamma&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAAACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Delta&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">e</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAA-GGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Epsilon&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">],</span> <span class="n">generic_dna</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>First we create a small alignment (three rows):</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<p>You can access a row of the alignment as a SeqRecord using an integer
+index (think of the alignment as a list of SeqRecord objects here):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">first_record</span> <span class="o">=</span> <span class="n">align</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">first_record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="go">Alpha AAAACGT</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">last_record</span> <span class="o">=</span> <span class="n">align</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">last_record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">last_record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="go">Epsilon AAA-GGT</span>
+</pre></div>
+</div>
+<p>You can also access use python’s slice notation to create a sub-alignment
+containing only some of the SeqRecord objects:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub_alignment</span> <span class="o">=</span> <span class="n">align</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub_alignment</span><span class="p">)</span>
 <span class="go">DNAAlphabet() alignment with 3 rows and 7 columns</span>
-<span class="go">AAAACGT Alpha</span>
-<span class="go">AAA-CGT Beta</span>
-<span class="go">AAAAGGT Gamma</span>
-</pre></div>
-</div>
-<p>Now we can extend this alignment with another two rows:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
-<span class="go">DNAAlphabet() alignment with 5 rows and 7 columns</span>
-<span class="go">AAAACGT Alpha</span>
-<span class="go">AAA-CGT Beta</span>
 <span class="go">AAAAGGT Gamma</span>
 <span class="go">AAAACGT Delta</span>
 <span class="go">AAA-GGT Epsilon</span>
 </pre></div>
 </div>
-<p>Because the alignment object allows iteration over the rows as
-SeqRecords, you can use the extend method with a second alignment
-(provided its sequences have the same length as the original alignment).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Align.MultipleSeqAlignment.format">
-<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">format_spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the alignment as a string in the specified file format [DEPRECATED].</p>
-<p>This method is deprecated; instead of alignment.format(format_spec),
-please use format(alignment, format_spec) or an f-string.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Align.MultipleSeqAlignment.get_alignment_length">
-<code class="sig-name descname">get_alignment_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.get_alignment_length" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the maximum length of the alignment.</p>
-<p>All objects in the alignment should (hopefully) have the same
-length. This function will go through and find this length
-by finding the maximum length of sequences in the alignment.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([],</span> <span class="n">Gapped</span><span class="p">(</span><span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Alpha&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGCTAG&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Beta&quot;</span><span class="p">,</span>  <span class="s2">&quot;ACT-CTAGCTAG&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">add_sequence</span><span class="p">(</span><span class="s2">&quot;Gamma&quot;</span><span class="p">,</span> <span class="s2">&quot;ACTGCTAGATAG&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">get_alignment_length</span><span class="p">()</span>
-<span class="go">12</span>
+<p>This includes support for a step, i.e. align[start:end:step], which
+can be used to select every second sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub_alignment</span> <span class="o">=</span> <span class="n">align</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub_alignment</span><span class="p">)</span>
+<span class="go">DNAAlphabet() alignment with 3 rows and 7 columns</span>
+<span class="go">AAAACGT Alpha</span>
+<span class="go">AAAAGGT Gamma</span>
+<span class="go">AAA-GGT Epsilon</span>
 </pre></div>
 </div>
-<p>If you want to know the number of sequences in the alignment,
-use len(align) instead:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
-<span class="go">3</span>
+<p>Or to get a copy of the alignment with the rows in reverse order:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rev_alignment</span> <span class="o">=</span> <span class="n">align</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rev_alignment</span><span class="p">)</span>
+<span class="go">DNAAlphabet() alignment with 5 rows and 7 columns</span>
+<span class="go">AAA-GGT Epsilon</span>
+<span class="go">AAAACGT Delta</span>
+<span class="go">AAAAGGT Gamma</span>
+<span class="go">AAA-CGT Beta</span>
+<span class="go">AAAACGT Alpha</span>
 </pre></div>
 </div>
+<p>You can also use two indices to specify both rows and columns. Using simple
+integers gives you the entry as a single character string. e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="go">&#39;C&#39;</span>
+</pre></div>
+</div>
+<p>This is equivalent to:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
+<span class="go">&#39;C&#39;</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="go">&#39;C&#39;</span>
+</pre></div>
+</div>
+<p>To get a single column (as a string) use this syntax:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="go">&#39;CCGCG&#39;</span>
+</pre></div>
+</div>
+<p>Or, to get part of a column,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="go">&#39;CG&#39;</span>
+</pre></div>
+</div>
+<p>However, in general you get a sub-alignment,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+<span class="go">DNAAlphabet() alignment with 4 rows and 3 columns</span>
+<span class="go">-CG Beta</span>
+<span class="go">AGG Gamma</span>
+<span class="go">ACG Delta</span>
+<span class="go">-GG Epsilon</span>
+</pre></div>
+</div>
+<p>This should all seem familiar to anyone who has used the NumPy
+array or matrix objects.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -571,6 +916,216 @@ but backwards:</p>
 </pre></div>
 </div>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.Align.PairwiseAlignment">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.Align.</code><code class="sig-name descname">PairwiseAlignment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">score</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents a pairwise sequence alignment.</p>
+<p>Internally, the pairwise alignment is stored as the path through
+the traceback matrix, i.e. a tuple of pairs of indices corresponding
+to the vertices of the path in the traceback matrix.</p>
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">score</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a new PairwiseAlignment object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>target  - The first sequence, as a plain string, without gaps.</p></li>
+<li><p>query   - The second sequence, as a plain string, without gaps.</p></li>
+<li><dl class="simple">
+<dt>path    - The path through the traceback matrix, defining an</dt><dd><p>alignment.</p>
+</dd>
+</dl>
+</li>
+<li><p>score   - The alignment score.</p></li>
+</ul>
+</dd>
+</dl>
+<p>You would normally obtain a PairwiseAlignment object by iterating
+over a PairwiseAlignments object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.__eq__">
+<code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self==value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.__ne__">
+<code class="sig-name descname">__ne__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self!=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.__lt__">
+<code class="sig-name descname">__lt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&lt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.__le__">
+<code class="sig-name descname">__le__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__le__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&lt;=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.__gt__">
+<code class="sig-name descname">__gt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&gt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.__ge__">
+<code class="sig-name descname">__ge__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__ge__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&gt;=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.__format__">
+<code class="sig-name descname">__format__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">format_spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__format__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a human-readable representation of the alignment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.format">
+<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a human-readable representation of the alignment (DEPRECATED).</p>
+<p>This method is deprecated; instead of alignment.format(), please use
+format(alignment) or an f-string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignment.aligned">
+<em class="property">property </em><code class="sig-name descname">aligned</code><a class="headerlink" href="#Bio.Align.PairwiseAlignment.aligned" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the indices of subsequences aligned to each other.</p>
+<p>This property returns the start and end indices of subsequences
+in the target and query sequence that were aligned to each other.
+If the alignment between target (t) and query (q) consists of N
+chunks, you get two tuples of length N:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>(((t_start1, t_end1), (t_start2, t_end2), …, (t_startN, t_endN)),</dt><dd><p>((q_start1, q_end1), (q_start2, q_end2), …, (q_startN, q_endN)))</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>For example,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">PairwiseAligner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;GAACT&quot;</span><span class="p">,</span> <span class="s2">&quot;GAT&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">GAACT</span>
+<span class="go">||--|</span>
+<span class="go">GA--T</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">aligned</span>
+<span class="go">(((0, 2), (4, 5)), ((0, 2), (2, 3)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">GAACT</span>
+<span class="go">|-|-|</span>
+<span class="go">G-A-T</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">aligned</span>
+<span class="go">(((0, 1), (2, 3), (4, 5)), ((0, 1), (1, 2), (2, 3)))</span>
+</pre></div>
+</div>
+<p>Note that different alignments may have the same subsequences
+aligned to each other. In particular, this may occur if alignments
+differ from each other in terms of their gap placement only:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mismatch_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;AAACAAA&quot;</span><span class="p">,</span> <span class="s2">&quot;AAAGAAA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">AAAC-AAA</span>
+<span class="go">|||--|||</span>
+<span class="go">AAA-GAAA</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">aligned</span>
+<span class="go">(((0, 3), (4, 7)), ((0, 3), (4, 7)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">AAA-CAAA</span>
+<span class="go">|||--|||</span>
+<span class="go">AAAG-AAA</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">aligned</span>
+<span class="go">(((0, 3), (4, 7)), ((0, 3), (4, 7)))</span>
+</pre></div>
+</div>
+<p>The property can be used to identify alignments that are identical
+to each other in terms of their aligned sequences.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.Align.PairwiseAlignment.__hash__">
+<code class="sig-name descname">__hash__</code><em class="property"> = None</em><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.Align.PairwiseAlignments">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.Align.</code><code class="sig-name descname">PairwiseAlignments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seqA</span></em>, <em class="sig-param"><span class="n">seqB</span></em>, <em class="sig-param"><span class="n">score</span></em>, <em class="sig-param"><span class="n">paths</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Implements an iterator over pairwise alignments returned by the aligner.</p>
+<p>This class also supports indexing, which is fast for increasing indices,
+but may be slow for random access of a large number of alignments.</p>
+<p>Note that pairwise aligners can return an astronomical number of alignments,
+even for relatively short sequences, if they align poorly to each other. We
+therefore recommend to first check the number of alignments, accessible as
+len(alignments), which can be calculated quickly even if the number of
+alignments is very large.</p>
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignments.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">seqA</span></em>, <em class="sig-param"><span class="n">seqB</span></em>, <em class="sig-param"><span class="n">score</span></em>, <em class="sig-param"><span class="n">paths</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignments.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a new PairwiseAlignments object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>seqA  - The first sequence, as a plain string, without gaps.</p></li>
+<li><p>seqB  - The second sequence, as a plain string, without gaps.</p></li>
+<li><p>score - The alignment score.</p></li>
+<li><dl class="simple">
+<dt>paths - An iterator over the paths in the traceback matrix;</dt><dd><p>each path defines one alignment.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>You would normally obtain an PairwiseAlignments object by calling
+aligner.align(seqA, seqB), where aligner is a PairwiseAligner object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignments.__len__">
+<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignments.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignments.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignments.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignments.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignments.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAlignments.__next__">
+<code class="sig-name descname">__next__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignments.__next__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -711,6 +1266,22 @@ of the PairwiseAligner object by providing them as keyword arguemnts:</p>
 </pre></div>
 </div>
 <dl class="py method">
+<dt id="Bio.Align.PairwiseAligner.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">\*\*kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAligner.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a new PairwiseAligner with the keyword arguments as attributes.</p>
+<p>This function subclasses <cite>_aligners.PairwiseAligner</cite> and loops over all
+the keyword arguments that are given in the constructor to set them
+as attributes on the object. This will call the <cite>__setattr__</cite> method to
+do that.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.PairwiseAligner.__setattr__">
+<code class="sig-name descname">__setattr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">key</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAligner.__setattr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement setattr(self, name, value).</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Align.PairwiseAligner.align">
 <code class="sig-name descname">align</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">seqA</span></em>, <em class="sig-param"><span class="n">seqB</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAligner.align" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the alignments of two sequences using PairwiseAligner.</p>
@@ -722,101 +1293,6 @@ of the PairwiseAligner object by providing them as keyword arguemnts:</p>
 <dd><p>Return the alignments score of two sequences using PairwiseAligner.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt id="Bio.Align.PairwiseAlignment">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.Align.</code><code class="sig-name descname">PairwiseAlignment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">query</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">score</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Represents a pairwise sequence alignment.</p>
-<p>Internally, the pairwise alignment is stored as the path through
-the traceback matrix, i.e. a tuple of pairs of indices corresponding
-to the vertices of the path in the traceback matrix.</p>
-<dl class="py method">
-<dt id="Bio.Align.PairwiseAlignment.aligned">
-<em class="property">property </em><code class="sig-name descname">aligned</code><a class="headerlink" href="#Bio.Align.PairwiseAlignment.aligned" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the indices of subsequences aligned to each other.</p>
-<p>This property returns the start and end indices of subsequences
-in the target and query sequence that were aligned to each other.
-If the alignment between target (t) and query (q) consists of N
-chunks, you get two tuples of length N:</p>
-<blockquote>
-<div><dl class="simple">
-<dt>(((t_start1, t_end1), (t_start2, t_end2), …, (t_startN, t_endN)),</dt><dd><p>((q_start1, q_end1), (q_start2, q_end2), …, (q_startN, q_endN)))</p>
-</dd>
-</dl>
-</div></blockquote>
-<p>For example,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">PairwiseAligner</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;GAACT&quot;</span><span class="p">,</span> <span class="s2">&quot;GAT&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
-<span class="go">GAACT</span>
-<span class="go">||--|</span>
-<span class="go">GA--T</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">aligned</span>
-<span class="go">(((0, 2), (4, 5)), ((0, 2), (2, 3)))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
-<span class="go">GAACT</span>
-<span class="go">|-|-|</span>
-<span class="go">G-A-T</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">aligned</span>
-<span class="go">(((0, 1), (2, 3), (4, 5)), ((0, 1), (1, 2), (2, 3)))</span>
-</pre></div>
-</div>
-<p>Note that different alignments may have the same subsequences
-aligned to each other. In particular, this may occur if alignments
-differ from each other in terms of their gap placement only:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mismatch_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;AAACAAA&quot;</span><span class="p">,</span> <span class="s2">&quot;AAAGAAA&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
-<span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="go">AAAC-AAA</span>
-<span class="go">|||--|||</span>
-<span class="go">AAA-GAAA</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">aligned</span>
-<span class="go">(((0, 3), (4, 7)), ((0, 3), (4, 7)))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="go">AAA-CAAA</span>
-<span class="go">|||--|||</span>
-<span class="go">AAAG-AAA</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">aligned</span>
-<span class="go">(((0, 3), (4, 7)), ((0, 3), (4, 7)))</span>
-</pre></div>
-</div>
-<p>The property can be used to identify alignments that are identical
-to each other in terms of their aligned sequences.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Align.PairwiseAlignment.format">
-<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a human-readable representation of the alignment (DEPRECATED).</p>
-<p>This method is deprecated; instead of alignment.format(), please use
-format(alignment) or an f-string.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="Bio.Align.PairwiseAlignments">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.Align.</code><code class="sig-name descname">PairwiseAlignments</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seqA</span></em>, <em class="sig-param"><span class="n">seqB</span></em>, <em class="sig-param"><span class="n">score</span></em>, <em class="sig-param"><span class="n">paths</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Implements an iterator over pairwise alignments returned by the aligner.</p>
-<p>This class also supports indexing, which is fast for increasing indices,
-but may be slow for random access of a large number of alignments.</p>
-<p>Note that pairwise aligners can return an astronomical number of alignments,
-even for relatively short sequences, if they align poorly to each other. We
-therefore recommend to first check the number of alignments, accessible as
-len(alignments), which can be calculated quickly even if the number of
-alignments is very large.</p>
 </dd></dl>
 
 </div>

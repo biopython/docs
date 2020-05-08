@@ -253,18 +253,54 @@ the core class to deal with codon alignment in biopython.</p>
 </pre></div>
 </div>
 <dl class="py method">
-<dt id="Bio.codonalign.codonalignment.CodonAlignment.from_msa">
-<em class="property">classmethod </em><code class="sig-name descname">from_msa</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">align</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">CodonAlphabet(Standard)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.codonalign.codonalignment.CodonAlignment.from_msa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a MultipleSeqAlignment to CodonAlignment.</p>
-<p>Function to convert a MultipleSeqAlignment to CodonAlignment.
-It is the user’s responsibility to ensure all the requirement
-needed by CodonAlignment is met.</p>
+<dt id="Bio.codonalign.codonalignment.CodonAlignment.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">CodonAlphabet(Standard)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.codonalign.codonalignment.CodonAlignment.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.codonalign.codonalignment.CodonAlignment.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.codonalign.codonalignment.CodonAlignment.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a multi-line string summary of the alignment.</p>
+<p>This output is indicated to be readable, but large alignment
+is shown truncated. A maximum of 20 rows (sequences) and
+60 columns (20 codons) are shown, with the record identifiers.
+This should fit nicely on a single screen. e.g.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.codonalign.codonalignment.CodonAlignment.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.codonalign.codonalignment.CodonAlignment.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a CodonAlignment object for single indexing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.codonalign.codonalignment.CodonAlignment.__add__">
+<code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.codonalign.codonalignment.CodonAlignment.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combine two codonalignments with the same number of rows by adding them.</p>
+<p>The method also allows to combine a CodonAlignment object with a
+MultipleSeqAlignment object. The following rules apply:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>CodonAlignment + CodonAlignment -&gt; CodonAlignment</p></li>
+<li><p>CodonAlignment + MultipleSeqAlignment -&gt; MultipleSeqAlignment</p></li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
 <dt id="Bio.codonalign.codonalignment.CodonAlignment.get_aln_length">
 <code class="sig-name descname">get_aln_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.codonalign.codonalignment.CodonAlignment.get_aln_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get aligment length.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.codonalign.codonalignment.CodonAlignment.toMultipleSeqAlignment">
+<code class="sig-name descname">toMultipleSeqAlignment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.codonalign.codonalignment.CodonAlignment.toMultipleSeqAlignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the CodonAlignment to a MultipleSeqAlignment.</p>
+<p>Return a MultipleSeqAlignment containing all the
+SeqRecord in the CodonAlignment using Seq to store
+sequences</p>
 </dd></dl>
 
 <dl class="py method">
@@ -294,12 +330,12 @@ needed by CodonAlignment is met.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.codonalign.codonalignment.CodonAlignment.toMultipleSeqAlignment">
-<code class="sig-name descname">toMultipleSeqAlignment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.codonalign.codonalignment.CodonAlignment.toMultipleSeqAlignment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert the CodonAlignment to a MultipleSeqAlignment.</p>
-<p>Return a MultipleSeqAlignment containing all the
-SeqRecord in the CodonAlignment using Seq to store
-sequences</p>
+<dt id="Bio.codonalign.codonalignment.CodonAlignment.from_msa">
+<em class="property">classmethod </em><code class="sig-name descname">from_msa</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">align</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">CodonAlphabet(Standard)</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.codonalign.codonalignment.CodonAlignment.from_msa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a MultipleSeqAlignment to CodonAlignment.</p>
+<p>Function to convert a MultipleSeqAlignment to CodonAlignment.
+It is the user’s responsibility to ensure all the requirement
+needed by CodonAlignment is met.</p>
 </dd></dl>
 
 </dd></dl>

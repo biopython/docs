@@ -257,34 +257,34 @@ Bio.SeqIO internally:</p>
 </pre></div>
 </div>
 <dl class="py method">
-<dt id="Bio.SeqRecord.SeqRecord.format">
-<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the record as a string in the specified file format.</p>
-<p>The format should be a lower case string supported as an output
-format by Bio.SeqIO, which is used to turn the SeqRecord into a
-string.  e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                        <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">),</span>
-<span class="gp">... </span>                   <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;YP_025292.1&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HokC&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                   <span class="n">description</span><span class="o">=</span><span class="s2">&quot;toxic membrane protein&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
-<span class="go">&#39;&gt;YP_025292.1 toxic membrane protein\nMKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF\n&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
-<span class="go">&gt;YP_025292.1 toxic membrane protein</span>
-<span class="go">MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF</span>
-</pre></div>
-</div>
-<p>The Python print function automatically appends a new line, meaning
-in this example a blank line is shown.  If you look at the string
-representation you can see there is a trailing new line (shown as
-slash n) which is important when writing to a file or if
-concatenating multiple sequence strings together.</p>
-<p>Note that this method will NOT work on every possible file format
-supported by Bio.SeqIO (e.g. some are for multiple sequences only,
-and binary formats are not supported).</p>
+<dt id="Bio.SeqRecord.SeqRecord.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">'&lt;unknown id&gt;'</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'&lt;unknown name&gt;'</span></em>, <em class="sig-param"><span class="n">description</span><span class="o">=</span><span class="default_value">'&lt;unknown description&gt;'</span></em>, <em class="sig-param"><span class="n">dbxrefs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">features</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">annotations</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">letter_annotations</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a SeqRecord.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>seq         - Sequence, required (Seq, MutableSeq or UnknownSeq)</p></li>
+<li><p>id          - Sequence identifier, recommended (string)</p></li>
+<li><p>name        - Sequence name, optional (string)</p></li>
+<li><p>description - Sequence description, optional (string)</p></li>
+<li><p>dbxrefs     - Database cross references, optional (list of strings)</p></li>
+<li><p>features    - Any (sub)features, optional (list of SeqFeature objects)</p></li>
+<li><p>annotations - Dictionary of annotations for the whole sequence</p></li>
+<li><p>letter_annotations - Dictionary of per-letter-annotations, values
+should be strings, list or tuples of the same length as the full
+sequence.</p></li>
+</ul>
+</dd>
+</dl>
+<p>You will typically use Bio.SeqIO to read in sequences from files as
+SeqRecord objects.  However, you may want to create your own SeqRecord
+objects directly.</p>
+<p>Note that while an id is optional, we strongly recommend you supply a
+unique id string for each record.  This is especially important
+if you wish to write your sequences to a file.</p>
+<p>If you don’t have the actual sequence, but you do know its length,
+then using the UnknownSeq object from Bio.Seq is appropriate.</p>
+<p>You can create a ‘blank’ SeqRecord object, and then populate the
+attributes later.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -337,6 +337,521 @@ matches that of the SeqRecord’s sequence.  e.g.</p>
 </div>
 <p>Note that if replacing the record’s sequence with a sequence of a
 different length you must first clear the letter_annotations dict.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.seq">
+<em class="property">property </em><code class="sig-name descname">seq</code><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.seq" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sequence itself, as a Seq or MutableSeq object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a sub-sequence or an individual letter.</p>
+<p>Slicing, e.g. my_record[5:10], returns a new SeqRecord for
+that sub-sequence with some annotation preserved as follows:</p>
+<ul class="simple">
+<li><p>The name, id and description are kept as-is.</p></li>
+<li><p>Any per-letter-annotations are sliced to match the requested
+sub-sequence.</p></li>
+<li><p>Unless a stride is used, all those features which fall fully
+within the subsequence are included (with their locations
+adjusted accordingly). If you want to preserve any truncated
+features (e.g. GenBank/EMBL source features), you must
+explicitly add them to the new SeqRecord yourself.</p></li>
+<li><p>The annotations dictionary and the dbxrefs list are not used
+for the new SeqRecord, as in general they may not apply to the
+subsequence. If you want to preserve them, you must explicitly
+copy them to the new SeqRecord yourself.</p></li>
+</ul>
+<p>Using an integer index, e.g. my_record[5] is shorthand for
+extracting that letter from the sequence, my_record.seq[5].</p>
+<p>For example, consider this short protein and its secondary
+structure as encoded by the PDB (e.g. H for alpha helices),
+plus a simple feature for its histidine self phosphorylation
+site:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">FeatureLocation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAAGVKQLADDRTLLMAGVSHDLRTPLTRIRLAT&quot;</span>
+<span class="gp">... </span>                    <span class="s2">&quot;EMMSEQDGYLAESINKDIEECNAIIEQFIDYLR&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                    <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">),</span>
+<span class="gp">... </span>                <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;1JOY&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;EnvZ&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Homodimeric domain of EnvZ from E. coli&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;secondary_structure&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;  S  SSSSSSHHHHHTTTHHHHHHHHHHHHHHHHHHHHHHTHHHHHHHHHHHHHHHHHHHHHTT  &quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span><span class="o">.</span><span class="n">features</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SeqFeature</span><span class="p">(</span><span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span>
+<span class="gp">... </span>                    <span class="nb">type</span> <span class="o">=</span> <span class="s2">&quot;Site&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Now let’s have a quick look at the full record,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span>
+<span class="go">ID: 1JOY</span>
+<span class="go">Name: EnvZ</span>
+<span class="go">Description: Homodimeric domain of EnvZ from E. coli</span>
+<span class="go">Number of features: 1</span>
+<span class="go">Per letter annotation for: secondary_structure</span>
+<span class="go">Seq(&#39;MAAGVKQLADDRTLLMAGVSHDLRTPLTRIRLATEMMSEQDGYLAESINKDIEE...YLR&#39;, IUPACProtein())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;secondary_structure&quot;</span><span class="p">]</span>
+<span class="go">&#39;  S  SSSSSSHHHHHTTTHHHHHHHHHHHHHHHHHHHHHHTHHHHHHHHHHHHHHHHHHHHHTT  &#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+<span class="go">[20:21]</span>
+</pre></div>
+</div>
+<p>Now let’s take a sub sequence, here chosen as the first (fractured)
+alpha helix which includes the histidine phosphorylation site:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub</span> <span class="o">=</span> <span class="n">rec</span><span class="p">[</span><span class="mi">11</span><span class="p">:</span><span class="mi">41</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+<span class="go">ID: 1JOY</span>
+<span class="go">Name: EnvZ</span>
+<span class="go">Description: Homodimeric domain of EnvZ from E. coli</span>
+<span class="go">Number of features: 1</span>
+<span class="go">Per letter annotation for: secondary_structure</span>
+<span class="go">Seq(&#39;RTLLMAGVSHDLRTPLTRIRLATEMMSEQD&#39;, IUPACProtein())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sub</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;secondary_structure&quot;</span><span class="p">]</span>
+<span class="go">&#39;HHHHHTTTHHHHHHHHHHHHHHHHHHHHHH&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+<span class="go">[9:10]</span>
+</pre></div>
+</div>
+<p>You can also of course omit the start or end values, for
+example to get the first ten letters only:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rec</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="go">ID: 1JOY</span>
+<span class="go">Name: EnvZ</span>
+<span class="go">Description: Homodimeric domain of EnvZ from E. coli</span>
+<span class="go">Number of features: 0</span>
+<span class="go">Per letter annotation for: secondary_structure</span>
+<span class="go">Seq(&#39;MAAGVKQLAD&#39;, IUPACProtein())</span>
+</pre></div>
+</div>
+<p>Or for the last ten letters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:])</span>
+<span class="go">ID: 1JOY</span>
+<span class="go">Name: EnvZ</span>
+<span class="go">Description: Homodimeric domain of EnvZ from E. coli</span>
+<span class="go">Number of features: 0</span>
+<span class="go">Per letter annotation for: secondary_structure</span>
+<span class="go">Seq(&#39;IIEQFIDYLR&#39;, IUPACProtein())</span>
+</pre></div>
+</div>
+<p>If you omit both, then you get a copy of the original record (although
+lacking the annotations and dbxrefs):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rec</span><span class="p">[:])</span>
+<span class="go">ID: 1JOY</span>
+<span class="go">Name: EnvZ</span>
+<span class="go">Description: Homodimeric domain of EnvZ from E. coli</span>
+<span class="go">Number of features: 1</span>
+<span class="go">Per letter annotation for: secondary_structure</span>
+<span class="go">Seq(&#39;MAAGVKQLADDRTLLMAGVSHDLRTPLTRIRLATEMMSEQDGYLAESINKDIEE...YLR&#39;, IUPACProtein())</span>
+</pre></div>
+</div>
+<p>Finally, indexing with a simple integer is shorthand for pulling out
+that letter from the sequence directly:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">&#39;K&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span><span class="o">.</span><span class="n">seq</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">&#39;K&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over the letters in the sequence.</p>
+<p>For example, using Bio.SeqIO to read in a protein FASTA file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Fasta/loveliesbleeding.pro&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">amino</span> <span class="ow">in</span> <span class="n">record</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">amino</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">amino</span> <span class="o">==</span> <span class="s2">&quot;L&quot;</span><span class="p">:</span> <span class="k">break</span>
+<span class="go">X</span>
+<span class="go">A</span>
+<span class="go">G</span>
+<span class="go">L</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">L</span>
+</pre></div>
+</div>
+<p>This is just a shortcut for iterating over the sequence directly:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">amino</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">amino</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">amino</span> <span class="o">==</span> <span class="s2">&quot;L&quot;</span><span class="p">:</span> <span class="k">break</span>
+<span class="go">X</span>
+<span class="go">A</span>
+<span class="go">G</span>
+<span class="go">L</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">L</span>
+</pre></div>
+</div>
+<p>Note that this does not facilitate iteration together with any
+per-letter-annotation.  However, you can achieve that using the
+python zip function on the record (or its sequence) and the relevant
+per-letter-annotation:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="go">slxa_0001_1_0001_01 ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTNNNNNN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">))</span>
+<span class="go">[&#39;solexa_quality&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">nuc</span><span class="p">,</span> <span class="n">qual</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">rec</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;solexa_quality&quot;</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">qual</span> <span class="o">&gt;</span> <span class="mi">35</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nuc</span><span class="p">,</span> <span class="n">qual</span><span class="p">))</span>
+<span class="go">A 40</span>
+<span class="go">C 39</span>
+<span class="go">G 38</span>
+<span class="go">T 37</span>
+<span class="go">A 36</span>
+</pre></div>
+</div>
+<p>You may agree that using zip(rec.seq, …) is more explicit than using
+zip(rec, …) as shown above.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__contains__">
+<code class="sig-name descname">__contains__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">char</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implement the ‘in’ keyword, searches the sequence.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Fasta/sweetpea.nu&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;GAATTC&quot;</span> <span class="ow">in</span> <span class="n">record</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;AAA&quot;</span> <span class="ow">in</span> <span class="n">record</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>This essentially acts as a proxy for using “in” on the sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;GAATTC&quot;</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;AAA&quot;</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Note that you can also use Seq objects as the query,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAA&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">record</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAA&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span> <span class="ow">in</span> <span class="n">record</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>See also the Seq object’s __contains__ method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a human readable summary of the record and its annotation (string).</p>
+<p>The python built in function str works by calling the object’s ___str__
+method.  e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;YP_025292.1&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HokC&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                   <span class="n">description</span><span class="o">=</span><span class="s2">&quot;toxic membrane protein, small&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
+<span class="go">ID: YP_025292.1</span>
+<span class="go">Name: HokC</span>
+<span class="go">Description: toxic membrane protein, small</span>
+<span class="go">Number of features: 0</span>
+<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&#39;, IUPACProtein())</span>
+</pre></div>
+</div>
+<p>In this example you don’t actually need to call str explicity, as the
+print command does this automatically:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">ID: YP_025292.1</span>
+<span class="go">Name: HokC</span>
+<span class="go">Description: toxic membrane protein, small</span>
+<span class="go">Number of features: 0</span>
+<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&#39;, IUPACProtein())</span>
+</pre></div>
+</div>
+<p>Note that long sequences are shown truncated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a concise summary of the record for debugging (string).</p>
+<p>The python built in function repr works by calling the object’s ___repr__
+method.  e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MASRGVNKVILVGNLGQDPEVRYMPNGGAVANITLATSESWRDKAT&quot;</span>
+<span class="gp">... </span>                   <span class="o">+</span><span class="s2">&quot;GEMKEQTEWHRVVLFGKLAEVASEYLRKGSQVYIEGQLRTRKWTDQ&quot;</span>
+<span class="gp">... </span>                   <span class="o">+</span><span class="s2">&quot;SGQDRYTTEVVVNVGGTMQMLGGRQGGGAPAGGNIGGGQPQGGWGQ&quot;</span>
+<span class="gp">... </span>                   <span class="o">+</span><span class="s2">&quot;PQQPQGGNQFSGGAQSRPQQSAPAAPSNEPPMDFDDDIPF&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                   <span class="n">generic_protein</span><span class="p">),</span>
+<span class="gp">... </span>                <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;NP_418483.1&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;b4059&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">description</span><span class="o">=</span><span class="s2">&quot;ssDNA-binding protein&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                <span class="n">dbxrefs</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ASAP:13298&quot;</span><span class="p">,</span> <span class="s2">&quot;GI:16131885&quot;</span><span class="p">,</span> <span class="s2">&quot;GeneID:948570&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">rec</span><span class="p">))</span>
+<span class="go">SeqRecord(seq=Seq(&#39;MASRGVNKVILVGNLGQDPEVRYMPNGGAVANITLATSESWRDKATGEMKEQTE...IPF&#39;, ProteinAlphabet()), id=&#39;NP_418483.1&#39;, name=&#39;b4059&#39;, description=&#39;ssDNA-binding protein&#39;, dbxrefs=[&#39;ASAP:13298&#39;, &#39;GI:16131885&#39;, &#39;GeneID:948570&#39;])</span>
+</pre></div>
+</div>
+<p>At the python prompt you can also use this shorthand:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span>
+<span class="go">SeqRecord(seq=Seq(&#39;MASRGVNKVILVGNLGQDPEVRYMPNGGAVANITLATSESWRDKATGEMKEQTE...IPF&#39;, ProteinAlphabet()), id=&#39;NP_418483.1&#39;, name=&#39;b4059&#39;, description=&#39;ssDNA-binding protein&#39;, dbxrefs=[&#39;ASAP:13298&#39;, &#39;GI:16131885&#39;, &#39;GeneID:948570&#39;])</span>
+</pre></div>
+</div>
+<p>Note that long sequences are shown truncated. Also note that any
+annotations, letter_annotations and features are not shown (as they
+would lead to a very long string).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.format">
+<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the record as a string in the specified file format.</p>
+<p>The format should be a lower case string supported as an output
+format by Bio.SeqIO, which is used to turn the SeqRecord into a
+string.  e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;YP_025292.1&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HokC&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                   <span class="n">description</span><span class="o">=</span><span class="s2">&quot;toxic membrane protein&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="go">&#39;&gt;YP_025292.1 toxic membrane protein\nMKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF\n&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+<span class="go">&gt;YP_025292.1 toxic membrane protein</span>
+<span class="go">MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF</span>
+</pre></div>
+</div>
+<p>The Python print function automatically appends a new line, meaning
+in this example a blank line is shown.  If you look at the string
+representation you can see there is a trailing new line (shown as
+slash n) which is important when writing to a file or if
+concatenating multiple sequence strings together.</p>
+<p>Note that this method will NOT work on every possible file format
+supported by Bio.SeqIO (e.g. some are for multiple sequences only,
+and binary formats are not supported).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__format__">
+<code class="sig-name descname">__format__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">format_spec</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__format__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the record as a string in the specified file format.</p>
+<p>This method supports the Python format() function and f-strings.
+The format_spec should be a lower case string supported by
+Bio.SeqIO as a text output file format. Requesting a binary file
+format raises a ValueError. e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&quot;</span><span class="p">),</span>
+<span class="gp">... </span>                   <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;YP_025292.1&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;HokC&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                   <span class="n">description</span><span class="o">=</span><span class="s2">&quot;toxic membrane protein&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="go">&#39;&gt;YP_025292.1 toxic membrane protein\nMKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF\n&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Here is </span><span class="si">{</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> in FASTA format:</span><span class="se">\n</span><span class="si">{</span><span class="n">record</span><span class="si">:</span><span class="s2">fasta</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Here is YP_025292.1 in FASTA format:</span>
+<span class="go">&gt;YP_025292.1 toxic membrane protein</span>
+<span class="go">MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF</span>
+</pre></div>
+</div>
+<p>See also the SeqRecord’s format() method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__len__">
+<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the length of the sequence.</p>
+<p>For example, using Bio.SeqIO to read in a FASTA nucleotide file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Fasta/sweetpea.nu&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">309</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">309</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__lt__">
+<code class="sig-name descname">__lt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the less-than operand (not implemented).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__le___">
+<code class="sig-name descname">__le___</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__le___" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the less-than-or-equal-to operand (not implemented).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__eq__">
+<code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the equal-to operand (not implemented).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__ne__">
+<code class="sig-name descname">__ne__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the not-equal-to operand (not implemented).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__gt__">
+<code class="sig-name descname">__gt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the greater-than operand (not implemented).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__ge__">
+<code class="sig-name descname">__ge__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__ge__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define the greater-than-or-equal-to operand (not implemented).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__bool__">
+<code class="sig-name descname">__bool__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__bool__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean value of an instance of this class (True).</p>
+<p>This behaviour is for backwards compatibility, since until the
+__len__ method was added, a SeqRecord always evaluated as True.</p>
+<p>Note that in comparison, a Seq object will evaluate to False if it
+has a zero length sequence.</p>
+<p>WARNING: The SeqRecord may in future evaluate to False when its
+sequence is of zero length (in order to better match the Seq
+object behaviour)!</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__add__">
+<code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add another sequence or string to this sequence.</p>
+<p>The other sequence can be a SeqRecord object, a Seq object (or
+similar, e.g. a MutableSeq) or a plain Python string. If you add
+a plain string or a Seq (like) object, the new SeqRecord will simply
+have this appended to the existing data. However, any per letter
+annotation will be lost:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="go">slxa_0001_1_0001_01 ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTNNNNNN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">))</span>
+<span class="go">[&#39;solexa_quality&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new</span> <span class="o">=</span> <span class="n">record</span> <span class="o">+</span> <span class="s2">&quot;ACT&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">new</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="go">slxa_0001_1_0001_01 ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTNNNNNNACT</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">))</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+<p>The new record will attempt to combine the annotation, but for any
+ambiguities (e.g. different names) it defaults to omitting that
+annotation.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;GenBank/pBAD30.gb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">plasmid</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">plasmid</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">plasmid</span><span class="p">)))</span>
+<span class="go">pBAD30 4923</span>
+</pre></div>
+</div>
+<p>Now let’s cut the plasmid into two pieces, and join them back up the
+other way round (i.e. shift the starting point on this plasmid, have
+a look at the annotated features in the original file to see why this
+particular split point might make sense):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">left</span> <span class="o">=</span> <span class="n">plasmid</span><span class="p">[:</span><span class="mi">3765</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">right</span> <span class="o">=</span> <span class="n">plasmid</span><span class="p">[</span><span class="mi">3765</span><span class="p">:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new</span> <span class="o">=</span> <span class="n">right</span> <span class="o">+</span> <span class="n">left</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">new</span><span class="p">)))</span>
+<span class="go">pBAD30 4923</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">seq</span> <span class="o">+</span> <span class="n">left</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">features</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">features</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>When we add the left and right SeqRecord objects, their annotation
+is all consistent, so it is all conserved in the new SeqRecord:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">left</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">right</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">plasmid</span><span class="o">.</span><span class="n">id</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">left</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">right</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">plasmid</span><span class="o">.</span><span class="n">name</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="o">.</span><span class="n">description</span> <span class="o">==</span> <span class="n">plasmid</span><span class="o">.</span><span class="n">description</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="o">.</span><span class="n">annotations</span> <span class="o">==</span> <span class="n">left</span><span class="o">.</span><span class="n">annotations</span> <span class="o">==</span> <span class="n">right</span><span class="o">.</span><span class="n">annotations</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="o">.</span><span class="n">letter_annotations</span> <span class="o">==</span> <span class="n">plasmid</span><span class="o">.</span><span class="n">letter_annotations</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="o">.</span><span class="n">dbxrefs</span> <span class="o">==</span> <span class="n">left</span><span class="o">.</span><span class="n">dbxrefs</span> <span class="o">==</span> <span class="n">right</span><span class="o">.</span><span class="n">dbxrefs</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>However, we should point out that when we sliced the SeqRecord,
+any annotations dictionary or dbxrefs list entries were lost.
+You can explicitly copy them like this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="o">.</span><span class="n">annotations</span> <span class="o">=</span> <span class="n">plasmid</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="o">.</span><span class="n">dbxrefs</span> <span class="o">=</span> <span class="n">plasmid</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">[:]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.__radd__">
+<code class="sig-name descname">__radd__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__radd__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add another sequence or string to this sequence (from the left).</p>
+<p>This method handles adding a Seq object (or similar, e.g. MutableSeq)
+or a plain Python string (on the left) to a SeqRecord (on the right).
+See the __add__ method for more details, but for example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="go">slxa_0001_1_0001_01 ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTNNNNNN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">))</span>
+<span class="go">[&#39;solexa_quality&#39;]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new</span> <span class="o">=</span> <span class="s2">&quot;ACT&quot;</span> <span class="o">+</span> <span class="n">record</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">new</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="go">slxa_0001_1_0001_01 ACTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTNNNNNN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">new</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">))</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqRecord.SeqRecord.upper">
+<code class="sig-name descname">upper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.upper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the record with an upper case sequence.</p>
+<p>All the annotation is preserved unchanged. e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;acgtACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                   <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Made up for this example&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fastq&quot;</span><span class="p">))</span>
+<span class="go">@Test Made up for this example</span>
+<span class="go">ACGTACGT</span>
+<span class="go">+</span>
+<span class="go">&quot;#$%&amp;&#39;()</span>
+</pre></div>
+</div>
+<p>Naturally, there is a matching lower method:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fastq&quot;</span><span class="p">))</span>
+<span class="go">@Test Made up for this example</span>
+<span class="go">acgtacgt</span>
+<span class="go">+</span>
+<span class="go">&quot;#$%&amp;&#39;()</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -497,11 +1012,10 @@ exception:</p>
 </div>
 </dd></dl>
 
-<dl class="py method">
-<dt id="Bio.SeqRecord.SeqRecord.seq">
-<em class="property">property </em><code class="sig-name descname">seq</code><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.seq" title="Permalink to this definition">¶</a></dt>
-<dd><p>The sequence itself, as a Seq or MutableSeq object.</p>
-</dd></dl>
+<dl class="py attribute">
+<dt id="Bio.SeqRecord.SeqRecord.__hash__">
+<code class="sig-name descname">__hash__</code><em class="property"> = None</em><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt id="Bio.SeqRecord.SeqRecord.translate">
@@ -540,34 +1054,6 @@ letter_annotations as dictionaries, True to keep that of the parent
 <span class="go">&gt;phya translation</span>
 <span class="go">QAARFLFMKNKVRMIVDCHAKHVKVLQDEKLPFDLTLCGSTLRAPHSCHLQYMANMDSIA</span>
 <span class="go">SLVMAVVVNDSDEDGDSRDAVLPQKKKRLWGLVVCHNTTPRFV</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SeqRecord.SeqRecord.upper">
-<code class="sig-name descname">upper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqRecord.SeqRecord.upper" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a copy of the record with an upper case sequence.</p>
-<p>All the annotation is preserved unchanged. e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;acgtACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                   <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Made up for this example&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fastq&quot;</span><span class="p">))</span>
-<span class="go">@Test Made up for this example</span>
-<span class="go">ACGTACGT</span>
-<span class="go">+</span>
-<span class="go">&quot;#$%&amp;&#39;()</span>
-</pre></div>
-</div>
-<p>Naturally, there is a matching lower method:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fastq&quot;</span><span class="p">))</span>
-<span class="go">@Test Made up for this example</span>
-<span class="go">acgtacgt</span>
-<span class="go">+</span>
-<span class="go">&quot;#$%&amp;&#39;()</span>
 </pre></div>
 </div>
 </dd></dl>

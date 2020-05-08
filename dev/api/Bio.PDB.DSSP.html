@@ -374,30 +374,13 @@ you may need to provide the name of your DSSP executable:</p>
 </tbody>
 </table>
 </div></blockquote>
-<dl class="py class">
-<dt id="Bio.PDB.DSSP.DSSP">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.DSSP.</code><code class="sig-name descname">DSSP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">in_file</span></em>, <em class="sig-param"><span class="n">dssp</span><span class="o">=</span><span class="default_value">'dssp'</span></em>, <em class="sig-param"><span class="n">acc_array</span><span class="o">=</span><span class="default_value">'Sander'</span></em>, <em class="sig-param"><span class="n">file_type</span><span class="o">=</span><span class="default_value">'PDB'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.DSSP.DSSP" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="Bio.PDB.AbstractPropertyMap.html#Bio.PDB.AbstractPropertyMap.AbstractResiduePropertyMap" title="Bio.PDB.AbstractPropertyMap.AbstractResiduePropertyMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.PDB.AbstractPropertyMap.AbstractResiduePropertyMap</span></code></a></p>
-<p>Run DSSP and parse secondary structure and accessibility.</p>
-<p>Run DSSP on a pdb file, and provide a handle to the
-DSSP secondary structure and accessibility.</p>
-<p><strong>Note</strong> that DSSP can only handle one model.</p>
-<p class="rubric">Examples</p>
-<p>How DSSP could be used:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.PDB</span> <span class="kn">import</span> <span class="n">PDBParser</span>
-<span class="kn">from</span> <span class="nn">Bio.PDB.DSSP</span> <span class="kn">import</span> <span class="n">DSSP</span>
-<span class="n">p</span> <span class="o">=</span> <span class="n">PDBParser</span><span class="p">()</span>
-<span class="n">structure</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">&quot;1MOT&quot;</span><span class="p">,</span> <span class="s2">&quot;/local-pdb/1mot.pdb&quot;</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">structure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">dssp</span> <span class="o">=</span> <span class="n">DSSP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;/local-pdb/1mot.pdb&quot;</span><span class="p">)</span>
-<span class="c1"># DSSP data is accessed by a tuple (chain_id, res_id)</span>
-<span class="n">a_key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dssp</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">2</span><span class="p">]</span>
-<span class="c1"># (dssp index, amino acid, secondary structure, relative ASA, phi, psi,</span>
-<span class="c1"># NH_O_1_relidx, NH_O_1_energy, O_NH_1_relidx, O_NH_1_energy,</span>
-<span class="c1"># NH_O_2_relidx, NH_O_2_energy, O_NH_2_relidx, O_NH_2_energy)</span>
-<span class="n">dssp</span><span class="p">[</span><span class="n">a_key</span><span class="p">]</span>
-</pre></div>
-</div>
+<dl class="py function">
+<dt id="Bio.PDB.DSSP.ss_to_index">
+<code class="sig-prename descclassname">Bio.PDB.DSSP.</code><code class="sig-name descname">ss_to_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ss</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.DSSP.ss_to_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Secondary structure symbol to index.</p>
+<p>H=0
+E=1
+C=2</p>
 </dd></dl>
 
 <dl class="py function">
@@ -448,13 +431,54 @@ aa, ss and accessibility, from a DSSP file.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt id="Bio.PDB.DSSP.ss_to_index">
-<code class="sig-prename descclassname">Bio.PDB.DSSP.</code><code class="sig-name descname">ss_to_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ss</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.DSSP.ss_to_index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Secondary structure symbol to index.</p>
-<p>H=0
-E=1
-C=2</p>
+<dl class="py class">
+<dt id="Bio.PDB.DSSP.DSSP">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.DSSP.</code><code class="sig-name descname">DSSP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">in_file</span></em>, <em class="sig-param"><span class="n">dssp</span><span class="o">=</span><span class="default_value">'dssp'</span></em>, <em class="sig-param"><span class="n">acc_array</span><span class="o">=</span><span class="default_value">'Sander'</span></em>, <em class="sig-param"><span class="n">file_type</span><span class="o">=</span><span class="default_value">'PDB'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.DSSP.DSSP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.PDB.AbstractPropertyMap.html#Bio.PDB.AbstractPropertyMap.AbstractResiduePropertyMap" title="Bio.PDB.AbstractPropertyMap.AbstractResiduePropertyMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.PDB.AbstractPropertyMap.AbstractResiduePropertyMap</span></code></a></p>
+<p>Run DSSP and parse secondary structure and accessibility.</p>
+<p>Run DSSP on a pdb file, and provide a handle to the
+DSSP secondary structure and accessibility.</p>
+<p><strong>Note</strong> that DSSP can only handle one model.</p>
+<p class="rubric">Examples</p>
+<p>How DSSP could be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.PDB</span> <span class="kn">import</span> <span class="n">PDBParser</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.DSSP</span> <span class="kn">import</span> <span class="n">DSSP</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">PDBParser</span><span class="p">()</span>
+<span class="n">structure</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">&quot;1MOT&quot;</span><span class="p">,</span> <span class="s2">&quot;/local-pdb/1mot.pdb&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">structure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dssp</span> <span class="o">=</span> <span class="n">DSSP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;/local-pdb/1mot.pdb&quot;</span><span class="p">)</span>
+<span class="c1"># DSSP data is accessed by a tuple (chain_id, res_id)</span>
+<span class="n">a_key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dssp</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1"># (dssp index, amino acid, secondary structure, relative ASA, phi, psi,</span>
+<span class="c1"># NH_O_1_relidx, NH_O_1_energy, O_NH_1_relidx, O_NH_1_energy,</span>
+<span class="c1"># NH_O_2_relidx, NH_O_2_energy, O_NH_2_relidx, O_NH_2_energy)</span>
+<span class="n">dssp</span><span class="p">[</span><span class="n">a_key</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="Bio.PDB.DSSP.DSSP.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">in_file</span></em>, <em class="sig-param"><span class="n">dssp</span><span class="o">=</span><span class="default_value">'dssp'</span></em>, <em class="sig-param"><span class="n">acc_array</span><span class="o">=</span><span class="default_value">'Sander'</span></em>, <em class="sig-param"><span class="n">file_type</span><span class="o">=</span><span class="default_value">'PDB'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.DSSP.DSSP.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a DSSP object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>model</strong><span class="classifier">Model</span></dt><dd><p>The first model of the structure</p>
+</dd>
+<dt><strong>in_file</strong><span class="classifier">string</span></dt><dd><p>Either a PDB file or a DSSP file.</p>
+</dd>
+<dt><strong>dssp</strong><span class="classifier">string</span></dt><dd><p>The dssp executable (ie. the argument to subprocess)</p>
+</dd>
+<dt><strong>acc_array</strong><span class="classifier">string</span></dt><dd><p>Accessible surface area (ASA) from either Miller et al. (1987),
+Sander &amp; Rost (1994), or Wilke: Tien et al. 2013, as string
+Sander/Wilke/Miller. Defaults to Sander.</p>
+</dd>
+<dt><strong>file_type: string</strong></dt><dd><p>File type switch, either PDB or DSSP with PDB as default.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </div>

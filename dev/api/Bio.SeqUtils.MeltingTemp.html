@@ -388,6 +388,153 @@ by ‘1’:</p>
 </pre></div>
 </div>
 <dl class="py function">
+<dt id="Bio.SeqUtils.MeltingTemp.make_table">
+<code class="sig-prename descclassname">Bio.SeqUtils.MeltingTemp.</code><code class="sig-name descname">make_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">oldtable</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">values</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.MeltingTemp.make_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a table with thermodynamic parameters (as dictionary).</p>
+<p>Parameters:
+oldtable: An existing dictionary with thermodynamic parameters.
+values: A dictionary with new or updated values.</p>
+<p>E.g., to replace the initiation parameters in the Sugimoto ‘96 dataset with
+the initiation parameters from Allawi &amp; SantaLucia ‘97:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils.MeltingTemp</span> <span class="kn">import</span> <span class="n">make_table</span><span class="p">,</span> <span class="n">DNA_NN2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">DNA_NN2</span>                               <span class="c1"># Sugimoto &#39;96</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="p">[</span><span class="s1">&#39;init_A/T&#39;</span><span class="p">]</span>
+<span class="go">(0, 0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">newtable</span> <span class="o">=</span> <span class="n">make_table</span><span class="p">(</span><span class="n">oldtable</span><span class="o">=</span><span class="n">DNA_NN2</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+<span class="gp">... </span>                      <span class="s1">&#39;init_A/T&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.1</span><span class="p">),</span>
+<span class="gp">... </span>                      <span class="s1">&#39;init_G/C&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.8</span><span class="p">)})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.1f</span><span class="s2">, </span><span class="si">%0.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">newtable</span><span class="p">[</span><span class="s1">&#39;init_A/T&#39;</span><span class="p">])</span>
+<span class="go">2.3, 4.1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqUtils.MeltingTemp.salt_correction">
+<code class="sig-prename descclassname">Bio.SeqUtils.MeltingTemp.</code><code class="sig-name descname">salt_correction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Na</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">K</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">Tris</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">Mg</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">dNTPs</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">seq</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.MeltingTemp.salt_correction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate a term to correct Tm for salt ions.</p>
+<p>Depending on the Tm calculation, the term will correct Tm or entropy. To
+calculate corrected Tm values, different operations need to be applied:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>methods 1-4: Tm(new) = Tm(old) + corr</p></li>
+<li><p>method 5: deltaS(new) = deltaS(old) + corr</p></li>
+<li><p>methods 6+7: Tm(new) = 1/(1/Tm(old) + corr)</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Parameters:</dt><dd><ul class="simple">
+<li><p>Na, K, Tris, Mg, dNTPS: Millimolar concentration of respective ion. To
+have a simple ‘salt correction’, just pass Na. If any of K, Tris, Mg and
+dNTPS is non-zero, a ‘sodium-equivalent’ concentration is calculated
+according to von Ahsen et al. (2001, Clin Chem 47: 1956-1961):
+[Na_eq] = [Na+] + [K+] + [Tris]/2 + 120*([Mg2+] - [dNTPs])^0.5
+If [dNTPs] &gt;= [Mg2+]: [Na_eq] = [Na+] + [K+] + [Tris]/2</p></li>
+<li><p>method: Which method to be applied. Methods 1-4 correct Tm, method 5
+corrects deltaS, methods 6 and 7 correct 1/Tm. The methods are:</p>
+<ol class="arabic simple">
+<li><p>16.6 x log[Na+]
+(Schildkraut &amp; Lifson (1965), Biopolymers 3: 195-208)</p></li>
+<li><p>16.6 x log([Na+]/(1.0 + 0.7*[Na+]))
+(Wetmur (1991), Crit Rev Biochem Mol Biol 126: 227-259)</p></li>
+<li><p>12.5 x log(Na+]
+(SantaLucia et al. (1996), Biochemistry 35: 3555-3562</p></li>
+<li><p>11.7 x log[Na+]
+(SantaLucia (1998), Proc Natl Acad Sci USA 95: 1460-1465</p></li>
+<li><p>Correction for deltaS: 0.368 x (N-1) x ln[Na+]
+(SantaLucia (1998), Proc Natl Acad Sci USA 95: 1460-1465)</p></li>
+<li><p>(4.29(%GC)-3.95)x1e-5 x ln[Na+] + 9.40e-6 x ln[Na+]^2
+(Owczarzy et al. (2004), Biochemistry 43: 3537-3554)</p></li>
+<li><p>Complex formula with decision tree and 7 empirical constants.
+Mg2+ is corrected for dNTPs binding (if present)
+(Owczarzy et al. (2008), Biochemistry 47: 5336-5353)</p></li>
+</ol>
+</li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">MeltingTemp</span> <span class="k">as</span> <span class="n">mt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">salt_correction</span><span class="p">(</span><span class="n">Na</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+<span class="go">-21.60</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">salt_correction</span><span class="p">(</span><span class="n">Na</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="go">-21.85</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">salt_correction</span><span class="p">(</span><span class="n">Na</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Tris</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="go">-16.45</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">salt_correction</span><span class="p">(</span><span class="n">Na</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Tris</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">Mg</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="go">-10.99</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqUtils.MeltingTemp.chem_correction">
+<code class="sig-prename descclassname">Bio.SeqUtils.MeltingTemp.</code><code class="sig-name descname">chem_correction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">melting_temp</span></em>, <em class="sig-param"><span class="n">DMSO</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fmd</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">DMSOfactor</span><span class="o">=</span><span class="default_value">0.75</span></em>, <em class="sig-param"><span class="n">fmdfactor</span><span class="o">=</span><span class="default_value">0.65</span></em>, <em class="sig-param"><span class="n">fmdmethod</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">GC</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.MeltingTemp.chem_correction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Correct a given Tm for DMSO and formamide.</p>
+<p>Please note that these corrections are +/- rough approximations.</p>
+<dl>
+<dt>Arguments:</dt><dd><ul>
+<li><p>melting_temp: Melting temperature.</p></li>
+<li><p>DMSO: Percent DMSO.</p></li>
+<li><p>fmd: Formamide concentration in %(fmdmethod=1) or molar (fmdmethod=2).</p></li>
+<li><p>DMSOfactor: How much should Tm decreases per percent DMSO. Default=0.65
+(von Ahsen et al. 2001). Other published values are 0.5, 0.6 and 0.675.</p></li>
+<li><p>fmdfactor: How much should Tm decrease per percent formamide.
+Default=0.65. Several papers report factors between 0.6 and 0.72.</p></li>
+<li><p>fmdmethod:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Tm = Tm - factor(%formamide) (Default)</p></li>
+<li><p>Tm = Tm + (0.453(f(GC)) - 2.88) x [formamide]</p></li>
+</ol>
+</div></blockquote>
+<p>Here f(GC) is fraction of GC.
+Note (again) that in fmdmethod=1 formamide concentration is given in %,
+while in fmdmethod=2 it is given in molar.</p>
+</li>
+<li><p>GC: GC content in percent.</p></li>
+</ul>
+</dd>
+<dt>Examples:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">MeltingTemp</span> <span class="k">as</span> <span class="n">mt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span><span class="o">.</span><span class="n">chem_correction</span><span class="p">(</span><span class="mi">70</span><span class="p">)</span>
+<span class="go">70</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">chem_correction</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="n">DMSO</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<span class="go">67.75</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">chem_correction</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="n">fmd</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
+<span class="go">66.75</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">chem_correction</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="n">fmdmethod</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fmd</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
+<span class="gp">... </span>                                   <span class="n">GC</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>
+<span class="go">66.68</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqUtils.MeltingTemp.Tm_Wallace">
+<code class="sig-prename descclassname">Bio.SeqUtils.MeltingTemp.</code><code class="sig-name descname">Tm_Wallace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">check</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.MeltingTemp.Tm_Wallace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate and return the Tm using the ‘Wallace rule’.</p>
+<p>Tm = 4 degC * (G + C) + 2 degC * (A+T)</p>
+<p>The Wallace rule (Thein &amp; Wallace 1986, in Human genetic diseases: a
+practical approach, 33-50) is often used as rule of thumb for approximate
+Tm calculations for primers of 14 to 20 nt length.</p>
+<p>Non-DNA characters (e.g., E, F, J, !, 1, etc) are ignored by this method.</p>
+<dl>
+<dt>Examples:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">MeltingTemp</span> <span class="k">as</span> <span class="n">mt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span><span class="o">.</span><span class="n">Tm_Wallace</span><span class="p">(</span><span class="s1">&#39;ACGTTGCAATGCCGTA&#39;</span><span class="p">)</span>
+<span class="go">48.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span><span class="o">.</span><span class="n">Tm_Wallace</span><span class="p">(</span><span class="s1">&#39;ACGT TGCA ATGC CGTA&#39;</span><span class="p">)</span>
+<span class="go">48.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span><span class="o">.</span><span class="n">Tm_Wallace</span><span class="p">(</span><span class="s1">&#39;1ACGT2TGCA3ATGC4CGTA&#39;</span><span class="p">)</span>
+<span class="go">48.0</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="Bio.SeqUtils.MeltingTemp.Tm_GC">
 <code class="sig-prename descclassname">Bio.SeqUtils.MeltingTemp.</code><code class="sig-name descname">Tm_GC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">check</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">valueset</span><span class="o">=</span><span class="default_value">7</span></em>, <em class="sig-param"><span class="n">userset</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">Na</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">K</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">Tris</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">Mg</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">dNTPs</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">saltcorr</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">mismatch</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.MeltingTemp.Tm_GC" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the Tm using empirical formulas based on GC content.</p>
@@ -533,29 +680,6 @@ K=0, Tris=0, Mg=0, dNTPs=0.</p></li>
 </dd></dl>
 
 <dl class="py function">
-<dt id="Bio.SeqUtils.MeltingTemp.Tm_Wallace">
-<code class="sig-prename descclassname">Bio.SeqUtils.MeltingTemp.</code><code class="sig-name descname">Tm_Wallace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">check</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.MeltingTemp.Tm_Wallace" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate and return the Tm using the ‘Wallace rule’.</p>
-<p>Tm = 4 degC * (G + C) + 2 degC * (A+T)</p>
-<p>The Wallace rule (Thein &amp; Wallace 1986, in Human genetic diseases: a
-practical approach, 33-50) is often used as rule of thumb for approximate
-Tm calculations for primers of 14 to 20 nt length.</p>
-<p>Non-DNA characters (e.g., E, F, J, !, 1, etc) are ignored by this method.</p>
-<dl>
-<dt>Examples:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">MeltingTemp</span> <span class="k">as</span> <span class="n">mt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span><span class="o">.</span><span class="n">Tm_Wallace</span><span class="p">(</span><span class="s1">&#39;ACGTTGCAATGCCGTA&#39;</span><span class="p">)</span>
-<span class="go">48.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span><span class="o">.</span><span class="n">Tm_Wallace</span><span class="p">(</span><span class="s1">&#39;ACGT TGCA ATGC CGTA&#39;</span><span class="p">)</span>
-<span class="go">48.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span><span class="o">.</span><span class="n">Tm_Wallace</span><span class="p">(</span><span class="s1">&#39;1ACGT2TGCA3ATGC4CGTA&#39;</span><span class="p">)</span>
-<span class="go">48.0</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt id="Bio.SeqUtils.MeltingTemp.Tm_staluc">
 <code class="sig-prename descclassname">Bio.SeqUtils.MeltingTemp.</code><code class="sig-name descname">Tm_staluc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span></em>, <em class="sig-param"><span class="n">dnac</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">saltc</span><span class="o">=</span><span class="default_value">50</span></em>, <em class="sig-param"><span class="n">rna</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.MeltingTemp.Tm_staluc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return DNA/DNA Tm using nearest neighbor thermodynamics (OBSOLETE).</p>
@@ -582,130 +706,6 @@ For RNA/RNA, see Xia et al (1998), Biochemistry 37: 14719-14735</p>
 <span class="go">59.87</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">Tm_staluc</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">rna</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 <span class="go">77.90</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SeqUtils.MeltingTemp.chem_correction">
-<code class="sig-prename descclassname">Bio.SeqUtils.MeltingTemp.</code><code class="sig-name descname">chem_correction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">melting_temp</span></em>, <em class="sig-param"><span class="n">DMSO</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fmd</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">DMSOfactor</span><span class="o">=</span><span class="default_value">0.75</span></em>, <em class="sig-param"><span class="n">fmdfactor</span><span class="o">=</span><span class="default_value">0.65</span></em>, <em class="sig-param"><span class="n">fmdmethod</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">GC</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.MeltingTemp.chem_correction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Correct a given Tm for DMSO and formamide.</p>
-<p>Please note that these corrections are +/- rough approximations.</p>
-<dl>
-<dt>Arguments:</dt><dd><ul>
-<li><p>melting_temp: Melting temperature.</p></li>
-<li><p>DMSO: Percent DMSO.</p></li>
-<li><p>fmd: Formamide concentration in %(fmdmethod=1) or molar (fmdmethod=2).</p></li>
-<li><p>DMSOfactor: How much should Tm decreases per percent DMSO. Default=0.65
-(von Ahsen et al. 2001). Other published values are 0.5, 0.6 and 0.675.</p></li>
-<li><p>fmdfactor: How much should Tm decrease per percent formamide.
-Default=0.65. Several papers report factors between 0.6 and 0.72.</p></li>
-<li><p>fmdmethod:</p>
-<blockquote>
-<div><ol class="arabic simple">
-<li><p>Tm = Tm - factor(%formamide) (Default)</p></li>
-<li><p>Tm = Tm + (0.453(f(GC)) - 2.88) x [formamide]</p></li>
-</ol>
-</div></blockquote>
-<p>Here f(GC) is fraction of GC.
-Note (again) that in fmdmethod=1 formamide concentration is given in %,
-while in fmdmethod=2 it is given in molar.</p>
-</li>
-<li><p>GC: GC content in percent.</p></li>
-</ul>
-</dd>
-<dt>Examples:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">MeltingTemp</span> <span class="k">as</span> <span class="n">mt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">mt</span><span class="o">.</span><span class="n">chem_correction</span><span class="p">(</span><span class="mi">70</span><span class="p">)</span>
-<span class="go">70</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">chem_correction</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="n">DMSO</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
-<span class="go">67.75</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">chem_correction</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="n">fmd</span><span class="o">=</span><span class="mi">5</span><span class="p">))</span>
-<span class="go">66.75</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">chem_correction</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="n">fmdmethod</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">fmd</span><span class="o">=</span><span class="mf">1.25</span><span class="p">,</span>
-<span class="gp">... </span>                                   <span class="n">GC</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>
-<span class="go">66.68</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SeqUtils.MeltingTemp.make_table">
-<code class="sig-prename descclassname">Bio.SeqUtils.MeltingTemp.</code><code class="sig-name descname">make_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">oldtable</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">values</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.MeltingTemp.make_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a table with thermodynamic parameters (as dictionary).</p>
-<p>Parameters:
-oldtable: An existing dictionary with thermodynamic parameters.
-values: A dictionary with new or updated values.</p>
-<p>E.g., to replace the initiation parameters in the Sugimoto ‘96 dataset with
-the initiation parameters from Allawi &amp; SantaLucia ‘97:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils.MeltingTemp</span> <span class="kn">import</span> <span class="n">make_table</span><span class="p">,</span> <span class="n">DNA_NN2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">DNA_NN2</span>                               <span class="c1"># Sugimoto &#39;96</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">table</span><span class="p">[</span><span class="s1">&#39;init_A/T&#39;</span><span class="p">]</span>
-<span class="go">(0, 0)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">newtable</span> <span class="o">=</span> <span class="n">make_table</span><span class="p">(</span><span class="n">oldtable</span><span class="o">=</span><span class="n">DNA_NN2</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;init&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
-<span class="gp">... </span>                      <span class="s1">&#39;init_A/T&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.1</span><span class="p">),</span>
-<span class="gp">... </span>                      <span class="s1">&#39;init_G/C&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.8</span><span class="p">)})</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.1f</span><span class="s2">, </span><span class="si">%0.1f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">newtable</span><span class="p">[</span><span class="s1">&#39;init_A/T&#39;</span><span class="p">])</span>
-<span class="go">2.3, 4.1</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SeqUtils.MeltingTemp.salt_correction">
-<code class="sig-prename descclassname">Bio.SeqUtils.MeltingTemp.</code><code class="sig-name descname">salt_correction</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Na</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">K</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">Tris</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">Mg</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">dNTPs</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">seq</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.MeltingTemp.salt_correction" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate a term to correct Tm for salt ions.</p>
-<p>Depending on the Tm calculation, the term will correct Tm or entropy. To
-calculate corrected Tm values, different operations need to be applied:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>methods 1-4: Tm(new) = Tm(old) + corr</p></li>
-<li><p>method 5: deltaS(new) = deltaS(old) + corr</p></li>
-<li><p>methods 6+7: Tm(new) = 1/(1/Tm(old) + corr)</p></li>
-</ul>
-</div></blockquote>
-<dl class="simple">
-<dt>Parameters:</dt><dd><ul class="simple">
-<li><p>Na, K, Tris, Mg, dNTPS: Millimolar concentration of respective ion. To
-have a simple ‘salt correction’, just pass Na. If any of K, Tris, Mg and
-dNTPS is non-zero, a ‘sodium-equivalent’ concentration is calculated
-according to von Ahsen et al. (2001, Clin Chem 47: 1956-1961):
-[Na_eq] = [Na+] + [K+] + [Tris]/2 + 120*([Mg2+] - [dNTPs])^0.5
-If [dNTPs] &gt;= [Mg2+]: [Na_eq] = [Na+] + [K+] + [Tris]/2</p></li>
-<li><p>method: Which method to be applied. Methods 1-4 correct Tm, method 5
-corrects deltaS, methods 6 and 7 correct 1/Tm. The methods are:</p>
-<ol class="arabic simple">
-<li><p>16.6 x log[Na+]
-(Schildkraut &amp; Lifson (1965), Biopolymers 3: 195-208)</p></li>
-<li><p>16.6 x log([Na+]/(1.0 + 0.7*[Na+]))
-(Wetmur (1991), Crit Rev Biochem Mol Biol 126: 227-259)</p></li>
-<li><p>12.5 x log(Na+]
-(SantaLucia et al. (1996), Biochemistry 35: 3555-3562</p></li>
-<li><p>11.7 x log[Na+]
-(SantaLucia (1998), Proc Natl Acad Sci USA 95: 1460-1465</p></li>
-<li><p>Correction for deltaS: 0.368 x (N-1) x ln[Na+]
-(SantaLucia (1998), Proc Natl Acad Sci USA 95: 1460-1465)</p></li>
-<li><p>(4.29(%GC)-3.95)x1e-5 x ln[Na+] + 9.40e-6 x ln[Na+]^2
-(Owczarzy et al. (2004), Biochemistry 43: 3537-3554)</p></li>
-<li><p>Complex formula with decision tree and 7 empirical constants.
-Mg2+ is corrected for dNTPs binding (if present)
-(Owczarzy et al. (2008), Biochemistry 47: 5336-5353)</p></li>
-</ol>
-</li>
-</ul>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">MeltingTemp</span> <span class="k">as</span> <span class="n">mt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">salt_correction</span><span class="p">(</span><span class="n">Na</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
-<span class="go">-21.60</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">salt_correction</span><span class="p">(</span><span class="n">Na</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-<span class="go">-21.85</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">salt_correction</span><span class="p">(</span><span class="n">Na</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Tris</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-<span class="go">-16.45</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%0.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">mt</span><span class="o">.</span><span class="n">salt_correction</span><span class="p">(</span><span class="n">Na</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">Tris</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">Mg</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-<span class="go">-10.99</span>
 </pre></div>
 </div>
 </dd></dl>

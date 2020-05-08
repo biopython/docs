@@ -242,6 +242,51 @@ use this module.  It provides base classes to try and simplify things.</p>
 <p>You should write a next() method to return Aligment
 objects.  You may wish to redefine the __init__
 method as well.</p>
+<dl class="py method">
+<dt id="Bio.AlignIO.Interfaces.AlignmentIterator.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">seq_count</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">SingleLetterAlphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.AlignmentIterator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an AlignmentIterator object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle   - input file</p></li>
+<li><p>count    - optional, expected number of records per alignment
+Recommend for fasta file format.</p></li>
+<li><p>alphabet - optional, e.g. Bio.Alphabet.generic_protein</p></li>
+</ul>
+</dd>
+<dt>Note when subclassing:</dt><dd><ul class="simple">
+<li><p>there should be a single non-optional argument, the handle,
+and optional count and alphabet IN THAT ORDER.</p></li>
+<li><p>you do not have to require an alphabet (?).</p></li>
+<li><p>you can add additional optional arguments.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.AlignIO.Interfaces.AlignmentIterator.__next__">
+<code class="sig-name descname">__next__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.AlignmentIterator.__next__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next alignment in the file.</p>
+<p>This method should be replaced by any derived class to do something
+useful.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.AlignIO.Interfaces.AlignmentIterator.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.AlignmentIterator.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over the entries as MultipleSeqAlignment objects.</p>
+<p>Example usage for (concatenated) PHYLIP files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;many.phy&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myFile</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">PhylipIterator</span><span class="p">(</span><span class="n">myFile</span><span class="p">):</span>
+        <span class="nb">print</span> <span class="s2">&quot;New alignment:&quot;</span>
+        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">alignment</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span>
+            <span class="nb">print</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -252,9 +297,9 @@ method as well.</p>
 <p>You should write a write_alignment() method.
 You may wish to redefine the __init__ method as well.</p>
 <dl class="py method">
-<dt id="Bio.AlignIO.Interfaces.AlignmentWriter.clean">
-<code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.AlignmentWriter.clean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use this to avoid getting newlines in the output.</p>
+<dt id="Bio.AlignIO.Interfaces.AlignmentWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.AlignmentWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -272,6 +317,12 @@ You may wish to redefine the __init__ method as well.</p>
 useful.  It should return the number of alignments..</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="Bio.AlignIO.Interfaces.AlignmentWriter.clean">
+<code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.AlignmentWriter.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use this to avoid getting newlines in the output.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -283,11 +334,9 @@ useful.  It should return the number of alignments..</p>
 You should write a write_alignment() method.
 You may wish to redefine the __init__ method as well.</p>
 <dl class="py method">
-<dt id="Bio.AlignIO.Interfaces.SequentialAlignmentWriter.write_alignment">
-<code class="sig-name descname">write_alignment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">alignment</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.SequentialAlignmentWriter.write_alignment" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use this to write a single alignment.</p>
-<p>This method should be replaced by any derived class to do something
-useful.</p>
+<dt id="Bio.AlignIO.Interfaces.SequentialAlignmentWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.SequentialAlignmentWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -304,6 +353,14 @@ useful.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="Bio.AlignIO.Interfaces.SequentialAlignmentWriter.write_header">
+<code class="sig-name descname">write_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.SequentialAlignmentWriter.write_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use this to write any header.</p>
+<p>This method should be replaced by any derived class to do something
+useful.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.AlignIO.Interfaces.SequentialAlignmentWriter.write_footer">
 <code class="sig-name descname">write_footer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.SequentialAlignmentWriter.write_footer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use this to write any footer.</p>
@@ -312,9 +369,9 @@ useful.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.AlignIO.Interfaces.SequentialAlignmentWriter.write_header">
-<code class="sig-name descname">write_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.SequentialAlignmentWriter.write_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use this to write any header.</p>
+<dt id="Bio.AlignIO.Interfaces.SequentialAlignmentWriter.write_alignment">
+<code class="sig-name descname">write_alignment</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">alignment</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.Interfaces.SequentialAlignmentWriter.write_alignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use this to write a single alignment.</p>
 <p>This method should be replaced by any derived class to do something
 useful.</p>
 </dd></dl>

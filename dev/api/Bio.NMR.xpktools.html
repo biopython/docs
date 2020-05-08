@@ -233,6 +233,43 @@
 <span id="bio-nmr-xpktools-module"></span><h1>Bio.NMR.xpktools module<a class="headerlink" href="#module-Bio.NMR.xpktools" title="Permalink to this headline">¶</a></h1>
 <p>Tools to manipulate data from nmrview .xpk peaklist files.</p>
 <dl class="py class">
+<dt id="Bio.NMR.xpktools.XpkEntry">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.NMR.xpktools.</code><code class="sig-name descname">XpkEntry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entry</span></em>, <em class="sig-param"><span class="n">headline</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.NMR.xpktools.XpkEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Provide dictonary access to single entry from nmrview .xpk file.</p>
+<p>This class is suited for handling single lines of non-header data
+from an nmrview .xpk file. This class provides methods for extracting
+data by the field name which is listed in the last line of the
+peaklist header.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>xpkentry</strong><span class="classifier">str</span></dt><dd><p>The line from an nmrview .xpk file.</p>
+</dd>
+<dt><strong>xpkheadline</strong><span class="classifier">str</span></dt><dd><p>The line from the header file that gives the names of the entries.
+This is typically the sixth line of the header, 1-origin.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>fields</strong><span class="classifier">dict</span></dt><dd><p>Dictionary of fields where key is in header line, value is an entry.
+Variables are accessed by either their name in the header line as in
+self.field[“H1.P”] will return the H1.P entry for example.
+self.field[“entrynum”] returns the line number (1st field of line)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="Bio.NMR.xpktools.XpkEntry.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">entry</span></em>, <em class="sig-param"><span class="n">headline</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.NMR.xpktools.XpkEntry.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.NMR.xpktools.Peaklist">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.NMR.xpktools.</code><code class="sig-name descname">Peaklist</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">infn</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.NMR.xpktools.Peaklist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -280,6 +317,12 @@
 </dd>
 </dl>
 <dl class="py method">
+<dt id="Bio.NMR.xpktools.Peaklist.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">infn</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.NMR.xpktools.Peaklist.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.NMR.xpktools.Peaklist.residue_dict">
 <code class="sig-name descname">residue_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.NMR.xpktools.Peaklist.residue_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dict of lines in ‘data’ indexed by residue number or a nucleus.</p>
@@ -319,35 +362,13 @@ it appears in the xpk label line (H1, 15N for example)</p>
 
 </dd></dl>
 
-<dl class="py class">
-<dt id="Bio.NMR.xpktools.XpkEntry">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.NMR.xpktools.</code><code class="sig-name descname">XpkEntry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entry</span></em>, <em class="sig-param"><span class="n">headline</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.NMR.xpktools.XpkEntry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Provide dictonary access to single entry from nmrview .xpk file.</p>
-<p>This class is suited for handling single lines of non-header data
-from an nmrview .xpk file. This class provides methods for extracting
-data by the field name which is listed in the last line of the
-peaklist header.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>xpkentry</strong><span class="classifier">str</span></dt><dd><p>The line from an nmrview .xpk file.</p>
-</dd>
-<dt><strong>xpkheadline</strong><span class="classifier">str</span></dt><dd><p>The line from the header file that gives the names of the entries.
-This is typically the sixth line of the header, 1-origin.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Attributes</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>fields</strong><span class="classifier">dict</span></dt><dd><p>Dictionary of fields where key is in header line, value is an entry.
-Variables are accessed by either their name in the header line as in
-self.field[“H1.P”] will return the H1.P entry for example.
-self.field[“entrynum”] returns the line number (1st field of line)</p>
-</dd>
-</dl>
-</dd>
-</dl>
+<dl class="py function">
+<dt id="Bio.NMR.xpktools.replace_entry">
+<code class="sig-prename descclassname">Bio.NMR.xpktools.</code><code class="sig-name descname">replace_entry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span></em>, <em class="sig-param"><span class="n">fieldn</span></em>, <em class="sig-param"><span class="n">newentry</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.NMR.xpktools.replace_entry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace an entry in a string by the field number.</p>
+<p>No padding is implemented currently.  Spacing will change if
+the original field entry and the new field entry are of
+different lengths.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -372,15 +393,6 @@ self.field[“entrynum”] returns the line number (1st field of line)</p>
 </dl>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.NMR.xpktools.replace_entry">
-<code class="sig-prename descclassname">Bio.NMR.xpktools.</code><code class="sig-name descname">replace_entry</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span></em>, <em class="sig-param"><span class="n">fieldn</span></em>, <em class="sig-param"><span class="n">newentry</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.NMR.xpktools.replace_entry" title="Permalink to this definition">¶</a></dt>
-<dd><p>Replace an entry in a string by the field number.</p>
-<p>No padding is implemented currently.  Spacing will change if
-the original field entry and the new field entry are of
-different lengths.</p>
 </dd></dl>
 
 </div>

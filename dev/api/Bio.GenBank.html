@@ -277,22 +277,6 @@ location parser.</p></li>
 </dd>
 </dl>
 <dl class="py class">
-<dt id="Bio.GenBank.FeatureParser">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.GenBank.</code><code class="sig-name descname">FeatureParser</code><span class="sig-paren">(</span><em class="sig-param">debug_level=0</em>, <em class="sig-param">use_fuzziness=1</em>, <em class="sig-param">feature_cleaner=&lt;Bio.GenBank.utils.FeatureValueCleaner object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.FeatureParser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Parse GenBank files into Seq + Feature objects (OBSOLETE).</p>
-<p>Direct use of this class is discouraged, and may be deprecated in
-a future release of Biopython.</p>
-<p>Please use Bio.SeqIO.parse(…) or Bio.SeqIO.read(…) instead.</p>
-<dl class="py method">
-<dt id="Bio.GenBank.FeatureParser.parse">
-<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.FeatureParser.parse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the specified handle.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt id="Bio.GenBank.Iterator">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.GenBank.</code><code class="sig-name descname">Iterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">parser</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Iterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
@@ -300,6 +284,40 @@ a future release of Biopython.</p>
 <p>This class is likely to be deprecated in a future release of Biopython.
 Please use Bio.SeqIO.parse(…, format=”gb”) or Bio.GenBank.parse(…)
 for SeqRecord and GenBank specific Record objects respectively instead.</p>
+<dl class="py method">
+<dt id="Bio.GenBank.Iterator.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">parser</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Iterator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the iterator.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle - A handle with GenBank entries to iterate through.</p></li>
+<li><p>parser - An optional parser to pass the entries through before
+returning them. If None, then the raw entry will be returned.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.GenBank.Iterator.__next__">
+<code class="sig-name descname">__next__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Iterator.__next__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next GenBank record from the handle.</p>
+<p>Will return None if we ran out of records.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.GenBank.Iterator.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.Iterator.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over the records.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="Bio.GenBank.ParserFailureError">
+<em class="property">exception </em><code class="sig-prename descclassname">Bio.GenBank.</code><code class="sig-name descname">ParserFailureError</code><a class="headerlink" href="#Bio.GenBank.ParserFailureError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Failure caused by some kind of problem in the parser.</p>
 </dd></dl>
 
 <dl class="py exception">
@@ -309,11 +327,41 @@ for SeqRecord and GenBank specific Record objects respectively instead.</p>
 <p>Could not Properly parse out a location from a GenBank file.</p>
 </dd></dl>
 
-<dl class="py exception">
-<dt id="Bio.GenBank.ParserFailureError">
-<em class="property">exception </em><code class="sig-prename descclassname">Bio.GenBank.</code><code class="sig-name descname">ParserFailureError</code><a class="headerlink" href="#Bio.GenBank.ParserFailureError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Failure caused by some kind of problem in the parser.</p>
+<dl class="py class">
+<dt id="Bio.GenBank.FeatureParser">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.GenBank.</code><code class="sig-name descname">FeatureParser</code><span class="sig-paren">(</span><em class="sig-param">debug_level=0</em>, <em class="sig-param">use_fuzziness=1</em>, <em class="sig-param">feature_cleaner=&lt;Bio.GenBank.utils.FeatureValueCleaner object&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.FeatureParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Parse GenBank files into Seq + Feature objects (OBSOLETE).</p>
+<p>Direct use of this class is discouraged, and may be deprecated in
+a future release of Biopython.</p>
+<p>Please use Bio.SeqIO.parse(…) or Bio.SeqIO.read(…) instead.</p>
+<dl class="py method">
+<dt id="Bio.GenBank.FeatureParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">debug_level=0</em>, <em class="sig-param">use_fuzziness=1</em>, <em class="sig-param">feature_cleaner=&lt;Bio.GenBank.utils.FeatureValueCleaner object at 0x7f74eafc7c50&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.FeatureParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a GenBank parser and Feature consumer.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>debug_level - An optional argument that species the amount of
+debugging information the parser should spit out. By default we have
+no debugging info (the fastest way to do things), but if you want
+you can set this as high as two and see exactly where a parse fails.</p></li>
+<li><p>use_fuzziness - Specify whether or not to use fuzzy representations.
+The default is 1 (use fuzziness).</p></li>
+<li><p>feature_cleaner - A class which will be used to clean out the
+values of features. This class must implement the function
+clean_value. GenBank.utils has a “standard” cleaner class, which
+is used by default.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.GenBank.FeatureParser.parse">
+<code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.FeatureParser.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the specified handle.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -325,6 +373,21 @@ for SeqRecord and GenBank specific Record objects respectively instead.</p>
 a future release of Biopython.</p>
 <p>Please use the Bio.GenBank.parse(…) or Bio.GenBank.read(…) functions
 instead.</p>
+<dl class="py method">
+<dt id="Bio.GenBank.RecordParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">debug_level</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.RecordParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the parser.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>debug_level - An optional argument that species the amount of
+debugging information the parser should spit out. By default we have
+no debugging info (the fastest way to do things), but if you want
+you can set this as high as two and see exactly where a parse fails.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="Bio.GenBank.RecordParser.parse">
 <code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.GenBank.RecordParser.parse" title="Permalink to this definition">¶</a></dt>

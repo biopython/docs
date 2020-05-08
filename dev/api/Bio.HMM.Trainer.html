@@ -243,10 +243,53 @@ training data.</p></li>
 in the training data.</p></li>
 </ul>
 <dl class="py class">
+<dt id="Bio.HMM.Trainer.TrainingSequence">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.Trainer.</code><code class="sig-name descname">TrainingSequence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">emissions</span></em>, <em class="sig-param"><span class="n">state_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.TrainingSequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Hold a training sequence with emissions and optionally, a state path.</p>
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.TrainingSequence.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">emissions</span></em>, <em class="sig-param"><span class="n">state_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.TrainingSequence.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a training sequence.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>emissions - A Seq object containing the sequence of emissions in
+the training sequence, and the alphabet of the sequence.</p></li>
+<li><p>state_path - A Seq object containing the sequence of states and
+the alphabet of the states. If there is no known state path, then
+the sequence of states should be an empty string.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.HMM.Trainer.AbstractTrainer">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.Trainer.</code><code class="sig-name descname">AbstractTrainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">markov_model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.AbstractTrainer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Provide generic functionality needed in all trainers.</p>
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.AbstractTrainer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">markov_model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.AbstractTrainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.AbstractTrainer.log_likelihood">
+<code class="sig-name descname">log_likelihood</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">probabilities</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.AbstractTrainer.log_likelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the log likelihood of the training seqs.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>probabilities – A list of the probabilities of each training
+sequence under the current parameters, calculated using the
+forward algorithm.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="Bio.HMM.Trainer.AbstractTrainer.estimate_params">
 <code class="sig-name descname">estimate_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">transition_counts</span></em>, <em class="sig-param"><span class="n">emission_counts</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.AbstractTrainer.estimate_params" title="Permalink to this definition">¶</a></dt>
@@ -270,20 +313,6 @@ Durbin et al:</p>
 <p>Returns:
 Transition and emission dictionaries containing the maximum
 likelihood estimators.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.HMM.Trainer.AbstractTrainer.log_likelihood">
-<code class="sig-name descname">log_likelihood</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">probabilities</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.AbstractTrainer.log_likelihood" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the log likelihood of the training seqs.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>probabilities – A list of the probabilities of each training
-sequence under the current parameters, calculated using the
-forward algorithm.</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -319,6 +348,20 @@ Durbin et al. in section 3.3</p>
 <p>This algorithm is guaranteed to converge to a local maximum, but not
 necessarily to the global maxima, so use with care!</p>
 <dl class="py method">
+<dt id="Bio.HMM.Trainer.BaumWelchTrainer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">markov_model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.BaumWelchTrainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the trainer.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>markov_model - The model we are going to estimate parameters for.
+This should have the parameters with some initial estimates, that
+we can build from.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.HMM.Trainer.BaumWelchTrainer.train">
 <code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">training_seqs</em>, <em class="sig-param">stopping_criteria</em>, <em class="sig-param">dp_method=&lt;class 'Bio.HMM.DynamicProgramming.ScaledDPAlgorithms'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.BaumWelchTrainer.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimate the parameters using training sequences.</p>
@@ -337,27 +380,6 @@ backward variables. By default, we use the scaling method.</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.HMM.Trainer.BaumWelchTrainer.update_emissions">
-<code class="sig-name descname">update_emissions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">emission_counts</span></em>, <em class="sig-param"><span class="n">training_seq</span></em>, <em class="sig-param"><span class="n">forward_vars</span></em>, <em class="sig-param"><span class="n">backward_vars</span></em>, <em class="sig-param"><span class="n">training_seq_prob</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.BaumWelchTrainer.update_emissions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add the contribution of a new training sequence to the emissions.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>emission_counts – A dictionary of the current counts for the
-emissions</p></li>
-<li><p>training_seq – The training sequence we are working with</p></li>
-<li><p>forward_vars – Probabilities calculated using the forward
-algorithm.</p></li>
-<li><p>backward_vars – Probabilities calculated using the backwards
-algorithm.</p></li>
-<li><p>training_seq_prob - The probability of the current sequence.</p></li>
-</ul>
-</dd>
-</dl>
-<p>This calculates E_{k}(b) (the estimated emission probability for
-emission letter b from state k) using formula 3.21 in Durbin et al.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -381,6 +403,27 @@ algorithm.</p></li>
 k to state l) using formula 3.20 in Durbin et al.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.BaumWelchTrainer.update_emissions">
+<code class="sig-name descname">update_emissions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">emission_counts</span></em>, <em class="sig-param"><span class="n">training_seq</span></em>, <em class="sig-param"><span class="n">forward_vars</span></em>, <em class="sig-param"><span class="n">backward_vars</span></em>, <em class="sig-param"><span class="n">training_seq_prob</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.BaumWelchTrainer.update_emissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the contribution of a new training sequence to the emissions.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>emission_counts – A dictionary of the current counts for the
+emissions</p></li>
+<li><p>training_seq – The training sequence we are working with</p></li>
+<li><p>forward_vars – Probabilities calculated using the forward
+algorithm.</p></li>
+<li><p>backward_vars – Probabilities calculated using the backwards
+algorithm.</p></li>
+<li><p>training_seq_prob - The probability of the current sequence.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This calculates E_{k}(b) (the estimated emission probability for
+emission letter b from state k) using formula 3.21 in Durbin et al.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -392,6 +435,12 @@ k to state l) using formula 3.20 in Durbin et al.</p>
 probabilities when both the state path and emission sequence are
 known for the training examples.</p>
 <dl class="py method">
+<dt id="Bio.HMM.Trainer.KnownStateTrainer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">markov_model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.KnownStateTrainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.HMM.Trainer.KnownStateTrainer.train">
 <code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">training_seqs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.KnownStateTrainer.train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Estimate the Markov Model parameters with known state paths.</p>
@@ -402,13 +451,6 @@ This training will then count all of the transitions and emissions,
 and use this to estimate the parameters of the model.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt id="Bio.HMM.Trainer.TrainingSequence">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.Trainer.</code><code class="sig-name descname">TrainingSequence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">emissions</span></em>, <em class="sig-param"><span class="n">state_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.TrainingSequence" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Hold a training sequence with emissions and optionally, a state path.</p>
 </dd></dl>
 
 </div>

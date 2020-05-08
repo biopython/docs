@@ -276,6 +276,243 @@ be added in the future.</p>
 </ul>
 </dd>
 </dl>
+<dl class="py function">
+<dt id="Bio.SCOP.cmp_sccs">
+<code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">cmp_sccs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sccs1</span></em>, <em class="sig-param"><span class="n">sccs2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.cmp_sccs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Order SCOP concise classification strings (sccs).</p>
+<p>a.4.5.1 &lt; a.4.5.11 &lt; b.1.1.1</p>
+<p>A sccs (e.g. a.4.5.11) compactly represents a domain’s classification.
+The letter represents the class, and the numbers are the fold,
+superfamily, and family, respectively.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SCOP.parse_domain">
+<code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">parse_domain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.parse_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an ASTRAL header string into a Scop domain.</p>
+<p>An ASTRAL (<a class="reference external" href="http://astral.stanford.edu/">http://astral.stanford.edu/</a>) header contains a concise
+description of a SCOP domain. A very similar format is used when a
+Domain object is converted into a string.  The Domain returned by this
+method contains most of the SCOP information, but it will not be located
+within the SCOP hierarchy (i.e. The parent node will be None). The
+description is composed of the SCOP protein and species descriptions.</p>
+<p>A typical ASTRAL header looks like –
+&gt;d1tpt_1 a.46.2.1 (1-70) Thymidine phosphorylase {Escherichia coli}</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.SCOP.Scop">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">Scop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cla_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">des_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hie_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dir_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">db_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">version</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The entire SCOP hierarchy.</p>
+<p>root – The root node of the hierarchy</p>
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">cla_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">des_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hie_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dir_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">db_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">version</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the SCOP hierarchy from the SCOP parsable files, or a sql backend.</p>
+<p>If no file handles are given, then a Scop object with a single
+empty root node is returned.</p>
+<p>If a directory and version are given (with dir_path=.., version=…) or
+file handles for each file, the whole scop tree will be built in memory.</p>
+<p>If a MySQLdb database handle is given, the tree will be built as needed,
+minimising construction times.  To build the SQL database to the methods
+write_xxx_sql to create the tables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.getRoot">
+<code class="sig-name descname">getRoot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getRoot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get root node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.getDomainBySid">
+<code class="sig-name descname">getDomainBySid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getDomainBySid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a domain from its sid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.getNodeBySunid">
+<code class="sig-name descname">getNodeBySunid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sunid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getNodeBySunid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a node from its sunid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.getDomains">
+<code class="sig-name descname">getDomains</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getDomains" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an ordered tuple of all SCOP Domains.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.write_hie">
+<code class="sig-name descname">write_hie</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_hie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build an HIE SCOP parsable file from this object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.write_des">
+<code class="sig-name descname">write_des</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_des" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a DES SCOP parsable file from this object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.write_cla">
+<code class="sig-name descname">write_cla</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_cla" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a CLA SCOP parsable file from this object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.getDomainFromSQL">
+<code class="sig-name descname">getDomainFromSQL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sunid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sid</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getDomainFromSQL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a node from the SQL backend using sunid or sid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.getAscendentFromSQL">
+<code class="sig-name descname">getAscendentFromSQL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getAscendentFromSQL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ascendents using SQL backend.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.getDescendentsFromSQL">
+<code class="sig-name descname">getDescendentsFromSQL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getDescendentsFromSQL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get descendents of a node using the database backend.</p>
+<p>This avoids repeated iteration of SQL calls and is therefore much
+quicker than repeatedly calling node.getChildren().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.write_hie_sql">
+<code class="sig-name descname">write_hie_sql</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_hie_sql" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write HIE data to SQL database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.write_cla_sql">
+<code class="sig-name descname">write_cla_sql</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_cla_sql" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write CLA data to SQL database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Scop.write_des_sql">
+<code class="sig-name descname">write_des_sql</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_des_sql" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write DES data to SQL database.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.SCOP.Node">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">Node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scop</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A node in the Scop hierarchy.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>sunid  – SCOP unique identifiers. e.g. ‘14986’</p></li>
+<li><p>parent – The parent node</p></li>
+<li><p>children – A list of child nodes</p></li>
+<li><p>sccs     – SCOP concise classification string. e.g. ‘a.1.1.2’</p></li>
+<li><p>type     – A 2 letter node type code. e.g. ‘px’ for domains</p></li>
+<li><p>description – Description text.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="Bio.SCOP.Node.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">scop</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a Node in the scop hierarchy.</p>
+<p>If a Scop instance is provided to the constructor, this will be used
+to lookup related references using the SQL methods.  If no instance
+is provided, it is assumed the whole tree exists and is connected.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Node.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represent the node as a string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Node.toHieRecord">
+<code class="sig-name descname">toHieRecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.toHieRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an Hie.Record.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Node.toDesRecord">
+<code class="sig-name descname">toDesRecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.toDesRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Des.Record.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Node.getChildren">
+<code class="sig-name descname">getChildren</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.getChildren" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of children of this Node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Node.getParent">
+<code class="sig-name descname">getParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.getParent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the parent of this Node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Node.getDescendents">
+<code class="sig-name descname">getDescendents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">node_type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.getDescendents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of all descendant nodes of the given type.</p>
+<p>Node type can be a two letter code or longer description,
+e.g. ‘fa’ or ‘family’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Node.getAscendent">
+<code class="sig-name descname">getAscendent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">node_type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.getAscendent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the ancenstor node of the given type, or None.</p>
+<p>Node type can be a two letter code or longer description,
+e.g. ‘fa’ or ‘family’.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.SCOP.Domain">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">Domain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scop</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.SCOP.Node" title="Bio.SCOP.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SCOP.Node</span></code></a></p>
+<p>A SCOP domain. A leaf node in the Scop hierarchy.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>sid - The SCOP domain identifier. e.g. <code class="docutils literal notranslate"><span class="pre">&quot;d5hbib_&quot;</span></code></p></li>
+<li><p>residues - A Residue object. It defines the collection of PDB
+atoms that make up this domain.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="Bio.SCOP.Domain.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">scop</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Domain.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a SCOP Domain object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Domain.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Domain.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represent the SCOP Domain as a string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Domain.toDesRecord">
+<code class="sig-name descname">toDesRecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Domain.toDesRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Des.Record.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Domain.toClaRecord">
+<code class="sig-name descname">toClaRecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Domain.toClaRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a Cla.Record.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt id="Bio.SCOP.Astral">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">Astral</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dir_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">version</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scop</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">astral_file</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">db_handle</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral" title="Permalink to this definition">¶</a></dt>
@@ -283,6 +520,33 @@ be added in the future.</p>
 <p>Representation of the ASTRAL database.</p>
 <p>Abstraction of the ASTRAL database, which has sequences for all the SCOP domains,
 as well as clusterings by percent id or evalue.</p>
+<dl class="py method">
+<dt id="Bio.SCOP.Astral.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">dir_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">version</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scop</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">astral_file</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">db_handle</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the astral database.</p>
+<dl class="simple">
+<dt>You must provide either a directory of SCOP files:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>dir_path - string, the path to location of the scopseq-x.xx directory</dt><dd><p>(not the directory itself), and</p>
+</dd>
+</dl>
+</li>
+<li><p>version   -a version number.</p></li>
+</ul>
+</dd>
+<dt>or, a FASTA file:</dt><dd><ul class="simple">
+<li><p>astral_file - string, a path to a fasta file (which will be loaded in memory)</p></li>
+</ul>
+</dd>
+<dt>or, a MYSQL database:</dt><dd><ul class="simple">
+<li><p>db_handle - a database handle for a MYSQL database containing a table
+‘astral’ with the astral data in it.  This can be created
+using writeToSQL.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="Bio.SCOP.Astral.domainsClusteredByEv">
 <code class="sig-name descname">domainsClusteredByEv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral.domainsClusteredByEv" title="Permalink to this definition">¶</a></dt>
@@ -310,21 +574,15 @@ database (which can be created with writeToSQL(…).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.SCOP.Astral.getSeq">
-<code class="sig-name descname">getSeq</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">domain</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral.getSeq" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return seq associated with domain.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt id="Bio.SCOP.Astral.getSeqBySid">
 <code class="sig-name descname">getSeqBySid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">domain</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral.getSeqBySid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the seq record of a given domain from its sid.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.SCOP.Astral.hashedDomainsByEv">
-<code class="sig-name descname">hashedDomainsByEv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral.hashedDomainsByEv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get domains clustered by evalue in a dict.</p>
+<dt id="Bio.SCOP.Astral.getSeq">
+<code class="sig-name descname">getSeq</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">domain</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral.getSeq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return seq associated with domain.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -334,9 +592,9 @@ database (which can be created with writeToSQL(…).</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.SCOP.Astral.isDomainInEv">
-<code class="sig-name descname">isDomainInEv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">dom</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral.isDomainInEv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return true if the domain is in the ASTRAL clusters for evalues.</p>
+<dt id="Bio.SCOP.Astral.hashedDomainsByEv">
+<code class="sig-name descname">hashedDomainsByEv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral.hashedDomainsByEv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get domains clustered by evalue in a dict.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -346,208 +604,17 @@ database (which can be created with writeToSQL(…).</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="Bio.SCOP.Astral.isDomainInEv">
+<code class="sig-name descname">isDomainInEv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">dom</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral.isDomainInEv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if the domain is in the ASTRAL clusters for evalues.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.SCOP.Astral.writeToSQL">
 <code class="sig-name descname">writeToSQL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">db_handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Astral.writeToSQL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the ASTRAL database to a MYSQL database.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt id="Bio.SCOP.Domain">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">Domain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scop</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Domain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Bio.SCOP.Node" title="Bio.SCOP.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SCOP.Node</span></code></a></p>
-<p>A SCOP domain. A leaf node in the Scop hierarchy.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><ul class="simple">
-<li><p>sid - The SCOP domain identifier. e.g. <code class="docutils literal notranslate"><span class="pre">&quot;d5hbib_&quot;</span></code></p></li>
-<li><p>residues - A Residue object. It defines the collection of PDB
-atoms that make up this domain.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt id="Bio.SCOP.Domain.toClaRecord">
-<code class="sig-name descname">toClaRecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Domain.toClaRecord" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a Cla.Record.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Domain.toDesRecord">
-<code class="sig-name descname">toDesRecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Domain.toDesRecord" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a Des.Record.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="Bio.SCOP.Node">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">Node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">scop</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A node in the Scop hierarchy.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><ul class="simple">
-<li><p>sunid  – SCOP unique identifiers. e.g. ‘14986’</p></li>
-<li><p>parent – The parent node</p></li>
-<li><p>children – A list of child nodes</p></li>
-<li><p>sccs     – SCOP concise classification string. e.g. ‘a.1.1.2’</p></li>
-<li><p>type     – A 2 letter node type code. e.g. ‘px’ for domains</p></li>
-<li><p>description – Description text.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt id="Bio.SCOP.Node.getAscendent">
-<code class="sig-name descname">getAscendent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">node_type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.getAscendent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the ancenstor node of the given type, or None.</p>
-<p>Node type can be a two letter code or longer description,
-e.g. ‘fa’ or ‘family’.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Node.getChildren">
-<code class="sig-name descname">getChildren</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.getChildren" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a list of children of this Node.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Node.getDescendents">
-<code class="sig-name descname">getDescendents</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">node_type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.getDescendents" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a list of all descendant nodes of the given type.</p>
-<p>Node type can be a two letter code or longer description,
-e.g. ‘fa’ or ‘family’.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Node.getParent">
-<code class="sig-name descname">getParent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.getParent" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the parent of this Node.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Node.toDesRecord">
-<code class="sig-name descname">toDesRecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.toDesRecord" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a Des.Record.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Node.toHieRecord">
-<code class="sig-name descname">toHieRecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Node.toHieRecord" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return an Hie.Record.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt id="Bio.SCOP.Scop">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">Scop</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cla_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">des_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">hie_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dir_path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">db_handle</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">version</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>The entire SCOP hierarchy.</p>
-<p>root – The root node of the hierarchy</p>
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.getAscendentFromSQL">
-<code class="sig-name descname">getAscendentFromSQL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getAscendentFromSQL" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get ascendents using SQL backend.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.getDescendentsFromSQL">
-<code class="sig-name descname">getDescendentsFromSQL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getDescendentsFromSQL" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get descendents of a node using the database backend.</p>
-<p>This avoids repeated iteration of SQL calls and is therefore much
-quicker than repeatedly calling node.getChildren().</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.getDomainBySid">
-<code class="sig-name descname">getDomainBySid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getDomainBySid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a domain from its sid.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.getDomainFromSQL">
-<code class="sig-name descname">getDomainFromSQL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sunid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sid</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getDomainFromSQL" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load a node from the SQL backend using sunid or sid.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.getDomains">
-<code class="sig-name descname">getDomains</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getDomains" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return an ordered tuple of all SCOP Domains.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.getNodeBySunid">
-<code class="sig-name descname">getNodeBySunid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sunid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getNodeBySunid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a node from its sunid.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.getRoot">
-<code class="sig-name descname">getRoot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.getRoot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get root node.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.write_cla">
-<code class="sig-name descname">write_cla</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_cla" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build a CLA SCOP parsable file from this object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.write_cla_sql">
-<code class="sig-name descname">write_cla_sql</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_cla_sql" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write CLA data to SQL database.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.write_des">
-<code class="sig-name descname">write_des</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_des" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build a DES SCOP parsable file from this object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.write_des_sql">
-<code class="sig-name descname">write_des_sql</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_des_sql" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write DES data to SQL database.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.write_hie">
-<code class="sig-name descname">write_hie</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_hie" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build an HIE SCOP parsable file from this object.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SCOP.Scop.write_hie_sql">
-<code class="sig-name descname">write_hie_sql</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Scop.write_hie_sql" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write HIE data to SQL database.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SCOP.cmp_sccs">
-<code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">cmp_sccs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sccs1</span></em>, <em class="sig-param"><span class="n">sccs2</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.cmp_sccs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Order SCOP concise classification strings (sccs).</p>
-<p>a.4.5.1 &lt; a.4.5.11 &lt; b.1.1.1</p>
-<p>A sccs (e.g. a.4.5.11) compactly represents a domain’s classification.
-The letter represents the class, and the numbers are the fold,
-superfamily, and family, respectively.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SCOP.parse_domain">
-<code class="sig-prename descclassname">Bio.SCOP.</code><code class="sig-name descname">parse_domain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.parse_domain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert an ASTRAL header string into a Scop domain.</p>
-<p>An ASTRAL (<a class="reference external" href="http://astral.stanford.edu/">http://astral.stanford.edu/</a>) header contains a concise
-description of a SCOP domain. A very similar format is used when a
-Domain object is converted into a string.  The Domain returned by this
-method contains most of the SCOP information, but it will not be located
-within the SCOP hierarchy (i.e. The parent node will be None). The
-description is composed of the SCOP protein and species descriptions.</p>
-<p>A typical ASTRAL header looks like –
-&gt;d1tpt_1 a.46.2.1 (1-70) Thymidine phosphorylase {Escherichia coli}</p>
 </dd></dl>
 
 <dl class="py function">

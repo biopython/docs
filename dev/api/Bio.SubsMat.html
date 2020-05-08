@@ -339,19 +339,6 @@ matrices are derived. This is a distance function based on the
 distribution’s entropies.</p></li>
 </ul>
 <dl class="py class">
-<dt id="Bio.SubsMat.LogOddsMatrix">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SubsMat.</code><code class="sig-name descname">LogOddsMatrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mat_name</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">build_later</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.LogOddsMatrix" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Bio.SubsMat.SeqMat" title="Bio.SubsMat.SeqMat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SubsMat.SeqMat</span></code></a></p>
-<p>Log odds matrix.</p>
-<dl class="py method">
-<dt id="Bio.SubsMat.LogOddsMatrix.calculate_relative_entropy">
-<code class="sig-name descname">calculate_relative_entropy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">obs_freq_mat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.LogOddsMatrix.calculate_relative_entropy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate and return relative entropy w.r.t. observed frequency matrix.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
 <dt id="Bio.SubsMat.SeqMat">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.SubsMat.</code><code class="sig-name descname">SeqMat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mat_name</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">build_later</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
@@ -360,18 +347,40 @@ distribution’s entropies.</p></li>
 should be sorted in the tuple (low, high). Because each matrix is dealt
 with as a half-matrix.</p>
 <dl class="py method">
-<dt id="Bio.SubsMat.SeqMat.format">
-<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">'%4d'</span></em>, <em class="sig-param"><span class="n">letterfmt</span><span class="o">=</span><span class="default_value">'%4s'</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">non_sym</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">full</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a string with the bottom-half (default) or a full matrix.</p>
-<p>User may pass own alphabet, which should contain all letters in the
-alphabet of the matrix, but may be in a different order. This
-order will be the order of the letters on the axes.</p>
+<dt id="Bio.SubsMat.SeqMat.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mat_name</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">build_later</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize.</p>
+<p>User may supply:</p>
+<ul class="simple">
+<li><p>data: matrix itself</p></li>
+<li><p>mat_name: its name. See below.</p></li>
+<li><p>alphabet: an instance of Bio.Alphabet, or a subclass. If not
+supplied, constructor builds its own from that matrix.</p></li>
+<li><p>build_later: skip the matrix size assertion. User will build the
+matrix after creating the instance. Constructor builds a half matrix
+filled with zeroes.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py method">
 <dt id="Bio.SubsMat.SeqMat.make_entropy">
 <code class="sig-name descname">make_entropy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.make_entropy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate and set the entropy attribute.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SubsMat.SeqMat.sum">
+<code class="sig-name descname">sum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return sum of the results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SubsMat.SeqMat.format">
+<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">fmt</span><span class="o">=</span><span class="default_value">'%4d'</span></em>, <em class="sig-param"><span class="n">letterfmt</span><span class="o">=</span><span class="default_value">'%4s'</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">non_sym</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">full</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a string with the bottom-half (default) or a full matrix.</p>
+<p>User may pass own alphabet, which should contain all letters in the
+alphabet of the matrix, but may be in a different order. This
+order will be the order of the letters on the axes.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -391,9 +400,39 @@ order will be the order of the letters on the axes.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.SubsMat.SeqMat.sum">
-<code class="sig-name descname">sum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.sum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return sum of the results.</p>
+<dt id="Bio.SubsMat.SeqMat.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print a nice half-matrix.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SubsMat.SeqMat.__sub__">
+<code class="sig-name descname">__sub__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return integer subtraction product of the two matrices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SubsMat.SeqMat.__mul__">
+<code class="sig-name descname">__mul__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Element-wise matrix multiplication.</p>
+<p>Returns a new matrix created by multiplying each element by other (if
+other is scalar), or by performing element-wise multiplication of the
+two matrices (if other is a matrix of the same size).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SubsMat.SeqMat.__rmul__">
+<code class="sig-name descname">__rmul__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.__rmul__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Element-wise matrix multiplication.</p>
+<p>Returns a new matrix created by multiplying each element by other (if
+other is scalar), or by performing element-wise multiplication of the
+two matrices (if other is a matrix of the same size).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SubsMat.SeqMat.__add__">
+<code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SeqMat.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matrix addition.</p>
 </dd></dl>
 
 </dd></dl>
@@ -406,6 +445,19 @@ order will be the order of the letters on the axes.</p>
 <dl class="py method">
 <dt id="Bio.SubsMat.SubstitutionMatrix.calculate_relative_entropy">
 <code class="sig-name descname">calculate_relative_entropy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">obs_freq_mat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.SubstitutionMatrix.calculate_relative_entropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate and return relative entropy w.r.t. observed frequency matrix.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.SubsMat.LogOddsMatrix">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SubsMat.</code><code class="sig-name descname">LogOddsMatrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">mat_name</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">build_later</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.LogOddsMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.SubsMat.SeqMat" title="Bio.SubsMat.SeqMat"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SubsMat.SeqMat</span></code></a></p>
+<p>Log odds matrix.</p>
+<dl class="py method">
+<dt id="Bio.SubsMat.LogOddsMatrix.calculate_relative_entropy">
+<code class="sig-name descname">calculate_relative_entropy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">obs_freq_mat</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.LogOddsMatrix.calculate_relative_entropy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate and return relative entropy w.r.t. observed frequency matrix.</p>
 </dd></dl>
 
@@ -430,9 +482,9 @@ order will be the order of the letters on the axes.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="Bio.SubsMat.two_mat_DJS">
-<code class="sig-prename descclassname">Bio.SubsMat.</code><code class="sig-name descname">two_mat_DJS</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mat_1</span></em>, <em class="sig-param"><span class="n">mat_2</span></em>, <em class="sig-param"><span class="n">pi_1</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">pi_2</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.two_mat_DJS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return Jensen-Shannon Distance between two observed frequence matrices.</p>
+<dt id="Bio.SubsMat.two_mat_relative_entropy">
+<code class="sig-prename descclassname">Bio.SubsMat.</code><code class="sig-name descname">two_mat_relative_entropy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mat_1</span></em>, <em class="sig-param"><span class="n">mat_2</span></em>, <em class="sig-param"><span class="n">logbase</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">diag</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.two_mat_relative_entropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return relative entropy of two matrices.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -442,9 +494,9 @@ order will be the order of the letters on the axes.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="Bio.SubsMat.two_mat_relative_entropy">
-<code class="sig-prename descclassname">Bio.SubsMat.</code><code class="sig-name descname">two_mat_relative_entropy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mat_1</span></em>, <em class="sig-param"><span class="n">mat_2</span></em>, <em class="sig-param"><span class="n">logbase</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">diag</span><span class="o">=</span><span class="default_value">3</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.two_mat_relative_entropy" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return relative entropy of two matrices.</p>
+<dt id="Bio.SubsMat.two_mat_DJS">
+<code class="sig-prename descclassname">Bio.SubsMat.</code><code class="sig-name descname">two_mat_DJS</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mat_1</span></em>, <em class="sig-param"><span class="n">mat_2</span></em>, <em class="sig-param"><span class="n">pi_1</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">pi_2</span><span class="o">=</span><span class="default_value">0.5</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SubsMat.two_mat_DJS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return Jensen-Shannon Distance between two observed frequence matrices.</p>
 </dd></dl>
 
 </div>

@@ -240,6 +240,18 @@
 <em class="property">class </em><code class="sig-prename descclassname">Bio.SearchIO.BlastIO.blast_xml.</code><code class="sig-name descname">BlastXmlParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">use_raw_query_ids</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_raw_hit_ids</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlParser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Parser for the BLAST XML format.</p>
+<dl class="py method">
+<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">use_raw_query_ids</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">use_raw_hit_ids</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlParser.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlParser.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over BlastXmlParser object yields query results.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -248,15 +260,9 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SearchIO._index.SearchIndexer</span></code></p>
 <p>Indexer class for BLAST XML output.</p>
 <dl class="py attribute">
-<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.block_size">
-<code class="sig-name descname">block_size</code><em class="property"> = 16384</em><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.block_size" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.qstart_mark">
+<code class="sig-name descname">qstart_mark</code><em class="property"> = b'&lt;Iteration&gt;'</em><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.qstart_mark" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="py method">
-<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.get_raw">
-<code class="sig-name descname">get_raw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">offset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.get_raw" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the raw record from the file as a bytes string.</p>
-</dd></dl>
 
 <dl class="py attribute">
 <dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.qend_mark">
@@ -264,9 +270,27 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.qstart_mark">
-<code class="sig-name descname">qstart_mark</code><em class="property"> = b'&lt;Iteration&gt;'</em><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.qstart_mark" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.block_size">
+<code class="sig-name descname">block_size</code><em class="property"> = 16384</em><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.block_size" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">filename</em>, <em class="sig-param">\*\*kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over BlastXmlIndexer yields qstart_id, start_offset, block’s length.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.get_raw">
+<code class="sig-name descname">get_raw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">offset</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlIndexer.get_raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the raw record from the file as a bytes string.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -275,6 +299,12 @@
 <em class="property">class </em><code class="sig-prename descclassname">Bio.SearchIO.BlastIO.blast_xml.</code><code class="sig-name descname">BlastXmlWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">use_raw_query_ids</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">use_raw_hit_ids</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Stream-based BLAST+ XML Writer.</p>
+<dl class="py method">
+<dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">use_raw_query_ids</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">use_raw_hit_ids</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="Bio.SearchIO.BlastIO.blast_xml.BlastXmlWriter.write_file">
 <code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">qresults</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.BlastIO.blast_xml.BlastXmlWriter.write_file" title="Permalink to this definition">¶</a></dt>

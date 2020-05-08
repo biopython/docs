@@ -252,16 +252,13 @@ using some kind of technique for preventing underflow errors.</p></li>
 step using some technique to prevent underflow errors.</p></li>
 </ul>
 <dl class="py method">
-<dt id="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.backward_algorithm">
-<code class="sig-name descname">backward_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.backward_algorithm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate sequence probability using the backward algorithm.</p>
-<p>This implements the backward algorithm, as described on p58-59 of
-Durbin et al.</p>
+<dt id="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">markov_model</span></em>, <em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize to calculate forward and backward probabilities.</p>
 <dl class="simple">
-<dt>Returns:</dt><dd><ul class="simple">
-<li><p>A dictionary containing the backwards variables. This has keys
-of the form (state letter, position in the training sequence),
-and values containing the calculated backward variable.</p></li>
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>markov_model – The current Markov model we are working with.</p></li>
+<li><p>sequence – A training sequence containing a set of emissions.</p></li>
 </ul>
 </dd>
 </dl>
@@ -284,16 +281,22 @@ containing the calculated forward variable.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt id="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.backward_algorithm">
+<code class="sig-name descname">backward_algorithm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.backward_algorithm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate sequence probability using the backward algorithm.</p>
+<p>This implements the backward algorithm, as described on p58-59 of
+Durbin et al.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>A dictionary containing the backwards variables. This has keys
+of the form (state letter, position in the training sequence),
+and values containing the calculated backward variable.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="py class">
-<dt id="Bio.HMM.DynamicProgramming.LogDPAlgorithms">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.DynamicProgramming.</code><code class="sig-name descname">LogDPAlgorithms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">markov_model</span></em>, <em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.LogDPAlgorithms" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms" title="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.HMM.DynamicProgramming.AbstractDPAlgorithms</span></code></a></p>
-<p>Implement forward and backward algorithms using a log approach.</p>
-<p>This uses the approach of calculating the sum of log probabilities
-using a lookup table for common values.</p>
-<p>XXX This is not implemented yet!</p>
 </dd></dl>
 
 <dl class="py class">
@@ -307,6 +310,36 @@ described in Durbin et al. on p 78.</p>
 <p>This approach is a little more straightforward then log transformation
 but may still give underflow errors for some types of models. In these
 cases, the LogDPAlgorithms class should be used.</p>
+<dl class="py method">
+<dt id="Bio.HMM.DynamicProgramming.ScaledDPAlgorithms.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">markov_model</span></em>, <em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.ScaledDPAlgorithms.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the scaled approach to calculating probabilities.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>markov_model – The current Markov model we are working with.</p></li>
+<li><p>sequence – A TrainingSequence object that must have a
+set of emissions to work with.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.HMM.DynamicProgramming.LogDPAlgorithms">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.DynamicProgramming.</code><code class="sig-name descname">LogDPAlgorithms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">markov_model</span></em>, <em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.LogDPAlgorithms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms" title="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.HMM.DynamicProgramming.AbstractDPAlgorithms</span></code></a></p>
+<p>Implement forward and backward algorithms using a log approach.</p>
+<p>This uses the approach of calculating the sum of log probabilities
+using a lookup table for common values.</p>
+<p>XXX This is not implemented yet!</p>
+<dl class="py method">
+<dt id="Bio.HMM.DynamicProgramming.LogDPAlgorithms.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">markov_model</span></em>, <em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.LogDPAlgorithms.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>

@@ -242,6 +242,25 @@
 <p>gp_information (GPI format) README:
 <a class="reference external" href="http://geneontology.org/docs/gene-product-information-gpi-format/">http://geneontology.org/docs/gene-product-information-gpi-format/</a></p>
 <dl class="py function">
+<dt id="Bio.UniProt.GOA.gpi_iterator">
+<code class="sig-prename descclassname">Bio.UniProt.GOA.</code><code class="sig-name descname">gpi_iterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.UniProt.GOA.gpi_iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read GPI format files.</p>
+<p>This function should be called to read a
+gp_information.goa_uniprot file. At the moment, there is
+only one format, but this may change, so
+this function is a placeholder a future wrapper.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.UniProt.GOA.gpa_iterator">
+<code class="sig-prename descclassname">Bio.UniProt.GOA.</code><code class="sig-name descname">gpa_iterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.UniProt.GOA.gpa_iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read GPA format files.</p>
+<p>This function should be called to read a
+gene_association.goa_uniprot file. Reads the first record and
+returns a gpa 1.1 or a gpa 1.0 iterator as needed</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="Bio.UniProt.GOA.gafbyproteiniterator">
 <code class="sig-prename descclassname">Bio.UniProt.GOA.</code><code class="sig-name descname">gafbyproteiniterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.UniProt.GOA.gafbyproteiniterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over records in a gene association file.</p>
@@ -290,31 +309,12 @@ returns a gaf 2.0 or a gaf 1.0 iterator as needed</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="Bio.UniProt.GOA.gpa_iterator">
-<code class="sig-prename descclassname">Bio.UniProt.GOA.</code><code class="sig-name descname">gpa_iterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.UniProt.GOA.gpa_iterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read GPA format files.</p>
-<p>This function should be called to read a
-gene_association.goa_uniprot file. Reads the first record and
-returns a gpa 1.1 or a gpa 1.0 iterator as needed</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.UniProt.GOA.gpi_iterator">
-<code class="sig-prename descclassname">Bio.UniProt.GOA.</code><code class="sig-name descname">gpi_iterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.UniProt.GOA.gpi_iterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read GPI format files.</p>
-<p>This function should be called to read a
-gp_information.goa_uniprot file. At the moment, there is
-only one format, but this may change, so
-this function is a placeholder a future wrapper.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.UniProt.GOA.record_has">
-<code class="sig-prename descclassname">Bio.UniProt.GOA.</code><code class="sig-name descname">record_has</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inrec</span></em>, <em class="sig-param"><span class="n">fieldvals</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.UniProt.GOA.record_has" title="Permalink to this definition">¶</a></dt>
-<dd><p>Accept a record, and a dictionary of field values.</p>
-<p>The format is {‘field_name’: set([val1, val2])}.
-If any field in the record has  a matching value, the function returns
-True. Otherwise, returns False.</p>
+<dt id="Bio.UniProt.GOA.writerec">
+<code class="sig-prename descclassname">Bio.UniProt.GOA.</code><code class="sig-name descname">writerec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outrec</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">fields</span><span class="o">=</span><span class="default_value">['DB', 'DB_Object_ID', 'DB_Object_Symbol', 'Qualifier', 'GO_ID', 'DB:Reference', 'Evidence', 'With', 'Aspect', 'DB_Object_Name', 'Synonym', 'DB_Object_Type', 'Taxon_ID', 'Date', 'Assigned_By', 'Annotation_Extension', 'Gene_Product_Form_ID']</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.UniProt.GOA.writerec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a single UniProt-GOA record to an output stream.</p>
+<p>Caller should know the  format version. Default: gaf-2.0
+If header has a value, then it is assumed this is the first record,
+a header is written.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -328,12 +328,12 @@ contains all consecutive lines with the same DB_Object_ID</p>
 </dd></dl>
 
 <dl class="py function">
-<dt id="Bio.UniProt.GOA.writerec">
-<code class="sig-prename descclassname">Bio.UniProt.GOA.</code><code class="sig-name descname">writerec</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outrec</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">fields</span><span class="o">=</span><span class="default_value">['DB', 'DB_Object_ID', 'DB_Object_Symbol', 'Qualifier', 'GO_ID', 'DB:Reference', 'Evidence', 'With', 'Aspect', 'DB_Object_Name', 'Synonym', 'DB_Object_Type', 'Taxon_ID', 'Date', 'Assigned_By', 'Annotation_Extension', 'Gene_Product_Form_ID']</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.UniProt.GOA.writerec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write a single UniProt-GOA record to an output stream.</p>
-<p>Caller should know the  format version. Default: gaf-2.0
-If header has a value, then it is assumed this is the first record,
-a header is written.</p>
+<dt id="Bio.UniProt.GOA.record_has">
+<code class="sig-prename descclassname">Bio.UniProt.GOA.</code><code class="sig-name descname">record_has</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">inrec</span></em>, <em class="sig-param"><span class="n">fieldvals</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.UniProt.GOA.record_has" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accept a record, and a dictionary of field values.</p>
+<p>The format is {‘field_name’: set([val1, val2])}.
+If any field in the record has  a matching value, the function returns
+True. Otherwise, returns False.</p>
 </dd></dl>
 
 </div>

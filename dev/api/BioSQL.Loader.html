@@ -191,6 +191,27 @@ a database object.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Object used to load SeqRecord objects into a BioSQL database.</p>
 <dl class="py method">
+<dt id="BioSQL.Loader.DatabaseLoader.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">adaptor</span></em>, <em class="sig-param"><span class="n">dbid</span></em>, <em class="sig-param"><span class="n">fetch_NCBI_taxonomy</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.Loader.DatabaseLoader.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize with connection information for the database.</p>
+<p>Creating a DatabaseLoader object is normally handled via the
+BioSeqDatabase DBServer object, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">BioSQL</span> <span class="kn">import</span> <span class="n">BioSeqDatabase</span>
+<span class="n">server</span> <span class="o">=</span> <span class="n">BioSeqDatabase</span><span class="o">.</span><span class="n">open_database</span><span class="p">(</span><span class="n">driver</span><span class="o">=</span><span class="s2">&quot;MySQLdb&quot;</span><span class="p">,</span>
+                                      <span class="n">user</span><span class="o">=</span><span class="s2">&quot;gbrowse&quot;</span><span class="p">,</span>
+                                      <span class="n">passwd</span><span class="o">=</span><span class="s2">&quot;biosql&quot;</span><span class="p">,</span>
+                                      <span class="n">host</span><span class="o">=</span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
+                                      <span class="n">db</span><span class="o">=</span><span class="s2">&quot;test_biosql&quot;</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">server</span><span class="p">[</span><span class="s2">&quot;test&quot;</span><span class="p">]</span>
+<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">new_database</span><span class="p">(</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;For testing GBrowse&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt id="BioSQL.Loader.DatabaseLoader.load_seqrecord">
 <code class="sig-name descname">load_seqrecord</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.Loader.DatabaseLoader.load_seqrecord" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a Biopython SeqRecord into the database.</p>
@@ -210,6 +231,12 @@ can just do a:</p>
 </div>
 <p>and then recreate the database. But, it’s really useful for testing
 purposes.</p>
+<dl class="py method">
+<dt id="BioSQL.Loader.DatabaseRemover.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">adaptor</span></em>, <em class="sig-param"><span class="n">dbid</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.Loader.DatabaseRemover.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize with a database id and adaptor connection.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt id="BioSQL.Loader.DatabaseRemover.remove">
 <code class="sig-name descname">remove</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.Loader.DatabaseRemover.remove" title="Permalink to this definition">¶</a></dt>

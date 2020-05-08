@@ -253,6 +253,18 @@ distance between the two members of this node.</p>
 <p>Hierarchical clustering tree.</p>
 <p>A Tree consists of Nodes.</p>
 <dl class="py method">
+<dt id="Bio.Cluster.Tree.sort">
+<code class="sig-name descname">sort</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Tree.sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the hierarchical clustering tree.</p>
+<p>Sort the hierarchical clustering tree by switching the left and
+right subnode of nodes such that the elements in the left-to-right
+order of the tree tend to have increasing order values.</p>
+<p>Return the indices of the elements in the left-to-right order in
+the hierarchical clustering tree, such that the element with index
+indices[i] occurs at position i in the dendrogram.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Cluster.Tree.cut">
 <code class="sig-name descname">cut</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">nclusters</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Tree.cut" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create clusters by cutting the hierarchical clustering tree.</p>
@@ -265,18 +277,6 @@ to which each element was assigned.</p>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Cluster.Tree.sort">
-<code class="sig-name descname">sort</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">order</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Tree.sort" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sort the hierarchical clustering tree.</p>
-<p>Sort the hierarchical clustering tree by switching the left and
-right subnode of nodes such that the elements in the left-to-right
-order of the tree tend to have increasing order values.</p>
-<p>Return the indices of the elements in the left-to-right order in
-the hierarchical clustering tree, such that the element with index
-indices[i] occurs at position i in the dendrogram.</p>
 </dd></dl>
 
 </dd></dl>
@@ -727,6 +727,141 @@ samples in the output file</p></li>
 </dd>
 </dl>
 <dl class="py method">
+<dt id="Bio.Cluster.Record.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read gene expression data from the file handle and return a Record.</p>
+<p>The file should be in the format defined for Michael Eisen’s
+Cluster/TreeView program.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Cluster.Record.treecluster">
+<code class="sig-name descname">treecluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">transpose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'m'</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">'e'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.treecluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply hierarchical clustering and return a Tree object.</p>
+<p>The pairwise single, complete, centroid, and average linkage
+hierarchical clustering methods are available.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>transpose: if False: rows are clustered;</dt><dd><p>if True: columns are clustered.</p>
+</dd>
+</dl>
+</li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+<li><p>method: specifies which linkage method is used:
+- method == ‘s’: Single pairwise linkage
+- method == ‘m’: Complete (maximum) pairwise linkage (default)
+- method == ‘c’: Centroid linkage
+- method == ‘a’: Average pairwise linkage</p></li>
+</ul>
+</dd>
+</dl>
+<p>See the description of the Tree class for more information about
+the Tree object returned by this method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Cluster.Record.kcluster">
+<code class="sig-name descname">kcluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">nclusters</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">transpose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">npass</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'a'</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">'e'</span></em>, <em class="sig-param"><span class="n">initialid</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.kcluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply k-means or k-median clustering.</p>
+<p>This method returns a tuple (clusterid, error, nfound).</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>nclusters: number of clusters (the ‘k’ in k-means)</p></li>
+<li><dl class="simple">
+<dt>transpose: if False, genes (rows) are clustered;</dt><dd><p>if True, samples (columns) are clustered.</p>
+</dd>
+</dl>
+</li>
+<li><p>npass: number of times the k-means clustering algorithm is
+performed, each time with a different (random) initial condition.</p></li>
+<li><p>method: specifies how the center of a cluster is found:
+- method == ‘a’: arithmetic mean
+- method == ‘m’: median</p></li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+<li><p>initialid: the initial clustering from which the algorithm should
+start. If initialid is None, the routine carries out npass
+repetitions of the EM algorithm, each time starting from a different
+random initial clustering. If initialid is given, the routine
+carries out the EM algorithm only once, starting from the given
+initial clustering and without randomizing the order in which items
+are assigned to clusters (i.e., using the same order as in the data
+matrix). In that case, the k-means algorithm is fully deterministic.</p></li>
+</ul>
+</dd>
+<dt>Return values:</dt><dd><ul class="simple">
+<li><p>clusterid: array containing the number of the cluster to which each
+gene/sample was assigned in the best k-means clustering
+solution that was found in the npass runs;</p></li>
+<li><p>error: the within-cluster sum of distances for the returned
+k-means clustering solution;</p></li>
+<li><p>nfound: the number of times this solution was found.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Cluster.Record.somcluster">
+<code class="sig-name descname">somcluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">transpose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">nxgrid</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">nygrid</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">inittau</span><span class="o">=</span><span class="default_value">0.02</span></em>, <em class="sig-param"><span class="n">niter</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">'e'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.somcluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate a self-organizing map on a rectangular grid.</p>
+<p>The somcluster method returns a tuple (clusterid, celldata).</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>transpose: if False, genes (rows) are clustered;</dt><dd><p>if True,  samples (columns) are clustered.</p>
+</dd>
+</dl>
+</li>
+<li><p>nxgrid: the horizontal dimension of the rectangular SOM map</p></li>
+<li><p>nygrid: the vertical dimension of the rectangular SOM map</p></li>
+<li><p>inittau: the initial value of tau (the neighborbood function)</p></li>
+<li><p>niter: the number of iterations</p></li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+</ul>
+</dd>
+<dt>Return values:</dt><dd><ul class="simple">
+<li><p>clusterid: array with two columns, while the number of rows is equal
+to the number of genes or the number of samples depending on
+whether genes or samples are being clustered. Each row in
+the array contains the x and y coordinates of the cell in the
+rectangular SOM grid to which the gene or samples was assigned.</p></li>
+<li><p>celldata: an array with dimensions (nxgrid, nygrid, number of
+samples) if genes are being clustered, or (nxgrid, nygrid,
+number of genes) if samples are being clustered. Each item
+[ix, iy] of this array is a 1D vector containing the gene
+expression data for the centroid of the cluster in the SOM grid
+cell with coordinates [ix, iy].</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Cluster.Record.clustercentroids">
 <code class="sig-name descname">clustercentroids</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">clusterid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'a'</span></em>, <em class="sig-param"><span class="n">transpose</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.clustercentroids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the cluster centroids and return a tuple (cdata, cmask).</p>
@@ -855,55 +990,6 @@ array([4., 2., 6.])]</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="Bio.Cluster.Record.kcluster">
-<code class="sig-name descname">kcluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">nclusters</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">transpose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">npass</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'a'</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">'e'</span></em>, <em class="sig-param"><span class="n">initialid</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.kcluster" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply k-means or k-median clustering.</p>
-<p>This method returns a tuple (clusterid, error, nfound).</p>
-<dl class="simple">
-<dt>Keyword arguments:</dt><dd><ul class="simple">
-<li><p>nclusters: number of clusters (the ‘k’ in k-means)</p></li>
-<li><dl class="simple">
-<dt>transpose: if False, genes (rows) are clustered;</dt><dd><p>if True, samples (columns) are clustered.</p>
-</dd>
-</dl>
-</li>
-<li><p>npass: number of times the k-means clustering algorithm is
-performed, each time with a different (random) initial condition.</p></li>
-<li><p>method: specifies how the center of a cluster is found:
-- method == ‘a’: arithmetic mean
-- method == ‘m’: median</p></li>
-<li><p>dist: specifies the distance function to be used:
-- dist == ‘e’: Euclidean distance
-- dist == ‘b’: City Block distance
-- dist == ‘c’: Pearson correlation
-- dist == ‘a’: absolute value of the correlation
-- dist == ‘u’: uncentered correlation
-- dist == ‘x’: absolute uncentered correlation
-- dist == ‘s’: Spearman’s rank correlation
-- dist == ‘k’: Kendall’s tau</p></li>
-<li><p>initialid: the initial clustering from which the algorithm should
-start. If initialid is None, the routine carries out npass
-repetitions of the EM algorithm, each time starting from a different
-random initial clustering. If initialid is given, the routine
-carries out the EM algorithm only once, starting from the given
-initial clustering and without randomizing the order in which items
-are assigned to clusters (i.e., using the same order as in the data
-matrix). In that case, the k-means algorithm is fully deterministic.</p></li>
-</ul>
-</dd>
-<dt>Return values:</dt><dd><ul class="simple">
-<li><p>clusterid: array containing the number of the cluster to which each
-gene/sample was assigned in the best k-means clustering
-solution that was found in the npass runs;</p></li>
-<li><p>error: the within-cluster sum of distances for the returned
-k-means clustering solution;</p></li>
-<li><p>nfound: the number of times this solution was found.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt id="Bio.Cluster.Record.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">jobname</span></em>, <em class="sig-param"><span class="n">geneclusters</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">expclusters</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the clustering results.</p>
@@ -928,84 +1014,6 @@ vector can be calculated by kcluster.</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Cluster.Record.somcluster">
-<code class="sig-name descname">somcluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">transpose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">nxgrid</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">nygrid</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">inittau</span><span class="o">=</span><span class="default_value">0.02</span></em>, <em class="sig-param"><span class="n">niter</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">'e'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.somcluster" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate a self-organizing map on a rectangular grid.</p>
-<p>The somcluster method returns a tuple (clusterid, celldata).</p>
-<dl class="simple">
-<dt>Keyword arguments:</dt><dd><ul class="simple">
-<li><dl class="simple">
-<dt>transpose: if False, genes (rows) are clustered;</dt><dd><p>if True,  samples (columns) are clustered.</p>
-</dd>
-</dl>
-</li>
-<li><p>nxgrid: the horizontal dimension of the rectangular SOM map</p></li>
-<li><p>nygrid: the vertical dimension of the rectangular SOM map</p></li>
-<li><p>inittau: the initial value of tau (the neighborbood function)</p></li>
-<li><p>niter: the number of iterations</p></li>
-<li><p>dist: specifies the distance function to be used:
-- dist == ‘e’: Euclidean distance
-- dist == ‘b’: City Block distance
-- dist == ‘c’: Pearson correlation
-- dist == ‘a’: absolute value of the correlation
-- dist == ‘u’: uncentered correlation
-- dist == ‘x’: absolute uncentered correlation
-- dist == ‘s’: Spearman’s rank correlation
-- dist == ‘k’: Kendall’s tau</p></li>
-</ul>
-</dd>
-<dt>Return values:</dt><dd><ul class="simple">
-<li><p>clusterid: array with two columns, while the number of rows is equal
-to the number of genes or the number of samples depending on
-whether genes or samples are being clustered. Each row in
-the array contains the x and y coordinates of the cell in the
-rectangular SOM grid to which the gene or samples was assigned.</p></li>
-<li><p>celldata: an array with dimensions (nxgrid, nygrid, number of
-samples) if genes are being clustered, or (nxgrid, nygrid,
-number of genes) if samples are being clustered. Each item
-[ix, iy] of this array is a 1D vector containing the gene
-expression data for the centroid of the cluster in the SOM grid
-cell with coordinates [ix, iy].</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.Cluster.Record.treecluster">
-<code class="sig-name descname">treecluster</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">transpose</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'m'</span></em>, <em class="sig-param"><span class="n">dist</span><span class="o">=</span><span class="default_value">'e'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.treecluster" title="Permalink to this definition">¶</a></dt>
-<dd><p>Apply hierarchical clustering and return a Tree object.</p>
-<p>The pairwise single, complete, centroid, and average linkage
-hierarchical clustering methods are available.</p>
-<dl class="simple">
-<dt>Keyword arguments:</dt><dd><ul class="simple">
-<li><dl class="simple">
-<dt>transpose: if False: rows are clustered;</dt><dd><p>if True: columns are clustered.</p>
-</dd>
-</dl>
-</li>
-<li><p>dist: specifies the distance function to be used:
-- dist == ‘e’: Euclidean distance
-- dist == ‘b’: City Block distance
-- dist == ‘c’: Pearson correlation
-- dist == ‘a’: absolute value of the correlation
-- dist == ‘u’: uncentered correlation
-- dist == ‘x’: absolute uncentered correlation
-- dist == ‘s’: Spearman’s rank correlation
-- dist == ‘k’: Kendall’s tau</p></li>
-<li><p>method: specifies which linkage method is used:
-- method == ‘s’: Single pairwise linkage
-- method == ‘m’: Complete (maximum) pairwise linkage (default)
-- method == ‘c’: Centroid linkage
-- method == ‘a’: Average pairwise linkage</p></li>
-</ul>
-</dd>
-</dl>
-<p>See the description of the Tree class for more information about
-the Tree object returned by this method.</p>
 </dd></dl>
 
 </dd></dl>

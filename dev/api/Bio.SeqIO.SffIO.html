@@ -474,15 +474,84 @@ found.</p>
 <dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequenceIterator</span></code></a></p>
 <p>Parser for Standard Flowgram Format (SFF) files.</p>
 <dl class="py method">
-<dt id="Bio.SeqIO.SffIO.SffIterator.iterate">
-<code class="sig-name descname">iterate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.SffIO.SffIterator.iterate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse the file and generate SeqRecord objects.</p>
+<dt id="Bio.SeqIO.SffIO.SffIterator.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">DNAAlphabet()</span></em>, <em class="sig-param"><span class="n">trim</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.SffIO.SffIterator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over Standard Flowgram Format (SFF) reads (as SeqRecord objects).</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>source - path to an SFF file, e.g. from Roche 454 sequencing,
+or a file-like object opened in binary mode.</p></li>
+<li><p>alphabet - optional alphabet, defaults to generic DNA.</p></li>
+<li><p>trim - should the sequences be trimmed?</p></li>
+</ul>
+</div></blockquote>
+<p>The resulting SeqRecord objects should match those from a paired FASTA
+and QUAL file converted from the SFF file using the Roche 454 tool
+ssfinfo. i.e. The sequence will be mixed case, with the trim regions
+shown in lower case.</p>
+<p>This function is used internally via the Bio.SeqIO functions:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Roche/E3MFGYR02_random_10_reads.sff&quot;</span><span class="p">,</span> <span class="s2">&quot;sff&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">E3MFGYR02JWQ7T 265</span>
+<span class="go">E3MFGYR02JA6IL 271</span>
+<span class="go">E3MFGYR02JHD4H 310</span>
+<span class="go">E3MFGYR02GFKUC 299</span>
+<span class="go">E3MFGYR02FTGED 281</span>
+<span class="go">E3MFGYR02FR9G7 261</span>
+<span class="go">E3MFGYR02GAZMS 278</span>
+<span class="go">E3MFGYR02HHZ8O 221</span>
+<span class="go">E3MFGYR02GPGB1 269</span>
+<span class="go">E3MFGYR02F7Z7G 219</span>
+</pre></div>
+</div>
+<p>You can also call it directly:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Roche/E3MFGYR02_random_10_reads.sff&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SffIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">E3MFGYR02JWQ7T 265</span>
+<span class="go">E3MFGYR02JA6IL 271</span>
+<span class="go">E3MFGYR02JHD4H 310</span>
+<span class="go">E3MFGYR02GFKUC 299</span>
+<span class="go">E3MFGYR02FTGED 281</span>
+<span class="go">E3MFGYR02FR9G7 261</span>
+<span class="go">E3MFGYR02GAZMS 278</span>
+<span class="go">E3MFGYR02HHZ8O 221</span>
+<span class="go">E3MFGYR02GPGB1 269</span>
+<span class="go">E3MFGYR02F7Z7G 219</span>
+</pre></div>
+</div>
+<p>Or, with the trim option:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Roche/E3MFGYR02_random_10_reads.sff&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SffIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">trim</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">E3MFGYR02JWQ7T 260</span>
+<span class="go">E3MFGYR02JA6IL 265</span>
+<span class="go">E3MFGYR02JHD4H 292</span>
+<span class="go">E3MFGYR02GFKUC 295</span>
+<span class="go">E3MFGYR02FTGED 277</span>
+<span class="go">E3MFGYR02FR9G7 256</span>
+<span class="go">E3MFGYR02GAZMS 271</span>
+<span class="go">E3MFGYR02HHZ8O 150</span>
+<span class="go">E3MFGYR02GPGB1 221</span>
+<span class="go">E3MFGYR02F7Z7G 130</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt id="Bio.SeqIO.SffIO.SffIterator.parse">
 <code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.SffIO.SffIterator.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start parsing the file, and return a SeqRecord generator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqIO.SffIO.SffIterator.iterate">
+<code class="sig-name descname">iterate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.SffIO.SffIterator.iterate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the file and generate SeqRecord objects.</p>
 </dd></dl>
 
 </dd></dl>
@@ -492,6 +561,22 @@ found.</p>
 <em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.SffIO.</code><code class="sig-name descname">SffWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">xml</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.SffIO.SffWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceWriter" title="Bio.SeqIO.Interfaces.SequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequenceWriter</span></code></a></p>
 <p>SFF file writer.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.SffIO.SffWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">xml</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.SffIO.SffWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize an SFF writer object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>target - Output stream opened in binary mode, or a path to a file.</p></li>
+<li><p>index - Boolean argument, should we try and write an index?</p></li>
+<li><p>xml - Optional string argument, xml manifest to be recorded
+in the index block (see function ReadRocheXmlManifest for
+reading this data).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt id="Bio.SeqIO.SffIO.SffWriter.write_file">
 <code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.SffIO.SffWriter.write_file" title="Permalink to this definition">¶</a></dt>
