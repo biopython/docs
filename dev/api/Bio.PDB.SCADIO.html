@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Bio.PDB.PDBParser module &mdash; Biopython 1.77.dev0 documentation</title>
+  <title>Bio.PDB.SCADIO module &mdash; Biopython 1.77.dev0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Bio.PDB.PICIO module" href="Bio.PDB.PICIO.html" />
-    <link rel="prev" title="Bio.PDB.PDBList module" href="Bio.PDB.PDBList.html" /> 
+    <link rel="next" title="Bio.PDB.Selection module" href="Bio.PDB.Selection.html" />
+    <link rel="prev" title="Bio.PDB.ResidueDepth module" href="Bio.PDB.ResidueDepth.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -198,7 +198,7 @@
         
           <li><a href="Bio.PDB.html">Bio.PDB package</a> &raquo;</li>
         
-      <li>Bio.PDB.PDBParser module</li>
+      <li>Bio.PDB.SCADIO module</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -206,7 +206,7 @@
             
             
               <!-- User defined GitHub URL -->
-              <a href="https://github.com/biopython/biopython/blob/master/Bio/PDB/PDBParser.py" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/PDB/SCADIO.py" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -217,10 +217,10 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="Bio.PDB.PICIO.html" class="btn btn-neutral float-right" title="Bio.PDB.PICIO module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Bio.PDB.Selection.html" class="btn btn-neutral float-right" title="Bio.PDB.Selection module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Bio.PDB.PDBList.html" class="btn btn-neutral float-left" title="Bio.PDB.PDBList module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Bio.PDB.ResidueDepth.html" class="btn btn-neutral float-left" title="Bio.PDB.ResidueDepth module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -229,66 +229,75 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-Bio.PDB.PDBParser">
-<span id="bio-pdb-pdbparser-module"></span><h1>Bio.PDB.PDBParser module<a class="headerlink" href="#module-Bio.PDB.PDBParser" title="Permalink to this headline">¶</a></h1>
-<p>Parser for PDB files.</p>
-<dl class="py class">
-<dt id="Bio.PDB.PDBParser.PDBParser">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.PDBParser.</code><code class="sig-name descname">PDBParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">PERMISSIVE</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">get_header</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">structure_builder</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">QUIET</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">is_pqr</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBParser.PDBParser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Parse a PDB file and return a Structure object.</p>
-<dl class="py method">
-<dt id="Bio.PDB.PDBParser.PDBParser.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">PERMISSIVE</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">get_header</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">structure_builder</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">QUIET</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">is_pqr</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBParser.PDBParser.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a PDBParser object.</p>
-<p>The PDB parser call a number of standard methods in an aggregated
-StructureBuilder object. Normally this object is instanciated by the
-PDBParser object itself, but if the user provides his/her own
-StructureBuilder object, the latter is used instead.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>PERMISSIVE - Evaluated as a Boolean. If false, exceptions in
-constructing the SMCRA data structure are fatal. If true (DEFAULT),
-the exceptions are caught, but some residues or atoms will be missing.
-THESE EXCEPTIONS ARE DUE TO PROBLEMS IN THE PDB FILE!.</p></li>
-<li><p>get_header - unused argument kept for historical compatibilty.</p></li>
-<li><p>structure_builder - an optional user implemented StructureBuilder class.</p></li>
-<li><p>QUIET - Evaluated as a Boolean. If true, warnings issued in constructing
-the SMCRA data will be suppressed. If false (DEFAULT), they will be shown.
-These warnings might be indicative of problems in the PDB file!</p></li>
-<li><p>is_pqr - Evaluated as a Boolean. Specifies the type of file to be parsed.
-If false (DEFAULT) a .pdb file format is assumed. Set it to true if you
-want to parse a .pqr file instead.</p></li>
+  <div class="section" id="module-Bio.PDB.SCADIO">
+<span id="bio-pdb-scadio-module"></span><h1>Bio.PDB.SCADIO module<a class="headerlink" href="#module-Bio.PDB.SCADIO" title="Permalink to this headline">¶</a></h1>
+<p>SCADIO: write OpenSCAD program to create protein structure 3D model.</p>
+<p>3D printing a protein structure is a non-trivial exercise due to the
+overall complexity and the general requirement for supporting overhang regions
+while printing.  This software is a path to generating a model for printing
+(e.g. an STL file), and does not address the issues around converting the
+model to a physical product.  OpenSCAD &lt;<a class="reference external" href="http://www.openscad.org/">http://www.openscad.org/</a>&gt; can create
+a printable model from the script this software produces.  MeshMixer
+&lt;<a class="reference external" href="http://www.meshmixer.com/">http://www.meshmixer.com/</a>&gt;, various slicer software, and the 3D printer
+technology available to you provide options for addressing the problems around
+physically rendering the model.</p>
+<p>I suggest generating your initial model using the OpenSCAD script provided
+here, then modifying that script according to your needs.  Changing the
+atomScale and bondRadius values can simplify the model by removing gaps and
+the corresponding need for supports, or you may wish to modify the hedronDispatch()
+routine to select residues or chain sections for printing separately and
+subsequently joining with rotatable bonds.  During this development phase you
+will likely have your version <cite>include</cite> only the data matrices generated here,
+by using the <cite>includeCode-False</cite> option to write_SCAD().  An example project
+with modifications of the script generated here is
+&lt;<a class="reference external" href="https://www.thingiverse.com/thing:3957471">https://www.thingiverse.com/thing:3957471</a>&gt;.</p>
+<dl class="py function">
+<dt id="Bio.PDB.SCADIO.write_SCAD">
+<code class="sig-prename descclassname">Bio.PDB.SCADIO.</code><code class="sig-name descname">write_SCAD</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entity</span></em>, <em class="sig-param"><span class="n">file</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pdbid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">backboneOnly</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">includeCode</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">maxPeptideBond</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">handle</span><span class="o">=</span><span class="default_value">'protein'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.SCADIO.write_SCAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write hedron assembly to file as OpenSCAD matrices.</p>
+<p>This routine calls both internal_to_atom_coordinates() and
+atom_to_internal_coordinates() due to requirements for scaling, explicit
+bonds around rings, and setting the coordinate space of the output model.</p>
+<p>Output data format is primarily:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>matrix for each hedron:</dt><dd><p>len1, angle2, len3, atom covalent bond class, flags to indicate
+atom/bond represented in previous hedron (OpenSCAD very slow with
+redundant overlapping elements), flags for bond features</p>
+</dd>
+</dl>
+</li>
+<li><p>transform matrices to assemble each hedron into residue dihedra sets</p></li>
+<li><p>transform matrices for each residue to position in chain</p></li>
+</ul>
+<p>OpenSCAD software is included in this Python file to process these
+matrices into a model suitable for a 3D printing project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> – Biopython PDB structure entity
+structure data to export</p></li>
+<li><p><strong>file</strong> – Bipoython as_handle filename or open file pointer
+file to write data to</p></li>
+<li><p><strong>scale</strong> – float
+units (usually mm) per angstrom for STL output, written in output</p></li>
+<li><p><strong>pdbid</strong> – str
+PDB idcode, written in output. Defaults to ‘0PDB’ if not supplied
+and no ‘idcode’ set in entity</p></li>
+<li><p><strong>backboneOnly</strong> – bool default False
+Do not output side chain data past Cbeta if True</p></li>
+<li><p><strong>includeCode</strong> – bool default True
+Include OpenSCAD software (inline below) so output file can be loaded
+into OpenSCAD; if False, output data matrices only</p></li>
+<li><p><strong>maxPeptideBond</strong> – Optional[float] default None
+Override the cut-off in IC_Chain class (default 1.4) for detecting
+chain breaks.  If your target has chain breaks, pass a large number here
+to create a very long ‘bond’ spanning the break.</p></li>
+<li><p><strong>handle</strong> – str, default ‘protein’
+name for top level of generated OpenSCAD matrix structure</p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PDB.PDBParser.PDBParser.get_structure">
-<code class="sig-name descname">get_structure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">file</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBParser.PDBParser.get_structure" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the structure.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>id - string, the id that will be used for the structure</p></li>
-<li><p>file - name of the PDB file OR an open filehandle</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PDB.PDBParser.PDBParser.get_header">
-<code class="sig-name descname">get_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBParser.PDBParser.get_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the header.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="Bio.PDB.PDBParser.PDBParser.get_trailer">
-<code class="sig-name descname">get_trailer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBParser.PDBParser.get_trailer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the trailer.</p>
-</dd></dl>
-
 </dd></dl>
 
 </div>
@@ -301,10 +310,10 @@ want to parse a .pqr file instead.</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Bio.PDB.PICIO.html" class="btn btn-neutral float-right" title="Bio.PDB.PICIO module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Bio.PDB.Selection.html" class="btn btn-neutral float-right" title="Bio.PDB.Selection module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Bio.PDB.PDBList.html" class="btn btn-neutral float-left" title="Bio.PDB.PDBList module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Bio.PDB.ResidueDepth.html" class="btn btn-neutral float-left" title="Bio.PDB.ResidueDepth module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
