@@ -1,0 +1,1620 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bio.PDB.internal_coords module &mdash; Biopython 1.77 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.PDB.mmcifio module" href="Bio.PDB.mmcifio.html" />
+    <link rel="prev" title="Bio.PDB.ic_rebuild module" href="Bio.PDB.ic_rebuild.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.77
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Alphabet.html">Bio.Alphabet package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Crystal.html">Bio.Crystal package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.FSSP.html">Bio.FSSP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Bio.PDB.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="Bio.PDB.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.PDB.html#module-Bio.PDB">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Statistics.html">Bio.Statistics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SubsMat.html">Bio.SubsMat package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="Bio.html">Bio package</a> &raquo;</li>
+        
+          <li><a href="Bio.PDB.html">Bio.PDB package</a> &raquo;</li>
+        
+      <li>Bio.PDB.internal_coords module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/PDB/internal_coords.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="Bio.PDB.mmcifio.html" class="btn btn-neutral float-right" title="Bio.PDB.mmcifio module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.PDB.ic_rebuild.html" class="btn btn-neutral float-left" title="Bio.PDB.ic_rebuild module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Bio.PDB.internal_coords">
+<span id="bio-pdb-internal-coords-module"></span><h1>Bio.PDB.internal_coords module<a class="headerlink" href="#module-Bio.PDB.internal_coords" title="Permalink to this headline">¶</a></h1>
+<p>Classes to support internal coordinates for protein structures.</p>
+<p>Internal coordinates comprise Psi, Phi and Omega dihedral angles along the
+protein backbone, Chi angles along the sidechains, and all 3-atom angles and
+bond lengths comprising a protein chain.  These routines can compute internal
+coordinates from atom XYZ coordinates, and compute atom XYZ coordinates from
+internal coordinates.</p>
+<p>Internal coordinates are defined on sequences of atoms which span
+residues or follow accepted nomenclature along sidechains.  To manage these
+sequences and support Biopython’s disorder mechanisms, AtomKey specifiers are
+implemented to capture residue, atom and variant identification in a single
+object.  A Hedron object is specified as three sequential AtomKeys, comprising
+two bond lengths and the bond angle between them.  A Dihedron consists of four
+sequential AtomKeys, linking two Hedra with a dihedral angle between them.</p>
+<p>A Protein Internal Coordinate (.pic) file format is defined to capture
+sufficient detail to reproduce a PDB file from chain starting coordinates
+(first residue N, Ca, C XYZ coordinates) and remaining internal coordinates.
+These files are used internally to verify that a given structure can be
+regenerated from its internal coordinates.</p>
+<p>Internal coordinates may also be exported as OpenSCAD data arrays for
+generating 3D printed protein models.  OpenSCAD software is provided as
+proof-of-concept for generating such models.</p>
+<p>The following classes comprise the core functionality for processing internal
+coordinates and are sufficiently related and coupled to place them together in
+this module:</p>
+<dl class="simple">
+<dt>IC_Chain: Extends Biopython Chain on .internal_coord attribute.</dt><dd><p>Manages connected sequence of residues and chain breaks; methods generally
+apply IC_Residue methods along chain.</p>
+</dd>
+<dt>IC_Residue: Extends for Biopython Residue on .internal_coord attribute.</dt><dd><p>Most control and methods of interest are in this class, see API.</p>
+</dd>
+<dt>Dihedron: four joined atoms forming a dihedral angle.</dt><dd><p>Dihedral angle, homogeneous atom coordinates in local coordinate space,
+references to relevant Hedra and IC_Residue.  Methods to compute
+residue dihedral angles, bond angles and bond lengths.</p>
+</dd>
+<dt>Hedron: three joined atoms forming a plane.</dt><dd><p>Contains homogeneous atom coordinates in local coordinate space as well as
+bond lengths and angle between them.</p>
+</dd>
+<dt>Edron: base class for Hedron and Dihedron classes.</dt><dd><p>Tuple of AtomKeys comprising child, string ID, mainchain membership boolean
+and other routines common for both Hedra and Dihedra.  Implements rich
+comparison.</p>
+</dd>
+<dt>AtomKey: keys (dictionary and string) for referencing atom sequences.</dt><dd><p>Capture residue and disorder/occupancy information, provides a
+no-whitespace key for .pic files, and implements rich comparison.</p>
+</dd>
+</dl>
+<p>Custom exception classes: HedronMatchError and MissingAtomError</p>
+<dl class="py class">
+<dt id="Bio.PDB.internal_coords.IC_Chain">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.internal_coords.</code><code class="sig-name descname">IC_Chain</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">Chain</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to extend Biopython Chain with internal coordinate data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>chain: biopython Chain object reference</strong></dt><dd><p>The Chain object this extends</p>
+</dd>
+<dt><strong>initNCaC: AtomKey indexed dictionary of N, Ca, C atom coordinates.</strong></dt><dd><p>NCaCKeys start chain segments (first residue or after chain break).
+These 3 atoms define the coordinate space for a contiguous chain segment,
+as initially specified by PDB or mmCIF file.</p>
+</dd>
+<dt><strong>MaxPeptideBond: **Class</strong> attribute to detect chain breaks.**</dt><dd><p>Override for fully contiguous chains with some very long bonds - e.g.
+for 3D printing (OpenSCAD output) a structure with fully disordered
+(missing) residues.</p>
+</dd>
+<dt><strong>ordered_aa_ic_list: list of IC_Residue objects</strong></dt><dd><p>IC_Residue objects ic algorithms can process (e.g. no waters)</p>
+</dd>
+<dt><strong>hedra: dict indexed by 3-tuples of AtomKeys</strong></dt><dd><p>Hedra forming residues in this chain</p>
+</dd>
+<dt><strong>hedraLen: int length of hedra dict</strong></dt><dd></dd>
+<dt><strong>hedraNdx: dict mapping hedra AtomKeys to numpy array data</strong></dt><dd></dd>
+<dt><strong>dihedra: dict indexed by 4-tuples of AtomKeys</strong></dt><dd><p>Dihedra forming (overlapping) this residue</p>
+</dd>
+<dt><strong>dihedraLen: int length of dihedra dict</strong></dt><dd></dd>
+<dt><strong>dihedraNdx: dict mapping dihedra AtomKeys to numpy array data</strong></dt><dd></dd>
+<dt><strong>atomArray: numpy array of homogeneous atom coords for chain</strong></dt><dd></dd>
+<dt><strong>atomArrayIndex: dict mapping AtomKeys to atomArray indexes</strong></dt><dd></dd>
+<dt><strong>numpy arrays for vector processing of chain di/hedra:</strong></dt><dd></dd>
+<dt><strong>hedraIC: length-angle-length entries for each hedron</strong></dt><dd></dd>
+<dt><strong>hAtoms: homogeneous atom coordinates (3x4) of hedra, central atom at origin</strong></dt><dd></dd>
+<dt><strong>hAtomsR: hAtoms in reverse order</strong></dt><dd></dd>
+<dt><strong>hAtoms_needs_update: booleans indicating whether hAtoms represent hedraIC</strong></dt><dd></dd>
+<dt><strong>dihedraIC: dihedral angles for each dihedron</strong></dt><dd></dd>
+<dt><strong>dAtoms: homogeneous atom coordinates (4x4) of dihedra, second atom at origin</strong></dt><dd></dd>
+<dt><strong>dAtoms_needs_update: booleans indicating whether dAtoms represent dihedraIC</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 73%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>internal_to_atom_coordinates(verbose, start, fin)</strong></p></td>
+<td><p>Process ic data to Residue/Atom coordinates; calls assemble_residues() followed by coords_to_structure()</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>assemble_residues(verbose, start, fin)</strong></p></td>
+<td><p>Generate IC_Residue atom coords from internal coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>coords_to_structure()</strong></p></td>
+<td><p>update Biopython Residue.Atom coords from IC_Residue coords for all Residues with IC_Residue attributes</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>atom_to_internal_coordinates(verbose)</strong></p></td>
+<td><p>Calculate dihedrals, angles, bond lengths (internal coordinates) for Atom data</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>link_residues()</strong></p></td>
+<td><p>Call link_dihedra() on each IC_Residue (needs rprev, rnext set)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_residues()</strong></p></td>
+<td><p>Add .internal_coord attribute for all Residues in parent Chain, populate ordered_aa_ic_list, set IC_Residue rprev, rnext or initNCaC coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>write_SCAD()</strong></p></td>
+<td><p>Write OpenSCAD matrices for internal coordinate data comprising chain</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.IC_Chain.MaxPeptideBond">
+<code class="sig-name descname">MaxPeptideBond</code><em class="property"> = 1.4</em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.MaxPeptideBond" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">‘Chain’</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize IC_Chain object, with or without residue/Atom data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>parent</strong> – Biopython Chain object
+Chain object this extends</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.clear_ic">
+<code class="sig-name descname">clear_ic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.clear_ic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear residue internal_coord settings for this chain.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.set_residues">
+<code class="sig-name descname">set_residues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.set_residues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize internal_coord data for loaded Residues.</p>
+<p>Add IC_Residue as .internal_coord attribute for each Residue in parent
+Chain; populate ordered_aa_ic_list with IC_Residue references for residues
+which can be built (amino acids and some hetatms); set rprev and rnext
+on each sequential IC_Residue, populate initNCaC at start and after
+chain breaks.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.link_residues">
+<code class="sig-name descname">link_residues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.link_residues" title="Permalink to this definition">¶</a></dt>
+<dd><p>link_dihedra() for each IC_Residue; needs rprev, rnext set.</p>
+<p>Called by PICIO:read_PIC() after finished reading chain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.assemble_residues">
+<code class="sig-name descname">assemble_residues</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">start</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>NoneType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fin</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>NoneType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.assemble_residues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate IC_Residue atom coords from internal coordinates.</p>
+<p>Filter positions between start and fin if set, find appropriate start
+coordinates for each residue and pass to IC_Residue.assemble()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bool</strong> (<em>verbose</em>) – default False
+describe runtime problems</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>start, fin lists
+sequence position, insert code for begin, end of subregion to
+process</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.coords_to_structure">
+<code class="sig-name descname">coords_to_structure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.coords_to_structure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Promote all ic atom_coords to Biopython Residue/Atom coords.</p>
+<p>IC atom_coords are homogeneous [4], Biopython atom coords are XYZ [3].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.init_edra">
+<code class="sig-name descname">init_edra</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.init_edra" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create chain level di/hedra arrays.</p>
+<p>If called by read_PIC, self.di/hedra = {} and object tree has IC data.
+-&gt; build chain arrays from IC data</p>
+<p>If called at start of atom_to_internal_coords, self.di/hedra fully
+populated.  -&gt; create empty chain numpy arrays</p>
+<p>In both cases, fix di/hedra object attributes to be views on
+chain-level array data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.init_atom_coords">
+<code class="sig-name descname">init_atom_coords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.init_atom_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set chain level di/hedra initial coord arrays from IC_Residue data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.internal_to_atom_coordinates">
+<code class="sig-name descname">internal_to_atom_coordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">start</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>NoneType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">fin</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>NoneType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">promote</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>bool<span class="p">, </span>NoneType<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.internal_to_atom_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process, IC data to Residue/Atom coords.</p>
+<p>Not yet vectorized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bool</strong> (<em>promote</em>) – default False
+describe runtime problems</p></li>
+<li><p><strong>bool</strong> – default True
+If True (the default) copy result atom XYZ coordinates to
+Biopython Atom objects for access by other Biopython methods;
+otherwise, updated atom coordinates must be accessed through
+IC_Residue and hedron objects.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>start, fin lists
+sequence position, insert code for begin, end of subregion to
+process</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.atom_to_internal_coordinates">
+<code class="sig-name descname">atom_to_internal_coordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.atom_to_internal_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate dihedrals, angles, bond lengths for Atom data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bool</strong> (<em>verbose</em>) – default False
+describe runtime problems</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Chain.write_SCAD">
+<code class="sig-name descname">write_SCAD</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fp: &lt;class 'TextIO'&gt;</em>, <em class="sig-param">backboneOnly: bool</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.write_SCAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write self to file fp as OpenSCAD data matrices.</p>
+<p>Works with write_SCAD() and embedded OpenSCAD routines in SCADIO.py.
+The OpenSCAD code explicitly creates spheres and cylinders to
+represent atoms and bonds in a 3D model.  Options are available
+to support rotatable bonds and magnetic hydrogen bonds.</p>
+<p>Matrices are written to link, enumerate and describe residues,
+dihedra, hedra, and chains, mirroring contents of the relevant IC_*
+data structures.</p>
+<p>The OpenSCAD matrix of hedra has additional information as follows:</p>
+<ul class="simple">
+<li><p>the atom and bond state (single, double, resonance) are logged
+so that covalent radii may be used for atom spheres in the 3D models</p></li>
+<li><p>bonds and atoms are tracked so that each is only created once</p></li>
+<li><p>bond options for rotation and magnet holders for hydrogen bonds
+may be specified</p></li>
+</ul>
+<p>Note the application of IC_Chain attribute MaxPeptideBond: missing
+residues may be linked (joining chain segments with arbitrarily long
+bonds) by setting this to a large value.</p>
+<p>All ALTLOC (disordered) residues and atoms are written to the output model.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.PDB.internal_coords.IC_Residue">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.internal_coords.</code><code class="sig-name descname">IC_Residue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">Residue</span></em>, <em class="sig-param"><span class="n">NO_ALTLOC</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class to extend Biopython Residue with internal coordinate data.</p>
+<dl class="field-list">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl>
+<dt><strong>residue: Biopython Residue object reference</strong></dt><dd><p>The Residue object this extends</p>
+</dd>
+<dt><strong>hedra: dict indexed by 3-tuples of AtomKeys</strong></dt><dd><p>Hedra forming this residue</p>
+</dd>
+<dt><strong>dihedra: dict indexed by 4-tuples of AtomKeys</strong></dt><dd><p>Dihedra forming (overlapping) this residue</p>
+</dd>
+<dt><strong>rprev, rnext: lists of IC_Residue objects</strong></dt><dd><p>References to adjacent (bonded, not missing, possibly disordered)
+residues in chain</p>
+</dd>
+<dt><strong>atom_coords: AtomKey indexed dict of numpy [4] arrays</strong></dt><dd><p>Local copy of atom homogeneous coordinates [4] for work
+distinct from Bopython Residue/Atom values</p>
+</dd>
+<dt><strong>alt_ids: list of char</strong></dt><dd><p>AltLoc IDs from PDB file</p>
+</dd>
+<dt><strong>bfactors: dict</strong></dt><dd><p>AtomKey indexed B-factors as read from PDB file</p>
+</dd>
+<dt><strong>NCaCKey: List of tuples of AtomKeys</strong></dt><dd><p>List of tuples of N, Ca, C backbone atom AtomKeys; usually only 1
+but more if backbone altlocs. Set by link_dihedra()</p>
+</dd>
+<dt><strong>is20AA: bool</strong></dt><dd><p>True if residue is one of 20 standard amino acids, based on
+Residue resname</p>
+</dd>
+<dt><strong>accept_atoms: tuple</strong></dt><dd><p>list of PDB atom names to use when generatiing internal coordinates.
+Default is:</p>
+<p><cite>accept_atoms = accept_mainchain + accept_hydrogens</cite></p>
+<p>to exclude hydrogens in internal coordinates and generated PDB files,
+override as:</p>
+<p><cite>IC_Residue.accept_atoms = IC_Residue.accept_mainchain</cite></p>
+<p>to get only backbone atoms plus amide proton, use:</p>
+<p><cite>IC_Residue.accept_atoms = IC_Residue.accept_mainchain + (‘H’,)</cite></p>
+<p>to convert D atoms to H, set <cite>AtomKey.d2h = True</cite> and use:</p>
+<p><cite>IC_Residue.accept_atoms = accept_mainchain + accept_hydrogens + accept_deuteriums</cite></p>
+<p>There is currently no option to output internal coordinates with D
+instead of H</p>
+</dd>
+<dt><strong>accept_resnames: tuple</strong></dt><dd><p>list of 3-letter residue names for HETATMs to accept when generating
+internal coordinates from atoms.  HETATM sidechain will be ignored, but normal
+backbone atoms (N, CA, C, O, CB) will be included.  Currently only
+CYG, YCM and UNK; override at your own risk.  To generate
+sidechain, add appropriate entries to ic_data_sidechains in
+ic_data.py and support in atom_to_internal_coordinates()</p>
+</dd>
+<dt><strong>gly_Cbeta: bool default False</strong></dt><dd><p>override class variable to True to generate internal coordinates for
+glycine CB atoms in atom_to_internal_coordinates().</p>
+<p><cite>IC_Residue.gly_Cbeta = True</cite></p>
+</dd>
+<dt><strong>allBonds: bool default False</strong></dt><dd><p>whereas a PDB file just specifies atoms, OpenSCAD output for 3D printing
+needs all bonds specified explicitly - otherwise, e.g. PHE rings will not
+be closed.  This variable is managed by the Write_SCAD() code and enables
+this.</p>
+</dd>
+<dt><strong>cic: IC_Chain default None</strong></dt><dd><p>parent chain IC_Chain object</p>
+</dd>
+<dt><strong>scale: optional float</strong></dt><dd><p>used for OpenSCAD output to generate gly_Cbeta bond length</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 57%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>applyMtx()</strong></p></td>
+<td><p>multiply all IC_Residue atom_cords by passed matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>assemble(atomCoordsIn, resetLocation, verbose)</strong></p></td>
+<td><p>Compute atom coordinates for this residue from internal coordinates</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>atm241(coord)</strong></p></td>
+<td><p>Convert 1x3 cartesian coords to 4x1 homogeneous coords</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>coords_to_residue()</strong></p></td>
+<td><p>Convert homogeneous atom_coords to Biopython cartesian Atom coords</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>atom_to_internal_coordinates(verbose)</strong></p></td>
+<td><p>Create hedra and dihedra for atom coordinates</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_angle()</strong></p></td>
+<td><p>Return angle for passed key</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>get_length()</strong></p></td>
+<td><p>Return bond length for specified pair</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>link_dihedra()</strong></p></td>
+<td><p>Link dihedra to this residue, form id3_dh_index</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>load_PIC(edron)</strong></p></td>
+<td><p>Process parsed (di-/h-)edron data from PIC file</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>pick_angle()</strong></p></td>
+<td><p>Find Hedron or Dihedron for passed key</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>pick_length()</strong></p></td>
+<td><p>Find hedra for passed AtomKey pair</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>rak(atom info)</strong></p></td>
+<td><p>Residue AtomKey - per residue AtomKey result cache</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>set_angle()</strong></p></td>
+<td><p>Set angle for passed key (no position updates)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_length()</strong></p></td>
+<td><p>Set bond length in all relevant hedra for specified pair</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>write_PIC(pdbid, chainId, s)</strong></p></td>
+<td><p>Generate PIC format strings for this residue</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.IC_Residue.accept_resnames">
+<code class="sig-name descname">accept_resnames</code><em class="property"> = ('CYG', 'YCM', 'UNK')</em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.accept_resnames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.IC_Residue.AllBonds">
+<code class="sig-name descname">AllBonds</code><em class="property">: bool</em><em class="property"> = False</em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.AllBonds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">parent</span><span class="p">:</span> <span class="n">‘Residue’</span></em>, <em class="sig-param"><span class="n">NO_ALTLOC</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize IC_Residue with parent Biopython Residue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent</strong> – Biopython Residue object
+The Biopython Residue this object extends</p></li>
+<li><p><strong>NO_ALTLOC</strong> – bool default False
+Option to disable processing altloc disordered atoms, use selected.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.rak">
+<code class="sig-name descname">rak</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">atm</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span><a class="reference internal" href="Bio.PDB.Atom.html#Bio.PDB.Atom.Atom" title="Bio.PDB.Atom.Atom">Bio.PDB.Atom.Atom</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; ’AtomKey’<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.rak" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cache calls to AtomKey for this residue.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.build_rak_cache">
+<code class="sig-name descname">build_rak_cache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.build_rak_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create explicit entries for for atoms so don’t miss altlocs.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.IC_Residue.accept_mainchain">
+<code class="sig-name descname">accept_mainchain</code><em class="property"> = ('N', 'CA', 'C', 'O', 'CB', 'CG', 'CG1', 'OG1', 'OG', 'SG', 'CG2', 'CD', 'CD1', 'SD', 'OD1', 'ND1', 'CD2', 'ND2', 'CE', 'CE1', 'NE', 'OE1', 'NE1', 'CE2', 'OE2', 'NE2', 'CE3', 'CZ', 'NZ', 'CZ2', 'CZ3', 'OD2', 'OH', 'CH2', 'OXT')</em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.accept_mainchain" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.IC_Residue.accept_hydrogens">
+<code class="sig-name descname">accept_hydrogens</code><em class="property"> = ('H', 'H1', 'H2', 'H3', 'HA', 'HA2', 'HA3', 'HB', 'HB1', 'HB2', 'HB3', 'HG2', 'HG3', 'HD2', 'HD3', 'HE2', 'HE3', 'HZ1', 'HZ2', 'HZ3', 'HG11', 'HG12', 'HG13', 'HG21', 'HG22', 'HG23', 'HZ', 'HD1', 'HE1', 'HD11', 'HD12', 'HD13', 'HG', 'HG1', 'HD21', 'HD22', 'HD23', 'NH1', 'NH2', 'HE', 'HH11', 'HH12', 'HH21', 'HH22', 'HE21', 'HE22', 'HE2', 'HH', 'HH2')</em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.accept_hydrogens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.IC_Residue.accept_deuteriums">
+<code class="sig-name descname">accept_deuteriums</code><em class="property"> = ('D', 'D1', 'D2', 'D3', 'DA', 'DA2', 'DA3', 'DB', 'DB1', 'DB2', 'DB3', 'DG2', 'DG3', 'DD2', 'DD3', 'DE2', 'DE3', 'DZ1', 'DZ2', 'DZ3', 'DG11', 'DG12', 'DG13', 'DG21', 'DG22', 'DG23', 'DZ', 'DD1', 'DE1', 'DD11', 'DD12', 'DD13', 'DG', 'DG1', 'DD21', 'DD22', 'DD23', 'ND1', 'ND2', 'DE', 'DH11', 'DH12', 'DH21', 'DH22', 'DE21', 'DE22', 'DE2', 'DH', 'DH2')</em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.accept_deuteriums" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.IC_Residue.accept_atoms">
+<code class="sig-name descname">accept_atoms</code><em class="property"> = ('N', 'CA', 'C', 'O', 'CB', 'CG', 'CG1', 'OG1', 'OG', 'SG', 'CG2', 'CD', 'CD1', 'SD', 'OD1', 'ND1', 'CD2', 'ND2', 'CE', 'CE1', 'NE', 'OE1', 'NE1', 'CE2', 'OE2', 'NE2', 'CE3', 'CZ', 'NZ', 'CZ2', 'CZ3', 'OD2', 'OH', 'CH2', 'OXT', 'H', 'H1', 'H2', 'H3', 'HA', 'HA2', 'HA3', 'HB', 'HB1', 'HB2', 'HB3', 'HG2', 'HG3', 'HD2', 'HD3', 'HE2', 'HE3', 'HZ1', 'HZ2', 'HZ3', 'HG11', 'HG12', 'HG13', 'HG21', 'HG22', 'HG23', 'HZ', 'HD1', 'HE1', 'HD11', 'HD12', 'HD13', 'HG', 'HG1', 'HD21', 'HD22', 'HD23', 'NH1', 'NH2', 'HE', 'HH11', 'HH12', 'HH21', 'HH22', 'HE21', 'HE22', 'HE2', 'HH', 'HH2')</em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.accept_atoms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.IC_Residue.gly_Cbeta">
+<code class="sig-name descname">gly_Cbeta</code><em class="property"> = False</em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.gly_Cbeta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.atm241">
+<em class="property">static </em><code class="sig-name descname">atm241</code><span class="sig-paren">(</span><em class="sig-param">coord: &lt;built-in function array&gt;</em><span class="sig-paren">)</span> &#x2192; &lt;built-in function array&gt;<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.atm241" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert 1x3 cartesian coordinates to 4x1 homogeneous coordinates.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print string is parent Residue ID.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.pretty_str">
+<code class="sig-name descname">pretty_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.pretty_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nice string for residue ID.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.load_PIC">
+<code class="sig-name descname">load_PIC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">edron</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.load_PIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process parsed (di-/h-)edron data from PIC file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>edron</strong> – parse dictionary from Edron.edron_re</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.link_dihedra">
+<code class="sig-name descname">link_dihedra</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.link_dihedra" title="Permalink to this definition">¶</a></dt>
+<dd><p>Housekeeping after loading all residues and dihedra.</p>
+<ul class="simple">
+<li><p>Link dihedra to this residue</p></li>
+<li><p>form id3_dh_index</p></li>
+<li><p>form ak_set</p></li>
+<li><p>set NCaCKey to be available AtomKeys</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.set_flexible">
+<code class="sig-name descname">set_flexible</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.set_flexible" title="Permalink to this definition">¶</a></dt>
+<dd><p>For OpenSCAD, mark N-CA and CA-C bonds to be flexible joints.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.set_hbond">
+<code class="sig-name descname">set_hbond</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.set_hbond" title="Permalink to this definition">¶</a></dt>
+<dd><p>For OpenSCAD, mark H-N and C-O bonds to be hbonds (magnets).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.default_startpos">
+<code class="sig-name descname">default_startpos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Dict[ForwardRef(‘AtomKey’), &lt;built-in function array&gt;]<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.default_startpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate default N-Ca-C coordinates to build this residue from.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.get_startpos">
+<code class="sig-name descname">get_startpos</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Dict[ForwardRef(‘AtomKey’), &lt;built-in function array&gt;]<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.get_startpos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find N-Ca-C coordinates to build this residue from.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.clear_transforms">
+<code class="sig-name descname">clear_transforms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.clear_transforms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set cst and rcst attributes to none before assemble().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.assemble">
+<code class="sig-name descname">assemble</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">resetLocation</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Union[Dict[ForwardRef(‘AtomKey’), &lt;built-in function array&gt;], Dict[Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)], &lt;built-in function array&gt;], NoneType]<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.assemble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute atom coordinates for this residue from internal coordinates.</p>
+<p>Join dihedrons starting from N-CA-C and N-CA-CB hedrons, computing protein
+space coordinates for backbone and sidechain atoms</p>
+<p>Sets forward and reverse transforms on each Dihedron to convert from
+protein coordinates to dihedron space coordinates for first three
+atoms (see coord_space())</p>
+<p>Not vectorized (yet).</p>
+<p><strong>Algorithm</strong></p>
+<p>form double-ended queue, start with c-ca-n, o-c-ca, n-ca-cb, n-ca-c.</p>
+<p>if resetLocation=True, use initial coords from generating dihedron
+for n-ca-c initial positions (result in dihedron coordinate space)</p>
+<dl>
+<dt>while queue not empty</dt><dd><p>get 3-atom hedron key</p>
+<p>for each dihedron starting with hedron key (1st hedron of dihedron)</p>
+<blockquote>
+<div><dl>
+<dt>if have coordinates for all 4 atoms already</dt><dd><p>add 2nd hedron key to back of queue</p>
+</dd>
+<dt>else if have coordinates for 1st 3 atoms</dt><dd><p>compute forward and reverse transforms to take 1st 3 atoms
+to/from dihedron initial coordinate space</p>
+<p>use reverse transform to get position of 4th atom in
+current coordinates from dihedron initial coordinates</p>
+<p>add 2nd hedron key to back of queue</p>
+</dd>
+<dt>else</dt><dd><p>ordering failed, put hedron key at back of queue and hope
+next time we have 1st 3 atom positions (should not happen)</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd>
+</dl>
+<p>loop terminates (queue drains) as hedron keys which do not start any
+dihedra are removed without action</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>resetLocation</strong> – bool default False
+- Option to ignore start location and orient so N-Ca-C hedron
+at origin.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dict of AtomKey -&gt; homogeneous atom coords for residue in protein space
+relative to previous residue</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.atom_to_internal_coordinates">
+<code class="sig-name descname">atom_to_internal_coordinates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.atom_to_internal_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create hedra and dihedra for atom coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – bool default False
+warn about missing N, Ca, C backbone atoms.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.build_glyCB">
+<code class="sig-name descname">build_glyCB</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">gCBd</span><span class="p">:</span> <span class="n">‘Dihedron’</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.build_glyCB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate values for Gly C-beta, rest of chain complete.</p>
+<p>Data averaged from Sep 2019 Dunbrack cullpdb_pc20_res2.2_R1.0
+restricted to structures with amide protons.</p>
+<p>Ala avg rotation of OCCACB from NCACO query:
+select avg(g.rslt) as avg_rslt, stddev(g.rslt) as sd_rslt, count(*)
+from
+(select f.d1d, f.d2d,
+(case when f.rslt &gt; 0 then f.rslt-360.0 else f.rslt end) as rslt
+from (select d1.angle as d1d, d2.angle as d2d,
+(d2.angle - d1.angle) as rslt from dihedron d1,
+dihedron d2 where d1.rdh_class=’AOACACAACB’ and
+d2.rdh_class=’ANACAACAO’ and d1.pdb=d2.pdb and d1.chn=d2.chn
+and d1.res=d2.res) as f) as g</p>
+<div class="line-block">
+<div class="line">avg_rslt          | sd_rslt          | count   |</div>
+<div class="line">-122.682194862932 | 5.04403040513919 | 14098   |</div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.write_PIC">
+<code class="sig-name descname">write_PIC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pdbid</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'0PDB'</span></em>, <em class="sig-param"><span class="n">chainid</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'A'</span></em>, <em class="sig-param"><span class="n">s</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.write_PIC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write PIC format lines for this residue.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdbid</strong> (<em>str</em>) – PDB idcode string; default 0PDB</p></li>
+<li><p><strong>chainid</strong> (<em>str</em>) – PDB Chain ID character; default A</p></li>
+<li><p><strong>s</strong> (<em>str</em>) – result string to add to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.coords_to_residue">
+<code class="sig-name descname">coords_to_residue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">rnext</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.coords_to_residue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert self.atom_coords to biopython Residue Atom coords.</p>
+<p>Copy homogeneous IC_Residue atom_coords to self.residue cartesian
+Biopython Atom coords.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>rnext</strong> – bool default False
+next IC_Residue has no atom coords due to missing atoms, so try to
+populate with any available coords calculated for this residue
+di/hedra extending into next</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.IC_Residue.relative_atom_re">
+<code class="sig-name descname">relative_atom_re</code><em class="property"> = re.compile('^(-?[10])([A-Z]+)$')</em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.relative_atom_re" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.pick_angle">
+<code class="sig-name descname">pick_angle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">angle_key</span><span class="p">:</span> <span class="n">Union[Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)], Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)], str]</span></em><span class="sig-paren">)</span> &#x2192; Union[ForwardRef(‘Hedron’), ForwardRef(‘Dihedron’), NoneType]<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.pick_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get Hedron or Dihedron for angle_key.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>angle_key</strong> – <ul class="simple">
+<li><p>tuple of 3 or 4 AtomKeys</p></li>
+<li><p>string of atom names (‘CA’) separated by :’s</p></li>
+<li><p>string of [-1, 0, 1]&lt;atom name&gt; separated by ‘:’s. -1 is
+previous residue, 0 is this residue, 1 is next residue</p></li>
+<li><p>psi, phi, omg, omega, chi1, chi2, chi3, chi4, chi5</p></li>
+<li><p>tau (N-CA-C angle) see Richardson1981</p></li>
+<li><p>except for tuples of AtomKeys, no option to access alternate disordered atoms</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>Observe that a residue’s phi and omega dihedrals, as well as the hedra
+comprising them (including the N:Ca:C tau hedron), are stored in the
+n-1 di/hedra sets; this is handled here, but may be an issue if accessing
+directly.</p>
+<p>The following are equivalent (except for sidechains with non-carbon
+atoms for chi2):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ric</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">internal_coord</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="n">r</span><span class="p">,</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;psi&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;phi&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;omg&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;tau&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;chi2&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="n">r</span><span class="p">,</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;N:CA:C:1N&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;-1C:N:CA:C&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;-1CA:-1C:N:CA&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;N:CA:C&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;CA:CB:CG:CD&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>See ic_data.py for detail of atoms in the enumerated sidechain angles
+and the backbone angles which do not span the peptide bond. Using ‘s’
+for current residue (‘self’) and ‘n’ for next residue, the spanning
+angles are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">sN</span><span class="p">,</span> <span class="n">sCA</span><span class="p">,</span> <span class="n">sC</span><span class="p">,</span> <span class="n">nN</span><span class="p">)</span>   <span class="c1"># psi</span>
+<span class="p">(</span><span class="n">sCA</span><span class="p">,</span> <span class="n">sC</span><span class="p">,</span> <span class="n">nN</span><span class="p">,</span> <span class="n">nCA</span><span class="p">)</span>  <span class="c1"># omega i+1</span>
+<span class="p">(</span><span class="n">sC</span><span class="p">,</span> <span class="n">nN</span><span class="p">,</span> <span class="n">nCA</span><span class="p">,</span> <span class="n">nC</span><span class="p">)</span>   <span class="c1"># phi i+1</span>
+<span class="p">(</span><span class="n">sCA</span><span class="p">,</span> <span class="n">sC</span><span class="p">,</span> <span class="n">nN</span><span class="p">)</span>
+<span class="p">(</span><span class="n">sC</span><span class="p">,</span> <span class="n">nN</span><span class="p">,</span> <span class="n">nCA</span><span class="p">)</span>
+<span class="p">(</span><span class="n">nN</span><span class="p">,</span> <span class="n">nCA</span><span class="p">,</span> <span class="n">nC</span><span class="p">)</span>       <span class="c1"># tau i+1</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Matching Hedron, Dihedron, or None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.get_angle">
+<code class="sig-name descname">get_angle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">angle_key</span><span class="p">:</span> <span class="n">Union[Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)], Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)], str]</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>float<span class="p">, </span>NoneType<span class="p">]</span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.get_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dihedron or hedron angle for specified key.</p>
+<p>See pick_angle() for key specifications.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.set_angle">
+<code class="sig-name descname">set_angle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">angle_key</span><span class="p">:</span> <span class="n">Union[Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)], Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)], str]</span></em>, <em class="sig-param"><span class="n">v</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.set_angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set dihedron or hedron angle for specified key.</p>
+<p>See pick_angle() for key specifications.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.pick_length">
+<code class="sig-name descname">pick_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">ak_spec</span><span class="p">:</span> <span class="n">Union[str, Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)]]</span></em><span class="sig-paren">)</span> &#x2192; Tuple[Union[List[ForwardRef(‘Hedron’)], NoneType], Union[Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)], NoneType]]<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.pick_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of hedra containing specified atom pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ak_spec</strong> – <ul class="simple">
+<li><p>tuple of two AtomKeys</p></li>
+<li><p>string: two atom names separated by ‘:’, e.g. ‘N:CA’ with
+optional position specifier relative to self, e.g. ‘-1C:N’ for
+preceding peptide bond.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p>The following are equivalent:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ric</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">internal_coord</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="n">r</span><span class="p">,</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_length</span><span class="p">(</span><span class="s2">&quot;0C:1N&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="n">r</span><span class="p">,</span>
+    <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ric</span><span class="o">.</span><span class="n">rnext</span>
+    <span class="k">else</span> <span class="n">ric</span><span class="o">.</span><span class="n">get_length</span><span class="p">((</span><span class="n">ric</span><span class="o">.</span><span class="n">rak</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">),</span> <span class="n">ric</span><span class="o">.</span><span class="n">rnext</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rak</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">))),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list of hedra containing specified atom pair, tuple of atom keys</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.get_length">
+<code class="sig-name descname">get_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">ak_spec</span><span class="p">:</span> <span class="n">Union[str, Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)]]</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>float<span class="p">, </span>NoneType<span class="p">]</span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.get_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get bond length for specified atom pair.</p>
+<p>See pick_length() for ak_spec.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.set_length">
+<code class="sig-name descname">set_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">ak_spec</span><span class="p">:</span> <span class="n">Union[str, Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)]]</span></em>, <em class="sig-param"><span class="n">val</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.set_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set bond length for specified atom pair.</p>
+<p>See pick_length() for ak_spec.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.IC_Residue.applyMtx">
+<code class="sig-name descname">applyMtx</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">mtx: &lt;built-in function array&gt;</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.applyMtx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply matrix to atom_coords for this IC_Residue.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.IC_Residue.__annotations__">
+<code class="sig-name descname">__annotations__</code><em class="property"> = {'AllBonds': &lt;class 'bool'&gt;}</em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.__annotations__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.PDB.internal_coords.Edron">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.internal_coords.</code><code class="sig-name descname">Edron</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>AtomKey<span class="p">]</span><span class="p">, </span>Tuple<span class="p">[</span>AtomKey<span class="p">, </span>AtomKey<span class="p">, </span>AtomKey<span class="p">]</span><span class="p">, </span>Tuple<span class="p">[</span>AtomKey<span class="p">, </span>AtomKey<span class="p">, </span>AtomKey<span class="p">, </span>AtomKey<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.Edron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class for Hedron and Dihedron classes.</p>
+<p>Supports rich comparison based on lists of AtomKeys.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>aks: tuple</strong></dt><dd><p>3 (hedron) or 4 (dihedron) AtomKeys defining this di/hedron</p>
+</dd>
+<dt><strong>id: str</strong></dt><dd><p>‘:’-joined string of AtomKeys for this di/hedron</p>
+</dd>
+<dt><strong>needs_update: bool</strong></dt><dd><p>indicates di/hedron local atom_coords do NOT reflect current di/hedron
+angle and length values in hedron local coordinate space</p>
+</dd>
+<dt><strong>dh_class: str</strong></dt><dd><p>sequence of atoms (no position or residue) comprising di/hedron
+for statistics</p>
+</dd>
+<dt><strong>rdh_class: str</strong></dt><dd><p>sequence of residue, atoms comprising di/hedron for statistics</p>
+</dd>
+<dt><strong>edron_re: compiled regex (Class Attribute)</strong></dt><dd><p>A compiled regular expression matching string IDs for Hedron
+and Dihedron objects</p>
+</dd>
+<dt><strong>cic: IC_Chain reference</strong></dt><dd><p>Chain internal coords object containing this hedron</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 54%" />
+<col style="width: 46%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>gen_key([AtomKey, …] or AtomKey, …) (Static Method)</strong></p></td>
+<td><p>generate a ‘:’-joined string of AtomKey Ids</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>gen_acs(atom_coords)</strong></p></td>
+<td><p>generate tuple of atom coords for keys in self.aks</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>is_backbone()</strong></p></td>
+<td><p>Return True if all aks atoms are N, Ca, C or O</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.Edron.edron_re">
+<code class="sig-name descname">edron_re</code><em class="property"> = re.compile('^(?P&lt;pdbid&gt;\\w+)?\\s(?P&lt;chn&gt;[\\w|\\s])?\\s(?P&lt;a1&gt;[\\w\\-\\.]+):(?P&lt;a2&gt;[\\w\\-\\.]+):(?P&lt;a3&gt;[\\w\\-\\.]+)(:(?P&lt;a4&gt;[\\w\\-\\.]+))?\\s+(((?P&lt;len12&gt;\\S+)\\s+(?P&lt;angle&gt;\\S+)\\s+(?P&lt;len23&gt;\\S+)\\s*$)|((?P&lt;)</em><a class="headerlink" href="#Bio.PDB.internal_coords.Edron.edron_re" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.gen_key">
+<em class="property">static </em><code class="sig-name descname">gen_key</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lst</span><span class="p">:</span> <span class="n">Union[List[str], List[ForwardRef(‘AtomKey’)]]</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.gen_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate string of ‘:’-joined AtomKey strings from input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>lst</strong> – list of AtomKey objects or id strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self, \*args: Union[List[ForwardRef('AtomKey')], Tuple[ForwardRef('AtomKey'), ForwardRef('AtomKey'), ForwardRef('AtomKey')], Tuple[ForwardRef('AtomKey'), ForwardRef('AtomKey'), ForwardRef('AtomKey'), ForwardRef('AtomKey')]], \*\*kwargs: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Edron with sequence of AtomKeys.</p>
+<p>Acceptable input:</p>
+<blockquote>
+<div><p>[ AtomKey, … ]  : list of AtomKeys
+AtomKey, …      : sequence of AtomKeys as args
+{‘a1’: str, ‘a2’: str, … }  : dict of AtomKeys as ‘a1’, ‘a2’ …</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.gen_acs">
+<code class="sig-name descname">gen_acs</code><span class="sig-paren">(</span><em class="sig-param">self, atom_coords: Dict[ForwardRef('AtomKey'), &lt;built-in function array&gt;]</em><span class="sig-paren">)</span> &#x2192; Tuple[&lt;built-in function array&gt;, …]<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.gen_acs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate tuple of atom coord arrays for keys in self.aks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>atom_coords</strong> – AtomKey dict of atom coords for residue</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>MissingAtomError any atoms in self.aks missing coordinates</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.is_backbone">
+<code class="sig-name descname">is_backbone</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.is_backbone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Report True for contains only N, C, CA, O, H atoms.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tuple of AtomKeys is default repr string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.__hash__">
+<code class="sig-name descname">__hash__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hash calculated at init from aks tuple.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.__eq__">
+<code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test for equality.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.__ne__">
+<code class="sig-name descname">__ne__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test for inequality.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.__gt__">
+<code class="sig-name descname">__gt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test greater than.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.__ge__">
+<code class="sig-name descname">__ge__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__ge__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test greater or equal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.__lt__">
+<code class="sig-name descname">__lt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test less than.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Edron.__le__">
+<code class="sig-name descname">__le__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__le__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test less or equal.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.PDB.internal_coords.Hedron">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.internal_coords.</code><code class="sig-name descname">Hedron</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>AtomKey<span class="p">]</span><span class="p">, </span>Tuple<span class="p">[</span>AtomKey<span class="p">, </span>AtomKey<span class="p">, </span>AtomKey<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.Hedron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.PDB.internal_coords.Edron" title="Bio.PDB.internal_coords.Edron"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.PDB.internal_coords.Edron</span></code></a></p>
+<p>Class to represent three joined atoms forming a plane.</p>
+<p>Contains atom coordinates in local coordinate space, central atom
+at origin.  Stored in two orientations, with the 3rd (forward) or
+first (reversed) atom on the +Z axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lal: numpy array of len12, angle, len23</strong></dt><dd><p>len12 = distance between 1st and 2nd atom
+angle = angle (degrees) formed by 3 atoms
+len23 = distance between 2nd and 3rd atoms</p>
+</dd>
+<dt><strong>atoms: 3x4 numpy arrray (view on chain array)</strong></dt><dd><p>3 homogeneous atoms comprising hedron, 1st on XZ, 2nd at origin, 3rd on +Z</p>
+</dd>
+<dt><strong>atomsR: 3x4 numpy array (view on chain array)</strong></dt><dd><p>atoms reversed, 1st on +Z, 2nd at origin, 3rd on XZ plane</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 32%" />
+<col style="width: 68%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>get_length()</strong></p></td>
+<td><p>get bond length for specified atom pair</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_length()</strong></p></td>
+<td><p>set bond length for specified atom pair</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>angle(), len12(), len23()</strong></p></td>
+<td><p>gettters and setters for relevant attributes (angle in degrees)</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Hedron.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self, \*args: Union[List[ForwardRef('AtomKey')], Tuple[ForwardRef('AtomKey'), ForwardRef('AtomKey'), ForwardRef('AtomKey')]], \*\*kwargs: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.Hedron.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Hedron with sequence of AtomKeys, kwargs.</p>
+<dl class="simple">
+<dt>Acceptable input:</dt><dd><p>As for Edron, plus optional ‘len12’, ‘angle’, ‘len23’
+keyworded values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Hedron.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#Bio.PDB.internal_coords.Hedron.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print string for Hedron object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Hedron.angle">
+<em class="property">property </em><code class="sig-name descname">angle</code><a class="headerlink" href="#Bio.PDB.internal_coords.Hedron.angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get this hedron angle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Hedron.len12">
+<em class="property">property </em><code class="sig-name descname">len12</code><a class="headerlink" href="#Bio.PDB.internal_coords.Hedron.len12" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get first length for Hedron.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Hedron.len23">
+<em class="property">property </em><code class="sig-name descname">len23</code><a class="headerlink" href="#Bio.PDB.internal_coords.Hedron.len23" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get second length for Hedron.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Hedron.get_length">
+<code class="sig-name descname">get_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">ak_tpl</span><span class="p">:</span> <span class="n">Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)]</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>float<span class="p">, </span>NoneType<span class="p">]</span><a class="headerlink" href="#Bio.PDB.internal_coords.Hedron.get_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get bond length for specified atom pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ak_tpl</strong> – tuple of AtomKeys
+pair of atoms in this Hedron</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Hedron.set_length">
+<code class="sig-name descname">set_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">ak_tpl</span><span class="p">:</span> <span class="n">Tuple[ForwardRef(‘AtomKey’), ForwardRef(‘AtomKey’)]</span></em>, <em class="sig-param"><span class="n">newLength</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.Hedron.set_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set bond length for specified atom pair; sets needs_update.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ak_tpl</strong> – tuple of AtomKeys
+pair of atoms in this Hedron</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.PDB.internal_coords.Dihedron">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.internal_coords.</code><code class="sig-name descname">Dihedron</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>List<span class="p">[</span>AtomKey<span class="p">]</span><span class="p">, </span>Tuple<span class="p">[</span>AtomKey<span class="p">, </span>AtomKey<span class="p">, </span>AtomKey<span class="p">, </span>AtomKey<span class="p">]</span><span class="p">]</span></span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.Dihedron" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.PDB.internal_coords.Edron" title="Bio.PDB.internal_coords.Edron"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.PDB.internal_coords.Edron</span></code></a></p>
+<p>Class to represent four joined atoms forming a dihedral angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>angle: float</strong></dt><dd><p>Measurement or specification of dihedral angle in degrees</p>
+</dd>
+<dt><strong>hedron1, hedron2: Hedron object references</strong></dt><dd><p>The two hedra which form the dihedral angle</p>
+</dd>
+<dt><strong>h1key, h2key: tuples of AtomKeys</strong></dt><dd><p>Hash keys for hedron1 and hedron2</p>
+</dd>
+<dt><strong>id3,id32: tuples of AtomKeys</strong></dt><dd><p>First 3 and second 3 atoms comprising dihedron; hxkey orders may differ</p>
+</dd>
+<dt><strong>initial_coords: tuple[4] of numpy arrays [4]</strong></dt><dd><p>Local atom coords for 4 atoms, [0] on XZ plane, [1] at origin,
+[2] on +Z, [3] rotated by dihedral</p>
+</dd>
+<dt><strong>a4_pre_rotation: numpy array [4]</strong></dt><dd><p>4th atom of dihedral aligned to XZ plane (angle not applied)</p>
+</dd>
+<dt><strong>ic_residue: IC_Residue object reference</strong></dt><dd><p>IC_Residue object containing this dihedral</p>
+</dd>
+<dt><strong>reverse: bool</strong></dt><dd><p>Indicates order of atoms in dihedron is reversed from order of atoms
+in hedra (configured by set_hedra())</p>
+</dd>
+<dt><strong>cst, rcst: numpy array [4][4]</strong></dt><dd><p>transforms to and from coordinate space defined by first hedron.
+set by IC_Residue.assemble().  defined by id3 order NOT h1key order
+(atoms may be reversed between these two)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 78%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>set_hedra()</strong></p></td>
+<td><p>work out hedra keys and orientation for this dihedron</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>angle()</strong></p></td>
+<td><p>getter/setter for dihdral angle in degrees</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Dihedron.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self, \*args: Union[List[ForwardRef('AtomKey')], Tuple[ForwardRef('AtomKey'), ForwardRef('AtomKey'), ForwardRef('AtomKey'), ForwardRef('AtomKey')]], \*\*kwargs: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.Dihedron.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize Dihedron with sequence of AtomKeys and optional dihedral angle.</p>
+<dl class="simple">
+<dt>Acceptable input:</dt><dd><p>As for Edron, plus optional ‘dihedral’ keyworded angle value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Dihedron.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#Bio.PDB.internal_coords.Dihedron.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print string for Dihedron object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Dihedron.set_hedra">
+<code class="sig-name descname">set_hedra</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>bool<span class="p">, </span><a class="reference internal" href="#Bio.PDB.internal_coords.Hedron" title="Bio.PDB.internal_coords.Hedron">Bio.PDB.internal_coords.Hedron</a><span class="p">, </span><a class="reference internal" href="#Bio.PDB.internal_coords.Hedron" title="Bio.PDB.internal_coords.Hedron">Bio.PDB.internal_coords.Hedron</a><span class="p">]</span><a class="headerlink" href="#Bio.PDB.internal_coords.Dihedron.set_hedra" title="Permalink to this definition">¶</a></dt>
+<dd><p>Work out hedra keys and set rev flag.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.Dihedron.angle">
+<em class="property">property </em><code class="sig-name descname">angle</code><a class="headerlink" href="#Bio.PDB.internal_coords.Dihedron.angle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get dihedral angle.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.PDB.internal_coords.AtomKey">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.internal_coords.</code><code class="sig-name descname">AtomKey</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference internal" href="#Bio.PDB.internal_coords.IC_Residue" title="Bio.PDB.internal_coords.IC_Residue">Bio.PDB.internal_coords.IC_Residue</a><span class="p">, </span><a class="reference internal" href="Bio.PDB.Atom.html#Bio.PDB.Atom.Atom" title="Bio.PDB.Atom.Atom">Bio.PDB.Atom.Atom</a><span class="p">, </span>List<span class="p">, </span>Dict<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for dict keys to reference atom coordinates.</p>
+<p>AtomKeys capture residue and disorder information together, and
+provide a no-whitespace string key for .pic files.</p>
+<p>Supports rich comparison and multiple ways to instantiate.</p>
+<dl class="simple">
+<dt>AtomKeys contain:</dt><dd><p>residue position, insertion code, 1 or 3 char residue name,
+atom name, altloc, and occupancy</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>akl: tuple</strong></dt><dd><p>All six fields of AtomKey</p>
+</dd>
+<dt><strong>fieldNames: tuple (Class Attribute)</strong></dt><dd><p>Mapping of key index positions to names</p>
+</dd>
+<dt><strong>fields: namedtuple (Class Attribute)</strong></dt><dd><p>Mapping of field names to index positions</p>
+</dd>
+<dt><strong>id: str</strong></dt><dd><p>‘_’-joined AtomKey fields, excluding ‘None’ fields</p>
+</dd>
+<dt><strong>atom_re: compiled regex (Class Attribute)</strong></dt><dd><p>A compiled regular expression matching the string form of the key</p>
+</dd>
+<dt><strong>endnum_re: compiled regex (Class Attribute)</strong></dt><dd><p>A compiled regular expresion capturing digits at end of a string</p>
+</dd>
+<dt><strong>d2h: bool (Class Attribute)</strong></dt><dd><p>Convert D atoms to H on input; must also modify IC_Residue.accept_atoms</p>
+</dd>
+<dt><strong>missing: bool default False</strong></dt><dd><p>AtomKey __init__’d from string is probably missing, set this flag to
+note the issue (not set here)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 79%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>altloc_match(other)</strong></p></td>
+<td><p>Returns True if this AtomKey matches other AtomKey excluding altloc and occupancy fields</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.AtomKey.atom_re">
+<code class="sig-name descname">atom_re</code><em class="property"> = re.compile('^(?P&lt;respos&gt;-?\\d+)(?P&lt;icode&gt;[A-Za-z])?_(?P&lt;resname&gt;[a-zA-Z]+)_(?P&lt;atm&gt;[A-Za-z0-9]+)(?:_(?P&lt;altloc&gt;\\w))?(?:_(?P&lt;occ&gt;-?\\d\\.\\d?\\d?))?$')</em><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.atom_re" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.AtomKey.endnum_re">
+<code class="sig-name descname">endnum_re</code><em class="property"> = re.compile('\\D+(\\d+)$')</em><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.endnum_re" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldNames">
+<code class="sig-name descname">fieldNames</code><em class="property"> = ('respos', 'icode', 'resname', 'atm', 'altloc', 'occ')</em><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldNames" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef">
+<em class="property">class </em><code class="sig-name descname">fieldsDef</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">respos</span></em>, <em class="sig-param"><span class="n">icode</span></em>, <em class="sig-param"><span class="n">resname</span></em>, <em class="sig-param"><span class="n">atm</span></em>, <em class="sig-param"><span class="n">altloc</span></em>, <em class="sig-param"><span class="n">occ</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef.__getnewargs__">
+<code class="sig-name descname">__getnewargs__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef.__getnewargs__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self as a plain tuple.  Used by copy and pickle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef.__new__">
+<em class="property">static </em><code class="sig-name descname">__new__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">_cls</span></em>, <em class="sig-param"><span class="n">respos</span></em>, <em class="sig-param"><span class="n">icode</span></em>, <em class="sig-param"><span class="n">resname</span></em>, <em class="sig-param"><span class="n">atm</span></em>, <em class="sig-param"><span class="n">altloc</span></em>, <em class="sig-param"><span class="n">occ</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef.__new__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new instance of fieldsDef(respos, icode, resname, atm, altloc, occ)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a nicely formatted representation string</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef.__slots__">
+<code class="sig-name descname">__slots__</code><em class="property"> = ()</em><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef.__slots__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef.altloc">
+<em class="property">property </em><code class="sig-name descname">altloc</code><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef.altloc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef.atm">
+<em class="property">property </em><code class="sig-name descname">atm</code><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef.atm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef.icode">
+<em class="property">property </em><code class="sig-name descname">icode</code><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef.icode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef.occ">
+<em class="property">property </em><code class="sig-name descname">occ</code><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef.occ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef.resname">
+<em class="property">property </em><code class="sig-name descname">resname</code><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef.resname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.fieldsDef.respos">
+<em class="property">property </em><code class="sig-name descname">respos</code><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fieldsDef.respos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.AtomKey.fields">
+<code class="sig-name descname">fields</code><em class="property"> = fieldsDef(respos=0, icode=1, resname=2, atm=3, altloc=4, occ=5)</em><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="Bio.PDB.internal_coords.AtomKey.d2h">
+<code class="sig-name descname">d2h</code><em class="property"> = False</em><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.d2h" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self, \*args: Union[Bio.PDB.internal_coords.IC_Residue, Bio.PDB.Atom.Atom, List, Dict, str], \*\*kwargs: str</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize AtomKey with residue and atom data.</p>
+<dl class="simple">
+<dt>Examples of acceptable input:</dt><dd><p>(&lt;IC_Residue&gt;, ‘CA’, …)    : IC_Residue with atom info
+(&lt;IC_Residue&gt;, &lt;Atom&gt;)       : IC_Residue with Biopython Atom
+([52, None, ‘G’, ‘CA’, …])  : list of ordered data fields
+(52, None, ‘G’, ‘CA’, …)    : multiple ordered arguments
+({respos: 52, icode: None, atm: ‘CA’, …}) : dict with fieldNames
+(respos: 52, icode: None, atm: ‘CA’, …) : kwargs with fieldNames
+52_G_CA, 52B_G_CA, 52_G_CA_0.33, 52_G_CA_B_0.33  : id strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Repr string from id.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.__hash__">
+<code class="sig-name descname">__hash__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hash calculated at init from akl tuple.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.altloc_match">
+<code class="sig-name descname">altloc_match</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">‘AtomKey’</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.altloc_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test AtomKey match other discounting occupancy and altloc.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.__ne__">
+<code class="sig-name descname">__ne__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test for inequality.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.__eq__">
+<code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test for equality.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.__gt__">
+<code class="sig-name descname">__gt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test greater than.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.__ge__">
+<code class="sig-name descname">__ge__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__ge__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test greater or equal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.__lt__">
+<code class="sig-name descname">__lt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test less than.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.internal_coords.AtomKey.__le__">
+<code class="sig-name descname">__le__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span><span class="p">:</span> <span class="n">object</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__le__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test less or equal.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.PDB.internal_coords.set_accuracy_95">
+<code class="sig-prename descclassname">Bio.PDB.internal_coords.</code><code class="sig-name descname">set_accuracy_95</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">num</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; float<a class="headerlink" href="#Bio.PDB.internal_coords.set_accuracy_95" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce floating point accuracy to 9.5 (xxxx.xxxxx).</p>
+<p>Used by Hedron and Dihedron classes writing PIC and SCAD files.
+:param float num: input number
+:returns: float with specified accuracy</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="Bio.PDB.internal_coords.HedronMatchError">
+<em class="property">exception </em><code class="sig-prename descclassname">Bio.PDB.internal_coords.</code><code class="sig-name descname">HedronMatchError</code><a class="headerlink" href="#Bio.PDB.internal_coords.HedronMatchError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Cannot find hedron in residue for given key.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt id="Bio.PDB.internal_coords.MissingAtomError">
+<em class="property">exception </em><code class="sig-prename descclassname">Bio.PDB.internal_coords.</code><code class="sig-name descname">MissingAtomError</code><a class="headerlink" href="#Bio.PDB.internal_coords.MissingAtomError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Missing atom coordinates for hedron or dihedron.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Bio.PDB.mmcifio.html" class="btn btn-neutral float-right" title="Bio.PDB.mmcifio module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.PDB.ic_rebuild.html" class="btn btn-neutral float-left" title="Bio.PDB.ic_rebuild module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 1999-2019, The Biopython Contributors
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
