@@ -252,10 +252,10 @@ of trying to initiate a Markov Model directly.</p>
 <dd><p>Initialize a builder to create Markov Models.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>state_alphabet – An alphabet containing all of the letters that
-can appear in the states</p></li>
-<li><p>emission_alphabet – An alphabet containing all of the letters for
-states that can be emitted by the HMM.</p></li>
+<li><p>state_alphabet – An iterable (e.g., tuple or list) containing
+all of the letters that can appear in the states</p></li>
+<li><p>emission_alphabet – An iterable (e.g., tuple or list) containing
+all of the letters for states that can be emitted by the HMM.</p></li>
 </ul>
 </dd>
 </dl>
@@ -274,7 +274,7 @@ states that can be emitted by the HMM.</p></li>
 <code class="sig-name descname">set_initial_probabilities</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">initial_prob</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.MarkovModel.MarkovModelBuilder.set_initial_probabilities" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set initial state probabilities.</p>
 <p>initial_prob is a dictionary mapping states to probabilities.
-Suppose, for example, that the state alphabet is [‘A’, ‘B’]. Call
+Suppose, for example, that the state alphabet is (‘A’, ‘B’). Call
 set_initial_prob({‘A’: 1}) to guarantee that the initial
 state will be ‘A’. Call set_initial_prob({‘A’: 0.5, ‘B’: 0.5})
 to make each initial state equally probable.</p>
@@ -410,17 +410,21 @@ KeyError if the emission from the given state is not allowed.</p>
 
 <dl class="py class">
 <dt id="Bio.HMM.MarkovModel.HiddenMarkovModel">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.MarkovModel.</code><code class="sig-name descname">HiddenMarkovModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">initial_prob</span></em>, <em class="sig-param"><span class="n">transition_prob</span></em>, <em class="sig-param"><span class="n">emission_prob</span></em>, <em class="sig-param"><span class="n">transition_pseudo</span></em>, <em class="sig-param"><span class="n">emission_pseudo</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.MarkovModel.HiddenMarkovModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.MarkovModel.</code><code class="sig-name descname">HiddenMarkovModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">state_alphabet</span></em>, <em class="sig-param"><span class="n">emission_alphabet</span></em>, <em class="sig-param"><span class="n">initial_prob</span></em>, <em class="sig-param"><span class="n">transition_prob</span></em>, <em class="sig-param"><span class="n">emission_prob</span></em>, <em class="sig-param"><span class="n">transition_pseudo</span></em>, <em class="sig-param"><span class="n">emission_pseudo</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.MarkovModel.HiddenMarkovModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represent a hidden markov model that can be used for state estimation.</p>
 <dl class="py method">
 <dt id="Bio.HMM.MarkovModel.HiddenMarkovModel.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">initial_prob</span></em>, <em class="sig-param"><span class="n">transition_prob</span></em>, <em class="sig-param"><span class="n">emission_prob</span></em>, <em class="sig-param"><span class="n">transition_pseudo</span></em>, <em class="sig-param"><span class="n">emission_pseudo</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.MarkovModel.HiddenMarkovModel.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">state_alphabet</span></em>, <em class="sig-param"><span class="n">emission_alphabet</span></em>, <em class="sig-param"><span class="n">initial_prob</span></em>, <em class="sig-param"><span class="n">transition_prob</span></em>, <em class="sig-param"><span class="n">emission_prob</span></em>, <em class="sig-param"><span class="n">transition_pseudo</span></em>, <em class="sig-param"><span class="n">emission_pseudo</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.MarkovModel.HiddenMarkovModel.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize a Markov Model.</p>
 <p>Note: You should use the MarkovModelBuilder class instead of
 initiating this class directly.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
+<li><p>state_alphabet – A tuple containing all of the letters that can
+appear in the states.</p></li>
+<li><p>emission_alphabet – A tuple containing all of the letters for
+states that can be emitted by the HMM.</p></li>
 <li><p>initial_prob - A dictionary of initial probabilities for all states.</p></li>
 <li><p>transition_prob – A dictionary of transition probabilities for all
 possible transitions in the sequence.</p></li>
@@ -485,8 +489,8 @@ of emissions.</p>
 <dt>Arguments:</dt><dd><ul class="simple">
 <li><p>sequence – A Seq object with the emission sequence that we
 want to decode.</p></li>
-<li><p>state_alphabet – The alphabet of the possible state sequences
-that can be generated.</p></li>
+<li><p>state_alphabet – An iterable (e.g., tuple or list) containing
+all of the letters that can appear in the states</p></li>
 </ul>
 </dd>
 </dl>
