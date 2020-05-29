@@ -835,15 +835,15 @@ this defaults to removing any white space.</p>
 <dt id="Bio.Seq.Seq.upper">
 <code class="sig-name descname">upper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.upper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return an upper case copy of the sequence.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">HasStopCodon</span><span class="p">,</span> <span class="n">generic_protein</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;VHLTPeeK*&quot;</span><span class="p">,</span> <span class="n">HasStopCodon</span><span class="p">(</span><span class="n">generic_protein</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;VHLTPeeK*&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
-<span class="go">Seq(&#39;VHLTPeeK*&#39;, HasStopCodon(ProteinAlphabet(), &#39;*&#39;))</span>
+<span class="go">Seq(&#39;VHLTPeeK*&#39;, ProteinAlphabet())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-<span class="go">Seq(&#39;vhltpeek*&#39;, HasStopCodon(ProteinAlphabet(), &#39;*&#39;))</span>
+<span class="go">Seq(&#39;vhltpeek*&#39;, ProteinAlphabet())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-<span class="go">Seq(&#39;VHLTPEEK*&#39;, HasStopCodon(ProteinAlphabet(), &#39;*&#39;))</span>
+<span class="go">Seq(&#39;VHLTPEEK*&#39;, ProteinAlphabet())</span>
 </pre></div>
 </div>
 <p>This will adjust the alphabet if required. See also the lower method.</p>
@@ -856,15 +856,13 @@ this defaults to removing any white space.</p>
 <p>This will adjust the alphabet if required. Note that the IUPAC
 alphabets are upper case only, and thus a generic alphabet must be
 substituted.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">Gapped</span><span class="p">,</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet.IUPAC</span> <span class="kn">import</span> <span class="n">unambiguous_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGGTACGCTTATGTCACGTAG*AAAAAA&quot;</span><span class="p">,</span>
-<span class="gp">... </span>         <span class="n">Gapped</span><span class="p">(</span><span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">,</span> <span class="s2">&quot;*&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGGTACGCTTATGTCACGTAGAAAAAA&quot;</span><span class="p">,</span> <span class="n">unambiguous_dna</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
-<span class="go">Seq(&#39;CGGTACGCTTATGTCACGTAG*AAAAAA&#39;, Gapped(IUPACUnambiguousDNA(), &#39;*&#39;))</span>
+<span class="go">Seq(&#39;CGGTACGCTTATGTCACGTAGAAAAAA&#39;, IUPACUnambiguousDNA())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-<span class="go">Seq(&#39;cggtacgcttatgtcacgtag*aaaaaa&#39;, Gapped(DNAAlphabet(), &#39;*&#39;))</span>
+<span class="go">Seq(&#39;cggtacgcttatgtcacgtagaaaaaa&#39;, DNAAlphabet())</span>
 </pre></div>
 </div>
 <p>See also the upper method.</p>
@@ -1084,10 +1082,11 @@ method.  For that use str(my_seq).translate(…) instead.</p>
 
 <dl class="py method">
 <dt id="Bio.Seq.Seq.ungap">
-<code class="sig-name descname">ungap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">gap</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.ungap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ungap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">gap</span><span class="o">=</span><span class="default_value">'-'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.ungap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of the sequence without the gap character(s).</p>
-<p>The gap character can be specified in two ways - either as an explicit
-argument, or via the sequence’s alphabet. For example:</p>
+<p>The gap character now defaults to the minus sign, and can only
+be specified via the method argument. This is no longer possible
+via sequence’s alphabet (as was possible up to Biopython 1.77):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;-ATA--TGAAAT-TTGAAAA&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
@@ -1095,61 +1094,6 @@ argument, or via the sequence’s alphabet. For example:</p>
 <span class="go">Seq(&#39;-ATA--TGAAAT-TTGAAAA&#39;, DNAAlphabet())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
 <span class="go">Seq(&#39;ATATGAAATTTGAAAA&#39;, DNAAlphabet())</span>
-</pre></div>
-</div>
-<p>If the gap character is not given as an argument, it will be taken from
-the sequence’s alphabet (if defined). Notice that the returned
-sequence’s alphabet is adjusted since it no longer requires a gapped
-alphabet:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span><span class="p">,</span> <span class="n">HasStopCodon</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_pro</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MVVLE=AD*&quot;</span><span class="p">,</span> <span class="n">HasStopCodon</span><span class="p">(</span><span class="n">Gapped</span><span class="p">(</span><span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">)))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_pro</span>
-<span class="go">Seq(&#39;MVVLE=AD*&#39;, HasStopCodon(Gapped(IUPACProtein(), &#39;=&#39;), &#39;*&#39;))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_pro</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>
-<span class="go">Seq(&#39;MVVLEAD*&#39;, HasStopCodon(IUPACProtein(), &#39;*&#39;))</span>
-</pre></div>
-</div>
-<p>Or, with a simpler gapped DNA example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span><span class="p">,</span> <span class="n">Gapped</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGGGTAG=AAAAAA&quot;</span><span class="p">,</span> <span class="n">Gapped</span><span class="p">(</span><span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">,</span> <span class="s2">&quot;=&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
-<span class="go">Seq(&#39;CGGGTAG=AAAAAA&#39;, Gapped(IUPACUnambiguousDNA(), &#39;=&#39;))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>
-<span class="go">Seq(&#39;CGGGTAGAAAAAA&#39;, IUPACUnambiguousDNA())</span>
-</pre></div>
-</div>
-<p>As long as it is consistent with the alphabet, although it is
-redundant, you can still supply the gap character as an argument to
-this method:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
-<span class="go">Seq(&#39;CGGGTAG=AAAAAA&#39;, Gapped(IUPACUnambiguousDNA(), &#39;=&#39;))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">ungap</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)</span>
-<span class="go">Seq(&#39;CGGGTAGAAAAAA&#39;, IUPACUnambiguousDNA())</span>
-</pre></div>
-</div>
-<p>However, if the gap character given as the argument disagrees with that
-declared in the alphabet, an exception is raised:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
-<span class="go">Seq(&#39;CGGGTAG=AAAAAA&#39;, Gapped(IUPACUnambiguousDNA(), &#39;=&#39;))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">ungap</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Gap &#39;-&#39; does not match &#39;=&#39; from alphabet</span>
-</pre></div>
-</div>
-<p>Finally, if a gap character is not supplied, and the alphabet does not
-define one, an exception is raised:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ATA--TGAAAT-TTGAAAA&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
-<span class="go">Seq(&#39;ATA--TGAAAT-TTGAAAA&#39;, DNAAlphabet())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Gap character not given and not defined in alphabet</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1572,16 +1516,17 @@ the count() method:</p>
 
 <dl class="py method">
 <dt id="Bio.Seq.UnknownSeq.ungap">
-<code class="sig-name descname">ungap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">gap</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.ungap" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ungap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">gap</span><span class="o">=</span><span class="default_value">'-'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.ungap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of the sequence without the gap character(s).</p>
-<p>The gap character can be specified in two ways - either as an explicit
-argument, or via the sequence’s alphabet. For example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">Gapped</span><span class="p">,</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">Gapped</span><span class="p">(</span><span class="n">generic_dna</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">))</span>
+<p>The gap character now defaults to the minus sign, and can only
+be specified via the method argument. This is no longer possible
+via sequence’s alphabet (as was possible up to Biopython 1.77):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="n">generic_dna</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
-<span class="go">UnknownSeq(20, alphabet=Gapped(DNAAlphabet(), &#39;-&#39;), character=&#39;N&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>
+<span class="go">UnknownSeq(20, alphabet=DNAAlphabet(), character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>  <span class="c1"># using default</span>
 <span class="go">UnknownSeq(20, alphabet=DNAAlphabet(), character=&#39;N&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
 <span class="go">UnknownSeq(20, alphabet=DNAAlphabet(), character=&#39;N&#39;)</span>
@@ -1589,17 +1534,15 @@ argument, or via the sequence’s alphabet. For example:</p>
 </div>
 <p>If the UnknownSeq is using the gap character, then an empty Seq is
 returned:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">Gapped</span><span class="p">(</span><span class="n">generic_dna</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">),</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span>
-<span class="go">UnknownSeq(20, alphabet=Gapped(DNAAlphabet(), &#39;-&#39;), character=&#39;-&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>
+<span class="go">UnknownSeq(20, alphabet=DNAAlphabet(), character=&#39;-&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>  <span class="c1"># using default</span>
 <span class="go">Seq(&#39;&#39;, DNAAlphabet())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span><span class="o">.</span><span class="n">ungap</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
 <span class="go">Seq(&#39;&#39;, DNAAlphabet())</span>
 </pre></div>
 </div>
-<p>Notice that the returned sequence’s alphabet is adjusted to remove any
-explicit gap character declaration.</p>
 </dd></dl>
 
 <dl class="py method">
