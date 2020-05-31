@@ -1102,14 +1102,21 @@ via sequence’s alphabet (as was possible up to Biopython 1.77):</p>
 <dt id="Bio.Seq.Seq.join">
 <code class="sig-name descname">join</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.join" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a merge of the sequences in other, spaced by the sequence from self.</p>
-<p>Accepts all Seq objects and Strings as objects to be concatenated with the spacer</p>
+<p>Accepts either a Seq or string (and iterates over the letters), or an
+iterable containing Seq or string objects. These arguments will be
+concatenated with the calling sequence as the spacer:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">concatenated</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s1">&#39;NNNNN&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAA&quot;</span><span class="p">),</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TTT&quot;</span><span class="p">),</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;PPP&quot;</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">concatenated</span>
 <span class="go">Seq(&#39;AAANNNNNTTTNNNNNPPP&#39;)</span>
 </pre></div>
 </div>
-<p>Throws error if other is not an iterable and if objects inside of the iterable
-are not Seq or String objects</p>
+<p>Joining the letters of a single sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s1">&#39;NNNNN&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">))</span>
+<span class="go">Seq(&#39;ANNNNNCNNNNNGNNNNNT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s1">&#39;NNNNN&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
+<span class="go">Seq(&#39;ANNNNNCNNNNNGNNNNNT&#39;)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </dd></dl>
@@ -1549,16 +1556,28 @@ returned:</p>
 <dt id="Bio.Seq.UnknownSeq.join">
 <code class="sig-name descname">join</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.join" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a merge of the sequences in other, spaced by the sequence from self.</p>
-<p>Accepts Seq/UnknownSeq objects and Strings as objects to be concatenated with
-the spacer</p>
+<p>Accepts either a Seq or string (and iterates over the letters), or an
+iterable containing Seq or string objects. These arguments will be
+concatenated with the calling sequence as the spacer:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">concatenated</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAA&quot;</span><span class="p">),</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TTT&quot;</span><span class="p">),</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;PPP&quot;</span><span class="p">)])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">concatenated</span>
 <span class="go">Seq(&#39;AAA?????TTT?????PPP&#39;)</span>
 </pre></div>
 </div>
-<p>Throws error if other is not an iterable and if objects inside of the iterable
-are not Seq/UnknownSeq or String objects.</p>
-<p>Will only return an UnknownSeq object of all of the objects to be joined are
+<p>If all the inputs are also UnknownSeq using the same character, then it
+returns a new UnknownSeq:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+<span class="go">UnknownSeq(19, character=&#39;?&#39;)</span>
+</pre></div>
+</div>
+<p>Examples taking a single sequence and joining the letters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
+<span class="go">Seq(&#39;A???C???G???T&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="go">UnknownSeq(13, character=&#39;?&#39;)</span>
+</pre></div>
+</div>
+<p>Will only return an UnknownSeq object if all of the objects to be joined are
 also UnknownSeqs with the same character as the spacer, similar to how the
 addition of an UnknownSeq and another UnknownSeq would work.</p>
 </dd></dl>
