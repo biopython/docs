@@ -234,15 +234,11 @@ SeqRecord objects, whose sequence will be exposed as a Seq object via
 the seq property.</p>
 <p>However, will often want to create your own Seq objects directly:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&quot;</span><span class="p">,</span>
-<span class="gp">... </span>             <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
-<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&#39;, IUPACProtein())</span>
+<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
 <span class="go">MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">alphabet</span>
-<span class="go">IUPACProtein()</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -368,30 +364,7 @@ just do explicit comparisons:</p>
 </pre></div>
 </div>
 <p>When adding two Seq (like) objects, the alphabets are important.
-Consider this example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet.IUPAC</span> <span class="kn">import</span> <span class="n">unambiguous_dna</span><span class="p">,</span> <span class="n">ambiguous_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">unamb_dna_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">,</span> <span class="n">unambiguous_dna</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ambig_dna_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACRGT&quot;</span><span class="p">,</span> <span class="n">ambiguous_dna</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">unamb_dna_seq</span>
-<span class="go">Seq(&#39;ACGT&#39;, IUPACUnambiguousDNA())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ambig_dna_seq</span>
-<span class="go">Seq(&#39;ACRGT&#39;, IUPACAmbiguousDNA())</span>
-</pre></div>
-</div>
-<p>If we add the ambiguous and unambiguous IUPAC DNA alphabets, we get
-the more general ambiguous IUPAC DNA alphabet:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unamb_dna_seq</span> <span class="o">+</span> <span class="n">ambig_dna_seq</span>
-<span class="go">Seq(&#39;ACGTACRGT&#39;, IUPACAmbiguousDNA())</span>
-</pre></div>
-</div>
-<p>However, if the default generic alphabet is included, the result is
-a generic alphabet:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">ambig_dna_seq</span>
-<span class="go">Seq(&#39;ACRGT&#39;)</span>
-</pre></div>
-</div>
-<p>You can’t add RNA and DNA sequences:</p>
+You can’t add RNA and DNA sequences:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span><span class="p">,</span> <span class="n">generic_rna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span> <span class="o">+</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGU&quot;</span><span class="p">,</span> <span class="n">generic_rna</span><span class="p">)</span>
 <span class="gt">Traceback (most recent call last):</span>
@@ -472,16 +445,14 @@ included to match the behaviour for regular Python strings.</p>
 <code class="sig-name descname">tomutable</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.tomutable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the full sequence as a MutableSeq object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span>
-<span class="gp">... </span>             <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
-<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;, IUPACProtein())</span>
+<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">tomutable</span><span class="p">()</span>
-<span class="go">MutableSeq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;, IUPACProtein())</span>
+<span class="go">MutableSeq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;)</span>
 </pre></div>
 </div>
-<p>Note that the alphabet is preserved.</p>
+<p>Any alphabet is preserved.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -819,13 +790,12 @@ this defaults to removing any white space.</p>
 omitted or None (default) then as for the python string method,
 this defaults to removing any white space.</p>
 <p>e.g. Removing a nucleotide sequence’s polyadenylation (poly-A tail):</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGGTACGCTTATGTCACGTAGAAAAAA&quot;</span><span class="p">,</span> <span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGGTACGCTTATGTCACGTAGAAAAAA&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
-<span class="go">Seq(&#39;CGGTACGCTTATGTCACGTAGAAAAAA&#39;, IUPACUnambiguousDNA())</span>
+<span class="go">Seq(&#39;CGGTACGCTTATGTCACGTAGAAAAAA&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
-<span class="go">Seq(&#39;CGGTACGCTTATGTCACGTAG&#39;, IUPACUnambiguousDNA())</span>
+<span class="go">Seq(&#39;CGGTACGCTTATGTCACGTAG&#39;)</span>
 </pre></div>
 </div>
 <p>See also the strip and lstrip methods.</p>
@@ -887,28 +857,27 @@ you need a bytes string, for example for computing a hash:</p>
 <code class="sig-name descname">complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.complement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the complement sequence by creating a new Seq object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCGATAG&quot;</span><span class="p">,</span> <span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCGATAG&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
-<span class="go">Seq(&#39;CCCCCGATAG&#39;, IUPACUnambiguousDNA())</span>
+<span class="go">Seq(&#39;CCCCCGATAG&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
-<span class="go">Seq(&#39;GGGGGCTATC&#39;, IUPACUnambiguousDNA())</span>
+<span class="go">Seq(&#39;GGGGGCTATC&#39;)</span>
 </pre></div>
 </div>
 <p>You can of course used mixed case sequences,</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCgatA-GD&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCgatA-GD&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
-<span class="go">Seq(&#39;CCCCCgatA-GD&#39;, DNAAlphabet())</span>
+<span class="go">Seq(&#39;CCCCCgatA-GD&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
-<span class="go">Seq(&#39;GGGGGctaT-CH&#39;, DNAAlphabet())</span>
+<span class="go">Seq(&#39;GGGGGctaT-CH&#39;)</span>
 </pre></div>
 </div>
 <p>Note in the above example, ambiguous character D denotes
 G, A or T so its complement is H (for C, T or A).</p>
 <p>Trying to complement a protein sequence raises an exception.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
    <span class="c">...</span>
@@ -922,19 +891,18 @@ G, A or T so its complement is H (for C, T or A).</p>
 <code class="sig-name descname">reverse_complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.reverse_complement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the reverse complement sequence by creating a new Seq object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCGATAGNR&quot;</span><span class="p">,</span> <span class="n">IUPAC</span><span class="o">.</span><span class="n">ambiguous_dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCGATAGNR&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
-<span class="go">Seq(&#39;CCCCCGATAGNR&#39;, IUPACAmbiguousDNA())</span>
+<span class="go">Seq(&#39;CCCCCGATAGNR&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
-<span class="go">Seq(&#39;YNCTATCGGGGG&#39;, IUPACAmbiguousDNA())</span>
+<span class="go">Seq(&#39;YNCTATCGGGGG&#39;)</span>
 </pre></div>
 </div>
 <p>Note in the above example, since R = G or A, its complement
 is Y (which denotes C or T).</p>
 <p>You can of course used mixed case sequences,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCgatA-G&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
 <span class="go">Seq(&#39;CCCCCgatA-G&#39;, DNAAlphabet())</span>
@@ -943,7 +911,9 @@ is Y (which denotes C or T).</p>
 </pre></div>
 </div>
 <p>Trying to complement a protein sequence raises an exception:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
    <span class="c">...</span>
@@ -957,17 +927,19 @@ is Y (which denotes C or T).</p>
 <code class="sig-name descname">transcribe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.transcribe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the RNA sequence from a DNA sequence by creating a new Seq object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                 <span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_dna</span><span class="p">)</span>
+<span class="gp">... </span>                 <span class="n">generic_dna</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span>
-<span class="go">Seq(&#39;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&#39;, IUPACUnambiguousDNA())</span>
+<span class="go">Seq(&#39;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&#39;, DNAAlphabet())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span><span class="o">.</span><span class="n">transcribe</span><span class="p">()</span>
-<span class="go">Seq(&#39;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&#39;, IUPACUnambiguousRNA())</span>
+<span class="go">Seq(&#39;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&#39;, RNAAlphabet())</span>
 </pre></div>
 </div>
 <p>Trying to transcribe a protein or RNA sequence raises an exception:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">transcribe</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
    <span class="c">...</span>
@@ -980,19 +952,21 @@ is Y (which denotes C or T).</p>
 <dt id="Bio.Seq.Seq.back_transcribe">
 <code class="sig-name descname">back_transcribe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.back_transcribe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the DNA sequence from an RNA sequence by creating a new Seq object.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_rna</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                    <span class="n">IUPAC</span><span class="o">.</span><span class="n">unambiguous_rna</span><span class="p">)</span>
+<span class="gp">... </span>                    <span class="n">generic_rna</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span>
-<span class="go">Seq(&#39;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&#39;, IUPACUnambiguousRNA())</span>
+<span class="go">Seq(&#39;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&#39;, RNAAlphabet())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span><span class="o">.</span><span class="n">back_transcribe</span><span class="p">()</span>
-<span class="go">Seq(&#39;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&#39;, IUPACUnambiguousDNA())</span>
+<span class="go">Seq(&#39;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&#39;, DNAAlphabet())</span>
 </pre></div>
 </div>
 <p>Trying to back-transcribe a protein or DNA sequence raises an
 exception:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">back_transcribe</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
    <span class="c">...</span>
@@ -2018,14 +1992,14 @@ a list of the entries. There is therefore no <code class="docutils literal notra
 <dt id="Bio.Seq.MutableSeq.toseq">
 <code class="sig-name descname">toseq</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.toseq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the full sequence as a new immutable Seq object.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">IUPAC</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mseq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                     <span class="n">IUPAC</span><span class="o">.</span><span class="n">protein</span><span class="p">)</span>
+<span class="gp">... </span>                     <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mseq</span>
-<span class="go">MutableSeq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;, IUPACProtein())</span>
+<span class="go">MutableSeq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;, ProteinAlphabet())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_mseq</span><span class="o">.</span><span class="n">toseq</span><span class="p">()</span>
-<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;, IUPACProtein())</span>
+<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;, ProteinAlphabet())</span>
 </pre></div>
 </div>
 <p>Note that the alphabet is preserved.</p>
