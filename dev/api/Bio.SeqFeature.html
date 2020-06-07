@@ -373,7 +373,7 @@ here reverse strand features are not permitted.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;domain&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-<span class="go">Seq(&#39;VALIVIC&#39;, ProteinAlphabet())</span>
+<span class="go">Seq(&#39;VALIVIC&#39;)</span>
 </pre></div>
 </div>
 <p>If the FeatureLocation is None, e.g. when parsing invalid locus
@@ -435,13 +435,13 @@ Will override a codon_start qualifier</p></li>
 checks at translation. But you can override this behaviour
 by giving explicit arguments:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">cds</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="go">Seq(&#39;GYTYR*CL**&#39;, ProteinAlphabet())</span>
+<span class="go">Seq(&#39;GYTYR*CL**&#39;)</span>
 </pre></div>
 </div>
 <p>Now use the start_offset argument to change the frame. Note
 this uses python 0-based numbering.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">start_offset</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cds</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="go">Seq(&#39;VTLTDNVSD&#39;, ProteinAlphabet())</span>
+<span class="go">Seq(&#39;VTLTDNVSD&#39;)</span>
 </pre></div>
 </div>
 <p>Alternatively use the codon_start qualifier to do the same
@@ -449,7 +449,7 @@ thing. Note: this uses 1-based numbering, which is found
 in files from NCBI.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">qualifiers</span><span class="p">[</span><span class="s1">&#39;codon_start&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">cds</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="go">Seq(&#39;VTLTDNVSD&#39;, ProteinAlphabet())</span>
+<span class="go">Seq(&#39;VTLTDNVSD&#39;)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -478,7 +478,7 @@ length is zero (in order to better match normal python behaviour)!</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="go">7</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-<span class="go">Seq(&#39;VALIVIC&#39;, ProteinAlphabet())</span>
+<span class="go">Seq(&#39;VALIVIC&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">))</span>
 <span class="go">7</span>
 </pre></div>
@@ -951,7 +951,7 @@ a MutableSeq as the parent sequence will return a Seq object.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">feature_loc</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">feature_loc</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-<span class="go">Seq(&#39;VALIVIC&#39;, ProteinAlphabet())</span>
+<span class="go">Seq(&#39;VALIVIC&#39;)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1222,7 +1222,7 @@ a MutableSeq as the parent sequence will return a Seq object.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fl2</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fl3</span> <span class="o">=</span> <span class="n">CompoundLocation</span><span class="p">([</span><span class="n">fl1</span><span class="p">,</span><span class="n">fl2</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fl3</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
-<span class="go">Seq(&#39;QHKAMILIVIC&#39;, ProteinAlphabet())</span>
+<span class="go">Seq(&#39;QHKAMILIVIC&#39;)</span>
 </pre></div>
 </div>
 </dd></dl>
