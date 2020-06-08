@@ -516,6 +516,46 @@ hmmscan output, the name would be ‘hmmscan-domtab’.</p>
 the main SearchIO functions. More details and examples are available in each
 of the format’s documentation.</p>
 <dl class="py function">
+<dt id="Bio.SearchIO.read">
+<code class="sig-prename descclassname">Bio.SearchIO.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn a search output file containing one query into a single QueryResult.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>handle - Handle to the file, or the filename as a string.</p></li>
+<li><p>format - Lower case string denoting one of the supported formats.</p></li>
+<li><p>kwargs - Format-specific keyword arguments.</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">read</span></code> is used for parsing search output files containing exactly one query:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/xml_2226_blastp_004.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">qresult</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">qresult</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">gi|11464971:4-101 pleckstrin [Mus musculus]</span>
+</pre></div>
+</div>
+<p>If the given handle has no results, an exception will be raised:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/tab_2226_tblastn_002.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">No query results found in handle</span>
+</pre></div>
+</div>
+<p>Similarly, if the given handle has more than one results, an exception will
+also be raised:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/tab_2226_tblastn_001.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">More than one query results found in handle</span>
+</pre></div>
+</div>
+<p>Like <code class="docutils literal notranslate"><span class="pre">parse</span></code>, <code class="docutils literal notranslate"><span class="pre">read</span></code> may also accept keyword argument(s) depending on the
+search output file format.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="Bio.SearchIO.parse">
 <code class="sig-prename descclassname">Bio.SearchIO.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over search tool output file as QueryResult objects.</p>
@@ -554,46 +594,6 @@ BLAST tabular output file:</p>
 <span class="go">Search 33213 has 95 hits</span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="py function">
-<dt id="Bio.SearchIO.read">
-<code class="sig-prename descclassname">Bio.SearchIO.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turn a search output file containing one query into a single QueryResult.</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>handle - Handle to the file, or the filename as a string.</p></li>
-<li><p>format - Lower case string denoting one of the supported formats.</p></li>
-<li><p>kwargs - Format-specific keyword arguments.</p></li>
-</ul>
-</div></blockquote>
-<p><code class="docutils literal notranslate"><span class="pre">read</span></code> is used for parsing search output files containing exactly one query:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/xml_2226_blastp_004.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">qresult</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">qresult</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
-<span class="gp">...</span>
-<span class="go">gi|11464971:4-101 pleckstrin [Mus musculus]</span>
-</pre></div>
-</div>
-<p>If the given handle has no results, an exception will be raised:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/tab_2226_tblastn_002.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">No query results found in handle</span>
-</pre></div>
-</div>
-<p>Similarly, if the given handle has more than one results, an exception will
-also be raised:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/tab_2226_tblastn_001.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">More than one query results found in handle</span>
-</pre></div>
-</div>
-<p>Like <code class="docutils literal notranslate"><span class="pre">parse</span></code>, <code class="docutils literal notranslate"><span class="pre">read</span></code> may also accept keyword argument(s) depending on the
-search output file format.</p>
 </dd></dl>
 
 <dl class="py function">
