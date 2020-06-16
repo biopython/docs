@@ -285,8 +285,6 @@ would hash on object identity.</p>
 After considerable discussion (keeping in mind constraints of the
 Python language, hashes and dictionary support), Biopython now uses
 simple string comparison (with a warning about the change).</p>
-<p>Note that incompatible alphabets (e.g. DNA to RNA) will trigger a
-warning.</p>
 <p>If you still need to support releases prior to Biopython 1.65, please
 just do explicit comparisons:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
@@ -363,21 +361,19 @@ just do explicit comparisons:</p>
 <span class="go">Seq(&#39;MELKILV&#39;)</span>
 </pre></div>
 </div>
-<p>When adding two Seq (like) objects, the alphabets are important.</p>
-<p>You can’t add RNA and DNA sequences:</p>
+<p>When adding two Seq (like) objects, if they share the
+same alphabet it is preserved, but otherwise discarded.
+This means you can add RNA and DNA, or nucleotide and
+protein if you really want to. This is a change as of
+Biopython 1.78, this previously raised a TypeError:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span><span class="p">,</span> <span class="n">generic_rna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span> <span class="o">+</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGU&quot;</span><span class="p">,</span> <span class="n">generic_rna</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">TypeError</span>: <span class="n">Incompatible alphabets DNAAlphabet() and RNAAlphabet()</span>
+<span class="go">Seq(&#39;ACGTACGU&#39;)</span>
 </pre></div>
 </div>
-<p>You can’t add nucleotide and protein sequences:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span><span class="p">,</span> <span class="n">generic_protein</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span> <span class="o">+</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MELKI&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">TypeError</span>: <span class="n">Incompatible alphabets DNAAlphabet() and ProteinAlphabet()</span>
+<span class="go">Seq(&#39;ACGTMELKI&#39;)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1612,16 +1608,12 @@ should continue to use my_seq.tostring() rather than str(my_seq).</p>
 <dl class="py method">
 <dt id="Bio.Seq.MutableSeq.__eq__">
 <code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.__eq__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compare the sequence to another sequence or a string (README).</p>
-<p>Currently if compared to another sequence the alphabets must be
-compatible. Comparing DNA to RNA, or Nucleotide to Protein will raise
-an exception. Otherwise only the sequence itself is compared, not the
-precise alphabet.</p>
-<p>A future release of Biopython will change this (and the Seq object etc)
-to use simple string comparison. The plan is that comparing sequences
-with incompatible alphabets (e.g. DNA to RNA) will trigger a warning
-but not an exception.</p>
-<p>During this transition period, please just do explicit comparisons:</p>
+<dd><p>Compare the sequence to another sequence or a string.</p>
+<p>Historically comparing DNA to RNA, or Nucleotide to Protein would
+raise an exception. This was later downgraded to a warning, but since
+Biopython 1.78 the alphabet is ignored for comparisons.</p>
+<p>If you need to support older Biopython versions, please just do
+explicit comparisons:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">id</span><span class="p">(</span><span class="n">seq1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">seq2</span><span class="p">)</span>
