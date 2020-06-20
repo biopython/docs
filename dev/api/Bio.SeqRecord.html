@@ -982,14 +982,29 @@ information (e.g. base changes for a SNP), this information is not
 amended, and would need correction after the reverse complement.</p>
 <p>Note trying to reverse complement a protein SeqRecord raises an
 exception:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">protein_rec</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein_rec</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span>
+<span class="gp">... </span>                        <span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;molecule_type&quot;</span><span class="p">:</span> <span class="s2">&quot;protein&quot;</span><span class="p">})</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">protein_rec</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
    <span class="c">...</span>
 <span class="gr">ValueError</span>: <span class="n">Proteins do not have complements!</span>
+</pre></div>
+</div>
+<p>If you have RNA without any U bases, it must be annotated as RNA
+otherwise it will be treated as DNA by default with A mapped to T:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rna1</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACG&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rna2</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACG&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Test&quot;</span><span class="p">,</span> <span class="n">annotations</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;molecule_type&quot;</span><span class="p">:</span> <span class="s2">&quot;RNA&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rna1</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;RC&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;unk&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+<span class="go">&gt;RC unk</span>
+<span class="go">CGT</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rna2</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;RC&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;RNA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+<span class="go">&gt;RC RNA</span>
+<span class="go">CGU</span>
 </pre></div>
 </div>
 <p>Also note you can reverse complement a SeqRecord using a MutableSeq:</p>

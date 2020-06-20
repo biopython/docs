@@ -855,6 +855,7 @@ you need a bytes string, for example for computing a hash:</p>
 <dt id="Bio.Seq.Seq.complement">
 <code class="sig-name descname">complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.complement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the complement sequence by creating a new Seq object.</p>
+<p>This method is intended for use with DNA sequences:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCGATAG&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
@@ -874,21 +875,50 @@ you need a bytes string, for example for computing a hash:</p>
 </div>
 <p>Note in the above example, ambiguous character D denotes
 G, A or T so its complement is H (for C, T or A).</p>
-<p>Trying to complement a protein sequence raises an exception.</p>
+<p>Note that if the sequence contains neither T nor U, we
+assume it is DNA and map any A character to T:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
+<span class="go">Seq(&#39;GCT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
+<span class="go">Seq(&#39;GCTA&#39;)</span>
+</pre></div>
+</div>
+<p>If you actually have RNA, this currently works but we
+may deprecate this later. We recommend using the new
+complement_rna method instead:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAU&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
+<span class="go">Seq(&#39;GCUA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAU&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement_rna</span><span class="p">()</span>
+<span class="go">Seq(&#39;GCUA&#39;)</span>
+</pre></div>
+</div>
+<p>If the sequence contains both T and U, an exception is
+raised:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+   <span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">Mixed RNA/DNA found</span>
+</pre></div>
+</div>
+<p>Trying to complement a protein sequence gives a meaningless
+sequence:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Proteins do not have complements!</span>
+<span class="go">Seq(&#39;KTIBKCY&#39;)</span>
 </pre></div>
 </div>
+<p>Here “M” was interpretted as the IUPAC ambiguity code for
+“A” or “C”, with complement “K” for “T” or “G”. Likewise
+“A” has complement “T”. The letter “I” has no defined
+meaning under the IUPAC convention, and is unchanged.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="Bio.Seq.Seq.reverse_complement">
 <code class="sig-name descname">reverse_complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.reverse_complement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the reverse complement sequence by creating a new Seq object.</p>
+<p>This method is intended for use with DNA sequences:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCGATAGNR&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
@@ -909,14 +939,70 @@ is Y (which denotes C or T).</p>
 <span class="go">Seq(&#39;C-TatcGGGGG&#39;)</span>
 </pre></div>
 </div>
-<p>Trying to complement a protein sequence raises an exception:</p>
+<p>As discussed for the complement method, if the sequence
+contains neither T nor U, is is assumed to be DNA and
+will map any letter A to T.</p>
+<p>If you are dealing with RNA you should use the new
+reverse_complement_rna method instead</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>  <span class="c1"># defaults to DNA</span>
+<span class="go">Seq(&#39;TCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reverse_complement_rna</span><span class="p">()</span>
+<span class="go">Seq(&#39;UCG&#39;)</span>
+</pre></div>
+</div>
+<p>If the sequence contains both T and U, an exception is raised:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+   <span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">Mixed RNA/DNA found</span>
+</pre></div>
+</div>
+<p>Trying to reverse complement a protein sequence will give
+a meaningless sequence:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="go">Seq(&#39;YCKBITK&#39;)</span>
+</pre></div>
+</div>
+<p>Here “M” was interpretted as the IUPAC ambiguity code for
+“A” or “C”, with complement “K” for “T” or “G” - and so on.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.Seq.complement_rna">
+<code class="sig-name descname">complement_rna</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.complement_rna" title="Permalink to this definition">¶</a></dt>
+<dd><p>Complement of an RNA sequence.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>  <span class="c1"># defaults to DNA</span>
+<span class="go">Seq(&#39;GCT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement_rna</span><span class="p">()</span>
+<span class="go">Seq(&#39;GCU&#39;)</span>
+</pre></div>
+</div>
+<p>If the sequence contains both T and U, an exception is raised:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement_rna</span><span class="p">()</span>
 <span class="gt">Traceback (most recent call last):</span>
    <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Proteins do not have complements!</span>
+<span class="gr">ValueError</span>: <span class="n">Mixed RNA/DNA found</span>
+</pre></div>
+</div>
+<p>If the sequence contains T, an exception is raised:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement_rna</span><span class="p">()</span>
+<span class="gt">Traceback (most recent call last):</span>
+   <span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">DNA found, RNA expected</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.Seq.reverse_complement_rna">
+<code class="sig-name descname">reverse_complement_rna</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.reverse_complement_rna" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reverse complement of an RNA sequence.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACG&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reverse_complement_rna</span><span class="p">()</span>
+<span class="go">Seq(&#39;CGU&#39;)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -935,14 +1021,19 @@ is Y (which denotes C or T).</p>
 <span class="go">Seq(&#39;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&#39;)</span>
 </pre></div>
 </div>
-<p>Trying to transcribe a protein or RNA sequence raises an exception:</p>
+<p>Trying to transcribe an RNA sequence should have no effect.
+If you have a nucleotide sequence which might be DNA or RNA
+(or even a mixture), calling the transcribe method will ensure
+any T becomes U.</p>
+<p>Trying to transcribe a protein sequence will replace any
+T for Threonine with U for Selenocysteine, which has no
+biologically plausible rational. Older versions of Biopython
+would throw an exception.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGRT&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">transcribe</span><span class="p">()</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Proteins cannot be transcribed!</span>
+<span class="go">Seq(&#39;MAIVMGRU&#39;)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -961,15 +1052,17 @@ is Y (which denotes C or T).</p>
 <span class="go">Seq(&#39;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&#39;)</span>
 </pre></div>
 </div>
-<p>Trying to back-transcribe a protein or DNA sequence raises an
-exception:</p>
+<p>Trying to back-transcribe DNA has no effect, If you have a nucleotide
+sequence which might be DNA or RNA (or even a mixture), calling the
+back-transcribe method will ensure any T becomes U.</p>
+<p>Trying to back-transcribe a protein sequence will replace any U for
+Selenocysteine with T for Threonine, which is biologically meaningless.
+Older versions of Biopython would raise an exception here:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGRU&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">back_transcribe</span><span class="p">()</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Proteins cannot be back transcribed!</span>
+<span class="go">Seq(&#39;MAIVMGRT&#39;)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1374,6 +1467,12 @@ the count() method:</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="Bio.Seq.UnknownSeq.complement_rna">
+<code class="sig-name descname">complement_rna</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.complement_rna" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the complement assuming it is RNA.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Seq.UnknownSeq.reverse_complement">
 <code class="sig-name descname">reverse_complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.reverse_complement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the reverse complement of an unknown sequence.</p>
@@ -1387,6 +1486,12 @@ the count() method:</p>
 <span class="go">NNNNNN</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.UnknownSeq.reverse_complement_rna">
+<code class="sig-name descname">reverse_complement_rna</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.reverse_complement_rna" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the reverse complement assuming it is RNA.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1955,15 +2060,16 @@ a list of the entries. There is therefore no <code class="docutils literal notra
 <dt id="Bio.Seq.MutableSeq.complement">
 <code class="sig-name descname">complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.complement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modify the mutable sequence to take on its complement.</p>
-<p>Trying to complement a protein sequence raises an exception.</p>
 <p>No return value.</p>
+<p>If the sequence contains neither T nor U, DNA is assumed
+and any A will be mapped to T.</p>
+<p>If the sequence contains both T and U, an exception is raised.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="Bio.Seq.MutableSeq.reverse_complement">
 <code class="sig-name descname">reverse_complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.reverse_complement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Modify the mutable sequence to take on its reverse complement.</p>
-<p>Trying to reverse complement a protein sequence raises an exception.</p>
 <p>No return value.</p>
 </dd></dl>
 
@@ -2027,7 +2133,6 @@ are not Seq or String objects</p>
 <dd><p>Transcribe a DNA sequence into RNA.</p>
 <p>If given a string, returns a new string object.</p>
 <p>Given a Seq or MutableSeq, returns a new Seq object with an RNA alphabet.</p>
-<p>Trying to transcribe a protein or RNA sequence raises an exception.</p>
 <p>e.g.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transcribe</span><span class="p">(</span><span class="s2">&quot;ACTGN&quot;</span><span class="p">)</span>
 <span class="go">&#39;ACUGN&#39;</span>
@@ -2041,7 +2146,6 @@ are not Seq or String objects</p>
 <dd><p>Return the RNA sequence back-transcribed into DNA.</p>
 <p>If given a string, returns a new string object.</p>
 <p>Given a Seq or MutableSeq, returns a new Seq object with an RNA alphabet.</p>
-<p>Trying to transcribe a protein or DNA sequence raises an exception.</p>
 <p>e.g.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">back_transcribe</span><span class="p">(</span><span class="s2">&quot;ACUGN&quot;</span><span class="p">)</span>
 <span class="go">&#39;ACTGN&#39;</span>
@@ -2159,14 +2263,19 @@ alphabet.</p>
 <span class="go">&#39;DN-CAGT&#39;</span>
 </pre></div>
 </div>
+<p>If neither T nor U is present, DNA is assumed and A is mapped to T:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="go">&#39;T&#39;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt id="Bio.Seq.complement">
 <code class="sig-prename descclassname">Bio.Seq.</code><code class="sig-name descname">complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.complement" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the complement sequence of a nucleotide string.</p>
-<p>If given a string, returns a new string object.
-Given a Seq or a MutableSeq, returns a new Seq object with the same
+<dd><p>Return the complement sequence of a DNA string.</p>
+<p>If given a string, returns a new string object.</p>
+<p>Given a Seq or a MutableSeq, returns a new Seq object with the same
 alphabet.</p>
 <p>Supports unambiguous and ambiguous nucleotide sequences.</p>
 <p>e.g.</p>
@@ -2174,6 +2283,26 @@ alphabet.</p>
 <span class="go">&#39;TGAC-ND&#39;</span>
 </pre></div>
 </div>
+<p>If neither T nor U is present, DNA is assumed and A is mapped to T:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="go">&#39;T&#39;</span>
+</pre></div>
+</div>
+<p>However, this may not be supported in future. Please use the
+complement_rna function if you have RNA.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.Seq.complement_rna">
+<code class="sig-prename descclassname">Bio.Seq.</code><code class="sig-name descname">complement_rna</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.complement_rna" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the complement sequence of an RNA string.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="s2">&quot;ACG&quot;</span><span class="p">)</span>  <span class="c1"># assumed DNA</span>
+<span class="go">&#39;TGC&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement_rna</span><span class="p">(</span><span class="s2">&quot;ACG&quot;</span><span class="p">)</span>
+<span class="go">&#39;UGC&#39;</span>
+</pre></div>
+</div>
+<p>If the sequence contains a T, and error is raised.</p>
 </dd></dl>
 
 </div>
