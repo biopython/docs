@@ -608,10 +608,8 @@ cannot be automatically inferred from the file itself
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">):</span>
 <span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence alphabet </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">alphabet</span><span class="p">)</span>
 <span class="go">ID gi|3176602|gb|U78617.1|LOU78617</span>
 <span class="go">Sequence length 309</span>
-<span class="go">Sequence alphabet SingleLetterAlphabet()</span>
 </pre></div>
 </div>
 <p>For file formats like FASTA where the alphabet cannot be determined, it
@@ -666,8 +664,6 @@ exactly one record.  For example, reading a GenBank file:</p>
 <span class="go">ID AC007323.5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
 <span class="go">Sequence length 86436</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence alphabet </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">alphabet</span><span class="p">)</span>
-<span class="go">Sequence alphabet DNAAlphabet()</span>
 </pre></div>
 </div>
 <p>If the handle contains no records, or more than one record,
@@ -884,8 +880,7 @@ key for the dictionary.</p></li>
 </dl>
 <p>This indexing function will return a dictionary like object, giving the
 SeqRecord objects as values:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;GenBank/NC_000932.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;GenBank/NC_005816.faa&quot;</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">get_gi</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">parts</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
@@ -893,7 +888,7 @@ SeqRecord objects as values:</p>
 <span class="gp">... </span>    <span class="k">assert</span> <span class="n">i</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span>
 <span class="gp">... </span>    <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">idx_name</span> <span class="o">=</span> <span class="s2">&quot;:memory:&quot;</span> <span class="c1">#use an in memory SQLite DB for this test</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index_db</span><span class="p">(</span><span class="n">idx_name</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">,</span> <span class="n">get_gi</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index_db</span><span class="p">(</span><span class="n">idx_name</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">,</span> <span class="n">key_function</span><span class="o">=</span><span class="n">get_gi</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
 <span class="go">95</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;7525076&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span>
