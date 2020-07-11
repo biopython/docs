@@ -391,25 +391,21 @@ as ‘-‘, using the “undef_code” argument, e.g.</p>
 
 <dl class="py function">
 <dt id="Bio.SeqUtils.molecular_weight">
-<code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">molecular_weight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">seq_type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">double_stranded</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">circular</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">monoisotopic</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.molecular_weight" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqUtils.</code><code class="sig-name descname">molecular_weight</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">seq</span></em>, <em class="sig-param"><span class="n">seq_type</span><span class="o">=</span><span class="default_value">'DNA'</span></em>, <em class="sig-param"><span class="n">double_stranded</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">circular</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">monoisotopic</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.molecular_weight" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the molecular mass of DNA, RNA or protein sequences as float.</p>
 <p>Only unambiguous letters are allowed. Nucleotide sequences are assumed to
 have a 5’ phosphate.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
 <li><p>seq: String or Biopython sequence object.</p></li>
-<li><p>seq_type: The default (None) is to take the alphabet from the seq
-argument, or assume DNA if the seq argument is a string. Override this
-with a string ‘DNA’, ‘RNA’, or ‘protein’.</p></li>
+<li><p>seq_type: The default is to assume DNA; override this with a string
+“DNA”, “RNA”, or “protein”.</p></li>
 <li><p>double_stranded: Calculate the mass for the double stranded molecule?</p></li>
 <li><p>circular: Is the molecule circular (has no ends)?</p></li>
 <li><p>monoisotopic: Use the monoisotopic mass tables?</p></li>
 </ul>
 </dd>
 </dl>
-<p>Note that for backwards compatibility, if the seq argument is a string,
-or Seq object with a generic alphabet, and no seq_type is specified
-(i.e. left as None), then DNA is assumed.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">molecular_weight</span><span class="p">(</span><span class="s2">&quot;AGC&quot;</span><span class="p">))</span>
 <span class="go">949.61</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">molecular_weight</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AGC&quot;</span><span class="p">)))</span>
@@ -423,27 +419,6 @@ or Seq object with a generic alphabet, and no seq_type is specified
 <span class="go">997.61</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">molecular_weight</span><span class="p">(</span><span class="s2">&quot;AGC&quot;</span><span class="p">,</span> <span class="s2">&quot;protein&quot;</span><span class="p">))</span>
 <span class="go">249.29</span>
-</pre></div>
-</div>
-<p>Or, with the sequence alphabet:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span><span class="p">,</span> <span class="n">generic_rna</span><span class="p">,</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">molecular_weight</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AGC&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)))</span>
-<span class="go">949.61</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">molecular_weight</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AGC&quot;</span><span class="p">,</span> <span class="n">generic_rna</span><span class="p">)))</span>
-<span class="go">997.61</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">molecular_weight</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AGC&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)))</span>
-<span class="go">249.29</span>
-</pre></div>
-</div>
-<p>Also note that contradictory sequence alphabets and seq_type will also
-give an exception:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">molecular_weight</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AGC&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">),</span> <span class="s2">&quot;RNA&quot;</span><span class="p">))</span>
-<span class="gt">Traceback (most recent call last):</span>
-  <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">seq_type=&#39;RNA&#39; contradicts DNA from seq alphabet</span>
 </pre></div>
 </div>
 </dd></dl>
