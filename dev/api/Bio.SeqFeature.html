@@ -371,9 +371,8 @@ and fuzzy positions. Even mixed strand features should work! This
 also covers features on protein sequences (e.g. domains), although
 here reverse strand features are not permitted.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">FeatureLocation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;domain&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 <span class="go">Seq(&#39;VALIVIC&#39;)</span>
@@ -383,7 +382,7 @@ here reverse strand features are not permitted.</p>
 locations in the GenBank parser, extract() will raise a ValueError.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;domain&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 <span class="gt">Traceback (most recent call last):</span>
@@ -409,9 +408,7 @@ value of the arguments “table” and “start_offset” are used.</p>
 as Seq.translate, refer to that documentation for further information.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>parent_sequence - This method will translate DNA or RNA sequences,
-and those with a nucleotide or generic alphabet. Trying to
-translate a protein sequence raises an exception.</p></li>
+<li><p>parent_sequence - A DNA or RNA sequence.</p></li>
 <li><p>table - Which codon table to use if there is no transl_table
 qualifier for this feature. This can be either a name
 (string), an NCBI identifier (integer), or a CodonTable
@@ -427,9 +424,8 @@ Will override a codon_start qualifier</p></li>
 </dd>
 </dl>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">FeatureLocation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GGTTACACTTACCGATAATGTCTCTGATGA&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GGTTACACTTACCGATAATGTCTCTGATGA&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;CDS&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">qualifiers</span><span class="p">[</span><span class="s1">&#39;transl_table&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span>
 </pre></div>
@@ -474,9 +470,8 @@ length is zero (in order to better match normal python behaviour)!</p>
 <code class="sig-name descname">__len__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.SeqFeature.__len__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the length of the region where the feature is located.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">FeatureLocation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;domain&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="go">7</span>
@@ -949,9 +944,8 @@ versions of Biopython.</p>
 generally return an object of the same type. The exception to this is
 a MutableSeq as the parent sequence will return a Seq object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">FeatureLocation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">feature_loc</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">feature_loc</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
 <span class="go">Seq(&#39;VALIVIC&#39;)</span>
@@ -1218,9 +1212,8 @@ Biopython.</p>
 generally return an object of the same type. The exception to this is
 a MutableSeq as the parent sequence will return a Seq object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">FeatureLocation</span><span class="p">,</span> <span class="n">CompoundLocation</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fl1</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fl2</span> <span class="o">=</span> <span class="n">FeatureLocation</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fl3</span> <span class="o">=</span> <span class="n">CompoundLocation</span><span class="p">([</span><span class="n">fl1</span><span class="p">,</span><span class="n">fl2</span><span class="p">])</span>
