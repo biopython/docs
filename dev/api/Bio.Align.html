@@ -919,6 +919,55 @@ but backwards:</p>
 </div>
 </dd></dl>
 
+<dl class="py method">
+<dt id="Bio.Align.MultipleSeqAlignment.substitutions">
+<em class="property">property </em><code class="sig-name descname">substitutions</code><a class="headerlink" href="#Bio.Align.MultipleSeqAlignment.substitutions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an Array with the number of substitutions of letters in the alignment.</p>
+<p>As an example, consider a multiple sequence alignment of three DNA sequences:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;seq1&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;A--A&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;seq2&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq3</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;seq3&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq4</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TTTC&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;seq4&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">([</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">seq3</span><span class="p">,</span> <span class="n">seq4</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">Alignment with 4 rows and 4 columns</span>
+<span class="go">ACGT seq1</span>
+<span class="go">A--A seq2</span>
+<span class="go">ACGT seq3</span>
+<span class="go">TTTC seq4</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">alignment</span><span class="o">.</span><span class="n">substitutions</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="go">    A   C   G   T</span>
+<span class="go">A 3.0 0.5 0.0 2.5</span>
+<span class="go">C 0.5 1.0 0.0 2.0</span>
+<span class="go">G 0.0 0.0 1.0 1.0</span>
+<span class="go">T 2.5 2.0 1.0 1.0</span>
+</pre></div>
+</div>
+<p>Note that the matrix is symmetric, with counts divided equally on both
+sides of the diagonal. For example, the total number of substitutions
+between A and T in the alignment is 3.5 + 3.5 = 7.</p>
+<p>Any weights associated with the sequences are taken into account when
+calculating the substitution matrix.  For example, given the following
+multiple sequence alignment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GTATC</span>  <span class="mf">0.5</span>
+<span class="n">AT</span><span class="o">--</span><span class="n">C</span>  <span class="mf">0.8</span>
+<span class="n">CTGTC</span>  <span class="mf">1.0</span>
+</pre></div>
+</div>
+<p>For the first column we have:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="mf">0.8</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">=</span> <span class="mf">0.8</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
