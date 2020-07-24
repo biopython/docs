@@ -266,20 +266,6 @@ using the Bio.AlignIO.read() function:</p>
 <span class="go">AE007476.1 104</span>
 </pre></div>
 </div>
-<p>This example file is clearly using RNA, so you might want the alignment object
-(and the SeqRecord objects it holds) to reflect this, rather than simple using
-the default single letter alphabet as shown above.  You can do this with an
-optional argument to the Bio.AlignIO.read() function:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_rna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Stockholm/simple.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                     <span class="n">alphabet</span><span class="o">=</span><span class="n">generic_rna</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
-<span class="go">Alignment with 2 rows and 104 columns</span>
-<span class="go">UUAAUCGAGCUCAACACUCUUCGUAUAUCCUC-UCAAUAUGG-G...UGU AP001509.1</span>
-<span class="go">AAAAUUGAAUAUCGUUUUACUUGUUUAU-GUCGUGAAU-UGG-C...GAU AE007476.1</span>
-</pre></div>
-</div>
 <p>In addition to the sequences themselves, this example alignment also includes
 some GR lines for the secondary structure of the sequences.  These are
 strings, with one character for each letter in the associated sequence:</p>
@@ -341,9 +327,7 @@ tools.</p>
 iterate over the alignment rows as SeqRecord objects - rather than working
 with Alignnment objects. Again, if you want to you can specify this is RNA:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_rna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Stockholm/simple.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                          <span class="n">alphabet</span><span class="o">=</span><span class="n">generic_rna</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Stockholm/simple.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s1">&#39;secondary_structure&#39;</span><span class="p">])</span>
@@ -422,7 +406,7 @@ by a block of aligned sequences).</p>
 
 <dl class="py class">
 <dt id="Bio.AlignIO.StockholmIO.StockholmIterator">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.AlignIO.StockholmIO.</code><code class="sig-name descname">StockholmIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">seq_count</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">SingleLetterAlphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmIterator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.AlignIO.StockholmIO.</code><code class="sig-name descname">StockholmIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">seq_count</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.AlignIO.Interfaces.html#Bio.AlignIO.Interfaces.AlignmentIterator" title="Bio.AlignIO.Interfaces.AlignmentIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.AlignIO.Interfaces.AlignmentIterator</span></code></a></p>
 <p>Loads a Stockholm file from PFAM into MultipleSeqAlignment objects.</p>
 <p>The file may contain multiple concatenated alignments, which are loaded
