@@ -206,12 +206,12 @@
 <dt id="Bio.Seq.Seq">
 <em class="property">class </em><code class="sig-prename descclassname">Bio.Seq.</code><code class="sig-name descname">Seq</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">Alphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Read-only sequence object (essentially a string with an alphabet).</p>
+<p>Read-only sequence object (essentially a string with biological methods).</p>
 <p>Like normal python strings, our basic sequence object is immutable.
 This prevents you from doing my_seq[5] = “A” for example, but does allow
 Seq objects to be used as dictionary keys.</p>
 <p>The Seq object provides a number of string like methods (such as count,
-find, split and strip), which are alphabet aware where appropriate.</p>
+find, split and strip).</p>
 <p>In addition to the string like sequence, the Seq object has an alphabet
 property. This is an instance of an Alphabet class from Bio.Alphabet,
 for example generic DNA, or IUPAC DNA. This describes the type of molecule
@@ -219,7 +219,7 @@ for example generic DNA, or IUPAC DNA. This describes the type of molecule
 (letters).</p>
 <p>The Seq object also provides some biological methods, such as complement,
 reverse_complement, transcribe, back_transcribe and translate (which are
-not applicable to sequences with a protein alphabet).</p>
+not applicable to protein sequences).</p>
 <dl class="py method">
 <dt id="Bio.Seq.Seq.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">Alphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.__init__" title="Permalink to this definition">¶</a></dt>
@@ -301,12 +301,9 @@ just do explicit comparisons:</p>
 </div>
 <p>The new behaviour is to use string-like equality:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">==</span> <span class="n">seq2</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">==</span> <span class="s2">&quot;ACGT&quot;</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">==</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -357,26 +354,9 @@ just do explicit comparisons:</p>
 <dt id="Bio.Seq.Seq.__add__">
 <code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.__add__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add another sequence or string to this sequence.</p>
-<p>If adding a string to a Seq, the alphabet is preserved:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MELKI&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;LV&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MELKI&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;LV&quot;</span>
 <span class="go">Seq(&#39;MELKILV&#39;)</span>
-</pre></div>
-</div>
-<p>When adding two Seq (like) objects, if they share the
-same alphabet it is preserved, but otherwise discarded.
-This means you can add RNA and DNA, or nucleotide and
-protein if you really want to. This is a change as of
-Biopython 1.78, this previously raised a TypeError:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span><span class="p">,</span> <span class="n">generic_rna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span> <span class="o">+</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGU&quot;</span><span class="p">,</span> <span class="n">generic_rna</span><span class="p">)</span>
-<span class="go">Seq(&#39;ACGTACGU&#39;)</span>
-</pre></div>
-</div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span><span class="p">,</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span> <span class="o">+</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MELKI&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
-<span class="go">Seq(&#39;ACGTMELKI&#39;)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -385,10 +365,8 @@ Biopython 1.78, this previously raised a TypeError:</p>
 <dt id="Bio.Seq.Seq.__radd__">
 <code class="sig-name descname">__radd__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.__radd__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a sequence on the left.</p>
-<p>If adding a string to a Seq, the alphabet is preserved:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;LV&quot;</span> <span class="o">+</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MELKI&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;LV&quot;</span> <span class="o">+</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MELKI&quot;</span><span class="p">)</span>
 <span class="go">Seq(&#39;LVMELKI&#39;)</span>
 </pre></div>
 </div>
@@ -873,8 +851,7 @@ raised:</p>
 </div>
 <p>Trying to complement a protein sequence gives a meaningless
 sequence:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
 <span class="go">Seq(&#39;KTIBKCY&#39;)</span>
 </pre></div>
@@ -901,9 +878,8 @@ meaning under the IUPAC convention, and is unchanged.</p>
 <p>Note in the above example, since R = G or A, its complement
 is Y (which denotes C or T).</p>
 <p>You can of course used mixed case sequences,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCgatA-G&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCCCCgatA-G&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
 <span class="go">Seq(&#39;CCCCCgatA-G&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
@@ -930,9 +906,8 @@ reverse_complement_rna method instead</p>
 </div>
 <p>Trying to reverse complement a protein sequence will give
 a meaningless sequence:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGR&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
 <span class="go">Seq(&#39;YCKBITK&#39;)</span>
 </pre></div>
@@ -983,9 +958,7 @@ a meaningless sequence:</p>
 <code class="sig-name descname">transcribe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.transcribe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the RNA sequence from a DNA sequence by creating a new Seq object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                 <span class="n">generic_dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span>
 <span class="go">Seq(&#39;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span><span class="o">.</span><span class="n">transcribe</span><span class="p">()</span>
@@ -1000,9 +973,8 @@ any T becomes U.</p>
 T for Threonine with U for Selenocysteine, which has no
 biologically plausible rational. Older versions of Biopython
 would throw an exception.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGRT&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGRT&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">transcribe</span><span class="p">()</span>
 <span class="go">Seq(&#39;MAIVMGRU&#39;)</span>
 </pre></div>
@@ -1013,10 +985,8 @@ would throw an exception.</p>
 <dt id="Bio.Seq.Seq.back_transcribe">
 <code class="sig-name descname">back_transcribe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.back_transcribe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the DNA sequence from an RNA sequence by creating a new Seq object.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_rna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&quot;</span><span class="p">,</span>
-<span class="gp">... </span>                    <span class="n">generic_rna</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span>
 <span class="go">Seq(&#39;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span><span class="o">.</span><span class="n">back_transcribe</span><span class="p">()</span>
@@ -1029,9 +999,8 @@ back-transcribe method will ensure any T becomes U.</p>
 <p>Trying to back-transcribe a protein sequence will replace any U for
 Selenocysteine with T for Threonine, which is biologically meaningless.
 Older versions of Biopython would raise an exception here:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGRU&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MAIVMGRU&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_protein</span><span class="o">.</span><span class="n">back_transcribe</span><span class="p">()</span>
 <span class="go">Seq(&#39;MAIVMGRT&#39;)</span>
 </pre></div>
@@ -1042,9 +1011,9 @@ Older versions of Biopython would raise an exception here:</p>
 <dt id="Bio.Seq.Seq.translate">
 <code class="sig-name descname">translate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">table</span><span class="o">=</span><span class="default_value">'Standard'</span></em>, <em class="sig-param"><span class="n">stop_symbol</span><span class="o">=</span><span class="default_value">'*'</span></em>, <em class="sig-param"><span class="n">to_stop</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cds</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">gap</span><span class="o">=</span><span class="default_value">'-'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.translate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn a nucleotide sequence into a protein sequence by creating a new Seq object.</p>
-<p>This method will translate DNA or RNA sequences, and those with a
-nucleotide or generic alphabet.  Trying to translate a protein
-sequence raises an exception.</p>
+<p>This method will translate DNA or RNA sequences. It should not
+be used on protein sequences as any result will be biologically
+meaningless.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
 <li><p>table - Which codon table to use?  This can be either a name
@@ -1114,7 +1083,7 @@ has no effect:</p>
 or a stop codon.  These are translated as “X”.  Any invalid codon
 (e.g. “TA?” or “T-A”) will throw a TranslationError.</p>
 <p>NOTE - This does NOT behave like the python string’s translate
-method.  For that use str(my_seq).translate(…) instead.</p>
+method.  For that use str(my_seq).translate(…) instead</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1125,8 +1094,7 @@ method.  For that use str(my_seq).translate(…) instead.</p>
 be specified via the method argument. This is no longer possible
 via sequence’s alphabet (as was possible up to Biopython 1.77):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;-ATA--TGAAAT-TTGAAAA&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;-ATA--TGAAAT-TTGAAAA&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
 <span class="go">Seq(&#39;-ATA--TGAAAT-TTGAAAA&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
@@ -1185,8 +1153,8 @@ sequences), which is where this class is most useful:</p>
 <span class="go">?????</span>
 </pre></div>
 </div>
-<p>You can add unknown sequence together, provided their alphabets and
-characters are compatible, and get another memory saving UnknownSeq:</p>
+<p>You can add unknown sequence together. Provided the characters are the
+same, you get another memory saving UnknownSeq:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unk_four</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unk_four</span>
 <span class="go">UnknownSeq(4, character=&#39;?&#39;)</span>
@@ -1194,8 +1162,7 @@ characters are compatible, and get another memory saving UnknownSeq:</p>
 <span class="go">UnknownSeq(9, character=&#39;?&#39;)</span>
 </pre></div>
 </div>
-<p>If the alphabet or characters don’t match up, the addition gives an
-ordinary Seq object:</p>
+<p>If the characters are different, addition gives an ordinary Seq object:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unk_nnnn</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">unk_nnnn</span>
 <span class="go">UnknownSeq(4, character=&#39;N&#39;)</span>
@@ -1242,27 +1209,22 @@ nucleotides, “X” for proteins, and “?” otherwise.</p>
 <code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__add__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add another sequence or string to this sequence.</p>
 <p>Adding two UnknownSeq objects returns another UnknownSeq object
-provided the character is the same and the alphabets are compatible.</p>
+provided the character is the same.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span> <span class="o">+</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
 <span class="go">UnknownSeq(15, character=&#39;X&#39;)</span>
 </pre></div>
 </div>
 <p>If the characters differ, an UnknownSeq object cannot be used, so a
 Seq object is returned:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span> <span class="o">+</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">,</span>
-<span class="gp">... </span>                                             <span class="n">character</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
 <span class="go">Seq(&#39;XXXXXXXXXXxxxxx&#39;)</span>
 </pre></div>
 </div>
-<p>If adding a string to an UnknownSeq, a new Seq is returned with the
-same alphabet:</p>
+<p>If adding a string to an UnknownSeq, a new Seq is returned:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;LV&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;LV&quot;</span>
 <span class="go">Seq(&#39;XXXXXLV&#39;)</span>
 </pre></div>
 </div>
@@ -1279,10 +1241,9 @@ same alphabet:</p>
 <code class="sig-name descname">__mul__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__mul__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Multiply UnknownSeq by integer.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
 <span class="go">UnknownSeq(6, character=&#39;?&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
 <span class="go">UnknownSeq(6, character=&#39;N&#39;)</span>
 </pre></div>
 </div>
@@ -1447,8 +1408,7 @@ the count() method:</p>
 <dd><p>Return the reverse complement of an unknown sequence.</p>
 <p>The reverse complement of an unknown nucleotide equals itself:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
 <span class="go">NNNNNN</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">())</span>
@@ -1572,9 +1532,8 @@ the count() method:</p>
 <p>The gap character now defaults to the minus sign, and can only
 be specified via the method argument. This is no longer possible
 via sequence’s alphabet (as was possible up to Biopython 1.77):</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">alphabet</span><span class="o">=</span><span class="n">generic_dna</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
 <span class="go">UnknownSeq(20, character=&#39;N&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>  <span class="c1"># using default</span>
@@ -1585,7 +1544,7 @@ via sequence’s alphabet (as was possible up to Biopython 1.77):</p>
 </div>
 <p>If the UnknownSeq is using the gap character, then an empty Seq is
 returned:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span>
 <span class="go">UnknownSeq(20, character=&#39;-&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>  <span class="c1"># using default</span>
@@ -1637,8 +1596,7 @@ addition of an UnknownSeq and another UnknownSeq would work.</p>
 which are immutable, the MutableSeq lets you edit the sequence in place.
 However, this means you cannot use a MutableSeq object as a dictionary key.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACTCGTCGTCG&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACTCGTCGTCG&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
 <span class="go">MutableSeq(&#39;ACTCGTCGTCG&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
@@ -1784,8 +1742,7 @@ explicit comparisons:</p>
 <code class="sig-name descname">__radd__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.__radd__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a sequence on the left.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_protein</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;LV&quot;</span> <span class="o">+</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;MELKI&quot;</span><span class="p">,</span> <span class="n">generic_protein</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;LV&quot;</span> <span class="o">+</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;MELKI&quot;</span><span class="p">)</span>
 <span class="go">MutableSeq(&#39;LVMELKI&#39;)</span>
 </pre></div>
 </div>
@@ -1798,10 +1755,7 @@ explicit comparisons:</p>
 <p>Note this is not in-place and returns a new object,
 matching native Python list multiplication.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ATG&#39;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
-<span class="go">MutableSeq(&#39;ATGATG&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ATG&#39;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
 <span class="go">MutableSeq(&#39;ATGATG&#39;)</span>
 </pre></div>
 </div>
@@ -1814,10 +1768,7 @@ matching native Python list multiplication.</p>
 <p>Note this is not in-place and returns a new object,
 matching native Python list multiplication.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="o">*</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ATG&#39;</span><span class="p">)</span>
-<span class="go">MutableSeq(&#39;ATGATG&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="o">*</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ATG&#39;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
 <span class="go">MutableSeq(&#39;ATGATG&#39;)</span>
 </pre></div>
 </div>
@@ -1828,8 +1779,7 @@ matching native Python list multiplication.</p>
 <code class="sig-name descname">__imul__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.__imul__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Multiply MutableSeq in-place.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ATG&#39;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ATG&#39;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">*=</span> <span class="mi">2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span>
 <span class="go">MutableSeq(&#39;ATGATG&#39;)</span>
@@ -2095,7 +2045,7 @@ are not Seq or String objects</p>
 <code class="sig-prename descclassname">Bio.Seq.</code><code class="sig-name descname">transcribe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dna</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.transcribe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transcribe a DNA sequence into RNA.</p>
 <p>If given a string, returns a new string object.</p>
-<p>Given a Seq or MutableSeq, returns a new Seq object with an RNA alphabet.</p>
+<p>Given a Seq or MutableSeq, returns a new Seq object.</p>
 <p>e.g.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transcribe</span><span class="p">(</span><span class="s2">&quot;ACTGN&quot;</span><span class="p">)</span>
 <span class="go">&#39;ACUGN&#39;</span>
@@ -2108,7 +2058,7 @@ are not Seq or String objects</p>
 <code class="sig-prename descclassname">Bio.Seq.</code><code class="sig-name descname">back_transcribe</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rna</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.back_transcribe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the RNA sequence back-transcribed into DNA.</p>
 <p>If given a string, returns a new string object.</p>
-<p>Given a Seq or MutableSeq, returns a new Seq object with an RNA alphabet.</p>
+<p>Given a Seq or MutableSeq, returns a new Seq object.</p>
 <p>e.g.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">back_transcribe</span><span class="p">(</span><span class="s2">&quot;ACUGN&quot;</span><span class="p">)</span>
 <span class="go">&#39;ACTGN&#39;</span>
@@ -2121,7 +2071,7 @@ are not Seq or String objects</p>
 <code class="sig-prename descclassname">Bio.Seq.</code><code class="sig-name descname">translate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sequence</span></em>, <em class="sig-param"><span class="n">table</span><span class="o">=</span><span class="default_value">'Standard'</span></em>, <em class="sig-param"><span class="n">stop_symbol</span><span class="o">=</span><span class="default_value">'*'</span></em>, <em class="sig-param"><span class="n">to_stop</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cds</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">gap</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.translate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Translate a nucleotide sequence into amino acids.</p>
 <p>If given a string, returns a new string object. Given a Seq or
-MutableSeq, returns a Seq object with a protein alphabet.</p>
+MutableSeq, returns a Seq object.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
 <li><p>table - Which codon table to use?  This can be either a name
@@ -2218,8 +2168,7 @@ coding codons will always be translated as amino acid, except for
 <code class="sig-prename descclassname">Bio.Seq.</code><code class="sig-name descname">reverse_complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.reverse_complement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the reverse complement sequence of a nucleotide string.</p>
 <p>If given a string, returns a new string object.
-Given a Seq or a MutableSeq, returns a new Seq object with the same
-alphabet.</p>
+Given a Seq or a MutableSeq, returns a new Seq object.</p>
 <p>Supports unambiguous and ambiguous nucleotide sequences.</p>
 <p>e.g.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="s2">&quot;ACTG-NH&quot;</span><span class="p">)</span>
@@ -2238,8 +2187,7 @@ alphabet.</p>
 <code class="sig-prename descclassname">Bio.Seq.</code><code class="sig-name descname">complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.complement" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the complement sequence of a DNA string.</p>
 <p>If given a string, returns a new string object.</p>
-<p>Given a Seq or a MutableSeq, returns a new Seq object with the same
-alphabet.</p>
+<p>Given a Seq or a MutableSeq, returns a new Seq object.</p>
 <p>Supports unambiguous and ambiguous nucleotide sequences.</p>
 <p>e.g.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="s2">&quot;ACTG-NH&quot;</span><span class="p">)</span>
