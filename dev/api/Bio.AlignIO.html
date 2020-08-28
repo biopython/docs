@@ -488,6 +488,34 @@ records from the handle.</p>
 <p><strong>NOTE</strong> - If you provide an output filename, it will be opened which will
 overwrite any existing file without warning. This may happen if even the
 conversion is aborted (e.g. an invalid out_format name is given).</p>
+<p>Some output formats require the molecule type be specified where this
+cannot be determined by the parser. For example, converting to FASTA,
+Clustal, or PHYLIP format to NEXUS:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AlignIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;Phylip/horses.phy&quot;</span><span class="p">,</span> <span class="s2">&quot;phylip&quot;</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;nexus&quot;</span><span class="p">,</span> <span class="s2">&quot;DNA&quot;</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
+<span class="go">#NEXUS</span>
+<span class="go">begin data;</span>
+<span class="go">dimensions ntax=10 nchar=40;</span>
+<span class="go">format datatype=dna missing=? gap=-;</span>
+<span class="go">matrix</span>
+<span class="go">Mesohippus   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Hypohippus   AAACCCCCCCAAAAAAAAACAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Archaeohip   CAAAAAAAAAAAAAAAACACAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Parahippus   CAAACAACAACAAAAAAAACAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Merychippu   CCAACCACCACCCCACACCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">&#39;M. secundu&#39; CCAACCACCACCCACACCCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Nannipus     CCAACCACAACCCCACACCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Neohippari   CCAACCCCCCCCCCACACCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Calippus     CCAACCACAACCCACACCCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Pliohippus   CCCACCCCCCCCCACACCCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">;</span>
+<span class="go">end;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>
