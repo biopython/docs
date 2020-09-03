@@ -1,0 +1,520 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bio.Align.AlignInfo module &mdash; Biopython 1.78 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.AlignIO package" href="Bio.AlignIO.html" />
+    <link rel="prev" title="Bio.Align.substitution_matrices package" href="Bio.Align.substitution_matrices.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.78
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Bio.Align.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="Bio.Align.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.Align.html#module-Bio.Align">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Alphabet.html">Bio.Alphabet package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Crystal.html">Bio.Crystal package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.FSSP.html">Bio.FSSP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Statistics.html">Bio.Statistics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SubsMat.html">Bio.SubsMat package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="Bio.html">Bio package</a> &raquo;</li>
+        
+          <li><a href="Bio.Align.html">Bio.Align package</a> &raquo;</li>
+        
+      <li>Bio.Align.AlignInfo module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/Align/AlignInfo.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="Bio.AlignIO.html" class="btn btn-neutral float-right" title="Bio.AlignIO package" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.Align.substitution_matrices.html" class="btn btn-neutral float-left" title="Bio.Align.substitution_matrices package" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Bio.Align.AlignInfo">
+<span id="bio-align-aligninfo-module"></span><h1>Bio.Align.AlignInfo module<a class="headerlink" href="#module-Bio.Align.AlignInfo" title="Permalink to this headline">¶</a></h1>
+<p>Extract information from alignment objects.</p>
+<p>In order to try and avoid huge alignment objects with tons of functions,
+functions which return summary type information about alignments should
+be put into classes in this module.</p>
+<dl class="py class">
+<dt id="Bio.Align.AlignInfo.SummaryInfo">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.Align.AlignInfo.</code><code class="sig-name descname">SummaryInfo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alignment</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Calculate summary info about the alignment.</p>
+<p>This class should be used to calculate information summarizing the
+results of an alignment. This may either be straight consensus info
+or more complicated things.</p>
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">alignment</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize with the alignment to calculate information on.</p>
+<p>ic_vector attribute. A list of ic content for each column number.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.dumb_consensus">
+<code class="sig-name descname">dumb_consensus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">ambiguous</span><span class="o">=</span><span class="default_value">'X'</span></em>, <em class="sig-param"><span class="n">require_multiple</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.dumb_consensus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output a fast consensus sequence of the alignment.</p>
+<p>This doesn’t do anything fancy at all. It will just go through the
+sequence residue by residue and count up the number of each type
+of residue (ie. A or G or T or C for DNA) in all sequences in the
+alignment. If the percentage of the most common residue type is
+greater then the passed threshold, then we will add that residue type,
+otherwise an ambiguous character will be added.</p>
+<p>This could be made a lot fancier (ie. to take a substitution matrix
+into account), but it just meant for a quick and dirty consensus.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>threshold - The threshold value that is required to add a particular
+atom.</p></li>
+<li><p>ambiguous - The ambiguous character to be added when the threshold is
+not reached.</p></li>
+<li><p>require_multiple - If set as True, this will require that more than
+1 sequence be part of an alignment to put it in the consensus (ie.
+not just 1 sequence and gaps).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.gap_consensus">
+<code class="sig-name descname">gap_consensus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">threshold</span><span class="o">=</span><span class="default_value">0.7</span></em>, <em class="sig-param"><span class="n">ambiguous</span><span class="o">=</span><span class="default_value">'X'</span></em>, <em class="sig-param"><span class="n">require_multiple</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.gap_consensus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Output a fast consensus sequence of the alignment, allowing gaps.</p>
+<p>Same as dumb_consensus(), but allows gap on the output.</p>
+<dl class="simple">
+<dt>Things to do:</dt><dd><ul class="simple">
+<li><p>Let the user define that with only one gap, the result
+character in consensus is gap.</p></li>
+<li><p>Let the user select gap character, now
+it takes the same as input.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.replacement_dictionary">
+<code class="sig-name descname">replacement_dictionary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">skip_chars</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">letters</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.replacement_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a replacement dictionary to plug into a substitution matrix.</p>
+<p>This should look at an alignment, and be able to generate the number
+of substitutions of different residues for each other in the
+aligned object.</p>
+<p>Will then return a dictionary with this information:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="mi">15</span> <span class="o">....</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>This also treats weighted sequences. The following example shows how
+we calculate the replacement dictionary. Given the following
+multiple sequence alignment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GTATC</span>  <span class="mf">0.5</span>
+<span class="n">AT</span><span class="o">--</span><span class="n">C</span>  <span class="mf">0.8</span>
+<span class="n">CTGTC</span>  <span class="mf">1.0</span>
+</pre></div>
+</div>
+<p>For the first column we have:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="mf">0.8</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">=</span> <span class="mf">0.8</span>
+</pre></div>
+</div>
+<p>We then continue this for all of the columns in the alignment, summing
+the information for each substitution in each column, until we end
+up with the replacement dictionary.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>skip_chars - Not used; setting it to anything other than None
+will raise a ValueError</p></li>
+<li><p>letters - An iterable (e.g. a string or list of characters to include.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.pos_specific_score_matrix">
+<code class="sig-name descname">pos_specific_score_matrix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">axis_seq</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">chars_to_ignore</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.pos_specific_score_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a position specific score matrix object for the alignment.</p>
+<p>This creates a position specific score matrix (pssm) which is an
+alternative method to look at a consensus sequence.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>chars_to_ignore - A list of all characters not to include in
+the pssm.</p></li>
+<li><p>axis_seq - An optional argument specifying the sequence to
+put on the axis of the PSSM. This should be a Seq object. If nothing
+is specified, the consensus sequence, calculated with default
+parameters, will be used.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>A PSSM (position specific score matrix) object.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.information_content">
+<code class="sig-name descname">information_content</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e_freq_table</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">log_base</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">chars_to_ignore</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pseudo_count</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.information_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the information content for each residue along an alignment.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>start, end - The starting an ending points to calculate the
+information content. These points should be relative to the first
+sequence in the alignment, starting at zero (ie. even if the ‘real’
+first position in the seq is 203 in the initial sequence, for
+the info content, we need to use zero). This defaults to the entire
+length of the first sequence.</p></li>
+<li><p>e_freq_table - A dictionary specifying the expected frequencies
+for each letter (e.g. {‘G’ : 0.4, ‘C’ : 0.4, ‘T’ : 0.1, ‘A’ : 0.1}).
+Gap characters should not be included, since these should not have
+expected frequencies.</p></li>
+<li><p>log_base - The base of the logarithm to use in calculating the
+information content. This defaults to 2 so the info is in bits.</p></li>
+<li><p>chars_to_ignore - A listing of characters which should be ignored
+in calculating the info content. Defaults to none.</p></li>
+</ul>
+</dd>
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>A number representing the info content for the specified region.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Please see the Biopython manual for more information on how information
+content is calculated.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.SummaryInfo.get_column">
+<code class="sig-name descname">get_column</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">col</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.SummaryInfo.get_column" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return column of alignment.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.Align.AlignInfo.PSSM">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.Align.AlignInfo.</code><code class="sig-name descname">PSSM</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pssm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represent a position specific score matrix.</p>
+<p>This class is meant to make it easy to access the info within a PSSM
+and also make it easy to print out the information in a nice table.</p>
+<p>Let’s say you had an alignment like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">GTATC</span>
+<span class="n">AT</span><span class="o">--</span><span class="n">C</span>
+<span class="n">CTGTC</span>
+</pre></div>
+</div>
+<p>The position specific score matrix (when printed) looks like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">G</span> <span class="n">A</span> <span class="n">T</span> <span class="n">C</span>
+<span class="n">G</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span>
+<span class="n">T</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span> <span class="mi">0</span>
+<span class="n">A</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span>
+<span class="n">T</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">2</span> <span class="mi">0</span>
+<span class="n">C</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>You can access a single element of the PSSM using the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">your_pssm</span><span class="p">[</span><span class="n">sequence_number</span><span class="p">][</span><span class="n">residue_count_name</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For instance, to get the ‘T’ residue for the second element in the
+above alignment you would need to do:</p>
+<p>your_pssm[1][‘T’]</p>
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.PSSM.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pssm</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize with pssm data to represent.</p>
+<p>The pssm passed should be a list with the following structure:</p>
+<p>list[0] - The letter of the residue being represented (for instance,
+from the example above, the first few list[0]s would be GTAT…
+list[1] - A dictionary with the letter substitutions and counts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.PSSM.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.PSSM.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Align.AlignInfo.PSSM.get_residue">
+<code class="sig-name descname">get_residue</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pos</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.PSSM.get_residue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the residue letter at the specified position.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.Align.AlignInfo.print_info_content">
+<code class="sig-prename descclassname">Bio.Align.AlignInfo.</code><code class="sig-name descname">print_info_content</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">summary_info</span></em>, <em class="sig-param"><span class="n">fout</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rep_record</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignInfo.print_info_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>3 column output: position, aa in representative sequence, ic_vector value.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Bio.AlignIO.html" class="btn btn-neutral float-right" title="Bio.AlignIO package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.Align.substitution_matrices.html" class="btn btn-neutral float-left" title="Bio.Align.substitution_matrices package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

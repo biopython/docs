@@ -1,0 +1,545 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bio.PDB.DSSP module &mdash; Biopython 1.78 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.PDB.Dice module" href="Bio.PDB.Dice.html" />
+    <link rel="prev" title="Bio.PDB.Chain module" href="Bio.PDB.Chain.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.78
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Alphabet.html">Bio.Alphabet package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Crystal.html">Bio.Crystal package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.FSSP.html">Bio.FSSP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Bio.PDB.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="Bio.PDB.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.PDB.html#module-Bio.PDB">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Statistics.html">Bio.Statistics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SubsMat.html">Bio.SubsMat package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="Bio.html">Bio package</a> &raquo;</li>
+        
+          <li><a href="Bio.PDB.html">Bio.PDB package</a> &raquo;</li>
+        
+      <li>Bio.PDB.DSSP module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/PDB/DSSP.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="Bio.PDB.Dice.html" class="btn btn-neutral float-right" title="Bio.PDB.Dice module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.PDB.Chain.html" class="btn btn-neutral float-left" title="Bio.PDB.Chain module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Bio.PDB.DSSP">
+<span id="bio-pdb-dssp-module"></span><h1>Bio.PDB.DSSP module<a class="headerlink" href="#module-Bio.PDB.DSSP" title="Permalink to this headline">¶</a></h1>
+<p>Use the DSSP program to calculate secondary structure and accessibility.</p>
+<p>You need to have a working version of DSSP (and a license, free for academic
+use) in order to use this. For DSSP, see <a class="reference external" href="http://swift.cmbi.ru.nl/gv/dssp/">http://swift.cmbi.ru.nl/gv/dssp/</a>.</p>
+<p>The following Accessible surface area (ASA) values can be used, defaulting
+to the Sander and Rost values:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>Miller</dt><dd><p>Miller et al. 1987 <a class="reference external" href="https://doi.org/10.1016/0022-2836(87)90038-6">https://doi.org/10.1016/0022-2836(87)90038-6</a></p>
+</dd>
+<dt>Sander</dt><dd><p>Sander and Rost 1994 <a class="reference external" href="https://doi.org/10.1002/prot.340200303">https://doi.org/10.1002/prot.340200303</a></p>
+</dd>
+<dt>Wilke</dt><dd><p>Tien et al. 2013 <a class="reference external" href="https://doi.org/10.1371/journal.pone.0080635">https://doi.org/10.1371/journal.pone.0080635</a></p>
+</dd>
+</dl>
+</div></blockquote>
+<p>The DSSP codes for secondary structure used here are:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 85%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>Structure</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>H</p></td>
+<td><p>Alpha helix (4-12)</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>Isolated beta-bridge residue</p></td>
+</tr>
+<tr class="row-even"><td><p>E</p></td>
+<td><p>Strand</p></td>
+</tr>
+<tr class="row-odd"><td><p>G</p></td>
+<td><p>3-10 helix</p></td>
+</tr>
+<tr class="row-even"><td><p>I</p></td>
+<td><p>Pi helix</p></td>
+</tr>
+<tr class="row-odd"><td><p>T</p></td>
+<td><p>Turn</p></td>
+</tr>
+<tr class="row-even"><td><p>S</p></td>
+<td><p>Bend</p></td>
+</tr>
+<tr class="row-odd"><td><p>-</p></td>
+<td><p>None</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>The DSSP class can be used to run DSSP on a pdb file, and provides a
+handle to the DSSP secondary structure and accessibility.</p>
+<p><strong>Note</strong> that DSSP can only handle one model, and will only run
+calculations on the first model in the provided PDB file.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Typical use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.PDB</span> <span class="kn">import</span> <span class="n">PDBParser</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.DSSP</span> <span class="kn">import</span> <span class="n">DSSP</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">PDBParser</span><span class="p">()</span>
+<span class="n">structure</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">&quot;1MOT&quot;</span><span class="p">,</span> <span class="s2">&quot;/local-pdb/1mot.pdb&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">structure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dssp</span> <span class="o">=</span> <span class="n">DSSP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;/local-pdb/1mot.pdb&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the recent DSSP executable from the DSSP-2 package was
+renamed from <code class="docutils literal notranslate"><span class="pre">dssp</span></code> to <code class="docutils literal notranslate"><span class="pre">mkdssp</span></code>. If using a recent DSSP release,
+you may need to provide the name of your DSSP executable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dssp</span> <span class="o">=</span> <span class="n">DSSP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;/local-pdb/1mot.pdb&#39;</span><span class="p">,</span> <span class="n">dssp</span><span class="o">=</span><span class="s1">&#39;mkdssp&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>DSSP data is accessed by a tuple - (chain id, residue id):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a_key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dssp</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">dssp</span><span class="p">[</span><span class="n">a_key</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The dssp data returned for a single residue is a tuple in the form:</p>
+<blockquote>
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 39%" />
+<col style="width: 61%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Tuple Index</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>DSSP index</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>Amino acid</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Secondary structure</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Relative ASA</p></td>
+</tr>
+<tr class="row-even"><td><p>4</p></td>
+<td><p>Phi</p></td>
+</tr>
+<tr class="row-odd"><td><p>5</p></td>
+<td><p>Psi</p></td>
+</tr>
+<tr class="row-even"><td><p>6</p></td>
+<td><p>NH–&gt;O_1_relidx</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>NH–&gt;O_1_energy</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>O–&gt;NH_1_relidx</p></td>
+</tr>
+<tr class="row-odd"><td><p>9</p></td>
+<td><p>O–&gt;NH_1_energy</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>NH–&gt;O_2_relidx</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>NH–&gt;O_2_energy</p></td>
+</tr>
+<tr class="row-even"><td><p>12</p></td>
+<td><p>O–&gt;NH_2_relidx</p></td>
+</tr>
+<tr class="row-odd"><td><p>13</p></td>
+<td><p>O–&gt;NH_2_energy</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<dl class="py function">
+<dt id="Bio.PDB.DSSP.ss_to_index">
+<code class="sig-prename descclassname">Bio.PDB.DSSP.</code><code class="sig-name descname">ss_to_index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ss</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.DSSP.ss_to_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Secondary structure symbol to index.</p>
+<p>H=0
+E=1
+C=2</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.PDB.DSSP.dssp_dict_from_pdb_file">
+<code class="sig-prename descclassname">Bio.PDB.DSSP.</code><code class="sig-name descname">dssp_dict_from_pdb_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_file</span></em>, <em class="sig-param"><span class="n">DSSP</span><span class="o">=</span><span class="default_value">'dssp'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.DSSP.dssp_dict_from_pdb_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a DSSP dictionary from a PDB file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>in_file</strong><span class="classifier">string</span></dt><dd><p>pdb file</p>
+</dd>
+<dt><strong>DSSP</strong><span class="classifier">string</span></dt><dd><p>DSSP executable (argument to subprocess)</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>(out_dict, keys)</strong><span class="classifier">tuple</span></dt><dd><p>a dictionary that maps (chainid, resid) to
+amino acid type, secondary structure code and
+accessibility.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>How dssp_dict_frompdb_file could be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.PDB.DSSP</span> <span class="kn">import</span> <span class="n">dssp_dict_from_pdb_file</span>
+<span class="n">dssp_tuple</span> <span class="o">=</span> <span class="n">dssp_dict_from_pdb_file</span><span class="p">(</span><span class="s2">&quot;/local-pdb/1fat.pdb&quot;</span><span class="p">)</span>
+<span class="n">dssp_dict</span> <span class="o">=</span> <span class="n">dssp_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dssp_dict</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.PDB.DSSP.make_dssp_dict">
+<code class="sig-prename descclassname">Bio.PDB.DSSP.</code><code class="sig-name descname">make_dssp_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.DSSP.make_dssp_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>DSSP dictionary mapping identifiers to properties.</p>
+<p>Return a DSSP dictionary that maps (chainid, resid) to
+aa, ss and accessibility, from a DSSP file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>filename</strong><span class="classifier">string</span></dt><dd><p>the DSSP output file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.PDB.DSSP.DSSP">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.DSSP.</code><code class="sig-name descname">DSSP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">in_file</span></em>, <em class="sig-param"><span class="n">dssp</span><span class="o">=</span><span class="default_value">'dssp'</span></em>, <em class="sig-param"><span class="n">acc_array</span><span class="o">=</span><span class="default_value">'Sander'</span></em>, <em class="sig-param"><span class="n">file_type</span><span class="o">=</span><span class="default_value">'PDB'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.DSSP.DSSP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.PDB.AbstractPropertyMap.html#Bio.PDB.AbstractPropertyMap.AbstractResiduePropertyMap" title="Bio.PDB.AbstractPropertyMap.AbstractResiduePropertyMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.PDB.AbstractPropertyMap.AbstractResiduePropertyMap</span></code></a></p>
+<p>Run DSSP and parse secondary structure and accessibility.</p>
+<p>Run DSSP on a pdb file, and provide a handle to the
+DSSP secondary structure and accessibility.</p>
+<p><strong>Note</strong> that DSSP can only handle one model.</p>
+<p class="rubric">Examples</p>
+<p>How DSSP could be used:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.PDB</span> <span class="kn">import</span> <span class="n">PDBParser</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.DSSP</span> <span class="kn">import</span> <span class="n">DSSP</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">PDBParser</span><span class="p">()</span>
+<span class="n">structure</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">&quot;1MOT&quot;</span><span class="p">,</span> <span class="s2">&quot;/local-pdb/1mot.pdb&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">structure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dssp</span> <span class="o">=</span> <span class="n">DSSP</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s2">&quot;/local-pdb/1mot.pdb&quot;</span><span class="p">)</span>
+<span class="c1"># DSSP data is accessed by a tuple (chain_id, res_id)</span>
+<span class="n">a_key</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dssp</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">2</span><span class="p">]</span>
+<span class="c1"># (dssp index, amino acid, secondary structure, relative ASA, phi, psi,</span>
+<span class="c1"># NH_O_1_relidx, NH_O_1_energy, O_NH_1_relidx, O_NH_1_energy,</span>
+<span class="c1"># NH_O_2_relidx, NH_O_2_energy, O_NH_2_relidx, O_NH_2_energy)</span>
+<span class="n">dssp</span><span class="p">[</span><span class="n">a_key</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="Bio.PDB.DSSP.DSSP.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">in_file</span></em>, <em class="sig-param"><span class="n">dssp</span><span class="o">=</span><span class="default_value">'dssp'</span></em>, <em class="sig-param"><span class="n">acc_array</span><span class="o">=</span><span class="default_value">'Sander'</span></em>, <em class="sig-param"><span class="n">file_type</span><span class="o">=</span><span class="default_value">'PDB'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.DSSP.DSSP.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a DSSP object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>model</strong><span class="classifier">Model</span></dt><dd><p>The first model of the structure</p>
+</dd>
+<dt><strong>in_file</strong><span class="classifier">string</span></dt><dd><p>Either a PDB file or a DSSP file.</p>
+</dd>
+<dt><strong>dssp</strong><span class="classifier">string</span></dt><dd><p>The dssp executable (ie. the argument to subprocess)</p>
+</dd>
+<dt><strong>acc_array</strong><span class="classifier">string</span></dt><dd><p>Accessible surface area (ASA) from either Miller et al. (1987),
+Sander &amp; Rost (1994), or Wilke: Tien et al. 2013, as string
+Sander/Wilke/Miller. Defaults to Sander.</p>
+</dd>
+<dt><strong>file_type: string</strong></dt><dd><p>File type switch, either PDB or DSSP with PDB as default.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Bio.PDB.Dice.html" class="btn btn-neutral float-right" title="Bio.PDB.Dice module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.PDB.Chain.html" class="btn btn-neutral float-left" title="Bio.PDB.Chain module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

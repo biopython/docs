@@ -1,0 +1,668 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bio.PDB.Entity module &mdash; Biopython 1.78 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.PDB.FragmentMapper module" href="Bio.PDB.FragmentMapper.html" />
+    <link rel="prev" title="Bio.PDB.Dice module" href="Bio.PDB.Dice.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.78
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Alphabet.html">Bio.Alphabet package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Crystal.html">Bio.Crystal package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.FSSP.html">Bio.FSSP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Bio.PDB.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="Bio.PDB.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.PDB.html#module-Bio.PDB">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Statistics.html">Bio.Statistics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SubsMat.html">Bio.SubsMat package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="Bio.html">Bio package</a> &raquo;</li>
+        
+          <li><a href="Bio.PDB.html">Bio.PDB package</a> &raquo;</li>
+        
+      <li>Bio.PDB.Entity module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/PDB/Entity.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="Bio.PDB.FragmentMapper.html" class="btn btn-neutral float-right" title="Bio.PDB.FragmentMapper module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.PDB.Dice.html" class="btn btn-neutral float-left" title="Bio.PDB.Dice module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Bio.PDB.Entity">
+<span id="bio-pdb-entity-module"></span><h1>Bio.PDB.Entity module<a class="headerlink" href="#module-Bio.PDB.Entity" title="Permalink to this headline">¶</a></h1>
+<p>Base class for Residue, Chain, Model and Structure classes.</p>
+<p>It is a simple container class, with list and dictionary like properties.</p>
+<dl class="py class">
+<dt id="Bio.PDB.Entity.Entity">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.Entity.</code><code class="sig-name descname">Entity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Basic container object for PDB heirachy.</p>
+<p>Structure, Model, Chain and Residue are subclasses of Entity.
+It deals with storage and lookup.</p>
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__len__">
+<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of children.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the child with given id.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__delitem__">
+<code class="sig-name descname">__delitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__delitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a child.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__contains__">
+<code class="sig-name descname">__contains__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if there is a child element with the given id.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over children.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__eq__">
+<code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test for equality. This compares full_id including the IDs of all parents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__ne__">
+<code class="sig-name descname">__ne__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__ne__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test for inequality.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__gt__">
+<code class="sig-name descname">__gt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test greater than.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__ge__">
+<code class="sig-name descname">__ge__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__ge__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test greater or equal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__lt__">
+<code class="sig-name descname">__lt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test less than.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__le__">
+<code class="sig-name descname">__le__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__le__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test less or equal.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.__hash__">
+<code class="sig-name descname">__hash__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hash method to allow uniqueness (set).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.id">
+<em class="property">property </em><code class="sig-name descname">id</code><a class="headerlink" href="#Bio.PDB.Entity.Entity.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return identifier.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.get_level">
+<code class="sig-name descname">get_level</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.get_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return level in hierarchy.</p>
+<p>A - atom
+R - residue
+C - chain
+M - model
+S - structure</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.set_parent">
+<code class="sig-name descname">set_parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">entity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.set_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parent Entity object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.detach_parent">
+<code class="sig-name descname">detach_parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.detach_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detach the parent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.detach_child">
+<code class="sig-name descname">detach_child</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.detach_child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a child.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.add">
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">entity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a child to the Entity.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.insert">
+<code class="sig-name descname">insert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pos</span></em>, <em class="sig-param"><span class="n">entity</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a child to the Entity at a specified position.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.get_iterator">
+<code class="sig-name descname">get_iterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.get_iterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return iterator over children.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.get_list">
+<code class="sig-name descname">get_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.get_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the list of children.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.has_id">
+<code class="sig-name descname">has_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.has_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if a child with given id exists.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.get_parent">
+<code class="sig-name descname">get_parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.get_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the parent Entity object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.get_id">
+<code class="sig-name descname">get_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the id.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.get_full_id">
+<code class="sig-name descname">get_full_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.get_full_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the full id.</p>
+<p>The full id is a tuple containing all id’s starting from
+the top object (Structure) down to the current object. A full id for
+a Residue object e.g. is something like:</p>
+<p>(“1abc”, 0, “A”, (” “, 10, “A”))</p>
+<p>This corresponds to:</p>
+<p>Structure with id “1abc”
+Model with id 0
+Chain with id “A”
+Residue with id (” “, 10, “A”)</p>
+<p>The Residue id indicates that the residue is not a hetero-residue
+(or a water) because it has a blank hetero field, that its sequence
+identifier is 10 and its insertion code “A”.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.transform">
+<code class="sig-name descname">transform</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">rot</span></em>, <em class="sig-param"><span class="n">tran</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply rotation and translation to the atomic coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rot</strong> (<em>3x3 Numeric array</em>) – A right multiplying rotation matrix</p></li>
+<li><p><strong>tran</strong> (<em>size 3 Numeric array</em>) – the translation vector</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<p>This is an incomplete but illustrative example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">array</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.vectors</span> <span class="kn">import</span> <span class="n">Vector</span><span class="p">,</span> <span class="n">rotmat</span>
+<span class="n">rotation</span> <span class="o">=</span> <span class="n">rotmat</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span> <span class="n">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">translation</span> <span class="o">=</span> <span class="n">array</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span>
+<span class="n">entity</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="n">translation</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.Entity.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy entity recursively.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.Entity.</code><code class="sig-name descname">DisorderedEntityWrapper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper class to group equivalent Entities.</p>
+<p>This class is a simple wrapper class that groups a number of equivalent
+Entities and forwards all method calls to one of them (the currently selected
+object). DisorderedResidue and DisorderedAtom are subclasses of this class.</p>
+<p>E.g.: A DisorderedAtom object contains a number of Atom objects,
+where each Atom object represents a specific position of a disordered
+atom in the structure.</p>
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__getattr__">
+<code class="sig-name descname">__getattr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">method</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__getattr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forward the method call to the selected child.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the child with the given id.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__setitem__">
+<code class="sig-name descname">__setitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em>, <em class="sig-param"><span class="n">child</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__setitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a child, associated with a certain id.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__contains__">
+<code class="sig-name descname">__contains__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the child has the given id.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of children.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__len__">
+<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of children.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__sub__">
+<code class="sig-name descname">__sub__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__sub__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtraction with another object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__gt__">
+<code class="sig-name descname">__gt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if child is greater than other.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__ge__">
+<code class="sig-name descname">__ge__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__ge__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if child is greater or equal than other.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__lt__">
+<code class="sig-name descname">__lt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if child is less than other.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.__le__">
+<code class="sig-name descname">__le__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.__le__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if child is less or equal than other.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.copy">
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copy disorderd entity recursively.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.get_id">
+<code class="sig-name descname">get_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.get_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the id.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.disordered_has_id">
+<code class="sig-name descname">disordered_has_id</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.disordered_has_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if there is an object present associated with this id.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.detach_parent">
+<code class="sig-name descname">detach_parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.detach_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detach the parent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.get_parent">
+<code class="sig-name descname">get_parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.get_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return parent.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.set_parent">
+<code class="sig-name descname">set_parent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">parent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.set_parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the parent for the object and its children.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.disordered_select">
+<code class="sig-name descname">disordered_select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.disordered_select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the object with given id as the currently active object.</p>
+<p>Uncaught method calls are forwarded to the selected child object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.disordered_add">
+<code class="sig-name descname">disordered_add</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">child</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.disordered_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add disordered entry.</p>
+<p>This is implemented by DisorderedAtom and DisorderedResidue.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.is_disordered">
+<code class="sig-name descname">is_disordered</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.is_disordered" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return 2, indicating that this Entity is a collection of Entities.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.disordered_get_id_list">
+<code class="sig-name descname">disordered_get_id_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.disordered_get_id_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of id’s.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.disordered_get">
+<code class="sig-name descname">disordered_get</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">id</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.disordered_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the child object associated with id.</p>
+<p>If id is None, the currently selected child is returned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.Entity.DisorderedEntityWrapper.disordered_get_list">
+<code class="sig-name descname">disordered_get_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.DisorderedEntityWrapper.disordered_get_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return list of children.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Bio.PDB.FragmentMapper.html" class="btn btn-neutral float-right" title="Bio.PDB.FragmentMapper module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.PDB.Dice.html" class="btn btn-neutral float-left" title="Bio.PDB.Dice module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

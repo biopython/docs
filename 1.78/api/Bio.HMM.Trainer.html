@@ -1,0 +1,516 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Bio.HMM.Trainer module &mdash; Biopython 1.78 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.HMM.Utilities module" href="Bio.HMM.Utilities.html" />
+    <link rel="prev" title="Bio.HMM.MarkovModel module" href="Bio.HMM.MarkovModel.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.78
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Alphabet.html">Bio.Alphabet package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Crystal.html">Bio.Crystal package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.FSSP.html">Bio.FSSP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="Bio.HMM.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.HMM.html#module-Bio.HMM">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Statistics.html">Bio.Statistics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SubsMat.html">Bio.SubsMat package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="Bio.html">Bio package</a> &raquo;</li>
+        
+          <li><a href="Bio.HMM.html">Bio.HMM package</a> &raquo;</li>
+        
+      <li>Bio.HMM.Trainer module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/HMM/Trainer.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="Bio.HMM.Utilities.html" class="btn btn-neutral float-right" title="Bio.HMM.Utilities module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.HMM.MarkovModel.html" class="btn btn-neutral float-left" title="Bio.HMM.MarkovModel module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-Bio.HMM.Trainer">
+<span id="bio-hmm-trainer-module"></span><h1>Bio.HMM.Trainer module<a class="headerlink" href="#module-Bio.HMM.Trainer" title="Permalink to this headline">¶</a></h1>
+<p>Provide trainers which estimate parameters based on training sequences.</p>
+<p>These should be used to ‘train’ a Markov Model prior to actually using
+it to decode state paths. When supplied training sequences and a model
+to work from, these classes will estimate parameters of the model.</p>
+<p>This aims to estimate two parameters:</p>
+<ul class="simple">
+<li><p>a_{kl} – the number of times there is a transition from k to l in the
+training data.</p></li>
+<li><p>e_{k}(b) – the number of emissions of the state b from the letter k
+in the training data.</p></li>
+</ul>
+<dl class="py class">
+<dt id="Bio.HMM.Trainer.TrainingSequence">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.Trainer.</code><code class="sig-name descname">TrainingSequence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">emissions</span></em>, <em class="sig-param"><span class="n">state_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.TrainingSequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Hold a training sequence with emissions and optionally, a state path.</p>
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.TrainingSequence.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">emissions</span></em>, <em class="sig-param"><span class="n">state_path</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.TrainingSequence.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a training sequence.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>emissions - An iterable (e.g., a tuple, list, or Seq object)
+containing the sequence of emissions in the training sequence.</p></li>
+<li><p>state_path - An iterable (e.g., a tuple or list) containing the
+sequence of states. If there is no known state path, then the
+sequence of states should be an empty iterable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.HMM.Trainer.AbstractTrainer">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.Trainer.</code><code class="sig-name descname">AbstractTrainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">markov_model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.AbstractTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Provide generic functionality needed in all trainers.</p>
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.AbstractTrainer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">markov_model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.AbstractTrainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.AbstractTrainer.log_likelihood">
+<code class="sig-name descname">log_likelihood</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">probabilities</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.AbstractTrainer.log_likelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the log likelihood of the training seqs.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>probabilities – A list of the probabilities of each training
+sequence under the current parameters, calculated using the
+forward algorithm.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.AbstractTrainer.estimate_params">
+<code class="sig-name descname">estimate_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">transition_counts</span></em>, <em class="sig-param"><span class="n">emission_counts</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.AbstractTrainer.estimate_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a maximum likelihood estimation of transition and emmission.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>transition_counts – A dictionary with the total number of counts
+of transitions between two states.</p></li>
+<li><p>emissions_counts – A dictionary with the total number of counts
+of emmissions of a particular emission letter by a state letter.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This then returns the maximum likelihood estimators for the
+transitions and emissions, estimated by formulas 3.18 in
+Durbin et al:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">a_</span><span class="p">{</span><span class="n">kl</span><span class="p">}</span> <span class="o">=</span> <span class="n">A_</span><span class="p">{</span><span class="n">kl</span><span class="p">}</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">A_</span><span class="p">{</span><span class="n">kl</span><span class="s1">&#39;})</span>
+<span class="n">e_</span><span class="p">{</span><span class="n">k</span><span class="p">}(</span><span class="n">b</span><span class="p">)</span> <span class="o">=</span> <span class="n">E_</span><span class="p">{</span><span class="n">k</span><span class="p">}(</span><span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">E_</span><span class="p">{</span><span class="n">k</span><span class="p">}(</span><span class="sa">b</span><span class="s1">&#39;))</span>
+</pre></div>
+</div>
+<p>Returns:
+Transition and emission dictionaries containing the maximum
+likelihood estimators.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.AbstractTrainer.ml_estimator">
+<code class="sig-name descname">ml_estimator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">counts</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.AbstractTrainer.ml_estimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the maximum likelihood estimator.</p>
+<p>This can calculate maximum likelihoods for both transitions
+and emissions.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>counts – A dictionary of the counts for each item.</p></li>
+</ul>
+</dd>
+</dl>
+<p>See estimate_params for a description of the formula used for
+calculation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.HMM.Trainer.BaumWelchTrainer">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.Trainer.</code><code class="sig-name descname">BaumWelchTrainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">markov_model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.BaumWelchTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.HMM.Trainer.AbstractTrainer" title="Bio.HMM.Trainer.AbstractTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.HMM.Trainer.AbstractTrainer</span></code></a></p>
+<p>Trainer that uses the Baum-Welch algorithm to estimate parameters.</p>
+<p>These should be used when a training sequence for an HMM has unknown
+paths for the actual states, and you need to make an estimation of the
+model parameters from the observed emissions.</p>
+<p>This uses the Baum-Welch algorithm, first described in
+Baum, L.E. 1972. Inequalities. 3:1-8
+This is based on the description in ‘Biological Sequence Analysis’ by
+Durbin et al. in section 3.3</p>
+<p>This algorithm is guaranteed to converge to a local maximum, but not
+necessarily to the global maxima, so use with care!</p>
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.BaumWelchTrainer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">markov_model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.BaumWelchTrainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the trainer.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>markov_model - The model we are going to estimate parameters for.
+This should have the parameters with some initial estimates, that
+we can build from.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.BaumWelchTrainer.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">training_seqs</em>, <em class="sig-param">stopping_criteria</em>, <em class="sig-param">dp_method=&lt;class 'Bio.HMM.DynamicProgramming.ScaledDPAlgorithms'&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.BaumWelchTrainer.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the parameters using training sequences.</p>
+<p>The algorithm for this is taken from Durbin et al. p64, so this
+is a good place to go for a reference on what is going on.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>training_seqs – A list of TrainingSequence objects to be used
+for estimating the parameters.</p></li>
+<li><p>stopping_criteria – A function, that when passed the change
+in log likelihood and threshold, will indicate if we should stop
+the estimation iterations.</p></li>
+<li><p>dp_method – A class instance specifying the dynamic programming
+implementation we should use to calculate the forward and
+backward variables. By default, we use the scaling method.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.BaumWelchTrainer.update_transitions">
+<code class="sig-name descname">update_transitions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">transition_counts</span></em>, <em class="sig-param"><span class="n">training_seq</span></em>, <em class="sig-param"><span class="n">forward_vars</span></em>, <em class="sig-param"><span class="n">backward_vars</span></em>, <em class="sig-param"><span class="n">training_seq_prob</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.BaumWelchTrainer.update_transitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the contribution of a new training sequence to the transitions.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>transition_counts – A dictionary of the current counts for the
+transitions</p></li>
+<li><p>training_seq – The training sequence we are working with</p></li>
+<li><p>forward_vars – Probabilities calculated using the forward
+algorithm.</p></li>
+<li><p>backward_vars – Probabilities calculated using the backwards
+algorithm.</p></li>
+<li><p>training_seq_prob - The probability of the current sequence.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This calculates A_{kl} (the estimated transition counts from state
+k to state l) using formula 3.20 in Durbin et al.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.BaumWelchTrainer.update_emissions">
+<code class="sig-name descname">update_emissions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">emission_counts</span></em>, <em class="sig-param"><span class="n">training_seq</span></em>, <em class="sig-param"><span class="n">forward_vars</span></em>, <em class="sig-param"><span class="n">backward_vars</span></em>, <em class="sig-param"><span class="n">training_seq_prob</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.BaumWelchTrainer.update_emissions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the contribution of a new training sequence to the emissions.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>emission_counts – A dictionary of the current counts for the
+emissions</p></li>
+<li><p>training_seq – The training sequence we are working with</p></li>
+<li><p>forward_vars – Probabilities calculated using the forward
+algorithm.</p></li>
+<li><p>backward_vars – Probabilities calculated using the backwards
+algorithm.</p></li>
+<li><p>training_seq_prob - The probability of the current sequence.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This calculates E_{k}(b) (the estimated emission probability for
+emission letter b from state k) using formula 3.21 in Durbin et al.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.HMM.Trainer.KnownStateTrainer">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.HMM.Trainer.</code><code class="sig-name descname">KnownStateTrainer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">markov_model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.KnownStateTrainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.HMM.Trainer.AbstractTrainer" title="Bio.HMM.Trainer.AbstractTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.HMM.Trainer.AbstractTrainer</span></code></a></p>
+<p>Estimate probabilities with known state sequences.</p>
+<p>This should be used for direct estimation of emission and transition
+probabilities when both the state path and emission sequence are
+known for the training examples.</p>
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.KnownStateTrainer.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">markov_model</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.KnownStateTrainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.HMM.Trainer.KnownStateTrainer.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">training_seqs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.Trainer.KnownStateTrainer.train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimate the Markov Model parameters with known state paths.</p>
+<p>This trainer requires that both the state and the emissions are
+known for all of the training sequences in the list of
+TrainingSequence objects.
+This training will then count all of the transitions and emissions,
+and use this to estimate the parameters of the model.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Bio.HMM.Utilities.html" class="btn btn-neutral float-right" title="Bio.HMM.Utilities module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.HMM.MarkovModel.html" class="btn btn-neutral float-left" title="Bio.HMM.MarkovModel module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
