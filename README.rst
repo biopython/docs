@@ -11,7 +11,9 @@ branch, from where it can be automatically published using GitHub pages.
 
 The intention is to use https://biopython.org/docs/dev/api/ for the API
 documentation for latest master branch, with ``/dev/`` replaced with the
-version for releases, e.g. https://biopython.org/docs/1.74/api/ 
+version for releases, e.g. https://biopython.org/docs/1.74/api/ and a
+symlink such that https://biopython.org/docs/latest/api/ points at the
+latest release (which will need updating with each release).
 
 We would not expect or intend to edit the documentation directly in this
 repository.
