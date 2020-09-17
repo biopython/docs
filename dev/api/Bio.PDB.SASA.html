@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Bio.PDB.SCADIO module &mdash; Biopython 1.79.dev0 documentation</title>
+  <title>Bio.PDB.SASA module &mdash; Biopython 1.79.dev0 documentation</title>
   
 
   
@@ -36,8 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Bio.PDB.Selection module" href="Bio.PDB.Selection.html" />
-    <link rel="prev" title="Bio.PDB.SASA module" href="Bio.PDB.SASA.html" /> 
+    <link rel="next" title="Bio.PDB.SCADIO module" href="Bio.PDB.SCADIO.html" />
+    <link rel="prev" title="Bio.PDB.ResidueDepth module" href="Bio.PDB.ResidueDepth.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -201,7 +201,7 @@
         
           <li><a href="Bio.PDB.html">Bio.PDB package</a> &raquo;</li>
         
-      <li>Bio.PDB.SCADIO module</li>
+      <li>Bio.PDB.SASA module</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -209,7 +209,7 @@
             
             
               <!-- User defined GitHub URL -->
-              <a href="https://github.com/biopython/biopython/blob/master/Bio/PDB/SCADIO.py" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/PDB/SASA.py" class="fa fa-github"> Edit on GitHub</a>
             
           
         
@@ -220,10 +220,10 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="Bio.PDB.Selection.html" class="btn btn-neutral float-right" title="Bio.PDB.Selection module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Bio.PDB.SCADIO.html" class="btn btn-neutral float-right" title="Bio.PDB.SCADIO module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Bio.PDB.SASA.html" class="btn btn-neutral float-left" title="Bio.PDB.SASA module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Bio.PDB.ResidueDepth.html" class="btn btn-neutral float-left" title="Bio.PDB.ResidueDepth module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -232,75 +232,77 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-Bio.PDB.SCADIO">
-<span id="bio-pdb-scadio-module"></span><h1>Bio.PDB.SCADIO module<a class="headerlink" href="#module-Bio.PDB.SCADIO" title="Permalink to this headline">¶</a></h1>
-<p>SCADIO: write OpenSCAD program to create protein structure 3D model.</p>
-<p>3D printing a protein structure is a non-trivial exercise due to the
-overall complexity and the general requirement for supporting overhang regions
-while printing.  This software is a path to generating a model for printing
-(e.g. an STL file), and does not address the issues around converting the
-model to a physical product.  OpenSCAD &lt;<a class="reference external" href="http://www.openscad.org/">http://www.openscad.org/</a>&gt; can create
-a printable model from the script this software produces.  MeshMixer
-&lt;<a class="reference external" href="http://www.meshmixer.com/">http://www.meshmixer.com/</a>&gt;, various slicer software, and the 3D printer
-technology available to you provide options for addressing the problems around
-physically rendering the model.</p>
-<p>I suggest generating your initial model using the OpenSCAD script provided
-here, then modifying that script according to your needs.  Changing the
-atomScale and bondRadius values can simplify the model by removing gaps and
-the corresponding need for supports, or you may wish to modify the hedronDispatch()
-routine to select residues or chain sections for printing separately and
-subsequently joining with rotatable bonds.  During this development phase you
-will likely have your version <cite>include</cite> only the data matrices generated here,
-by using the <cite>includeCode-False</cite> option to write_SCAD().  An example project
-with modifications of the script generated here is
-&lt;<a class="reference external" href="https://www.thingiverse.com/thing:3957471">https://www.thingiverse.com/thing:3957471</a>&gt;.</p>
-<dl class="py function">
-<dt id="Bio.PDB.SCADIO.write_SCAD">
-<code class="sig-prename descclassname">Bio.PDB.SCADIO.</code><code class="sig-name descname">write_SCAD</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">entity</span></em>, <em class="sig-param"><span class="n">file</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pdbid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">backboneOnly</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">includeCode</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">maxPeptideBond</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">handle</span><span class="o">=</span><span class="default_value">'protein'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.SCADIO.write_SCAD" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write hedron assembly to file as OpenSCAD matrices.</p>
-<p>This routine calls both internal_to_atom_coordinates() and
-atom_to_internal_coordinates() due to requirements for scaling, explicit
-bonds around rings, and setting the coordinate space of the output model.</p>
-<p>Output data format is primarily:</p>
-<ul class="simple">
-<li><dl class="simple">
-<dt>matrix for each hedron:</dt><dd><p>len1, angle2, len3, atom covalent bond class, flags to indicate
-atom/bond represented in previous hedron (OpenSCAD very slow with
-redundant overlapping elements), flags for bond features</p>
+  <div class="section" id="module-Bio.PDB.SASA">
+<span id="bio-pdb-sasa-module"></span><h1>Bio.PDB.SASA module<a class="headerlink" href="#module-Bio.PDB.SASA" title="Permalink to this headline">¶</a></h1>
+<p>Calculation of solvent accessible surface areas for Bio.PDB entities.</p>
+<p>Uses the “rolling ball” algorithm developed by Shrake &amp; Rupley algorithm,
+which uses a sphere (of equal radius to a solvent molecule) to probe the
+surface of the molecule.</p>
+<dl class="simple">
+<dt>Reference:</dt><dd><p>Shrake, A; Rupley, JA. (1973). J Mol Biol
+“Environment and exposure to solvent of protein atoms. Lysozyme and insulin”.</p>
 </dd>
 </dl>
-</li>
-<li><p>transform matrices to assemble each hedron into residue dihedra sets</p></li>
-<li><p>transform matrices for each residue to position in chain</p></li>
-</ul>
-<p>OpenSCAD software is included in this Python file to process these
-matrices into a model suitable for a 3D printing project.</p>
+<dl class="py class">
+<dt id="Bio.PDB.SASA.ShrakeRupley">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.PDB.SASA.</code><code class="sig-name descname">ShrakeRupley</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">probe_radius</span><span class="o">=</span><span class="default_value">1.4</span></em>, <em class="sig-param"><span class="n">n_points</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">radii_dict</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.SASA.ShrakeRupley" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Calculates SASAs using the Shrake-Rupley algorithm.</p>
+<dl class="py method">
+<dt id="Bio.PDB.SASA.ShrakeRupley.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">probe_radius</span><span class="o">=</span><span class="default_value">1.4</span></em>, <em class="sig-param"><span class="n">n_points</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">radii_dict</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.SASA.ShrakeRupley.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>entity</strong> – Biopython PDB structure entity
-structure data to export</p></li>
-<li><p><strong>file</strong> – Bipoython as_handle filename or open file pointer
-file to write data to</p></li>
-<li><p><strong>scale</strong> – float
-units (usually mm) per angstrom for STL output, written in output</p></li>
-<li><p><strong>pdbid</strong> – str
-PDB idcode, written in output. Defaults to ‘0PDB’ if not supplied
-and no ‘idcode’ set in entity</p></li>
-<li><p><strong>backboneOnly</strong> – bool default False
-Do not output side chain data past Cbeta if True</p></li>
-<li><p><strong>includeCode</strong> – bool default True
-Include OpenSCAD software (inline below) so output file can be loaded
-into OpenSCAD; if False, output data matrices only</p></li>
-<li><p><strong>maxPeptideBond</strong> – Optional[float] default None
-Override the cut-off in IC_Chain class (default 1.4) for detecting
-chain breaks.  If your target has chain breaks, pass a large number here
-to create a very long ‘bond’ spanning the break.</p></li>
-<li><p><strong>handle</strong> – str, default ‘protein’
-name for top level of generated OpenSCAD matrix structure</p></li>
+<li><p><strong>probe_radius</strong> (<em>float</em>) – radius of the probe in A. Default is 1.40, roughly
+the radius of a water molecule.</p></li>
+<li><p><strong>n_points</strong> (<em>int</em>) – resolution of the surface of each atom. Default is 100.
+A higher number of points results in more precise measurements, but
+slows down the calculation.</p></li>
+<li><p><strong>radii_dict</strong> (<em>dict</em>) – user-provided dictionary of atomic radii to use in
+the calculation. Values will replace/complement those in the
+default ATOMIC_RADII dictionary.</p></li>
 </ul>
 </dd>
 </dl>
+<p>Examples:
+&gt;&gt;&gt; sr = ShrakeRupley()
+&gt;&gt;&gt; sr = ShrakeRupley(n_points=960)
+&gt;&gt;&gt; sr = ShrakeRupley(radii_dict={“O”: 3.1415})</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.PDB.SASA.ShrakeRupley.compute">
+<code class="sig-name descname">compute</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">entity</span></em>, <em class="sig-param"><span class="n">level</span><span class="o">=</span><span class="default_value">'A'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.SASA.ShrakeRupley.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate surface accessibility surface area for an entity.</p>
+<p>The resulting atomic surface accessibility values are attached to the
+.sasa attribute of each entity (or atom), depending on the level. For
+example, if level=”R”, all residues will have a .sasa attribute. Atoms
+will always be assigned a .sasa attribute with their individual values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>entity</strong> (<em>Bio.PDB.Entity</em>) – input entity.</p></li>
+<li><p><strong>level</strong> – the level at which ASA values are assigned, which can be
+one of “A” (Atom), “R” (Residue), “C” (Chain), “M” (Model), or
+“S” (Structure). The ASA value of an entity is the sum of all ASA
+values of its children. Defaults to “A”.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:
+&gt;&gt;&gt; from Bio.PDB import PDBParser
+&gt;&gt;&gt; p = PDBParser(QUIET=1)
+&gt;&gt;&gt; struct = p.get_structure(“1LCD”, “PDB/1LCD.pdb”)
+&gt;&gt;&gt; sr = ShrakeRupley()
+&gt;&gt;&gt; sr.compute(struct, level=”S”)
+&gt;&gt;&gt; print(round(struct.sasa, 2))
+7053.43
+&gt;&gt;&gt; print(round(struct[0][“A”][11][“OE1”].sasa, 2))
+9.64</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -313,10 +315,10 @@ name for top level of generated OpenSCAD matrix structure</p></li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Bio.PDB.Selection.html" class="btn btn-neutral float-right" title="Bio.PDB.Selection module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Bio.PDB.SCADIO.html" class="btn btn-neutral float-right" title="Bio.PDB.SCADIO module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Bio.PDB.SASA.html" class="btn btn-neutral float-left" title="Bio.PDB.SASA module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Bio.PDB.ResidueDepth.html" class="btn btn-neutral float-left" title="Bio.PDB.ResidueDepth module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
