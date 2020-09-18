@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Bio.SCOP.Residues module" href="Bio.SCOP.Residues.html" />
@@ -50,22 +52,15 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Biopython
+            <a href="index.html">
           
 
           
             
-            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
           
           </a>
 
-          
-            
-            
-              <div class="version">
-                1.74
-              </div>
-            
           
 
           
@@ -80,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -152,6 +148,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -186,11 +183,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
         
@@ -202,6 +201,11 @@
       <li class="wy-breadcrumbs-aside">
         
             
+            
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/SCOP/Raf.py" class="fa fa-github"> Edit on GitHub</a>
+            
+          
         
       </li>
     
@@ -238,25 +242,59 @@ ascii alphabetic character, a-z, A-Z). e.g. “1”, “10A”, “1010b”, “
 <p>Dictionary <cite>protein_letters_3to1</cite> provides a mapping from the 3-letter amino
 acid codes found in PDB files to 1-letter codes.  The 3-letter codes include
 chemically modified residues.</p>
-<dl class="class">
-<dt id="Bio.SCOP.Raf.Res">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">Res</code><a class="headerlink" href="#Bio.SCOP.Raf.Res" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A single residue mapping from a RAF record.</p>
+<dl class="py function">
+<dt id="Bio.SCOP.Raf.normalize_letters">
+<code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">normalize_letters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">one_letter_code</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.normalize_letters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert RAF one-letter amino acid codes into IUPAC standard codes.</p>
+<p>Letters are uppercased, and “.” (“Unknown”) is converted to “X”.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.SCOP.Raf.SeqMapIndex">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">SeqMapIndex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<p>An RAF file index.</p>
+<p>The RAF file itself is about 50 MB. This index provides rapid, random
+access of RAF records without having to load the entire file into memory.</p>
+<p>The index key is a concatenation of the  PDB ID and chain ID. e.g
+“2drcA”, <code class="docutils literal notranslate"><span class="pre">&quot;155c_&quot;</span></code>. RAF uses an underscore to indicate blank
+chain IDs.</p>
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMapIndex.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">filename</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the RAF file index.</p>
 <dl class="simple">
-<dt>Attributes:</dt><dd><ul class="simple">
-<li><p>chainid – A single character chain ID.</p></li>
-<li><p>resid   – The residue ID.</p></li>
-<li><p>atom    – amino acid one-letter code from ATOM records.</p></li>
-<li><p>seqres  – amino acid one-letter code from SEQRES records.</p></li>
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>filename  – The file to index</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMapIndex.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an item from the indexed file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMapIndex.getSeqMap">
+<code class="sig-name descname">getSeqMap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">residues</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex.getSeqMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the sequence map for a collection of residues.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>residues – A Residues instance, or a string that can be
+converted into a Residues instance.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.SCOP.Raf.SeqMap">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">SeqMap</code><span class="sig-paren">(</span><em class="sig-param">line=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">SeqMap</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">line</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>An ASTRAL RAF (Rapid Access Format) Sequence Map.</p>
 <p>This is a list like object; You can find the location of particular residues
@@ -272,45 +310,54 @@ together with extend().</p>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.SCOP.Raf.SeqMap.append" title="Bio.SCOP.Raf.SeqMap.append"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append</span></code></a>(self, res)</p></td>
-<td><p>Append another Res object onto the list of residue mappings.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.SCOP.Raf.SeqMap.extend" title="Bio.SCOP.Raf.SeqMap.extend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extend</span></code></a>(self, other)</p></td>
-<td><p>Append another SeqMap onto the end of self.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.SCOP.Raf.SeqMap.getAtoms" title="Bio.SCOP.Raf.SeqMap.getAtoms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getAtoms</span></code></a>(self, pdb_handle, out_handle)</p></td>
-<td><p>Extract all relevant ATOM and HETATOM records from a PDB file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.SCOP.Raf.SeqMap.index" title="Bio.SCOP.Raf.SeqMap.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(self, resid[, chainid])</p></td>
-<td><p>Return the index of the SeqMap for the given resid and chainid.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMap.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">line</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMap.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">resid</span></em>, <em class="sig-param"><span class="n">chainid</span><span class="o">=</span><span class="default_value">'_'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the index of the SeqMap for the given resid and chainid.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMap.__getitem__">
+<code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract a single Res object from the SeqMap.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.SCOP.Raf.SeqMap.append">
-<code class="sig-name descname">append</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">res</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.append" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">append</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">res</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.append" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append another Res object onto the list of residue mappings.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="Bio.SCOP.Raf.SeqMap.extend">
-<code class="sig-name descname">extend</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">other</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.extend" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">extend</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.extend" title="Permalink to this definition">¶</a></dt>
 <dd><p>Append another SeqMap onto the end of self.</p>
 <p>Both SeqMaps must have the same PDB ID, PDB datestamp and
 RAF version.  The RAF flags are erased if they are inconsistent. This
 may happen when fragments are taken from different chains.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMap.__iadd__">
+<code class="sig-name descname">__iadd__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.__iadd__" title="Permalink to this definition">¶</a></dt>
+<dd><p>In place addition of SeqMap objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.SeqMap.__add__">
+<code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.__add__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Addition of SeqMap objects.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.SCOP.Raf.SeqMap.getAtoms">
-<code class="sig-name descname">getAtoms</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">pdb_handle</em>, <em class="sig-param">out_handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.getAtoms" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">getAtoms</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">pdb_handle</span></em>, <em class="sig-param"><span class="n">out_handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.getAtoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract all relevant ATOM and HETATOM records from a PDB file.</p>
 <p>The PDB file is scanned for ATOM and HETATOM records. If the
 chain ID, residue ID (seqNum and iCode), and residue type match
@@ -327,94 +374,33 @@ residue subset.</p>
 </dl>
 </dd></dl>
 
-<dl class="method">
-<dt id="Bio.SCOP.Raf.SeqMap.index">
-<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">resid</em>, <em class="sig-param">chainid='_'</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMap.index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the index of the SeqMap for the given resid and chainid.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="class">
-<dt id="Bio.SCOP.Raf.SeqMapIndex">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">SeqMapIndex</code><span class="sig-paren">(</span><em class="sig-param">filename</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
-<p>An RAF file index.</p>
-<p>The RAF file itself is about 50 MB. This index provides rapid, random
-access of RAF records without having to load the entire file into memory.</p>
-<p>The index key is a concatenation of the  PDB ID and chain ID. e.g
-“2drcA”, <code class="docutils literal notranslate"><span class="pre">&quot;155c_&quot;</span></code>. RAF uses an underscore to indicate blank
-chain IDs.</p>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fromkeys</span></code>(iterable[, value])</p></td>
-<td><p>Create a new dictionary with keys from iterable and values set to value.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code>(self, key[, default])</p></td>
-<td><p>Return the value for key if key is in the dictionary, else default.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.SCOP.Raf.SeqMapIndex.getSeqMap" title="Bio.SCOP.Raf.SeqMapIndex.getSeqMap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">getSeqMap</span></code></a>(self, residues)</p></td>
-<td><p>Get the sequence map for a collection of residues.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code>()</p></td>
-<td><p>If key is not found, d is returned if given, otherwise KeyError is raised</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code>()</p></td>
-<td><p>2-tuple; but raise KeyError if D is empty.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setdefault</span></code>(self, key[, default])</p></td>
-<td><p>Insert key with a value of default if key is not in the dictionary.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code>()</p></td>
-<td><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code>()</p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="Bio.SCOP.Raf.SeqMapIndex.getSeqMap">
-<code class="sig-name descname">getSeqMap</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">residues</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.SeqMapIndex.getSeqMap" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the sequence map for a collection of residues.</p>
+<dl class="py class">
+<dt id="Bio.SCOP.Raf.Res">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">Res</code><a class="headerlink" href="#Bio.SCOP.Raf.Res" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A single residue mapping from a RAF record.</p>
 <dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>residues – A Residues instance, or a string that can be
-converted into a Residues instance.</p></li>
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>chainid – A single character chain ID.</p></li>
+<li><p>resid   – The residue ID.</p></li>
+<li><p>atom    – amino acid one-letter code from ATOM records.</p></li>
+<li><p>seqres  – amino acid one-letter code from SEQRES records.</p></li>
 </ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt id="Bio.SCOP.Raf.Res.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.Res.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="function">
-<dt id="Bio.SCOP.Raf.normalize_letters">
-<code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">normalize_letters</code><span class="sig-paren">(</span><em class="sig-param">one_letter_code</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.normalize_letters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert RAF one-letter amino acid codes into IUPAC standard codes.</p>
-<p>Letters are uppercased, and “.” (“Unknown”) is converted to “X”.</p>
-</dd></dl>
-
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.SCOP.Raf.parse">
-<code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.parse" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SCOP.Raf.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SCOP.Raf.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over RAF file, giving a SeqMap object for each line.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -446,11 +432,19 @@ converted into a Residues instance.</p></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 1999-2017, The Biopython Contributors
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -461,6 +455,34 @@ converted into a Residues instance.</p></li>
 
   </div>
   
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.74
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+
+      <dl>
+
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
 
 
   <script type="text/javascript">
