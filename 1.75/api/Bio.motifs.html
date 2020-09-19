@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Bio.motifs.applications package" href="Bio.motifs.applications.html" />
@@ -55,17 +57,10 @@
 
           
             
-            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
           
           </a>
 
-          
-            
-            
-              <div class="version">
-                1.75
-              </div>
-            
           
 
           
@@ -80,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -153,6 +149,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -193,7 +190,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
         
@@ -274,141 +271,222 @@ as well as methods for motif comparisons and motif searching in sequences.
 It also includes functionality for parsing output from the AlignACE, MEME,
 and MAST programs, as well as files in the TRANSFAC format.</p>
 <p>Bio.motifs is replacing the older and now obsolete Bio.Motif module.</p>
-<dl class="class">
+<dl class="py function">
+<dt id="Bio.motifs.create">
+<code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instances</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Motif object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.motifs.parse">
+<code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse an output file from a motif finding program.</p>
+<dl class="simple">
+<dt>Currently supported formats (case is ignored):</dt><dd><ul class="simple">
+<li><p>AlignAce:         AlignAce output file format</p></li>
+<li><p>ClusterBuster:    Cluster Buster position frequency matrix format</p></li>
+<li><p>XMS:              XMS matrix format</p></li>
+<li><p>MEME:             MEME output file motif</p></li>
+<li><p>MINIMAL:          MINIMAL MEME output file motif</p></li>
+<li><p>MAST:             MAST output file motif</p></li>
+<li><p>TRANSFAC:         TRANSFAC database file format</p></li>
+<li><p>pfm-four-columns: Generic position-frequency matrix format with four columns. (cisbp, homer, hocomoco, neph, tiffin)</p></li>
+<li><p>pfm-four-rows:    Generic position-frequency matrix format with four row. (scertf, yetfasco, hdpi, idmmpmm, flyfactor survey)</p></li>
+<li><p>pfm:              JASPAR-style position-frequency matrix</p></li>
+<li><p>jaspar:           JASPAR-style multiple PFM format</p></li>
+<li><p>sites:            JASPAR-style sites file</p></li>
+</ul>
+</dd>
+</dl>
+<p>As files in the pfm and sites formats contain only a single motif,
+it is easier to use Bio.motifs.read() instead of Bio.motifs.parse()
+for those.</p>
+<p>For example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">motifs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;motifs/alignace.out&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">motifs</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;AlignAce&quot;</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">consensus</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">TCTACGATTGAG</span>
+<span class="go">CTGCACCTAGCTACGAGTGAG</span>
+<span class="go">GTGCCCTAAGCATACTAGGCG</span>
+<span class="go">GCCACTAGCAGAGCAGGGGGC</span>
+<span class="go">CGACTCAGAGGTT</span>
+<span class="go">CCACGCTAAGAGAAGTGCCGGAG</span>
+<span class="go">GCACGTCCCTGAGCA</span>
+<span class="go">GTCCATCGCAAAGCGTGGGGC</span>
+<span class="go">GAGATCAGAGGGCCG</span>
+<span class="go">TGGACGCGGGG</span>
+<span class="go">GACCAGAGCCTCGCATGGGGG</span>
+<span class="go">AGCGCGCGTG</span>
+<span class="go">GCCGGTTGCTGTTCATTAGG</span>
+<span class="go">ACCGACGGCAGCTAAAAGGG</span>
+<span class="go">GACGCCGGGGAT</span>
+<span class="go">CGACTCGCGCTTACAAGG</span>
+</pre></div>
+</div>
+<p>If strict is True (default), the parser will raise a ValueError if the
+file contents does not strictly comply with the specified file format.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.motifs.read">
+<code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span></em>, <em class="sig-param"><span class="n">strict</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a motif from a handle using the specified file-format.</p>
+<p>This supports the same formats as Bio.motifs.parse(), but
+only for files containing exactly one motif.  For example,
+reading a JASPAR-style pfm file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">motifs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;motifs/SRF.pfm&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">m</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;pfm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">consensus</span>
+<span class="go">Seq(&#39;GCCCATATATGG&#39;)</span>
+</pre></div>
+</div>
+<p>Or a single-motif MEME file,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">motifs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;motifs/meme.out&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">m</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;meme&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">consensus</span>
+<span class="go">Seq(&#39;CTCAATCGTA&#39;)</span>
+</pre></div>
+</div>
+<p>If the handle contains no records, or more than one record,
+an exception is raised:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">motifs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;motifs/alignace.out&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">motif</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;AlignAce&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">More than one motif found in handle</span>
+</pre></div>
+</div>
+<p>If however you want the first motif from a file containing
+multiple motifs this function would raise an exception (as
+shown in the example above).  Instead use:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">motifs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;motifs/alignace.out&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">record</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;alignace&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">consensus</span>
+<span class="go">Seq(&#39;TCTACGATTGAG&#39;)</span>
+</pre></div>
+</div>
+<p>Use the Bio.motifs.parse(handle, format) function if you want
+to read multiple records from the handle.</p>
+<p>If strict is True (default), the parser will raise a ValueError if the
+file contents does not strictly comply with the specified file format.</p>
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.motifs.Instances">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">Instances</code><span class="sig-paren">(</span><em class="sig-param">instances=None</em>, <em class="sig-param">alphabet=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Instances" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">Instances</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">instances</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Instances" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
 <p>Class containing a list of sequences that made the motifs.</p>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">append</span></code>(self, object, /)</p></td>
-<td><p>Append object to the end of the list.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code>(self, /)</p></td>
-<td><p>Remove all items from list.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code>(self, /)</p></td>
-<td><p>Return a shallow copy of the list.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.motifs.Instances.count" title="Bio.motifs.Instances.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(self)</p></td>
-<td><p>Count nucleotides in a position.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">extend</span></code>(self, iterable, /)</p></td>
-<td><p>Extend list by appending elements from the iterable.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code>(self, value[, start, stop])</p></td>
-<td><p>Return first index of value.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert</span></code>(self, index, object, /)</p></td>
-<td><p>Insert object before index.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code>(self[, index])</p></td>
-<td><p>Remove and return item at index (default last).</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove</span></code>(self, value, /)</p></td>
-<td><p>Remove first occurrence of value.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse</span></code>(self, /)</p></td>
-<td><p>Reverse <em>IN PLACE</em>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.motifs.Instances.reverse_complement" title="Bio.motifs.Instances.reverse_complement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse_complement</span></code></a>(self)</p></td>
-<td><p>Compute reverse complement of sequences.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.motifs.Instances.search" title="Bio.motifs.Instances.search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code></a>(self, sequence)</p></td>
-<td><p>Find positions of motifs in a given sequence.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code>(self, /, \*[, key, reverse])</p></td>
-<td><p>Stable sort <em>IN PLACE</em>.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.motifs.Instances.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">instances</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Instances.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.motifs.Instances.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Instances.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string containing the sequences of the motif.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.motifs.Instances.count">
-<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Instances.count" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Instances.count" title="Permalink to this definition">¶</a></dt>
 <dd><p>Count nucleotides in a position.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="Bio.motifs.Instances.reverse_complement">
-<code class="sig-name descname">reverse_complement</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Instances.reverse_complement" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute reverse complement of sequences.</p>
-</dd></dl>
-
-<dl class="method">
+<dl class="py method">
 <dt id="Bio.motifs.Instances.search">
-<code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">sequence</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Instances.search" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">search</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sequence</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Instances.search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find positions of motifs in a given sequence.</p>
 <p>This is a generator function, returning found positions of motif
 instances in a given sequence.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="Bio.motifs.Instances.reverse_complement">
+<code class="sig-name descname">reverse_complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Instances.reverse_complement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute reverse complement of sequences.</p>
 </dd></dl>
 
-<dl class="class">
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.motifs.Motif">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">Motif</code><span class="sig-paren">(</span><em class="sig-param">alphabet=None</em>, <em class="sig-param">instances=None</em>, <em class="sig-param">counts=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">Motif</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">instances</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">counts</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A class representing sequence motifs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><a class="reference internal" href="#Bio.motifs.Motif.anticonsensus" title="Bio.motifs.Motif.anticonsensus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">anticonsensus</span></code></a></dt><dd><p>Return the least probable pattern to be generated from this motif.</p>
-</dd>
-<dt><strong>background</strong></dt><dd></dd>
-<dt><a class="reference internal" href="#Bio.motifs.Motif.consensus" title="Bio.motifs.Motif.consensus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">consensus</span></code></a></dt><dd><p>Return the consensus sequence.</p>
-</dd>
-<dt><a class="reference internal" href="#Bio.motifs.Motif.degenerate_consensus" title="Bio.motifs.Motif.degenerate_consensus"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degenerate_consensus</span></code></a></dt><dd><p>Generate degenerate consesnsus sequence.</p>
-</dd>
-<dt><strong>mask</strong></dt><dd></dd>
-<dt><strong>pseudocounts</strong></dt><dd></dd>
-<dt><a class="reference internal" href="#Bio.motifs.Motif.pssm" title="Bio.motifs.Motif.pssm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pssm</span></code></a></dt><dd><p>Compute position specific scoring matrices.</p>
-</dd>
-<dt><a class="reference internal" href="#Bio.motifs.Motif.pwm" title="Bio.motifs.Motif.pwm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pwm</span></code></a></dt><dd><p>Compute position weight matrices.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.motifs.Motif.format" title="Bio.motifs.Motif.format"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format</span></code></a>(self, format)</p></td>
-<td><p>Return a string representation of the Motif in the given format.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.motifs.Motif.reverse_complement" title="Bio.motifs.Motif.reverse_complement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reverse_complement</span></code></a>(self)</p></td>
-<td><p>Return the reverse complement of the motif as a new motif.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.motifs.Motif.weblogo" title="Bio.motifs.Motif.weblogo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">weblogo</span></code></a>(self, fname[, format, version])</p></td>
-<td><p>Download and save a weblogo using the Berkeley weblogo service.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="Bio.motifs.Motif.anticonsensus">
-<em class="property">property </em><code class="sig-name descname">anticonsensus</code><a class="headerlink" href="#Bio.motifs.Motif.anticonsensus" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the least probable pattern to be generated from this motif.</p>
+<dl class="py method">
+<dt id="Bio.motifs.Motif.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">instances</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">counts</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.motifs.Motif.mask">
+<em class="property">property </em><code class="sig-name descname">mask</code><a class="headerlink" href="#Bio.motifs.Motif.mask" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.motifs.Motif.pseudocounts">
+<em class="property">property </em><code class="sig-name descname">pseudocounts</code><a class="headerlink" href="#Bio.motifs.Motif.pseudocounts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt id="Bio.motifs.Motif.background">
 <em class="property">property </em><code class="sig-name descname">background</code><a class="headerlink" href="#Bio.motifs.Motif.background" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.motifs.Motif.pwm">
+<em class="property">property </em><code class="sig-name descname">pwm</code><a class="headerlink" href="#Bio.motifs.Motif.pwm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute position weight matrices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.motifs.Motif.pssm">
+<em class="property">property </em><code class="sig-name descname">pssm</code><a class="headerlink" href="#Bio.motifs.Motif.pssm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute position specific scoring matrices.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.motifs.Motif.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">masked</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return string representation of a motif.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.motifs.Motif.__len__">
+<code class="sig-name descname">__len__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif.__len__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the length of a motif.</p>
+<p>Please use this method (i.e. invoke len(m)) instead of referring to m.length directly.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.motifs.Motif.reverse_complement">
+<code class="sig-name descname">reverse_complement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif.reverse_complement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the reverse complement of the motif as a new motif.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.motifs.Motif.consensus">
 <em class="property">property </em><code class="sig-name descname">consensus</code><a class="headerlink" href="#Bio.motifs.Motif.consensus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the consensus sequence.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.motifs.Motif.anticonsensus">
+<em class="property">property </em><code class="sig-name descname">anticonsensus</code><a class="headerlink" href="#Bio.motifs.Motif.anticonsensus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the least probable pattern to be generated from this motif.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.motifs.Motif.degenerate_consensus">
 <em class="property">property </em><code class="sig-name descname">degenerate_consensus</code><a class="headerlink" href="#Bio.motifs.Motif.degenerate_consensus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate degenerate consesnsus sequence.</p>
@@ -419,52 +497,9 @@ Nucleic Acids Research 15(4): 1353-1361. (1987).</p>
 <p>The same rules are used by TRANSFAC.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="Bio.motifs.Motif.format">
-<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">format</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif.format" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a string representation of the Motif in the given format.</p>
-<dl class="simple">
-<dt>Currently supported fromats:</dt><dd><ul class="simple">
-<li><p>clusterbuster: Cluster Buster position frequency matrix format</p></li>
-<li><p>pfm : JASPAR single Position Frequency Matrix</p></li>
-<li><p>jaspar : JASPAR multiple Position Frequency Matrix</p></li>
-<li><p>transfac : TRANSFAC like files</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="Bio.motifs.Motif.mask">
-<em class="property">property </em><code class="sig-name descname">mask</code><a class="headerlink" href="#Bio.motifs.Motif.mask" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Bio.motifs.Motif.pseudocounts">
-<em class="property">property </em><code class="sig-name descname">pseudocounts</code><a class="headerlink" href="#Bio.motifs.Motif.pseudocounts" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Bio.motifs.Motif.pssm">
-<em class="property">property </em><code class="sig-name descname">pssm</code><a class="headerlink" href="#Bio.motifs.Motif.pssm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute position specific scoring matrices.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="Bio.motifs.Motif.pwm">
-<em class="property">property </em><code class="sig-name descname">pwm</code><a class="headerlink" href="#Bio.motifs.Motif.pwm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Compute position weight matrices.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="Bio.motifs.Motif.reverse_complement">
-<code class="sig-name descname">reverse_complement</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif.reverse_complement" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the reverse complement of the motif as a new motif.</p>
-</dd></dl>
-
-<dl class="method">
+<dl class="py method">
 <dt id="Bio.motifs.Motif.weblogo">
-<code class="sig-name descname">weblogo</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fname</em>, <em class="sig-param">format='PNG'</em>, <em class="sig-param">version='2.8.2'</em>, <em class="sig-param">**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif.weblogo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">weblogo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">fname</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">'PNG'</span></em>, <em class="sig-param"><span class="n">version</span><span class="o">=</span><span class="default_value">'2.8.2'</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif.weblogo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Download and save a weblogo using the Berkeley weblogo service.</p>
 <p>Requires an internet connection.</p>
 <p>The parameters from <code class="docutils literal notranslate"><span class="pre">**kwds</span></code> are passed directly to the weblogo server.</p>
@@ -509,118 +544,26 @@ for more information:</p>
 </div>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="function">
-<dt id="Bio.motifs.create">
-<code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><em class="sig-param">instances</em>, <em class="sig-param">alphabet=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.create" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create a Motif object.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="Bio.motifs.parse">
-<code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">format</em>, <em class="sig-param">strict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.parse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse an output file from a motif finding program.</p>
+<dl class="py method">
+<dt id="Bio.motifs.Motif.format">
+<code class="sig-name descname">format</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.Motif.format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of the Motif in the given format.</p>
 <dl class="simple">
-<dt>Currently supported formats (case is ignored):</dt><dd><ul class="simple">
-<li><p>AlignAce:         AlignAce output file format</p></li>
-<li><p>ClusterBuster:    Cluster Buster position frequency matrix format</p></li>
-<li><p>XMS:              XMS matrix format</p></li>
-<li><p>MEME:             MEME output file motif</p></li>
-<li><p>MINIMAL:          MINIMAL MEME output file motif</p></li>
-<li><p>MAST:             MAST output file motif</p></li>
-<li><p>TRANSFAC:         TRANSFAC database file format</p></li>
-<li><p>pfm-four-columns: Generic position-frequency matrix format with four columns. (cisbp, homer, hocomoco, neph, tiffin)</p></li>
-<li><p>pfm-four-rows:    Generic position-frequency matrix format with four row. (scertf, yetfasco, hdpi, idmmpmm, flyfactor survey)</p></li>
-<li><p>pfm:              JASPAR-style position-frequency matrix</p></li>
-<li><p>jaspar:           JASPAR-style multiple PFM format</p></li>
-<li><p>sites:            JASPAR-style sites file</p></li>
+<dt>Currently supported fromats:</dt><dd><ul class="simple">
+<li><p>clusterbuster: Cluster Buster position frequency matrix format</p></li>
+<li><p>pfm : JASPAR single Position Frequency Matrix</p></li>
+<li><p>jaspar : JASPAR multiple Position Frequency Matrix</p></li>
+<li><p>transfac : TRANSFAC like files</p></li>
 </ul>
 </dd>
 </dl>
-<p>As files in the pfm and sites formats contain only a single motif,
-it is easier to use Bio.motifs.read() instead of Bio.motifs.parse()
-for those.</p>
-<p>For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="k">import</span> <span class="n">motifs</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;motifs/alignace.out&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">motifs</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;AlignAce&quot;</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">consensus</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">TCTACGATTGAG</span>
-<span class="go">CTGCACCTAGCTACGAGTGAG</span>
-<span class="go">GTGCCCTAAGCATACTAGGCG</span>
-<span class="go">GCCACTAGCAGAGCAGGGGGC</span>
-<span class="go">CGACTCAGAGGTT</span>
-<span class="go">CCACGCTAAGAGAAGTGCCGGAG</span>
-<span class="go">GCACGTCCCTGAGCA</span>
-<span class="go">GTCCATCGCAAAGCGTGGGGC</span>
-<span class="go">GAGATCAGAGGGCCG</span>
-<span class="go">TGGACGCGGGG</span>
-<span class="go">GACCAGAGCCTCGCATGGGGG</span>
-<span class="go">AGCGCGCGTG</span>
-<span class="go">GCCGGTTGCTGTTCATTAGG</span>
-<span class="go">ACCGACGGCAGCTAAAAGGG</span>
-<span class="go">GACGCCGGGGAT</span>
-<span class="go">CGACTCGCGCTTACAAGG</span>
-</pre></div>
-</div>
-<p>If strict is True (default), the parser will raise a ValueError if the
-file contents does not strictly comply with the specified file format.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="Bio.motifs.read">
-<code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">format</em>, <em class="sig-param">strict=True</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read a motif from a handle using the specified file-format.</p>
-<p>This supports the same formats as Bio.motifs.parse(), but
-only for files containing exactly one motif.  For example,
-reading a JASPAR-style pfm file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="k">import</span> <span class="n">motifs</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;motifs/SRF.pfm&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">m</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;pfm&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">consensus</span>
-<span class="go">Seq(&#39;GCCCATATATGG&#39;)</span>
-</pre></div>
-</div>
-<p>Or a single-motif MEME file,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="k">import</span> <span class="n">motifs</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;motifs/meme.out&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">m</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;meme&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">consensus</span>
-<span class="go">Seq(&#39;CTCAATCGTA&#39;)</span>
-</pre></div>
-</div>
-<p>If the handle contains no records, or more than one record,
-an exception is raised:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="k">import</span> <span class="n">motifs</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;motifs/alignace.out&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">motif</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;AlignAce&quot;</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-    <span class="o">...</span>
-<span class="gr">ValueError</span>: <span class="n">More than one motif found in handle</span>
-</pre></div>
-</div>
-<p>If however you want the first motif from a file containing
-multiple motifs this function would raise an exception (as
-shown in the example above).  Instead use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="k">import</span> <span class="n">motifs</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;motifs/alignace.out&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">record</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;alignace&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">consensus</span>
-<span class="go">Seq(&#39;TCTACGATTGAG&#39;)</span>
-</pre></div>
-</div>
-<p>Use the Bio.motifs.parse(handle, format) function if you want
-to read multiple records from the handle.</p>
-<p>If strict is True (default), the parser will raise a ValueError if the
-file contents does not strictly comply with the specified file format.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.motifs.write">
-<code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">motifs</em>, <em class="sig-param">format</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.write" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.motifs.</code><code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">motifs</span></em>, <em class="sig-param"><span class="n">format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.motifs.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a string representation of motifs in the given format.</p>
 <dl class="simple">
 <dt>Currently supported formats (case is ignored):</dt><dd><ul class="simple">
@@ -656,11 +599,19 @@ file contents does not strictly comply with the specified file format.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 1999-2017, The Biopython Contributors
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -671,6 +622,36 @@ file contents does not strictly comply with the specified file format.</p>
 
   </div>
   
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.75
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.74/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+
+      <dl>
+
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
 
 
   <script type="text/javascript">

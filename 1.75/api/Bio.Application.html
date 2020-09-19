@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Bio.Blast package" href="Bio.Blast.html" />
@@ -55,17 +57,10 @@
 
           
             
-            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
           
           </a>
 
-          
-            
-            
-              <div class="version">
-                1.75
-              </div>
-            
           
 
           
@@ -80,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -151,6 +147,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -191,7 +188,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
         
@@ -245,9 +242,45 @@ are subclassed by our command line wrappers, such as:</p>
 construct command line strings by setting the values of each parameter.
 The finished command line strings are then normally invoked via the built-in
 Python module subprocess.</p>
-<dl class="class">
+<dl class="py exception">
+<dt id="Bio.Application.ApplicationError">
+<em class="property">exception </em><code class="sig-prename descclassname">Bio.Application.</code><code class="sig-name descname">ApplicationError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">returncode</span></em>, <em class="sig-param"><span class="n">cmd</span></em>, <em class="sig-param"><span class="n">stdout</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">stderr</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.ApplicationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">subprocess.CalledProcessError</span></code></p>
+<p>Raised when an application returns a non-zero exit status.</p>
+<p>The exit status will be stored in the returncode attribute, similarly
+the command line string used in the cmd attribute, and (if captured)
+stdout and stderr as strings.</p>
+<p>This exception is a subclass of subprocess.CalledProcessError.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">err</span> <span class="o">=</span> <span class="n">ApplicationError</span><span class="p">(</span><span class="o">-</span><span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;helloworld&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Some error text&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">err</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">cmd</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">stderr</span>
+<span class="go">(-11, &#39;helloworld&#39;, &#39;&#39;, &#39;Some error text&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+<span class="go">Non-zero return code -11 from &#39;helloworld&#39;, message &#39;Some error text&#39;</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="Bio.Application.ApplicationError.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">returncode</span></em>, <em class="sig-param"><span class="n">cmd</span></em>, <em class="sig-param"><span class="n">stdout</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">stderr</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.ApplicationError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Application.ApplicationError.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.ApplicationError.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format the error as a string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Application.ApplicationError.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.ApplicationError.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represent the error as a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.Application.AbstractCommandline">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.Application.</code><code class="sig-name descname">AbstractCommandline</code><span class="sig-paren">(</span><em class="sig-param">cmd</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.AbstractCommandline" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.Application.</code><code class="sig-name descname">AbstractCommandline</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cmd</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.AbstractCommandline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Generic interface for constructing command line strings.</p>
 <p>This class shouldn’t be called directly; it should be subclassed to
@@ -255,14 +288,14 @@ provide an implementation for a specific application.</p>
 <p>For a usage example we’ll show one of the EMBOSS wrappers.  You can set
 options when creating the wrapper object using keyword arguments - or
 later using their corresponding properties:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Emboss.Applications</span> <span class="k">import</span> <span class="n">WaterCommandline</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Emboss.Applications</span> <span class="kn">import</span> <span class="n">WaterCommandline</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span> <span class="o">=</span> <span class="n">WaterCommandline</span><span class="p">(</span><span class="n">gapopen</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gapextend</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span>
 <span class="go">WaterCommandline(cmd=&#39;water&#39;, gapopen=10, gapextend=0.5)</span>
 </pre></div>
 </div>
 <p>You can instead manipulate the parameters via their properties, e.g.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">gapopen</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">gapopen</span>
 <span class="go">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">gapopen</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span>
@@ -271,7 +304,7 @@ later using their corresponding properties:</p>
 </div>
 <p>You can clear a parameter you have already added by ‘deleting’ the
 corresponding property:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">cline</span><span class="o">.</span><span class="n">gapopen</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">cline</span><span class="o">.</span><span class="n">gapopen</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">gapopen</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span>
 <span class="go">WaterCommandline(cmd=&#39;water&#39;, gapextend=0.5)</span>
@@ -279,7 +312,7 @@ corresponding property:</p>
 </div>
 <p>Once you have set the parameters you need, you can turn the object into
 a string (e.g. to log the command):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">cline</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">cline</span><span class="p">)</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="c">...</span>
 <span class="gr">ValueError</span>: <span class="n">You must either set outfile (output filename), or enable filter or stdout (output to stdout).</span>
@@ -287,7 +320,7 @@ a string (e.g. to log the command):</p>
 </div>
 <p>In this case the wrapper knows certain arguments are required to construct
 a valid command line for the tool.  For a complete example,</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Emboss.Applications</span> <span class="k">import</span> <span class="n">WaterCommandline</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Emboss.Applications</span> <span class="kn">import</span> <span class="n">WaterCommandline</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">water_cmd</span> <span class="o">=</span> <span class="n">WaterCommandline</span><span class="p">(</span><span class="n">gapopen</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gapextend</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">water_cmd</span><span class="o">.</span><span class="n">asequence</span> <span class="o">=</span> <span class="s2">&quot;asis:ACCCGGGCGCGGT&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">water_cmd</span><span class="o">.</span><span class="n">bsequence</span> <span class="o">=</span> <span class="s2">&quot;asis:ACCCGAGCGCGGT&quot;</span>
@@ -306,7 +339,7 @@ case where you just want to run the command and get the output:</p>
 system $PATH environment variable. This is normal under Linux/Unix, but
 may need to be done manually under Windows. Alternatively, you can specify
 the full path to the binary as the first argument (cmd):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Emboss.Applications</span> <span class="k">import</span> <span class="n">WaterCommandline</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Emboss.Applications</span> <span class="kn">import</span> <span class="n">WaterCommandline</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">water_cmd</span> <span class="o">=</span> <span class="n">WaterCommandline</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;C:\Program Files\EMBOSS\water.exe&quot;</span><span class="p">,</span>
 <span class="gp">... </span>                             <span class="n">gapopen</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gapextend</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
 <span class="gp">... </span>                             <span class="n">asequence</span><span class="o">=</span><span class="s2">&quot;asis:ACCCGGGCGCGGT&quot;</span><span class="p">,</span>
@@ -318,36 +351,56 @@ the full path to the binary as the first argument (cmd):</p>
 </div>
 <p>Notice that since the path name includes a space it has automatically
 been quoted.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>parameters</strong></dt><dd></dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">__call__</span></code>(self[, stdin, stdout, stderr, cwd, env])</p></td>
-<td><p>Execute command, wait for it to finish, return (stdout, stderr).</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.Application.AbstractCommandline.set_parameter" title="Bio.Application.AbstractCommandline.set_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_parameter</span></code></a>(self, name[, value])</p></td>
-<td><p>Set a commandline option for a program (OBSOLETE).</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="attribute">
+<dl class="py attribute">
 <dt id="Bio.Application.AbstractCommandline.parameters">
 <code class="sig-name descname">parameters</code><em class="property"> = None</em><a class="headerlink" href="#Bio.Application.AbstractCommandline.parameters" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.Application.AbstractCommandline.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">cmd</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.AbstractCommandline.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new instance of a command line wrapper object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Application.AbstractCommandline.__str__">
+<code class="sig-name descname">__str__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.AbstractCommandline.__str__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make the commandline string with the currently set options.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Emboss.Applications</span> <span class="kn">import</span> <span class="n">WaterCommandline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span> <span class="o">=</span> <span class="n">WaterCommandline</span><span class="p">(</span><span class="n">gapopen</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gapextend</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">asequence</span> <span class="o">=</span> <span class="s2">&quot;asis:ACCCGGGCGCGGT&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">bsequence</span> <span class="o">=</span> <span class="s2">&quot;asis:ACCCGAGCGCGGT&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">outfile</span> <span class="o">=</span> <span class="s2">&quot;temp_water.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cline</span><span class="p">)</span>
+<span class="go">water -outfile=temp_water.txt -asequence=asis:ACCCGGGCGCGGT -bsequence=asis:ACCCGAGCGCGGT -gapopen=10 -gapextend=0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">cline</span><span class="p">)</span>
+<span class="go">&#39;water -outfile=temp_water.txt -asequence=asis:ACCCGGGCGCGGT -bsequence=asis:ACCCGAGCGCGGT -gapopen=10 -gapextend=0.5&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Application.AbstractCommandline.__repr__">
+<code class="sig-name descname">__repr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.AbstractCommandline.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a representation of the command line object for debugging.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Emboss.Applications</span> <span class="kn">import</span> <span class="n">WaterCommandline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span> <span class="o">=</span> <span class="n">WaterCommandline</span><span class="p">(</span><span class="n">gapopen</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gapextend</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">asequence</span> <span class="o">=</span> <span class="s2">&quot;asis:ACCCGGGCGCGGT&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">bsequence</span> <span class="o">=</span> <span class="s2">&quot;asis:ACCCGAGCGCGGT&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">outfile</span> <span class="o">=</span> <span class="s2">&quot;temp_water.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cline</span><span class="p">)</span>
+<span class="go">water -outfile=temp_water.txt -asequence=asis:ACCCGGGCGCGGT -bsequence=asis:ACCCGAGCGCGGT -gapopen=10 -gapextend=0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span>
+<span class="go">WaterCommandline(cmd=&#39;water&#39;, outfile=&#39;temp_water.txt&#39;, asequence=&#39;asis:ACCCGGGCGCGGT&#39;, bsequence=&#39;asis:ACCCGAGCGCGGT&#39;, gapopen=10, gapextend=0.5)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Application.AbstractCommandline.set_parameter">
-<code class="sig-name descname">set_parameter</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">name</em>, <em class="sig-param">value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.AbstractCommandline.set_parameter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_parameter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">value</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.AbstractCommandline.set_parameter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a commandline option for a program (OBSOLETE).</p>
 <p>Every parameter is available via a property and as a named
 keyword when creating the instance. Using either of these is
@@ -356,24 +409,72 @@ OBSOLETE, and likely to be DEPRECATED and later REMOVED in
 future releases.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="exception">
-<dt id="Bio.Application.ApplicationError">
-<em class="property">exception </em><code class="sig-prename descclassname">Bio.Application.</code><code class="sig-name descname">ApplicationError</code><span class="sig-paren">(</span><em class="sig-param">returncode</em>, <em class="sig-param">cmd</em>, <em class="sig-param">stdout=''</em>, <em class="sig-param">stderr=''</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.ApplicationError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">subprocess.CalledProcessError</span></code></p>
-<p>Raised when an application returns a non-zero exit status.</p>
-<p>The exit status will be stored in the returncode attribute, similarly
-the command line string used in the cmd attribute, and (if captured)
-stdout and stderr as strings.</p>
-<p>This exception is a subclass of subprocess.CalledProcessError.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">err</span> <span class="o">=</span> <span class="n">ApplicationError</span><span class="p">(</span><span class="o">-</span><span class="mi">11</span><span class="p">,</span> <span class="s2">&quot;helloworld&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;Some error text&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">err</span><span class="o">.</span><span class="n">returncode</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">cmd</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">err</span><span class="o">.</span><span class="n">stderr</span>
-<span class="go">(-11, &#39;helloworld&#39;, &#39;&#39;, &#39;Some error text&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-<span class="go">Non-zero return code -11 from &#39;helloworld&#39;, message &#39;Some error text&#39;</span>
+<dl class="py method">
+<dt id="Bio.Application.AbstractCommandline.__setattr__">
+<code class="sig-name descname">__setattr__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.AbstractCommandline.__setattr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set attribute name to value (PRIVATE).</p>
+<p>This code implements a workaround for a user interface issue.
+Without this __setattr__ attribute-based assignment of parameters
+will silently accept invalid parameters, leading to known instances
+of the user assuming that parameters for the application are set,
+when they are not.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Emboss.Applications</span> <span class="kn">import</span> <span class="n">WaterCommandline</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span> <span class="o">=</span> <span class="n">WaterCommandline</span><span class="p">(</span><span class="n">gapopen</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gapextend</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">asequence</span> <span class="o">=</span> <span class="s2">&quot;a.fasta&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">bsequence</span> <span class="o">=</span> <span class="s2">&quot;b.fasta&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cline</span><span class="o">.</span><span class="n">csequence</span> <span class="o">=</span> <span class="s2">&quot;c.fasta&quot;</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">Option name csequence was not found.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">cline</span><span class="p">)</span>
+<span class="go">water -stdout -asequence=a.fasta -bsequence=b.fasta -gapopen=10 -gapextend=0.5</span>
 </pre></div>
 </div>
+<p>This workaround uses a whitelist of object attributes, and sets the
+object attribute list as normal, for these.  Other attributes are
+assumed to be parameters, and passed to the self.set_parameter method
+for validation and assignment.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Application.AbstractCommandline.__call__">
+<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">stdin</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">stdout</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">stderr</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">cwd</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">env</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Application.AbstractCommandline.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute command, wait for it to finish, return (stdout, stderr).</p>
+<p>Runs the command line tool and waits for it to finish. If it returns
+a non-zero error level, an exception is raised. Otherwise two strings
+are returned containing stdout and stderr.</p>
+<p>The optional stdin argument should be a string of data which will be
+passed to the tool as standard input.</p>
+<p>The optional stdout and stderr argument may be filenames (string),
+but otherwise are treated as a booleans, and control if the output
+should be captured as strings (True, default), or ignored by sending
+it to /dev/null to avoid wasting memory (False). If sent to a file
+or ignored, then empty string(s) are returned.</p>
+<p>The optional cwd argument is a string giving the working directory
+to run the command from. See Python’s subprocess module documentation
+for more details.</p>
+<p>The optional env argument is a dictionary setting the environment
+variables to be used in the new process. By default the current
+process’ environment variables are used. See Python’s subprocess
+module documentation for more details.</p>
+<p>Default example usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.Emboss.Applications</span> <span class="kn">import</span> <span class="n">WaterCommandline</span>
+<span class="n">water_cmd</span> <span class="o">=</span> <span class="n">WaterCommandline</span><span class="p">(</span><span class="n">gapopen</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">gapextend</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                             <span class="n">stdout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                             <span class="n">asequence</span><span class="o">=</span><span class="s2">&quot;a.fasta&quot;</span><span class="p">,</span> <span class="n">bsequence</span><span class="o">=</span><span class="s2">&quot;b.fasta&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;About to run: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">water_cmd</span><span class="p">)</span>
+<span class="n">std_output</span><span class="p">,</span> <span class="n">err_output</span> <span class="o">=</span> <span class="n">water_cmd</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This functionality is similar to subprocess.check_output() added in
+Python 2.7. In general if you require more control over running the
+command, use subprocess directly.</p>
+<p>As of Biopython 1.56, when the program called returns a non-zero error
+level, a custom ApplicationError exception is raised. This includes
+any stdout and stderr strings captured as attributes of the exception
+object, since they may be useful for diagnosing what went wrong.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -399,11 +500,19 @@ stdout and stderr as strings.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 1999-2017, The Biopython Contributors
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -414,6 +523,36 @@ stdout and stderr as strings.</p>
 
   </div>
   
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.75
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.74/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+
+      <dl>
+
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
 
 
   <script type="text/javascript">
