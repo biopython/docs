@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Bio.SeqIO.NibIO module" href="Bio.SeqIO.NibIO.html" />
@@ -55,17 +57,10 @@
 
           
             
-            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
           
           </a>
 
-          
-            
-            
-              <div class="version">
-                1.75
-              </div>
-            
           
 
           
@@ -80,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -152,6 +148,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -192,7 +189,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
         
@@ -234,47 +231,80 @@
 <p>Bio.SeqIO support module (not for general use).</p>
 <p>Unless you are writing a new parser or writer for Bio.SeqIO, you should not
 use this module.  It provides base classes to try and simplify things.</p>
-<dl class="class">
+<dl class="py class">
 <dt id="Bio.SeqIO.Interfaces.SequenceIterator">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.Interfaces.</code><code class="sig-name descname">SequenceIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=Alphabet()</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.Interfaces.</code><code class="sig-name descname">SequenceIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">Alphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class for building SeqRecord iterators.</p>
 <p>You should write a __next__ method to return SeqRecord  objects.  You may
 wish to redefine the __init__ method as well.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequenceIterator.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">Alphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a SequenceIterator object.</p>
+<p>Arguments:
+- handle - input file
+- alphabet - optional, e.g. Bio.Alphabet.generic_protein</p>
+<p>This method MAY be overridden by any subclass, for example if you need
+to process a header or accept additional arguments.</p>
+<p>Note when subclassing:
+- there should be a single non-optional argument, the handle.
+- you do not have to require an alphabet.
+- you can add additional optional arguments.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequenceIterator.__next__">
+<code class="sig-name descname">__next__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.__next__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next record in the file.</p>
+<p>This method’s stub-implementation MUST be overridden by any subclass
+to actually parse the file and return the next entry as a SeqRecord
+object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequenceIterator.__iter__">
+<code class="sig-name descname">__iter__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over the entries as a SeqRecord objects.</p>
+<p>Example usage for Fasta files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example.fasta&quot;</span><span class="p">,</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myFile</span><span class="p">:</span>
+    <span class="n">myFastaReader</span> <span class="o">=</span> <span class="n">FastaIterator</span><span class="p">(</span><span class="n">myFile</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">myFastaReader</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method SHOULD NOT be overridden by any subclass. It should be
+left as is, which will call the subclass implementation of __next__
+to actually parse the file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.SeqIO.Interfaces.SequenceWriter">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.Interfaces.</code><code class="sig-name descname">SequenceWriter</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.Interfaces.</code><code class="sig-name descname">SequenceWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Base class for building SeqRecord writers.</p>
 <p>Interlaced file formats (e.g. Clustal) should subclass directly.</p>
 <p>Sequential file formats (e.g. Fasta, GenBank) should subclass the
 SequentialSequenceWriter class instead.</p>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.SeqIO.Interfaces.SequenceWriter.clean" title="Bio.SeqIO.Interfaces.SequenceWriter.clean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean</span></code></a>(self, text)</p></td>
-<td><p>Use this to avoid getting newlines in the output.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_file" title="Bio.SeqIO.Interfaces.SequenceWriter.write_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_file</span></code></a>(self, records)</p></td>
-<td><p>Use this to write an entire file containing the given records.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequenceWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the writer object.</p>
+<p>Use the method write_file() to actually record your sequence records.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.SeqIO.Interfaces.SequenceWriter.clean">
-<code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">text</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.clean" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clean</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">text</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.clean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use this to avoid getting newlines in the output.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="Bio.SeqIO.Interfaces.SequenceWriter.write_file">
-<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">records</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_file" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceWriter.write_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Use this to write an entire file containing the given records.</p>
 <p>records - A list or iterator returning SeqRecord objects</p>
 <p>Should return the number of records (as an integer).</p>
@@ -283,9 +313,9 @@ SequentialSequenceWriter class instead.</p>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.Interfaces.</code><code class="sig-name descname">SequentialSequenceWriter</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.Interfaces.</code><code class="sig-name descname">SequentialSequenceWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Bio.SeqIO.Interfaces.SequenceWriter" title="Bio.SeqIO.Interfaces.SequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequenceWriter</span></code></a></p>
 <p>Base class for sequence writers. This class should be subclassed.</p>
 <p>It is intended for sequential file formats with an (optional)
@@ -301,55 +331,15 @@ This is to try and make life as easy as possible when
 switching the output format.</p>
 <p>Note that write_header() cannot require any assumptions about
 the number of records.</p>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean</span></code>(self, text)</p></td>
-<td><p>Use this to avoid getting newlines in the output.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_file" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_file</span></code></a>(self, records)</p></td>
-<td><p>Use this to write an entire file containing the given records.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_footer" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_footer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_footer</span></code></a>(self)</p></td>
-<td><p>Write the file footer.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_header" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_header"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_header</span></code></a>(self)</p></td>
-<td><p>Write the file header.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_record" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_record"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_record</span></code></a>(self, record)</p></td>
-<td><p>Write a single record to the output file.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_records" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_records"><code class="xref py py-obj docutils literal notranslate"><span class="pre">write_records</span></code></a>(self, records)</p></td>
-<td><p>Write multiple record to the output file.</p></td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_file">
-<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">records</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>Use this to write an entire file containing the given records.</p>
-<p>records - A list or iterator returning SeqRecord objects</p>
-<p>This method can only be called once.  Returns the number of records
-written.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the class.</p>
 </dd></dl>
 
-<dl class="method">
-<dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_footer">
-<code class="sig-name descname">write_footer</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_footer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write the file footer.</p>
-<p>If your file format defines a footer, you should implement this method
-in order to write the footer after all the records.</p>
-<p>The default implementation checks the private attribute ._footer_written
-to ensure the footer is only written once.</p>
-</dd></dl>
-
-<dl class="method">
+<dl class="py method">
 <dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_header">
-<code class="sig-name descname">write_header</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_header" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_header</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_header" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the file header.</p>
 <p>If your file format defines a header, you should implement this method
 in order to write the header before any of the records.</p>
@@ -357,9 +347,19 @@ in order to write the header before any of the records.</p>
 to ensure the header is only written once.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_footer">
+<code class="sig-name descname">write_footer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_footer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the file footer.</p>
+<p>If your file format defines a footer, you should implement this method
+in order to write the footer after all the records.</p>
+<p>The default implementation checks the private attribute ._footer_written
+to ensure the footer is only written once.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_record">
-<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_record" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_record" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a single record to the output file.</p>
 <p>record - a SeqRecord object</p>
 <p>Once you have called write_header() you can call write_record()
@@ -367,15 +367,24 @@ and/or write_records() as many times as needed.  Then call
 write_footer() and close().</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_records">
-<code class="sig-name descname">write_records</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">records</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_records" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_records</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_records" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write multiple record to the output file.</p>
 <p>records - A list or iterator returning SeqRecord objects</p>
 <p>Once you have called write_header() you can call write_record()
 and/or write_records() as many times as needed.  Then call
 write_footer() and close().</p>
 <p>Returns the number of records written.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_file">
+<code class="sig-name descname">write_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">records</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequentialSequenceWriter.write_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use this to write an entire file containing the given records.</p>
+<p>records - A list or iterator returning SeqRecord objects</p>
+<p>This method can only be called once.  Returns the number of records
+written.</p>
 </dd></dl>
 
 </dd></dl>
@@ -402,11 +411,19 @@ write_footer() and close().</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 1999-2017, The Biopython Contributors
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -417,6 +434,36 @@ write_footer() and close().</p>
 
   </div>
   
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.75
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.74/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+
+      <dl>
+
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
 
 
   <script type="text/javascript">
