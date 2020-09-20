@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Bio.SeqIO.SeqXmlIO module" href="Bio.SeqIO.SeqXmlIO.html" />
@@ -55,17 +57,10 @@
 
           
             
-            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
           
           </a>
 
-          
-            
-            
-              <div class="version">
-                1.76
-              </div>
-            
           
 
           
@@ -80,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -152,6 +148,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -192,7 +189,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
         
@@ -563,9 +560,123 @@ scores (rounding to one decimal place):</p>
 <p>This explains why the last few letters of this FASTQ output matched that using
 the Illumina 1.3 to 1.7 format - high quality PHRED scores and Solexa scores
 are approximately equal.</p>
-<dl class="function">
+<dl class="py function">
+<dt id="Bio.SeqIO.QualityIO.solexa_quality_from_phred">
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">solexa_quality_from_phred</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">phred_quality</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.solexa_quality_from_phred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Covert a PHRED quality (range 0 to about 90) to a Solexa quality.</p>
+<p>PHRED and Solexa quality scores are both log transformations of a
+probality of error (high score = low probability of error). This function
+takes a PHRED score, transforms it back to a probability of error, and
+then re-expresses it as a Solexa score. This assumes the error estimates
+are equivalent.</p>
+<p>How does this work exactly? Well the PHRED quality is minus ten times the
+base ten logarithm of the probability of error:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phred_quality</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">error</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Therefore, turning this round:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">error</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span> <span class="n">phred_quality</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, Solexa qualities use a different log transformation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">solexa_quality</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">error</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">error</span><span class="p">),</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After substitution and a little manipulation we get:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">solexa_quality</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">phred_quality</span><span class="o">/</span><span class="mf">10.0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>However, real Solexa files use a minimum quality of -5. This does have a
+good reason - a random base call would be correct 25% of the time,
+and thus have a probability of error of 0.75, which gives 1.25 as the PHRED
+quality, or -4.77 as the Solexa quality. Thus (after rounding), a random
+nucleotide read would have a PHRED quality of 1, or a Solexa quality of -5.</p>
+<p>Taken literally, this logarithic formula would map a PHRED quality of zero
+to a Solexa quality of minus infinity. Of course, taken literally, a PHRED
+score of zero means a probability of error of one (i.e. the base call is
+definitely wrong), which is worse than random! In practice, a PHRED quality
+of zero usually means a default value, or perhaps random - and therefore
+mapping it to the minimum Solexa score of -5 is reasonable.</p>
+<p>In conclusion, we follow EMBOSS, and take this logarithmic formula but also
+apply a minimum value of -5.0 for the Solexa quality, and also map a PHRED
+quality of zero to -5.0 as well.</p>
+<p>Note this function will return a floating point number, it is up to you to
+round this to the nearest integer if appropriate.  e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">80.00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">50.00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">19.96</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">9.54</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">3.35</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">1.80</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">-0.02</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">-2.33</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">-5.00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">-5.00</span>
+</pre></div>
+</div>
+<p>Notice that for high quality reads PHRED and Solexa scores are numerically
+equal. The differences are important for poor quality reads, where PHRED
+has a minimum of zero but Solexa scores can be negative.</p>
+<p>Finally, as a special case where None is used for a “missing value”, None
+is returned:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqIO.QualityIO.phred_quality_from_solexa">
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">phred_quality_from_solexa</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">solexa_quality</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.phred_quality_from_solexa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a Solexa quality (which can be negative) to a PHRED quality.</p>
+<p>PHRED and Solexa quality scores are both log transformations of a
+probality of error (high score = low probability of error). This function
+takes a Solexa score, transforms it back to a probability of error, and
+then re-expresses it as a PHRED score. This assumes the error estimates
+are equivalent.</p>
+<p>The underlying formulas are given in the documentation for the sister
+function solexa_quality_from_phred, in this case the operation is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phred_quality</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">solexa_quality</span><span class="o">/</span><span class="mf">10.0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will return a floating point number, it is up to you to round this to
+the nearest integer if appropriate.  e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">80.00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">20.04</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">10.41</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">3.01</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">1.19</span>
+</pre></div>
+</div>
+<p>Note that a solexa_quality less then -5 is not expected, will trigger a
+warning, but will still be converted as per the logarithmic mapping
+(giving a number between 0 and 1.19 back).</p>
+<p>As a special case where None is used for a “missing value”, None is
+returned:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="Bio.SeqIO.QualityIO.FastqGeneralIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqGeneralIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqGeneralIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqGeneralIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqGeneralIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over Fastq records as string tuples (not as SeqRecord objects).</p>
 <p>This code does not try to interpret the quality string numerically.  It
 just returns tuples of the title, sequence and quality as strings.  For
@@ -648,72 +759,9 @@ is that (provided there are no line breaks in the quality sequence) it
 would prevent the above problem with the “&#64;” character.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="Bio.SeqIO.QualityIO.FastqIlluminaIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqIlluminaIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse Illumina 1.3 to 1.7 FASTQ like files (which differ in the quality mapping).</p>
-<p>The optional arguments are the same as those for the FastqPhredIterator.</p>
-<p>For each sequence in Illumina 1.3+ FASTQ files there is a matching string
-encoding PHRED integer qualities using ASCII values with an offset of 64.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/illumina_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-illumina&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
-<span class="go">Test ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTN</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">max</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
-<span class="go">40</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">min</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
-<span class="go">0</span>
-</pre></div>
-</div>
-<p>NOTE - Older versions of the Solexa/Illumina pipeline encoded Solexa scores
-with an ASCII offset of 64. They are approximately equal but only for high
-quality reads. If you have an old Solexa/Illumina file with negative
-Solexa scores, and try and read this as an Illumina 1.3+ file it will fail:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record2</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-illumina&quot;</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Invalid character in quality string</span>
-</pre></div>
-</div>
-<p>NOTE - True Sanger style FASTQ files use PHRED scores with an offset of 33.</p>
-</dd></dl>
-
-<dl class="class">
-<dt id="Bio.SeqIO.QualityIO.FastqIlluminaWriter">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqIlluminaWriter</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaWriter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequentialSequenceWriter</span></code></a></p>
-<p>Write Illumina 1.3+ FASTQ format files (with PHRED quality scores) (OBSOLETE).</p>
-<p>This outputs FASTQ files like those from the Solexa/Illumina 1.3+ pipeline,
-using PHRED scores and an ASCII offset of 64. Note these files are NOT
-compatible with the standard Sanger style PHRED FASTQ files which use an
-ASCII offset of 32.</p>
-<p>Although you can use this class directly, you are strongly encouraged to
-use the <code class="docutils literal notranslate"><span class="pre">as_fastq_illumina</span></code> or top-level <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code> function
-with format name “fastq-illumina” instead. This code is also called if you
-use the .format(“fastq-illumina”) method of a SeqRecord. For example,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/sanger_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-sanger&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fastq-illumina&quot;</span><span class="p">))</span>
-<span class="go">@Test PHRED qualities from 40 to 0 inclusive</span>
-<span class="go">ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTN</span>
-<span class="go">+</span>
-<span class="go">hgfedcba`_^]\[ZYXWVUTSRQPONMLKJIHGFEDCBA@</span>
-</pre></div>
-</div>
-<p>Note that Illumina FASTQ files have an upper limit of PHRED quality 62, which is
-encoded as ASCII 126, the tilde. If your quality scores are truncated to fit, a
-warning is issued.</p>
-<dl class="method">
-<dt id="Bio.SeqIO.QualityIO.FastqIlluminaWriter.write_record">
-<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaWriter.write_record" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write a single FASTQ record to the file.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.SeqIO.QualityIO.FastqPhredIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqPhredIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqPhredIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqPhredIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">SingleLetterAlphabet()</span></em>, <em class="sig-param"><span class="n">title2ids</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqPhredIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over FASTQ records as SeqRecord objects.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -777,60 +825,9 @@ per-letter-annotation dictionary as a simple list of integers:</p>
 </div>
 </dd></dl>
 
-<dl class="class">
-<dt id="Bio.SeqIO.QualityIO.FastqPhredWriter">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqPhredWriter</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqPhredWriter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequentialSequenceWriter</span></code></a></p>
-<p>Class to write standard FASTQ format files (using PHRED quality scores) (OBSOLETE).</p>
-<p>Although you can use this class directly, you are strongly encouraged
-to use the <code class="docutils literal notranslate"><span class="pre">as_fastq</span></code> function, or top level <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code>
-function instead via the format name “fastq” or the alias “fastq-sanger”.</p>
-<p>For example, this code reads in a standard Sanger style FASTQ file
-(using PHRED scores) and re-saves it as another Sanger style FASTQ file:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
-<span class="go">3</span>
-</pre></div>
-</div>
-<p>You might want to do this if the original file included extra line breaks,
-which while valid may not be supported by all tools.  The output file from
-Biopython will have each sequence on a single line, and each quality
-string on a single line (which is considered desirable for maximum
-compatibility).</p>
-<p>In this next example, an old style Solexa/Illumina FASTQ file (using Solexa
-quality scores) is converted into a standard Sanger style FASTQ file using
-PHRED qualities:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
-<span class="go">5</span>
-</pre></div>
-</div>
-<p>This code is also called if you use the .format(“fastq”) method of a
-SeqRecord, or .format(“fastq-sanger”) if you prefer that alias.</p>
-<p>Note that Sanger FASTQ files have an upper limit of PHRED quality 93, which is
-encoded as ASCII 126, the tilde. If your quality scores are truncated to fit, a
-warning is issued.</p>
-<p>P.S. To avoid cluttering up your working directory, you can delete this
-temporary file now:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="method">
-<dt id="Bio.SeqIO.QualityIO.FastqPhredWriter.write_record">
-<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqPhredWriter.write_record" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write a single FASTQ record to the file.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.SeqIO.QualityIO.FastqSolexaIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqSolexaIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqSolexaIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">SingleLetterAlphabet()</span></em>, <em class="sig-param"><span class="n">title2ids</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Parse old Solexa/Illumina FASTQ like files (which differ in the quality mapping).</p>
 <p>The optional arguments are the same as those for the FastqPhredIterator.</p>
 <p>For each sequence in Solexa/Illumina FASTQ files there is a matching string
@@ -959,129 +956,39 @@ output format instead, and Biopython will do the conversion for you:</p>
 equivalent PHRED score (e.g. -5 to 1 as shown earlier).</p>
 </dd></dl>
 
-<dl class="class">
-<dt id="Bio.SeqIO.QualityIO.FastqSolexaWriter">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqSolexaWriter</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaWriter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequentialSequenceWriter</span></code></a></p>
-<p>Write old style Solexa/Illumina FASTQ format files (with Solexa qualities) (OBSOLETE).</p>
-<p>This outputs FASTQ files like those from the early Solexa/Illumina
-pipeline, using Solexa scores and an ASCII offset of 64. These are
-NOT compatible with the standard Sanger style PHRED FASTQ files.</p>
-<p>If your records contain a “solexa_quality” entry under letter_annotations,
-this is used, otherwise any “phred_quality” entry will be used after
-conversion using the solexa_quality_from_phred function. If neither style
-of quality scores are present, an exception is raised.</p>
-<p>Although you can use this class directly, you are strongly encouraged
-to use the <code class="docutils literal notranslate"><span class="pre">as_fastq_solexa</span></code> function, or top-level <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code>
-function instead.  For example, this code reads in a FASTQ file and re-saves
-it as another FASTQ file:</p>
+<dl class="py function">
+<dt id="Bio.SeqIO.QualityIO.FastqIlluminaIterator">
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqIlluminaIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">SingleLetterAlphabet()</span></em>, <em class="sig-param"><span class="n">title2ids</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse Illumina 1.3 to 1.7 FASTQ like files (which differ in the quality mapping).</p>
+<p>The optional arguments are the same as those for the FastqPhredIterator.</p>
+<p>For each sequence in Illumina 1.3+ FASTQ files there is a matching string
+encoding PHRED integer qualities using ASCII values with an offset of 64.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">)</span>
-<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/illumina_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-illumina&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="go">Test ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">max</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
+<span class="go">40</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">min</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
+<span class="go">0</span>
 </pre></div>
 </div>
-<p>You might want to do this if the original file included extra line breaks,
-which (while valid) may not be supported by all tools.  The output file
-from Biopython will have each sequence on a single line, and each quality
-string on a single line (which is considered desirable for maximum
-compatibility).</p>
-<p>This code is also called if you use the .format(“fastq-solexa”) method of
-a SeqRecord. For example,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/sanger_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-sanger&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fastq-solexa&quot;</span><span class="p">))</span>
-<span class="go">@Test PHRED qualities from 40 to 0 inclusive</span>
-<span class="go">ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTN</span>
-<span class="go">+</span>
-<span class="go">hgfedcba`_^]\[ZYXWVUTSRQPONMLKJHGFECB@&gt;;;</span>
+<p>NOTE - Older versions of the Solexa/Illumina pipeline encoded Solexa scores
+with an ASCII offset of 64. They are approximately equal but only for high
+quality reads. If you have an old Solexa/Illumina file with negative
+Solexa scores, and try and read this as an Illumina 1.3+ file it will fail:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record2</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-illumina&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+   <span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">Invalid character in quality string</span>
 </pre></div>
 </div>
-<p>Note that Solexa FASTQ files have an upper limit of Solexa quality 62, which is
-encoded as ASCII 126, the tilde.  If your quality scores must be truncated to fit,
-a warning is issued.</p>
-<p>P.S. Don’t forget to delete the temp file if you don’t need it anymore:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="method">
-<dt id="Bio.SeqIO.QualityIO.FastqSolexaWriter.write_record">
-<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaWriter.write_record" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write a single FASTQ record to the file.</p>
+<p>NOTE - True Sanger style FASTQ files use PHRED scores with an offset of 33.</p>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="function">
-<dt id="Bio.SeqIO.QualityIO.PairedFastaQualIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">PairedFastaQualIterator</code><span class="sig-paren">(</span><em class="sig-param">fasta_handle</em>, <em class="sig-param">qual_handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.PairedFastaQualIterator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterate over matched FASTA and QUAL files as SeqRecord objects.</p>
-<p>For example, consider this short QUAL file with PHRED quality scores:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_413_324</span>
-<span class="mi">26</span> <span class="mi">26</span> <span class="mi">18</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">22</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span>
-<span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">23</span> <span class="mi">23</span>
-<span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_540_792</span>
-<span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">22</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">12</span> <span class="mi">26</span> <span class="mi">26</span>
-<span class="mi">26</span> <span class="mi">18</span> <span class="mi">26</span> <span class="mi">23</span> <span class="mi">18</span>
-<span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_443_348</span>
-<span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">24</span> <span class="mi">26</span> <span class="mi">22</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">13</span> <span class="mi">22</span> <span class="mi">26</span> <span class="mi">18</span>
-<span class="mi">24</span> <span class="mi">18</span> <span class="mi">18</span> <span class="mi">18</span> <span class="mi">18</span>
-</pre></div>
-</div>
-<p>And a matching FASTA file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_413_324</span>
-<span class="n">CCCTTCTTGTCTTCAGCGTTTCTCC</span>
-<span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_540_792</span>
-<span class="n">TTGGCAGGCCAAGGCCGATGGATCA</span>
-<span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_443_348</span>
-<span class="n">GTTGCTTCTGGCGTGGGTGGGGGGG</span>
-</pre></div>
-</div>
-<p>You can parse these separately using Bio.SeqIO with the “qual” and
-“fasta” formats, but then you’ll get a group of SeqRecord objects with
-no sequence, and a matching group with the sequence but not the
-qualities.  Because it only deals with one input file handle, Bio.SeqIO
-can’t be used to read the two files together - but this function can!
-For example,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/example.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;rU&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/example.qual&quot;</span><span class="p">,</span> <span class="s2">&quot;rU&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">q</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">PairedFastaQualIterator</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
-<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
-<span class="gp">...</span>
-<span class="go">EAS54_6_R1_2_1_413_324 CCCTTCTTGTCTTCAGCGTTTCTCC</span>
-<span class="go">EAS54_6_R1_2_1_540_792 TTGGCAGGCCAAGGCCGATGGATCA</span>
-<span class="go">EAS54_6_R1_2_1_443_348 GTTGCTTCTGGCGTGGGTGGGGGGG</span>
-</pre></div>
-</div>
-<p>As with the FASTQ or QUAL parsers, if you want to look at the qualities,
-they are in each record’s per-letter-annotation dictionary as a simple
-list of integers:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
-<span class="go">[26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 24, 26, 22, 26, 26, 13, 22, 26, 18, 24, 18, 18, 18, 18]</span>
-</pre></div>
-</div>
-<p>If you have access to data as a FASTQ format file, using that directly
-would be simpler and more straight forward.  Note that you can easily use
-this function to convert paired FASTA and QUAL files into FASTQ files:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/example.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;rU&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/example.qual&quot;</span><span class="p">,</span> <span class="s2">&quot;rU&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">q</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">PairedFastaQualIterator</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">q</span><span class="p">),</span> <span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">3</span>
-</pre></div>
-</div>
-<p>And don’t forget to clean up the temp file if you don’t need it anymore:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.SeqIO.QualityIO.QualPhredIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">QualPhredIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.QualPhredIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">QualPhredIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">SingleLetterAlphabet()</span></em>, <em class="sig-param"><span class="n">title2ids</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.QualPhredIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>For QUAL files which include PHRED quality scores, but no sequence.</p>
 <p>For example, consider this short QUAL file:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_413_324</span>
@@ -1147,9 +1054,69 @@ scores but will replace them with the lowest possible PHRED score of zero.
 This will trigger a warning, previously it raised a ValueError exception.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
+<dt id="Bio.SeqIO.QualityIO.FastqPhredWriter">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqPhredWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqPhredWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequentialSequenceWriter</span></code></a></p>
+<p>Class to write standard FASTQ format files (using PHRED quality scores) (OBSOLETE).</p>
+<p>Although you can use this class directly, you are strongly encouraged
+to use the <code class="docutils literal notranslate"><span class="pre">as_fastq</span></code> function, or top level <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code>
+function instead via the format name “fastq” or the alias “fastq-sanger”.</p>
+<p>For example, this code reads in a standard Sanger style FASTQ file
+(using PHRED scores) and re-saves it as another Sanger style FASTQ file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>You might want to do this if the original file included extra line breaks,
+which while valid may not be supported by all tools.  The output file from
+Biopython will have each sequence on a single line, and each quality
+string on a single line (which is considered desirable for maximum
+compatibility).</p>
+<p>In this next example, an old style Solexa/Illumina FASTQ file (using Solexa
+quality scores) is converted into a standard Sanger style FASTQ file using
+PHRED qualities:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<p>This code is also called if you use the .format(“fastq”) method of a
+SeqRecord, or .format(“fastq-sanger”) if you prefer that alias.</p>
+<p>Note that Sanger FASTQ files have an upper limit of PHRED quality 93, which is
+encoded as ASCII 126, the tilde. If your quality scores are truncated to fit, a
+warning is issued.</p>
+<p>P.S. To avoid cluttering up your working directory, you can delete this
+temporary file now:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="Bio.SeqIO.QualityIO.FastqPhredWriter.write_record">
+<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqPhredWriter.write_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a single FASTQ record to the file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqIO.QualityIO.as_fastq">
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">as_fastq</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.as_fastq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn a SeqRecord into a Sanger FASTQ formated string.</p>
+<p>This is used internally by the SeqRecord’s .format(“fastq”)
+method and by the SeqIO.write(…, …, “fastq”) function,
+and under the format alias “fastq-sanger” as well.</p>
+</dd></dl>
+
+<dl class="py class">
 <dt id="Bio.SeqIO.QualityIO.QualPhredWriter">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">QualPhredWriter</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">wrap=60</em>, <em class="sig-param">record2title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.QualPhredWriter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">QualPhredWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">wrap</span><span class="o">=</span><span class="default_value">60</span></em>, <em class="sig-param"><span class="n">record2title</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.QualPhredWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequentialSequenceWriter</span></code></a></p>
 <p>Class to write QUAL format files (using PHRED quality scores) (OBSOLETE).</p>
 <p>Although you can use this class directly, you are strongly encouraged
@@ -1171,157 +1138,211 @@ SeqRecord.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Quality/temp.qual&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.SeqIO.QualityIO.QualPhredWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">wrap</span><span class="o">=</span><span class="default_value">60</span></em>, <em class="sig-param"><span class="n">record2title</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.QualPhredWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a QUAL writer.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle - Handle to an output file, e.g. as returned
+by open(filename, “w”)</p></li>
+<li><p>wrap   - Optional line length used to wrap sequence lines.
+Defaults to wrapping the sequence at 60 characters. Use
+zero (or None) for no wrapping, giving a single long line
+for the sequence.</p></li>
+<li><p>record2title - Optional function to return the text to be
+used for the title line of each record.  By default a
+combination of the record.id and record.description is
+used.  If the record.description starts with the record.id,
+then just the record.description is used.</p></li>
+</ul>
+</dd>
+</dl>
+<p>The record2title argument is present for consistency with the
+Bio.SeqIO.FastaIO writer class.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.SeqIO.QualityIO.QualPhredWriter.write_record">
-<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.QualPhredWriter.write_record" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.QualPhredWriter.write_record" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a single QUAL record to the file.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="function">
-<dt id="Bio.SeqIO.QualityIO.as_fastq">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">as_fastq</code><span class="sig-paren">(</span><em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.as_fastq" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turn a SeqRecord into a Sanger FASTQ formated string.</p>
-<p>This is used internally by the SeqRecord’s .format(“fastq”)
-method and by the SeqIO.write(…, …, “fastq”) function,
-and under the format alias “fastq-sanger” as well.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="Bio.SeqIO.QualityIO.as_fastq_illumina">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">as_fastq_illumina</code><span class="sig-paren">(</span><em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.as_fastq_illumina" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turn a SeqRecord into an Illumina FASTQ formated string.</p>
-<p>This is used internally by the SeqRecord’s .format(“fastq-illumina”)
-method and by the SeqIO.write(…, …, “fastq-illumina”) function.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="Bio.SeqIO.QualityIO.as_fastq_solexa">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">as_fastq_solexa</code><span class="sig-paren">(</span><em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.as_fastq_solexa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turn a SeqRecord into a Solexa FASTQ formated string.</p>
-<p>This is used internally by the SeqRecord’s .format(“fastq-solexa”)
-method and by the SeqIO.write(…, …, “fastq-solexa”) function.</p>
-</dd></dl>
-
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.SeqIO.QualityIO.as_qual">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">as_qual</code><span class="sig-paren">(</span><em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.as_qual" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">as_qual</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.as_qual" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn a SeqRecord into a QUAL formated string.</p>
 <p>This is used internally by the SeqRecord’s .format(“qual”)
 method and by the SeqIO.write(…, …, “qual”) function.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="Bio.SeqIO.QualityIO.phred_quality_from_solexa">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">phred_quality_from_solexa</code><span class="sig-paren">(</span><em class="sig-param">solexa_quality</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.phred_quality_from_solexa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a Solexa quality (which can be negative) to a PHRED quality.</p>
-<p>PHRED and Solexa quality scores are both log transformations of a
-probality of error (high score = low probability of error). This function
-takes a Solexa score, transforms it back to a probability of error, and
-then re-expresses it as a PHRED score. This assumes the error estimates
-are equivalent.</p>
-<p>The underlying formulas are given in the documentation for the sister
-function solexa_quality_from_phred, in this case the operation is:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phred_quality</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">solexa_quality</span><span class="o">/</span><span class="mf">10.0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<dl class="py class">
+<dt id="Bio.SeqIO.QualityIO.FastqSolexaWriter">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqSolexaWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequentialSequenceWriter</span></code></a></p>
+<p>Write old style Solexa/Illumina FASTQ format files (with Solexa qualities) (OBSOLETE).</p>
+<p>This outputs FASTQ files like those from the early Solexa/Illumina
+pipeline, using Solexa scores and an ASCII offset of 64. These are
+NOT compatible with the standard Sanger style PHRED FASTQ files.</p>
+<p>If your records contain a “solexa_quality” entry under letter_annotations,
+this is used, otherwise any “phred_quality” entry will be used after
+conversion using the solexa_quality_from_phred function. If neither style
+of quality scores are present, an exception is raised.</p>
+<p>Although you can use this class directly, you are strongly encouraged
+to use the <code class="docutils literal notranslate"><span class="pre">as_fastq_solexa</span></code> function, or top-level <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code>
+function instead.  For example, this code reads in a FASTQ file and re-saves
+it as another FASTQ file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">)</span>
+<span class="go">5</span>
 </pre></div>
 </div>
-<p>This will return a floating point number, it is up to you to round this to
-the nearest integer if appropriate.  e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">80.00</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">20.04</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">10.41</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">3.01</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">1.19</span>
+<p>You might want to do this if the original file included extra line breaks,
+which (while valid) may not be supported by all tools.  The output file
+from Biopython will have each sequence on a single line, and each quality
+string on a single line (which is considered desirable for maximum
+compatibility).</p>
+<p>This code is also called if you use the .format(“fastq-solexa”) method of
+a SeqRecord. For example,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/sanger_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-sanger&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fastq-solexa&quot;</span><span class="p">))</span>
+<span class="go">@Test PHRED qualities from 40 to 0 inclusive</span>
+<span class="go">ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTN</span>
+<span class="go">+</span>
+<span class="go">hgfedcba`_^]\[ZYXWVUTSRQPONMLKJHGFECB@&gt;;;</span>
 </pre></div>
 </div>
-<p>Note that a solexa_quality less then -5 is not expected, will trigger a
-warning, but will still be converted as per the logarithmic mapping
-(giving a number between 0 and 1.19 back).</p>
-<p>As a special case where None is used for a “missing value”, None is
-returned:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
-<span class="go">None</span>
+<p>Note that Solexa FASTQ files have an upper limit of Solexa quality 62, which is
+encoded as ASCII 126, the tilde.  If your quality scores must be truncated to fit,
+a warning is issued.</p>
+<p>P.S. Don’t forget to delete the temp file if you don’t need it anymore:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<dl class="py method">
+<dt id="Bio.SeqIO.QualityIO.FastqSolexaWriter.write_record">
+<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaWriter.write_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a single FASTQ record to the file.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="Bio.SeqIO.QualityIO.solexa_quality_from_phred">
-<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">solexa_quality_from_phred</code><span class="sig-paren">(</span><em class="sig-param">phred_quality</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.solexa_quality_from_phred" title="Permalink to this definition">¶</a></dt>
-<dd><p>Covert a PHRED quality (range 0 to about 90) to a Solexa quality.</p>
-<p>PHRED and Solexa quality scores are both log transformations of a
-probality of error (high score = low probability of error). This function
-takes a PHRED score, transforms it back to a probability of error, and
-then re-expresses it as a Solexa score. This assumes the error estimates
-are equivalent.</p>
-<p>How does this work exactly? Well the PHRED quality is minus ten times the
-base ten logarithm of the probability of error:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">phred_quality</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">error</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqIO.QualityIO.as_fastq_solexa">
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">as_fastq_solexa</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.as_fastq_solexa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn a SeqRecord into a Solexa FASTQ formated string.</p>
+<p>This is used internally by the SeqRecord’s .format(“fastq-solexa”)
+method and by the SeqIO.write(…, …, “fastq-solexa”) function.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="Bio.SeqIO.QualityIO.FastqIlluminaWriter">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">FastqIlluminaWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequentialSequenceWriter</span></code></a></p>
+<p>Write Illumina 1.3+ FASTQ format files (with PHRED quality scores) (OBSOLETE).</p>
+<p>This outputs FASTQ files like those from the Solexa/Illumina 1.3+ pipeline,
+using PHRED scores and an ASCII offset of 64. Note these files are NOT
+compatible with the standard Sanger style PHRED FASTQ files which use an
+ASCII offset of 32.</p>
+<p>Although you can use this class directly, you are strongly encouraged to
+use the <code class="docutils literal notranslate"><span class="pre">as_fastq_illumina</span></code> or top-level <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code> function
+with format name “fastq-illumina” instead. This code is also called if you
+use the .format(“fastq-illumina”) method of a SeqRecord. For example,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/sanger_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-sanger&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fastq-illumina&quot;</span><span class="p">))</span>
+<span class="go">@Test PHRED qualities from 40 to 0 inclusive</span>
+<span class="go">ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTN</span>
+<span class="go">+</span>
+<span class="go">hgfedcba`_^]\[ZYXWVUTSRQPONMLKJIHGFEDCBA@</span>
 </pre></div>
 </div>
-<p>Therefore, turning this round:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">error</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span> <span class="n">phred_quality</span> <span class="o">/</span> <span class="mi">10</span><span class="p">)</span>
+<p>Note that Illumina FASTQ files have an upper limit of PHRED quality 62, which is
+encoded as ASCII 126, the tilde. If your quality scores are truncated to fit, a
+warning is issued.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.QualityIO.FastqIlluminaWriter.write_record">
+<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaWriter.write_record" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write a single FASTQ record to the file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqIO.QualityIO.as_fastq_illumina">
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">as_fastq_illumina</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.as_fastq_illumina" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn a SeqRecord into an Illumina FASTQ formated string.</p>
+<p>This is used internally by the SeqRecord’s .format(“fastq-illumina”)
+method and by the SeqIO.write(…, …, “fastq-illumina”) function.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqIO.QualityIO.PairedFastaQualIterator">
+<code class="sig-prename descclassname">Bio.SeqIO.QualityIO.</code><code class="sig-name descname">PairedFastaQualIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fasta_handle</span></em>, <em class="sig-param"><span class="n">qual_handle</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">SingleLetterAlphabet()</span></em>, <em class="sig-param"><span class="n">title2ids</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.PairedFastaQualIterator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over matched FASTA and QUAL files as SeqRecord objects.</p>
+<p>For example, consider this short QUAL file with PHRED quality scores:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_413_324</span>
+<span class="mi">26</span> <span class="mi">26</span> <span class="mi">18</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">22</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span>
+<span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">23</span> <span class="mi">23</span>
+<span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_540_792</span>
+<span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">22</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">12</span> <span class="mi">26</span> <span class="mi">26</span>
+<span class="mi">26</span> <span class="mi">18</span> <span class="mi">26</span> <span class="mi">23</span> <span class="mi">18</span>
+<span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_443_348</span>
+<span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">24</span> <span class="mi">26</span> <span class="mi">22</span> <span class="mi">26</span> <span class="mi">26</span> <span class="mi">13</span> <span class="mi">22</span> <span class="mi">26</span> <span class="mi">18</span>
+<span class="mi">24</span> <span class="mi">18</span> <span class="mi">18</span> <span class="mi">18</span> <span class="mi">18</span>
 </pre></div>
 </div>
-<p>Now, Solexa qualities use a different log transformation:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">solexa_quality</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">error</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">error</span><span class="p">),</span><span class="mi">10</span><span class="p">)</span>
+<p>And a matching FASTA file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_413_324</span>
+<span class="n">CCCTTCTTGTCTTCAGCGTTTCTCC</span>
+<span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_540_792</span>
+<span class="n">TTGGCAGGCCAAGGCCGATGGATCA</span>
+<span class="o">&gt;</span><span class="n">EAS54_6_R1_2_1_443_348</span>
+<span class="n">GTTGCTTCTGGCGTGGGTGGGGGGG</span>
 </pre></div>
 </div>
-<p>After substitution and a little manipulation we get:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">solexa_quality</span> <span class="o">=</span> <span class="mi">10</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="n">phred_quality</span><span class="o">/</span><span class="mf">10.0</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<p>You can parse these separately using Bio.SeqIO with the “qual” and
+“fasta” formats, but then you’ll get a group of SeqRecord objects with
+no sequence, and a matching group with the sequence but not the
+qualities.  Because it only deals with one input file handle, Bio.SeqIO
+can’t be used to read the two files together - but this function can!
+For example,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/example.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;rU&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/example.qual&quot;</span><span class="p">,</span> <span class="s2">&quot;rU&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">q</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">PairedFastaQualIterator</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">EAS54_6_R1_2_1_413_324 CCCTTCTTGTCTTCAGCGTTTCTCC</span>
+<span class="go">EAS54_6_R1_2_1_540_792 TTGGCAGGCCAAGGCCGATGGATCA</span>
+<span class="go">EAS54_6_R1_2_1_443_348 GTTGCTTCTGGCGTGGGTGGGGGGG</span>
 </pre></div>
 </div>
-<p>However, real Solexa files use a minimum quality of -5. This does have a
-good reason - a random base call would be correct 25% of the time,
-and thus have a probability of error of 0.75, which gives 1.25 as the PHRED
-quality, or -4.77 as the Solexa quality. Thus (after rounding), a random
-nucleotide read would have a PHRED quality of 1, or a Solexa quality of -5.</p>
-<p>Taken literally, this logarithic formula would map a PHRED quality of zero
-to a Solexa quality of minus infinity. Of course, taken literally, a PHRED
-score of zero means a probability of error of one (i.e. the base call is
-definitely wrong), which is worse than random! In practice, a PHRED quality
-of zero usually means a default value, or perhaps random - and therefore
-mapping it to the minimum Solexa score of -5 is reasonable.</p>
-<p>In conclusion, we follow EMBOSS, and take this logarithmic formula but also
-apply a minimum value of -5.0 for the Solexa quality, and also map a PHRED
-quality of zero to -5.0 as well.</p>
-<p>Note this function will return a floating point number, it is up to you to
-round this to the nearest integer if appropriate.  e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">80.00</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">50.00</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">19.96</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">9.54</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">3.35</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">1.80</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">-0.02</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">-2.33</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">-5.00</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">round</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">2</span><span class="p">))</span>
-<span class="go">-5.00</span>
+<p>As with the FASTQ or QUAL parsers, if you want to look at the qualities,
+they are in each record’s per-letter-annotation dictionary as a simple
+list of integers:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
+<span class="go">[26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 24, 26, 22, 26, 26, 13, 22, 26, 18, 24, 18, 18, 18, 18]</span>
 </pre></div>
 </div>
-<p>Notice that for high quality reads PHRED and Solexa scores are numerically
-equal. The differences are important for poor quality reads, where PHRED
-has a minimum of zero but Solexa scores can be negative.</p>
-<p>Finally, as a special case where None is used for a “missing value”, None
-is returned:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">solexa_quality_from_phred</span><span class="p">(</span><span class="kc">None</span><span class="p">))</span>
-<span class="go">None</span>
+<p>If you have access to data as a FASTQ format file, using that directly
+would be simpler and more straight forward.  Note that you can easily use
+this function to convert paired FASTA and QUAL files into FASTQ files:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/example.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;rU&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/example.qual&quot;</span><span class="p">,</span> <span class="s2">&quot;rU&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">q</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">PairedFastaQualIterator</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">q</span><span class="p">),</span> <span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+<p>And don’t forget to clean up the temp file if you don’t need it anymore:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Quality/temp.fastq&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1348,11 +1369,19 @@ is returned:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 1999-2017, The Biopython Contributors
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -1363,6 +1392,36 @@ is returned:</p>
 
   </div>
   
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.76
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.75/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+
+      <dl>
+
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
 
 
   <script type="text/javascript">

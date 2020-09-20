@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Bio.AlignIO.ClustalIO module" href="Bio.AlignIO.ClustalIO.html" />
@@ -55,17 +57,10 @@
 
           
             
-            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
           
           </a>
 
-          
-            
-            
-              <div class="version">
-                1.76
-              </div>
-            
           
 
           
@@ -80,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -152,6 +148,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -192,7 +189,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
         
@@ -365,28 +362,27 @@ write to all of them.</p>
 <p>You can also use any file format supported by Bio.SeqIO, such as “fasta” or
 “ig” (which are listed above), PROVIDED the sequences in your file are all the
 same length.</p>
-<dl class="function">
-<dt id="Bio.AlignIO.convert">
-<code class="sig-prename descclassname">Bio.AlignIO.</code><code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param">in_file</em>, <em class="sig-param">in_format</em>, <em class="sig-param">out_file</em>, <em class="sig-param">out_format</em>, <em class="sig-param">alphabet=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert between two alignment files, returns number of alignments.</p>
+<dl class="py function">
+<dt id="Bio.AlignIO.write">
+<code class="sig-prename descclassname">Bio.AlignIO.</code><code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alignments</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write complete set of alignments to a file.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>in_file - an input handle or filename</p></li>
-<li><p>in_format - input file format, lower case string</p></li>
-<li><p>output - an output handle or filename</p></li>
-<li><p>out_file - output file format, lower case string</p></li>
-<li><p>alphabet - optional alphabet to assume</p></li>
+<li><p>alignments - A list (or iterator) of MultipleSeqAlignment objects,
+or a single alignment object.</p></li>
+<li><p>handle    - File handle object to write to, or filename as string
+(note older versions of Biopython only took a handle).</p></li>
+<li><p>format    - lower case string describing the file format to write.</p></li>
 </ul>
 </dd>
 </dl>
-<p><strong>NOTE</strong> - If you provide an output filename, it will be opened which will
-overwrite any existing file without warning. This may happen if even the
-conversion is aborted (e.g. an invalid out_format name is given).</p>
+<p>You should close the handle after calling this function.</p>
+<p>Returns the number of alignments written (as an integer).</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.AlignIO.parse">
-<code class="sig-prename descclassname">Bio.AlignIO.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">format</em>, <em class="sig-param">seq_count=None</em>, <em class="sig-param">alphabet=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.parse" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.AlignIO.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span></em>, <em class="sig-param"><span class="n">seq_count</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.parse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over an alignment file as MultipleSeqAlignment objects.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -423,9 +419,9 @@ alignment.  Recommended for fasta format files.</p></li>
 <p>Use the Bio.AlignIO.read() function when you expect a single record only.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.AlignIO.read">
-<code class="sig-prename descclassname">Bio.AlignIO.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">format</em>, <em class="sig-param">seq_count=None</em>, <em class="sig-param">alphabet=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.read" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.AlignIO.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span></em>, <em class="sig-param"><span class="n">seq_count</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn an alignment file into a single MultipleSeqAlignment object.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -475,22 +471,23 @@ multiple alignments this function would raise an exception.</p>
 records from the handle.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="Bio.AlignIO.write">
-<code class="sig-prename descclassname">Bio.AlignIO.</code><code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">alignments</em>, <em class="sig-param">handle</em>, <em class="sig-param">format</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.write" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write complete set of alignments to a file.</p>
+<dl class="py function">
+<dt id="Bio.AlignIO.convert">
+<code class="sig-prename descclassname">Bio.AlignIO.</code><code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_file</span></em>, <em class="sig-param"><span class="n">in_format</span></em>, <em class="sig-param"><span class="n">out_file</span></em>, <em class="sig-param"><span class="n">out_format</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert between two alignment files, returns number of alignments.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>alignments - A list (or iterator) of MultipleSeqAlignment objects,
-or a single alignment object.</p></li>
-<li><p>handle    - File handle object to write to, or filename as string
-(note older versions of Biopython only took a handle).</p></li>
-<li><p>format    - lower case string describing the file format to write.</p></li>
+<li><p>in_file - an input handle or filename</p></li>
+<li><p>in_format - input file format, lower case string</p></li>
+<li><p>output - an output handle or filename</p></li>
+<li><p>out_file - output file format, lower case string</p></li>
+<li><p>alphabet - optional alphabet to assume</p></li>
 </ul>
 </dd>
 </dl>
-<p>You should close the handle after calling this function.</p>
-<p>Returns the number of alignments written (as an integer).</p>
+<p><strong>NOTE</strong> - If you provide an output filename, it will be opened which will
+overwrite any existing file without warning. This may happen if even the
+conversion is aborted (e.g. an invalid out_format name is given).</p>
 </dd></dl>
 
 </div>
@@ -517,11 +514,19 @@ or a single alignment object.</p></li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 1999-2017, The Biopython Contributors
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -532,6 +537,36 @@ or a single alignment object.</p></li>
 
   </div>
   
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.76
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.75/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+
+      <dl>
+
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
 
 
   <script type="text/javascript">
