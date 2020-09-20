@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Bio.SeqIO.GckIO module" href="Bio.SeqIO.GckIO.html" />
@@ -55,17 +57,10 @@
 
           
             
-            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
           
           </a>
 
-          
-            
-            
-              <div class="version">
-                1.76
-              </div>
-            
           
 
           
@@ -80,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -152,6 +148,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -192,7 +189,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
         
@@ -233,9 +230,62 @@
 <span id="bio-seqio-fastaio-module"></span><h1>Bio.SeqIO.FastaIO module<a class="headerlink" href="#module-Bio.SeqIO.FastaIO" title="Permalink to this headline">¶</a></h1>
 <p>Bio.SeqIO support for the “fasta” (aka FastA or Pearson) file format.</p>
 <p>You are expected to use this module via the Bio.SeqIO functions.</p>
-<dl class="function">
+<dl class="py function">
+<dt id="Bio.SeqIO.FastaIO.SimpleFastaParser">
+<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">SimpleFastaParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.SimpleFastaParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over Fasta records as string tuples.</p>
+<p>For each record a tuple of two strings is returned, the FASTA title
+line (without the leading ‘&gt;’ character), and the sequence (with any
+whitespace removed). The title line is not divided up into an
+identifier (the first word) and comment or description.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/dups.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">SimpleFastaParser</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">(&#39;alpha&#39;, &#39;ACGTA&#39;)</span>
+<span class="go">(&#39;beta&#39;, &#39;CGTC&#39;)</span>
+<span class="go">(&#39;gamma&#39;, &#39;CCGCC&#39;)</span>
+<span class="go">(&#39;alpha (again - this is a duplicate entry to test the indexing code)&#39;, &#39;ACGTA&#39;)</span>
+<span class="go">(&#39;delta&#39;, &#39;CGCGC&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqIO.FastaIO.FastaTwoLineParser">
+<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">FastaTwoLineParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over no-wrapping Fasta records as string tuples.</p>
+<p>Functionally the same as SimpleFastaParser but with a strict
+interpretation of the FASTA format as exactly two lines per
+record, the greater-than-sign identifier with description,
+and the sequence with no line wrapping.</p>
+<p>Any line wrapping will raise an exception, as will excess blank
+lines (other than the special case of a zero-length sequence
+as the second line of a record).</p>
+<p class="rubric">Examples</p>
+<p>This file uses two lines per FASTA record:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/aster_no_wrap.pro&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">FastaTwoLineParser</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="go">gi|3298468|dbj|BAA31520.1| SAMIPF = GGH...</span>
+</pre></div>
+</div>
+<p>This equivalent file uses line wrapping:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/aster.pro&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">FastaTwoLineParser</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="gt">Traceback (most recent call last):</span>
+   <span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">Expected FASTA record starting with &#39;&gt;&#39; character. Perhaps this file is using FASTA line wrapping? Got: &#39;MTFGLVYTVYATAIDPKKGSLGTIAPIAIGFIVGANI&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
 <dt id="Bio.SeqIO.FastaIO.FastaIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">FastaIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em>, <em class="sig-param">title2ids=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">FastaIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">SingleLetterAlphabet()</span></em>, <em class="sig-param"><span class="n">title2ids</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over Fasta records as SeqRecord objects.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -278,9 +328,9 @@ with no custom handling of the title lines:</p>
 </div>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.SeqIO.FastaIO.FastaTwoLineIterator">
-<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">FastaTwoLineIterator</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">alphabet=SingleLetterAlphabet()</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineIterator" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">FastaTwoLineIterator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">SingleLetterAlphabet()</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineIterator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over two-line Fasta records (as SeqRecord objects).</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -295,95 +345,118 @@ exactly two lines per record (no line wrapping).</p>
 by the relaxed FASTA parser is offered.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="Bio.SeqIO.FastaIO.FastaTwoLineParser">
-<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">FastaTwoLineParser</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineParser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterate over no-wrapping Fasta records as string tuples.</p>
-<p>Functionally the same as SimpleFastaParser but with a strict
-interpretation of the FASTA format as exactly two lines per
-record, the greater-than-sign identifier with description,
-and the sequence with no line wrapping.</p>
-<p>Any line wrapping will raise an exception, as will excess blank
-lines (other than the special case of a zero-length sequence
-as the second line of a record).</p>
-<p class="rubric">Examples</p>
-<p>This file uses two lines per FASTA record:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/aster_no_wrap.pro&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">FastaTwoLineParser</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
-<span class="gp">...</span>
-<span class="go">gi|3298468|dbj|BAA31520.1| SAMIPF = GGH...</span>
-</pre></div>
-</div>
-<p>This equivalent file uses line wrapping:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/aster.pro&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">FastaTwoLineParser</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
-<span class="gp">...</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Expected FASTA record starting with &#39;&gt;&#39; character. Perhaps this file is using FASTA line wrapping? Got: &#39;MTFGLVYTVYATAIDPKKGSLGTIAPIAIGFIVGANI&#39;</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="class">
-<dt id="Bio.SeqIO.FastaIO.FastaTwoLineWriter">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">FastaTwoLineWriter</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">record2title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineWriter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Bio.SeqIO.FastaIO.FastaWriter" title="Bio.SeqIO.FastaIO.FastaWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.FastaIO.FastaWriter</span></code></a></p>
-<p>Class to write 2-line per record Fasta format files (OBSOLETE).</p>
-<p>This means we write the sequence information  without line
-wrapping, and will always write a blank line for an empty
-sequence.</p>
-</dd></dl>
-
-<dl class="class">
+<dl class="py class">
 <dt id="Bio.SeqIO.FastaIO.FastaWriter">
-<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">FastaWriter</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">wrap=60</em>, <em class="sig-param">record2title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaWriter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">FastaWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">wrap</span><span class="o">=</span><span class="default_value">60</span></em>, <em class="sig-param"><span class="n">record2title</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequentialSequenceWriter" title="Bio.SeqIO.Interfaces.SequentialSequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequentialSequenceWriter</span></code></a></p>
 <p>Class to write Fasta format files (OBSOLETE).</p>
 <p>Please use the <code class="docutils literal notranslate"><span class="pre">as_fasta</span></code> function instead, or the top level
 <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code> function instead using <code class="docutils literal notranslate"><span class="pre">format=&quot;fasta&quot;</span></code>.</p>
-<dl class="method">
+<dl class="py method">
+<dt id="Bio.SeqIO.FastaIO.FastaWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">wrap</span><span class="o">=</span><span class="default_value">60</span></em>, <em class="sig-param"><span class="n">record2title</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Fasta writer (OBSOLETE).</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle - Handle to an output file, e.g. as returned
+by open(filename, “w”)</p></li>
+<li><p>wrap -   Optional line length used to wrap sequence lines.
+Defaults to wrapping the sequence at 60 characters
+Use zero (or None) for no wrapping, giving a single
+long line for the sequence.</p></li>
+<li><p>record2title - Optional function to return the text to be
+used for the title line of each record.  By default
+a combination of the record.id and record.description
+is used.  If the record.description starts with the
+record.id, then just the record.description is used.</p></li>
+</ul>
+</dd>
+</dl>
+<p>You can either use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">FastaWriter</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span><span class="n">myRecords</span><span class="p">)</span>
+<span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Or, follow the sequential file writer system, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">FastaWriter</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write_header</span><span class="p">()</span> <span class="c1"># does nothing for Fasta files</span>
+<span class="o">...</span>
+<span class="n">Multiple</span> <span class="n">writer</span><span class="o">.</span><span class="n">write_record</span><span class="p">()</span> <span class="ow">and</span><span class="o">/</span><span class="ow">or</span> <span class="n">writer</span><span class="o">.</span><span class="n">write_records</span><span class="p">()</span> <span class="n">calls</span>
+<span class="o">...</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write_footer</span><span class="p">()</span> <span class="c1"># does nothing for Fasta files</span>
+<span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.SeqIO.FastaIO.FastaWriter.write_record">
-<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaWriter.write_record" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">write_record</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaWriter.write_record" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a single Fasta record to the file.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="function">
-<dt id="Bio.SeqIO.FastaIO.SimpleFastaParser">
-<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">SimpleFastaParser</code><span class="sig-paren">(</span><em class="sig-param">handle</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.SimpleFastaParser" title="Permalink to this definition">¶</a></dt>
-<dd><p>Iterate over Fasta records as string tuples.</p>
-<p>For each record a tuple of two strings is returned, the FASTA title
-line (without the leading ‘&gt;’ character), and the sequence (with any
-whitespace removed). The title line is not divided up into an
-identifier (the first word) and comment or description.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/dups.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">SimpleFastaParser</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">(&#39;alpha&#39;, &#39;ACGTA&#39;)</span>
-<span class="go">(&#39;beta&#39;, &#39;CGTC&#39;)</span>
-<span class="go">(&#39;gamma&#39;, &#39;CCGCC&#39;)</span>
-<span class="go">(&#39;alpha (again - this is a duplicate entry to test the indexing code)&#39;, &#39;ACGTA&#39;)</span>
-<span class="go">(&#39;delta&#39;, &#39;CGCGC&#39;)</span>
+<dl class="py class">
+<dt id="Bio.SeqIO.FastaIO.FastaTwoLineWriter">
+<em class="property">class </em><code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">FastaTwoLineWriter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">record2title</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.SeqIO.FastaIO.FastaWriter" title="Bio.SeqIO.FastaIO.FastaWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.FastaIO.FastaWriter</span></code></a></p>
+<p>Class to write 2-line per record Fasta format files (OBSOLETE).</p>
+<p>This means we write the sequence information  without line
+wrapping, and will always write a blank line for an empty
+sequence.</p>
+<dl class="py method">
+<dt id="Bio.SeqIO.FastaIO.FastaTwoLineWriter.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">record2title</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a 2-line per record Fasta writer (OBSOLETE).</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle - Handle to an output file, e.g. as returned
+by open(filename, “w”)</p></li>
+<li><p>record2title - Optional function to return the text to be
+used for the title line of each record.  By default
+a combination of the record.id and record.description
+is used.  If the record.description starts with the
+record.id, then just the record.description is used.</p></li>
+</ul>
+</dd>
+</dl>
+<p>You can either use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">FastaWriter</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span><span class="n">myRecords</span><span class="p">)</span>
+<span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Or, follow the sequential file writer system, for example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">writer</span> <span class="o">=</span> <span class="n">FastaWriter</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write_header</span><span class="p">()</span> <span class="c1"># does nothing for Fasta files</span>
+<span class="o">...</span>
+<span class="n">Multiple</span> <span class="n">writer</span><span class="o">.</span><span class="n">write_record</span><span class="p">()</span> <span class="ow">and</span><span class="o">/</span><span class="ow">or</span> <span class="n">writer</span><span class="o">.</span><span class="n">write_records</span><span class="p">()</span> <span class="n">calls</span>
+<span class="o">...</span>
+<span class="n">writer</span><span class="o">.</span><span class="n">write_footer</span><span class="p">()</span> <span class="c1"># does nothing for Fasta files</span>
+<span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </dd></dl>
 
-<dl class="function">
+</dd></dl>
+
+<dl class="py function">
 <dt id="Bio.SeqIO.FastaIO.as_fasta">
-<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">as_fasta</code><span class="sig-paren">(</span><em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.as_fasta" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">as_fasta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.as_fasta" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn a SeqRecord into a FASTA formated string.</p>
 <p>This is used internally by the SeqRecord’s .format(“fasta”)
 method and by the SeqIO.write(…, …, “fasta”) function.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.SeqIO.FastaIO.as_fasta_2line">
-<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">as_fasta_2line</code><span class="sig-paren">(</span><em class="sig-param">record</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.as_fasta_2line" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.FastaIO.</code><code class="sig-name descname">as_fasta_2line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">record</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.as_fasta_2line" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn a SeqRecord into a two-line FASTA formated string.</p>
 <p>This is used internally by the SeqRecord’s .format(“fasta-2line”)
 method and by the SeqIO.write(…, …, “fasta-2line”) function.</p>
@@ -411,11 +484,19 @@ method and by the SeqIO.write(…, …, “fasta-2line”) function.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 1999-2017, The Biopython Contributors
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -426,6 +507,36 @@ method and by the SeqIO.write(…, …, “fasta-2line”) function.</p>
 
   </div>
   
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.76
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.75/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+
+      <dl>
+
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
 
 
   <script type="text/javascript">

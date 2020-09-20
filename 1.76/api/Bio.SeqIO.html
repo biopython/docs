@@ -1,8 +1,7 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8">
   
@@ -12,27 +11,30 @@
   
 
   
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+
+  
   
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Bio.SeqIO.AbiIO module" href="Bio.SeqIO.AbiIO.html" />
@@ -55,17 +57,10 @@
 
           
             
-            <img src="_static/biopython_logo.svg" class="logo" alt="Logo"/>
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
           
           </a>
 
-          
-            
-            
-              <div class="version">
-                1.76
-              </div>
-            
           
 
           
@@ -80,6 +75,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -152,6 +148,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -192,7 +189,7 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
         
@@ -569,47 +566,199 @@ write to all of them.</p>
 <p>You can also use any file format supported by Bio.AlignIO, such as “nexus”,
 “phylip” and “stockholm”, which gives you access to the individual sequences
 making up each alignment as SeqRecords.</p>
-<dl class="function">
-<dt id="Bio.SeqIO.convert">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param">in_file</em>, <em class="sig-param">in_format</em>, <em class="sig-param">out_file</em>, <em class="sig-param">out_format</em>, <em class="sig-param">alphabet=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.convert" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert between two sequence file formats, return number of records.</p>
+<dl class="py function">
+<dt id="Bio.SeqIO.write">
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sequences</span></em>, <em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write complete set of sequences to a file.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>in_file - an input handle or filename</p></li>
-<li><p>in_format - input file format, lower case string</p></li>
-<li><p>out_file - an output handle or filename</p></li>
-<li><p>out_format - output file format, lower case string</p></li>
-<li><p>alphabet - optional alphabet to assume</p></li>
+<li><p>sequences - A list (or iterator) of SeqRecord objects, or (if using
+Biopython 1.54 or later) a single SeqRecord.</p></li>
+<li><p>handle    - File handle object to write to, or filename as string
+(note older versions of Biopython only took a handle).</p></li>
+<li><p>format    - lower case string describing the file format to write.</p></li>
 </ul>
 </dd>
 </dl>
-<p><strong>NOTE</strong> - If you provide an output filename, it will be opened which will
-overwrite any existing file without warning. This may happen if even
-the conversion is aborted (e.g. an invalid out_format name is given).</p>
-<p>For example, going from a filename to a handle:</p>
+<p>Note if providing a file handle, your code should close the handle
+after calling this function (to ensure the data gets flushed to disk).</p>
+<p>Returns the number of records written (as an integer).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqIO.parse">
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn a sequence file into an iterator returning SeqRecords.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle   - handle to the file, or the filename as a string
+(note older versions of Biopython only took a handle).</p></li>
+<li><p>format   - lower case string describing the file format.</p></li>
+<li><p>alphabet - optional Alphabet object, useful when the sequence type
+cannot be automatically inferred from the file itself
+(e.g. format=”fasta” or “tab”)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Typical usage, opening a file to read in, and looping over the record(s):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Fasta/sweetpea.nu&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence alphabet </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">alphabet</span><span class="p">)</span>
+<span class="go">ID gi|3176602|gb|U78617.1|LOU78617</span>
+<span class="go">Sequence length 309</span>
+<span class="go">Sequence alphabet SingleLetterAlphabet()</span>
+</pre></div>
+</div>
+<p>For file formats like FASTA where the alphabet cannot be determined, it
+may be useful to specify the alphabet explicitly:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Fasta/sweetpea.nu&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence alphabet </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">alphabet</span><span class="p">)</span>
+<span class="go">ID gi|3176602|gb|U78617.1|LOU78617</span>
+<span class="go">Sequence length 309</span>
+<span class="go">Sequence alphabet DNAAlphabet()</span>
+</pre></div>
+</div>
+<p>If you have a string ‘data’ containing the file contents, you must
+first turn this into a handle in order to parse it:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;&gt;Alpha</span><span class="se">\n</span><span class="s2">ACCGGATGTA</span><span class="se">\n</span><span class="s2">&gt;Beta</span><span class="se">\n</span><span class="s2">AGGCTCGGTTA</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span> <span class="c1"># Python 2</span>
 <span class="gp">... </span><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span> <span class="c1"># Python 3</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
-<span class="go">3</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
-<span class="go">&gt;EAS54_6_R1_2_1_413_324</span>
-<span class="go">CCCTTCTTGTCTTCAGCGTTTCTCC</span>
-<span class="go">&gt;EAS54_6_R1_2_1_540_792</span>
-<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
-<span class="go">&gt;EAS54_6_R1_2_1_443_348</span>
-<span class="go">GTTGCTTCTGGCGTGGGTGGGGGGG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="s2">&quot;fasta&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="go">Alpha ACCGGATGTA</span>
+<span class="go">Beta AGGCTCGGTTA</span>
 </pre></div>
 </div>
+<p>Use the Bio.SeqIO.read(…) function when you expect a single record
+only.</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
+<dt id="Bio.SeqIO.read">
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">handle</span></em>, <em class="sig-param"><span class="n">format</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn a sequence file into a single SeqRecord.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle   - handle to the file, or the filename as a string
+(note older versions of Biopython only took a handle).</p></li>
+<li><p>format   - string describing the file format.</p></li>
+<li><p>alphabet - optional Alphabet object, useful when the sequence type
+cannot be automatically inferred from the file itself
+(e.g. format=”fasta” or “tab”)</p></li>
+</ul>
+</dd>
+</dl>
+<p>This function is for use parsing sequence files containing
+exactly one record.  For example, reading a GenBank file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;GenBank/arab1.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="go">ID AC007323.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
+<span class="go">Sequence length 86436</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence alphabet </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">alphabet</span><span class="p">)</span>
+<span class="go">Sequence alphabet IUPACAmbiguousDNA()</span>
+</pre></div>
+</div>
+<p>If the handle contains no records, or more than one record,
+an exception is raised.  For example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;GenBank/cor6_6.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">More than one record found in handle</span>
+</pre></div>
+</div>
+<p>If however you want the first record from a file containing
+multiple records this function would raise an exception (as
+shown in the example above).  Instead use:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;GenBank/cor6_6.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First record&#39;s ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="go">First record&#39;s ID X55053.1</span>
+</pre></div>
+</div>
+<p>Use the Bio.SeqIO.parse(handle, format) function if you want
+to read multiple records from the handle.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="Bio.SeqIO.to_dict">
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sequences</span></em>, <em class="sig-param"><span class="n">key_function</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn a sequence iterator or list into a dictionary.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>sequences  - An iterator that returns SeqRecord objects,
+or simply a list of SeqRecord objects.</p></li>
+<li><p>key_function - Optional callback function which when given a
+SeqRecord should return a unique key for the dictionary.</p></li>
+</ul>
+</dd>
+</dl>
+<p>e.g. key_function = lambda rec : rec.name
+or,  key_function = lambda rec : rec.description.split()[0]</p>
+<p>If key_function is omitted then record.id is used, on the assumption
+that the records objects returned are SeqRecords with a unique id.</p>
+<p>If there are duplicate keys, an error is raised.</p>
+<p>Since Python 3.7, the default dict class maintains key order, meaning
+this dictionary will reflect the order of records given to it. For
+CPython, this was already implemented in 3.6.</p>
+<p>As of Biopython 1.73, we explicitly use OrderedDict for CPython older
+than 3.6 (and for other Python older than 3.7) so that you can always
+assume the record order is preserved.</p>
+<p>Example usage, defaulting to using the record.id as key:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;GenBank/cor6_6.gb&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;genbank&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">id_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">id_dict</span><span class="p">))</span>
+<span class="go">[&#39;X55053.1&#39;, &#39;X62281.1&#39;, &#39;M81224.1&#39;, &#39;AJ237582.1&#39;, &#39;L31939.1&#39;, &#39;AF297471.1&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">id_dict</span><span class="p">[</span><span class="s2">&quot;L31939.1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="go">Brassica rapa (clone bif72) kin mRNA, complete cds</span>
+</pre></div>
+</div>
+<p>A more complex example, using the key_function argument in order to
+use a sequence checksum as the dictionary key:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils.CheckSum</span> <span class="kn">import</span> <span class="n">seguid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;GenBank/cor6_6.gb&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;genbank&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seguid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="p">),</span>
+<span class="gp">... </span>              <span class="n">key_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">rec</span> <span class="p">:</span> <span class="n">seguid</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">seguid_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+<span class="go">/wQvmrl87QWcm9llO4/efg23Vgg AJ237582.1</span>
+<span class="go">BUg6YxXSKWEcFFH0L08JzaLGhQs L31939.1</span>
+<span class="go">SabZaA4V2eLE9/2Fm5FnyYy07J4 X55053.1</span>
+<span class="go">TtWsXo45S3ZclIBy4X/WJc39+CY M81224.1</span>
+<span class="go">l7gjJFE6W/S1jJn5+1ASrUKW/FA X62281.1</span>
+<span class="go">uVEYeAQSV5EDQOnFoeMmVea+Oow AF297471.1</span>
+</pre></div>
+</div>
+<p>This approach is not suitable for very large sets of sequences, as all
+the SeqRecord objects are held in memory. Instead, consider using the
+Bio.SeqIO.index() function (if it supports your particular file format).</p>
+<p>Since Python 3.6, the default dict class maintains key order, meaning
+this dictionary will reflect the order of records given to it. As of
+Biopython 1.72, on older versions of Python we explicitly use an
+OrderedDict so that you can always assume the record order is preserved.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="Bio.SeqIO.index">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param">filename</em>, <em class="sig-param">format</em>, <em class="sig-param">alphabet=None</em>, <em class="sig-param">key_function=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span></em>, <em class="sig-param"><span class="n">format</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">key_function</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Indexes a sequence file and returns a dictionary like object.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -717,9 +866,9 @@ usually avoided.</p>
 <p>See Also: Bio.SeqIO.index_db() and Bio.SeqIO.to_dict()</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="Bio.SeqIO.index_db">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">index_db</code><span class="sig-paren">(</span><em class="sig-param">index_filename</em>, <em class="sig-param">filenames=None</em>, <em class="sig-param">format=None</em>, <em class="sig-param">alphabet=None</em>, <em class="sig-param">key_function=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.index_db" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">index_db</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">index_filename</span></em>, <em class="sig-param"><span class="n">filenames</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">format</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">key_function</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.index_db" title="Permalink to this definition">¶</a></dt>
 <dd><p>Index several sequence files and return a dictionary like object.</p>
 <p>The index is stored in an SQLite database rather than in memory (as in the
 Bio.SeqIO.index(…) function).</p>
@@ -768,194 +917,42 @@ GZIP compressed files are not supported.</p>
 glob which is useful for building lists of files.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="Bio.SeqIO.parse">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">parse</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">format</em>, <em class="sig-param">alphabet=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.parse" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turn a sequence file into an iterator returning SeqRecords.</p>
+<dl class="py function">
+<dt id="Bio.SeqIO.convert">
+<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">in_file</span></em>, <em class="sig-param"><span class="n">in_format</span></em>, <em class="sig-param"><span class="n">out_file</span></em>, <em class="sig-param"><span class="n">out_format</span></em>, <em class="sig-param"><span class="n">alphabet</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert between two sequence file formats, return number of records.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
-<li><p>handle   - handle to the file, or the filename as a string
-(note older versions of Biopython only took a handle).</p></li>
-<li><p>format   - lower case string describing the file format.</p></li>
-<li><p>alphabet - optional Alphabet object, useful when the sequence type
-cannot be automatically inferred from the file itself
-(e.g. format=”fasta” or “tab”)</p></li>
+<li><p>in_file - an input handle or filename</p></li>
+<li><p>in_format - input file format, lower case string</p></li>
+<li><p>out_file - an output handle or filename</p></li>
+<li><p>out_format - output file format, lower case string</p></li>
+<li><p>alphabet - optional alphabet to assume</p></li>
 </ul>
 </dd>
 </dl>
-<p>Typical usage, opening a file to read in, and looping over the record(s):</p>
+<p><strong>NOTE</strong> - If you provide an output filename, it will be opened which will
+overwrite any existing file without warning. This may happen if even
+the conversion is aborted (e.g. an invalid out_format name is given).</p>
+<p>For example, going from a filename to a handle:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Fasta/sweetpea.nu&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">):</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence alphabet </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">alphabet</span><span class="p">)</span>
-<span class="go">ID gi|3176602|gb|U78617.1|LOU78617</span>
-<span class="go">Sequence length 309</span>
-<span class="go">Sequence alphabet SingleLetterAlphabet()</span>
-</pre></div>
-</div>
-<p>For file formats like FASTA where the alphabet cannot be determined, it
-may be useful to specify the alphabet explicitly:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Alphabet</span> <span class="kn">import</span> <span class="n">generic_dna</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Fasta/sweetpea.nu&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">,</span> <span class="n">generic_dna</span><span class="p">):</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence alphabet </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">alphabet</span><span class="p">)</span>
-<span class="go">ID gi|3176602|gb|U78617.1|LOU78617</span>
-<span class="go">Sequence length 309</span>
-<span class="go">Sequence alphabet DNAAlphabet()</span>
-</pre></div>
-</div>
-<p>If you have a string ‘data’ containing the file contents, you must
-first turn this into a handle in order to parse it:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="s2">&quot;&gt;Alpha</span><span class="se">\n</span><span class="s2">ACCGGATGTA</span><span class="se">\n</span><span class="s2">&gt;Beta</span><span class="se">\n</span><span class="s2">AGGCTCGGTTA</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">try</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span> <span class="c1"># Python 2</span>
 <span class="gp">... </span><span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span> <span class="c1"># Python 3</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="s2">&quot;fasta&quot;</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
-<span class="go">Alpha ACCGGATGTA</span>
-<span class="go">Beta AGGCTCGGTTA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;Quality/example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
+<span class="go">&gt;EAS54_6_R1_2_1_413_324</span>
+<span class="go">CCCTTCTTGTCTTCAGCGTTTCTCC</span>
+<span class="go">&gt;EAS54_6_R1_2_1_540_792</span>
+<span class="go">TTGGCAGGCCAAGGCCGATGGATCA</span>
+<span class="go">&gt;EAS54_6_R1_2_1_443_348</span>
+<span class="go">GTTGCTTCTGGCGTGGGTGGGGGGG</span>
 </pre></div>
 </div>
-<p>Use the Bio.SeqIO.read(…) function when you expect a single record
-only.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="Bio.SeqIO.read">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">read</code><span class="sig-paren">(</span><em class="sig-param">handle</em>, <em class="sig-param">format</em>, <em class="sig-param">alphabet=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.read" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turn a sequence file into a single SeqRecord.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>handle   - handle to the file, or the filename as a string
-(note older versions of Biopython only took a handle).</p></li>
-<li><p>format   - string describing the file format.</p></li>
-<li><p>alphabet - optional Alphabet object, useful when the sequence type
-cannot be automatically inferred from the file itself
-(e.g. format=”fasta” or “tab”)</p></li>
-</ul>
-</dd>
-</dl>
-<p>This function is for use parsing sequence files containing
-exactly one record.  For example, reading a GenBank file:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;GenBank/arab1.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="go">ID AC007323.5</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
-<span class="go">Sequence length 86436</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Sequence alphabet </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">alphabet</span><span class="p">)</span>
-<span class="go">Sequence alphabet IUPACAmbiguousDNA()</span>
-</pre></div>
-</div>
-<p>If the handle contains no records, or more than one record,
-an exception is raised.  For example:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;GenBank/cor6_6.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-    <span class="o">...</span>
-<span class="gr">ValueError</span>: <span class="n">More than one record found in handle</span>
-</pre></div>
-</div>
-<p>If however you want the first record from a file containing
-multiple records this function would raise an exception (as
-shown in the example above).  Instead use:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;GenBank/cor6_6.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First record&#39;s ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="go">First record&#39;s ID X55053.1</span>
-</pre></div>
-</div>
-<p>Use the Bio.SeqIO.parse(handle, format) function if you want
-to read multiple records from the handle.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="Bio.SeqIO.to_dict">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><em class="sig-param">sequences</em>, <em class="sig-param">key_function=None</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.to_dict" title="Permalink to this definition">¶</a></dt>
-<dd><p>Turn a sequence iterator or list into a dictionary.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>sequences  - An iterator that returns SeqRecord objects,
-or simply a list of SeqRecord objects.</p></li>
-<li><p>key_function - Optional callback function which when given a
-SeqRecord should return a unique key for the dictionary.</p></li>
-</ul>
-</dd>
-</dl>
-<p>e.g. key_function = lambda rec : rec.name
-or,  key_function = lambda rec : rec.description.split()[0]</p>
-<p>If key_function is omitted then record.id is used, on the assumption
-that the records objects returned are SeqRecords with a unique id.</p>
-<p>If there are duplicate keys, an error is raised.</p>
-<p>Since Python 3.7, the default dict class maintains key order, meaning
-this dictionary will reflect the order of records given to it. For
-CPython, this was already implemented in 3.6.</p>
-<p>As of Biopython 1.73, we explicitly use OrderedDict for CPython older
-than 3.6 (and for other Python older than 3.7) so that you can always
-assume the record order is preserved.</p>
-<p>Example usage, defaulting to using the record.id as key:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;GenBank/cor6_6.gb&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;genbank&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">id_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">id_dict</span><span class="p">))</span>
-<span class="go">[&#39;X55053.1&#39;, &#39;X62281.1&#39;, &#39;M81224.1&#39;, &#39;AJ237582.1&#39;, &#39;L31939.1&#39;, &#39;AF297471.1&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">id_dict</span><span class="p">[</span><span class="s2">&quot;L31939.1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
-<span class="go">Brassica rapa (clone bif72) kin mRNA, complete cds</span>
-</pre></div>
-</div>
-<p>A more complex example, using the key_function argument in order to
-use a sequence checksum as the dictionary key:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils.CheckSum</span> <span class="kn">import</span> <span class="n">seguid</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;GenBank/cor6_6.gb&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;genbank&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">seguid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="p">),</span>
-<span class="gp">... </span>              <span class="n">key_function</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">rec</span> <span class="p">:</span> <span class="n">seguid</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">seguid_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
-<span class="go">/wQvmrl87QWcm9llO4/efg23Vgg AJ237582.1</span>
-<span class="go">BUg6YxXSKWEcFFH0L08JzaLGhQs L31939.1</span>
-<span class="go">SabZaA4V2eLE9/2Fm5FnyYy07J4 X55053.1</span>
-<span class="go">TtWsXo45S3ZclIBy4X/WJc39+CY M81224.1</span>
-<span class="go">l7gjJFE6W/S1jJn5+1ASrUKW/FA X62281.1</span>
-<span class="go">uVEYeAQSV5EDQOnFoeMmVea+Oow AF297471.1</span>
-</pre></div>
-</div>
-<p>This approach is not suitable for very large sets of sequences, as all
-the SeqRecord objects are held in memory. Instead, consider using the
-Bio.SeqIO.index() function (if it supports your particular file format).</p>
-<p>Since Python 3.6, the default dict class maintains key order, meaning
-this dictionary will reflect the order of records given to it. As of
-Biopython 1.72, on older versions of Python we explicitly use an
-OrderedDict so that you can always assume the record order is preserved.</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="Bio.SeqIO.write">
-<code class="sig-prename descclassname">Bio.SeqIO.</code><code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">sequences</em>, <em class="sig-param">handle</em>, <em class="sig-param">format</em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.write" title="Permalink to this definition">¶</a></dt>
-<dd><p>Write complete set of sequences to a file.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
-<li><p>sequences - A list (or iterator) of SeqRecord objects, or (if using
-Biopython 1.54 or later) a single SeqRecord.</p></li>
-<li><p>handle    - File handle object to write to, or filename as string
-(note older versions of Biopython only took a handle).</p></li>
-<li><p>format    - lower case string describing the file format to write.</p></li>
-</ul>
-</dd>
-</dl>
-<p>Note if providing a file handle, your code should close the handle
-after calling this function (to ensure the data gets flushed to disk).</p>
-<p>Returns the number of records written (as an integer).</p>
 </dd></dl>
 
 </div>
@@ -982,11 +979,19 @@ after calling this function (to ensure the data gets flushed to disk).</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 1999-2017, The Biopython Contributors
+        
+        &copy; Copyright 1999-2020, The Biopython Contributors
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -997,6 +1002,36 @@ after calling this function (to ensure the data gets flushed to disk).</p>
 
   </div>
   
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.76
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.75/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+
+      <dl>
+
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
 
 
   <script type="text/javascript">
