@@ -2150,6 +2150,231 @@ suffix can also be a tuple of strings to try.  e.g.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt id="Bio.Seq.MutableSeq.split">
+<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">maxsplit</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split method, like that of a python string.</p>
+<p>This behaves like the python string method of the same name.</p>
+<p>Return a list of the ‘words’ in the string (as MutableSeq objects),
+using sep as the delimiter string.  If maxsplit is given, at
+most maxsplit splits are done.  If maxsplit is omitted, all
+splits are made.</p>
+<p>Following the python string method, sep will by default be any
+white space (tabs, spaces, newlines) but this is unlikely to
+apply to biological sequences.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_rna</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;GUCAUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAGUUG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_aa</span> <span class="o">=</span> <span class="n">my_rna</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_aa</span>
+<span class="go">MutableSeq(&#39;VMAIVMGR*KGAR*L&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">pep</span> <span class="ow">in</span> <span class="n">my_aa</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pep</span>
+<span class="go">MutableSeq(&#39;VMAIVMGR&#39;)</span>
+<span class="go">MutableSeq(&#39;KGAR&#39;)</span>
+<span class="go">MutableSeq(&#39;L&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">pep</span> <span class="ow">in</span> <span class="n">my_aa</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pep</span>
+<span class="go">MutableSeq(&#39;VMAIVMGR&#39;)</span>
+<span class="go">MutableSeq(&#39;KGAR*L&#39;)</span>
+</pre></div>
+</div>
+<p>See also the rsplit method:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">pep</span> <span class="ow">in</span> <span class="n">my_aa</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&quot;*&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">pep</span>
+<span class="go">MutableSeq(&#39;VMAIVMGR*KGAR&#39;)</span>
+<span class="go">MutableSeq(&#39;L&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.MutableSeq.rsplit">
+<code class="sig-name descname">rsplit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">maxsplit</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.rsplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Do a right split method, like that of a python string.</p>
+<p>This behaves like the python string method of the same name.</p>
+<p>Return a list of the ‘words’ in the string (as MutableSeq objects),
+using sep as the delimiter string.  If maxsplit is given, at
+most maxsplit splits are done COUNTING FROM THE RIGHT.
+If maxsplit is omitted, all splits are made.</p>
+<p>Following the python string method, sep will by default be any
+white space (tabs, spaces, newlines) but this is unlikely to
+apply to biological sequences.</p>
+<p>e.g. print(my_seq.rsplit(“*”,1))</p>
+<p>See also the split method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.MutableSeq.strip">
+<code class="sig-name descname">strip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">chars</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">inplace</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.strip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a MutableSeq object with leading and trailing ends stripped.</p>
+<p>This behaves like the python string method of the same name.</p>
+<p>A copy of the sequence is returned if <code class="docutils literal notranslate"><span class="pre">inplace</span></code> is <cite>False</cite> (the
+default value). If <code class="docutils literal notranslate"><span class="pre">inplace</span></code> is <cite>True</cite>, the sequence is stripped
+in-place and returned:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACGT &quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="go">MutableSeq(&#39;ACGT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span>
+<span class="go">MutableSeq(&#39;ACGT &#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;ACGT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span>
+<span class="go">MutableSeq(&#39;ACGT&#39;)</span>
+</pre></div>
+</div>
+<p>Optional argument chars defines which characters to remove.  If
+omitted or None (default) then as for the python string method,
+this defaults to removing any white space.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACGT &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="go">MutableSeq(&#39;ACGT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACGT &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;ACGT&#39;)</span>
+</pre></div>
+</div>
+<p>Just like the Python string, the order of the characters to be
+removed is not important:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACGTACGT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;TGCA&quot;</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;&#39;)</span>
+</pre></div>
+</div>
+<p>As with the Python string, an inappropriate argument
+will give a TypeError:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACGT &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+   <span class="c">...</span>
+<span class="gr">TypeError</span>: <span class="n">argument must be None or a string, Seq, MutableSeq, or bytes-like object</span>
+</pre></div>
+</div>
+<p>See also the lstrip and rstrip methods.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.MutableSeq.lstrip">
+<code class="sig-name descname">lstrip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">chars</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">inplace</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.lstrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a MutableSeq object with leading (left) end stripped.</p>
+<p>This behaves like the python string method of the same name.</p>
+<p>A copy of the sequence is returned if <code class="docutils literal notranslate"><span class="pre">inplace</span></code> is <cite>False</cite> (the
+default value). If <code class="docutils literal notranslate"><span class="pre">inplace</span></code> is <cite>True</cite>, the sequence is stripped
+in-place and returned:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot; ACGT &quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+<span class="go">MutableSeq(&#39;ACGT &#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span>
+<span class="go">MutableSeq(&#39; ACGT &#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;ACGT &#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span>
+<span class="go">MutableSeq(&#39;ACGT &#39;)</span>
+</pre></div>
+</div>
+<p>Optional argument chars defines which characters to remove.  If
+omitted or None (default) then as for the python string method,
+this defaults to removing any white space.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;AAACGTA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;CGTA&#39;)</span>
+</pre></div>
+</div>
+<p>See also the strip and rstrip methods.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.MutableSeq.rstrip">
+<code class="sig-name descname">rstrip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">chars</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">inplace</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.rstrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a MutableSeq object with trailing (right) end stripped.</p>
+<p>This behaves like the python string method of the same name.</p>
+<p>A copy of the sequence is returned if <code class="docutils literal notranslate"><span class="pre">inplace</span></code> is <cite>False</cite> (the
+default value). If <code class="docutils literal notranslate"><span class="pre">inplace</span></code> is <cite>True</cite>, the sequence is stripped
+in-place and returned:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot; ACGT &quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+<span class="go">MutableSeq(&#39; ACGT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span>
+<span class="go">MutableSeq(&#39; ACGT &#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39; ACGT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span>
+<span class="go">MutableSeq(&#39; ACGT&#39;)</span>
+</pre></div>
+</div>
+<p>Optional argument chars defines which characters to remove.  If
+omitted or None (default) then as for the python string method,
+this defaults to removing any white space.</p>
+<p>e.g. Removing a nucleotide sequence’s polyadenylation (poly-A tail):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGGTACGCTTATGTCACGTAGAAAAAA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;CGGTACGCTTATGTCACGTAGAAAAAA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;CGGTACGCTTATGTCACGTAG&#39;)</span>
+</pre></div>
+</div>
+<p>See also the strip and lstrip methods.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.MutableSeq.upper">
+<code class="sig-name descname">upper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">inplace</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.upper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sequence in upper case.</p>
+<p>An upper-case copy of the sequence is returned if inplace is False,
+the default value:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;VHLTPeeK*&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;VHLTPeeK*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="go">MutableSeq(&#39;vhltpeek*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="go">MutableSeq(&#39;VHLTPEEK*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;VHLTPeeK*&#39;)</span>
+</pre></div>
+</div>
+<p>The sequence is modified in-place and returned if inplace is True:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">lower</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;vhltpeek*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;vhltpeek*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">upper</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;VHLTPEEK*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;VHLTPEEK*&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.MutableSeq.lower">
+<code class="sig-name descname">lower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">inplace</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.lower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sequence in lower case.</p>
+<p>A lower-case copy of the sequence is returned if inplace is False,
+the default value:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;VHLTPeeK*&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;VHLTPeeK*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="go">MutableSeq(&#39;vhltpeek*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="go">MutableSeq(&#39;VHLTPEEK*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;VHLTPeeK*&#39;)</span>
+</pre></div>
+</div>
+<p>The sequence is modified in-place and returned if inplace is True:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">lower</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;vhltpeek*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;vhltpeek*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">upper</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;VHLTPEEK*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;VHLTPEEK*&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt id="Bio.Seq.MutableSeq.translate">
 <code class="sig-name descname">translate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">table</span><span class="o">=</span><span class="default_value">'Standard'</span></em>, <em class="sig-param"><span class="n">stop_symbol</span><span class="o">=</span><span class="default_value">'*'</span></em>, <em class="sig-param"><span class="n">to_stop</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">cds</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">gap</span><span class="o">=</span><span class="default_value">'-'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.translate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Turn a nucleotide sequence into a protein sequence by creating a new MutableSeq object.</p>
