@@ -211,13 +211,24 @@ and _UndefinedSequenceData instances to raise an exception when undefined
 sequence data are requested.</p>
 <p>Future implementations of lazy parsers that similarly provide on-demand
 parsing of sequence data should use a subclass of this abstract class and
-implement the abstract methods <code class="docutils literal notranslate"><span class="pre">__len__</span></code> (which must return the sequence
-length) and <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code>, which must return a <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object or a new
-instance of the subclass for the requested region, or raise an
-<code class="docutils literal notranslate"><span class="pre">UndefinedSequenceError</span></code>. Calling <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> for a sequence region
-of size zero should always return an empty <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object. Subclasses of
-SequenceDataAbstractBaseClass must call <code class="docutils literal notranslate"><span class="pre">super().__init__()</span></code> as part of
-their <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method.</p>
+implement the abstract methods <code class="docutils literal notranslate"><span class="pre">__len__</span></code> and <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">__len__</span></code> must return the sequence length;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> must return</p>
+<ul class="simple">
+<li><p>a <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object for the requested region; or</p></li>
+<li><p>a new instance of the subclass for the requested region; or</p></li>
+<li><p>raise an <code class="docutils literal notranslate"><span class="pre">UndefinedSequenceError</span></code>.</p></li>
+</ul>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> for a sequence region of size zero should always
+return an empty <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object.
+Calling <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> for the full sequence (as in data[:]) should
+either return a <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object with the full sequence, or raise an
+<code class="docutils literal notranslate"><span class="pre">UndefinedSequenceError</span></code>.</p>
+</li>
+</ul>
+<p>Subclasses of SequenceDataAbstractBaseClass must call <code class="docutils literal notranslate"><span class="pre">super().__init__()</span></code>
+as part of their <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method.</p>
 <dl class="py method">
 <dt id="Bio.Seq.SequenceDataAbstractBaseClass.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__init__" title="Permalink to this definition">¶</a></dt>
@@ -233,6 +244,226 @@ their <code class="docutils literal notranslate"><span class="pre">__init__</spa
 <dt id="Bio.Seq.SequenceDataAbstractBaseClass.__getitem__">
 <em class="property">abstract </em><code class="sig-name descname">__getitem__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">key</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__getitem__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__bytes__">
+<code class="sig-name descname">__bytes__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__bytes__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__hash__">
+<code class="sig-name descname">__hash__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__hash__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return hash(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__eq__">
+<code class="sig-name descname">__eq__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__eq__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self==value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__lt__">
+<code class="sig-name descname">__lt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__lt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&lt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__le__">
+<code class="sig-name descname">__le__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__le__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&lt;=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__gt__">
+<code class="sig-name descname">__gt__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__gt__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&gt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__ge__">
+<code class="sig-name descname">__ge__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__ge__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self&gt;=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__add__">
+<code class="sig-name descname">__add__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__add__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__radd__">
+<code class="sig-name descname">__radd__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__radd__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__mul__">
+<code class="sig-name descname">__mul__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__mul__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.__contains__">
+<code class="sig-name descname">__contains__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">item</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__contains__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.decode">
+<code class="sig-name descname">decode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">encoding</span><span class="o">=</span><span class="default_value">'utf-8'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.decode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decode the data as bytes using the codec registered for encoding.</p>
+<dl class="simple">
+<dt>encoding</dt><dd><p>The encoding with which to decode the bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.count">
+<code class="sig-name descname">count</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sub</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of non-overlapping occurrences of sub in data[start:end].</p>
+<p>Optional arguments start and end are interpreted as in slice notation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.find">
+<code class="sig-name descname">find</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sub</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the lowest index in data where subsection sub is found.</p>
+<p>Return the lowest index in data where subsection sub is found,
+such that sub is contained within data[start,end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Return -1 on failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.rfind">
+<code class="sig-name descname">rfind</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sub</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.rfind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the highest index in data where subsection sub is found.</p>
+<p>Return the highest index in data where subsection sub is found,
+such that sub is contained within data[start,end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Return -1 on failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.index">
+<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sub</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the lowest index in data where subsection sub is found.</p>
+<p>Return the lowest index in data where subsection sub is found,
+such that sub is contained within data[start,end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Raises ValueError when the subsection is not found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.rindex">
+<code class="sig-name descname">rindex</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sub</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.rindex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the highest index in data where subsection sub is found.</p>
+<p>Return the highest index in data where subsection sub is found,
+such that sub is contained within data[start,end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Raise ValueError when the subsection is not found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.startswith">
+<code class="sig-name descname">startswith</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">prefix</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.startswith" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if data starts with the specified prefix, False otherwise.</p>
+<p>With optional start, test data beginning at that position.
+With optional end, stop comparing data at that position.
+prefix can also be a tuple of bytes to try.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.endswith">
+<code class="sig-name descname">endswith</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">suffix</span></em>, <em class="sig-param"><span class="n">start</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">end</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.endswith" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if data ends with the specified suffix, False otherwise.</p>
+<p>With optional start, test data beginning at that position.
+With optional end, stop comparing data at that position.
+suffix can also be a tuple of bytes to try.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.split">
+<code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">maxsplit</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of the sections in the data, using sep as the delimiter.</p>
+<dl class="simple">
+<dt>sep</dt><dd><p>The delimiter according which to split the data.
+None (the default value) means split on ASCII whitespace characters
+(space, tab, return, newline, formfeed, vertical tab).</p>
+</dd>
+<dt>maxsplit</dt><dd><p>Maximum number of splits to do.
+-1 (the default value) means no limit.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.rsplit">
+<code class="sig-name descname">rsplit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">sep</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">maxsplit</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.rsplit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of the sections in the data, using sep as the delimiter.</p>
+<dl class="simple">
+<dt>sep</dt><dd><p>The delimiter according which to split the data.
+None (the default value) means split on ASCII whitespace characters
+(space, tab, return, newline, formfeed, vertical tab).</p>
+</dd>
+<dt>maxsplit</dt><dd><p>Maximum number of splits to do.
+-1 (the default value) means no limit.</p>
+</dd>
+</dl>
+<p>Splitting is done starting at the end of the data and working to the front.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.strip">
+<code class="sig-name descname">strip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">chars</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.strip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Strip leading and trailing characters contained in the argument.</p>
+<p>If the argument is omitted or None, strip leading and trailing ASCII whitespace.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.lstrip">
+<code class="sig-name descname">lstrip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">chars</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.lstrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Strip leading characters contained in the argument.</p>
+<p>If the argument is omitted or None, strip leading ASCII whitespace.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.rstrip">
+<code class="sig-name descname">rstrip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">chars</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.rstrip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Strip trailing characters contained in the argument.</p>
+<p>If the argument is omitted or None, strip trailing ASCII whitespace.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.upper">
+<code class="sig-name descname">upper</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.upper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of data with all ASCII characters converted to uppercase.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.lower">
+<code class="sig-name descname">lower</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.lower" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of data with all ASCII characters converted to lowercase.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.replace">
+<code class="sig-name descname">replace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">old</span></em>, <em class="sig-param"><span class="n">new</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy with all occurrences of substring old replaced by new.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="Bio.Seq.SequenceDataAbstractBaseClass.translate">
+<code class="sig-name descname">translate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">self</span></em>, <em class="sig-param"><span class="n">table</span></em>, <em class="sig-param"><span class="n">delete</span><span class="o">=</span><span class="default_value">b''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.translate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy with each character mapped by the given translation table.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>table</dt><dd><p>Translation table, which must be a bytes object of length 256.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>All characters occurring in the optional argument delete are removed.
+The remaining characters are mapped through the given translation table.</p>
+</dd></dl>
 
 <dl class="py attribute">
 <dt id="Bio.Seq.SequenceDataAbstractBaseClass.__abstractmethods__">
