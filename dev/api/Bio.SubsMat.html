@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Bio.SubsMat package &mdash; Biopython 1.79.dev0 documentation</title>
@@ -86,7 +85,7 @@
               
             
             
-              <p><span class="caption-text">API Contents:</span></p>
+              <p class="caption"><span class="caption-text">API Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
@@ -226,9 +225,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="bio-subsmat-package">
+  <div class="section" id="bio-subsmat-package">
 <h1>Bio.SubsMat package<a class="headerlink" href="#bio-subsmat-package" title="Permalink to this headline">¶</a></h1>
-<section id="submodules">
+<div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
@@ -236,11 +235,11 @@
 <li class="toctree-l1"><a class="reference internal" href="Bio.SubsMat.MatrixInfo.html">Bio.SubsMat.MatrixInfo module</a></li>
 </ul>
 </div>
-</section>
-<section id="module-Bio.SubsMat">
+</div>
+<div class="section" id="module-Bio.SubsMat">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Bio.SubsMat" title="Permalink to this headline">¶</a></h2>
 <p>Substitution matrices, log odds matrices, and operations on them.</p>
-<section id="general">
+<div class="section" id="general">
 <h3>General:<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h3>
 <p>This module provides a class and a few routines for generating
 substitution matrices, similar ot BLOSUM or PAM matrices, but based on
@@ -252,15 +251,15 @@ according to the matrix’s purpose: e.g in a log-odds frequency matrix, the
 value would be log(Pij/(Pi*Pj)) where:
 Pij: frequency of substitution of letter (residue/nucleotide) i by j
 Pi, Pj: expected frequencies of i and j, respectively.</p>
-</section>
-<section id="usage">
+</div>
+<div class="section" id="usage">
 <h3>Usage:<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
 <p>The following section is laid out in the order by which most people wish
 to generate a log-odds matrix. Of course, interim matrices can be
 generated and investigated. Most people just want a log-odds matrix,
 that’s all.</p>
-</section>
-<section id="generating-an-accepted-replacement-matrix">
+</div>
+<div class="section" id="generating-an-accepted-replacement-matrix">
 <h3>Generating an Accepted Replacement Matrix:<a class="headerlink" href="#generating-an-accepted-replacement-matrix" title="Permalink to this headline">¶</a></h3>
 <p>Initially, you should generate an accepted replacement matrix (ARM)
 from your data. The values in ARM are the _counted_ number of
@@ -286,27 +285,27 @@ If you provide a half-matrix, make sure of a (low, high) sorted order in
 the keys: there should only be
 a (‘A’,’C’) not a (‘C’,’A’).</p>
 <p>Internal functions:</p>
-</section>
-<section id="generating-the-observed-frequency-matrix-ofm">
+</div>
+<div class="section" id="generating-the-observed-frequency-matrix-ofm">
 <h3>Generating the observed frequency matrix (OFM):<a class="headerlink" href="#generating-the-observed-frequency-matrix-ofm" title="Permalink to this headline">¶</a></h3>
 <p>Use: OFM = _build_obs_freq_mat(ARM)
 The OFM is generated from the ARM, only instead of replacement counts, it
 contains replacement frequencies.</p>
-</section>
-<section id="generating-an-expected-frequency-matrix-efm">
+</div>
+<div class="section" id="generating-an-expected-frequency-matrix-efm">
 <h3>Generating an expected frequency matrix (EFM):<a class="headerlink" href="#generating-an-expected-frequency-matrix-efm" title="Permalink to this headline">¶</a></h3>
 <p>Use: EFM = _build_exp_freq_mat(OFM,exp_freq_table)
 exp_freq_table: should be a freqTableC instantiation. See freqTable.py for
 detailed information. Briefly, the expected frequency table has the
 frequencies of appearance for each member of the alphabet</p>
-</section>
-<section id="generating-a-substitution-frequency-matrix-sfm">
+</div>
+<div class="section" id="generating-a-substitution-frequency-matrix-sfm">
 <h3>Generating a substitution frequency matrix (SFM):<a class="headerlink" href="#generating-a-substitution-frequency-matrix-sfm" title="Permalink to this headline">¶</a></h3>
 <p>Use: SFM = _build_subs_mat(OFM,EFM)
 Accepts an OFM, EFM. Provides the division product of the corresponding
 values.</p>
-</section>
-<section id="generating-a-log-odds-matrix-lom">
+</div>
+<div class="section" id="generating-a-log-odds-matrix-lom">
 <h3>Generating a log-odds matrix (LOM):<a class="headerlink" href="#generating-a-log-odds-matrix-lom" title="Permalink to this headline">¶</a></h3>
 <p>Use: LOM=_build_log_odds_mat(SFM[,logbase=10,factor=10.0,roundit=1])
 Accepts an SFM. logbase: base of the logarithm used to generate the
@@ -314,15 +313,15 @@ log-odds values. factor: factor used to multiply the log-odds values.
 roundit: default - true. Whether to round the values.
 Each entry is generated by log(LOM[key])*factor
 And rounded if required.</p>
-</section>
-<section id="external">
+</div>
+<div class="section" id="external">
 <h3>External:<a class="headerlink" href="#external" title="Permalink to this headline">¶</a></h3>
 <p>In most cases, users will want to generate a log-odds matrix only, without
 explicitly calling the OFM –&gt; EFM –&gt; SFM stages. The function
 build_log_odds_matrix does that. User provides an ARM and an expected
 frequency table. The function returns the log-odds matrix.</p>
-</section>
-<section id="methods-for-subtraction-addition-and-multiplication-of-matrices">
+</div>
+<div class="section" id="methods-for-subtraction-addition-and-multiplication-of-matrices">
 <h3>Methods for subtraction, addition and multiplication of matrices:<a class="headerlink" href="#methods-for-subtraction-addition-and-multiplication-of-matrices" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>Generation of an expected frequency table from an observed frequency
@@ -482,9 +481,9 @@ two matrices (if other is a matrix of the same size).</p>
 <dd><p>Return Jensen-Shannon Distance between two observed frequence matrices.</p>
 </dd></dl>
 
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
            </div>
