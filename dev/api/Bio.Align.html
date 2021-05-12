@@ -1134,6 +1134,65 @@ differ from each other in terms of their gap placement only:</p>
 to each other in terms of their aligned sequences.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.PairwiseAlignment.map">
+<span class="sig-name descname"><span class="pre">map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map the alignment to self.target and return the resulting alignment.</p>
+<p>Here, self.query and alignment.target are the same sequence.</p>
+<p>A typical example is where self is the pairwise alignment between a
+chromosome and a transcript, the argument is the pairwise alignment
+between the transcript and a sequence (e.g., as obtained by RNA-seq),
+and we want to find the alignment of the sequence to the chromosome:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">PairwiseAligner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;local&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">open_gap_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">extend_gap_score</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chromosome</span> <span class="o">=</span> <span class="s2">&quot;AAAAAAAACCCCCCCAAAAAAAAAAAGGGGGGAAAAAAAA&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transcript</span> <span class="o">=</span> <span class="s2">&quot;CCCCCCCGGGGGG&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments1</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">chromosome</span><span class="p">,</span> <span class="n">transcript</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments1</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment1</span> <span class="o">=</span> <span class="n">alignments1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment1</span><span class="p">)</span>
+<span class="go">AAAAAAAACCCCCCCAAAAAAAAAAAGGGGGGAAAAAAAA</span>
+<span class="go">        |||||||-----------||||||        </span>
+<span class="go">        CCCCCCC-----------GGGGGG        </span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequence</span> <span class="o">=</span> <span class="s2">&quot;CCCCGGGG&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments2</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">transcript</span><span class="p">,</span> <span class="n">sequence</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments2</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment2</span> <span class="o">=</span> <span class="n">alignments2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment2</span><span class="p">)</span>
+<span class="go">CCCCCCCGGGGGG</span>
+<span class="go">   ||||||||  </span>
+<span class="go">   CCCCGGGG  </span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignment1</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">alignment2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">AAAAAAAACCCCCCCAAAAAAAAAAAGGGGGGAAAAAAAA</span>
+<span class="go">           ||||-----------||||          </span>
+<span class="go">           CCCC-----------GGGG          </span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="s2">&quot;psl&quot;</span><span class="p">)</span>
+<span class="go">&#39;8\t0\t0\t0\t0\t0\t1\t11\t+\tquery\t8\t0\t8\ttarget\t40\t11\t30\t2\t4,4,\t0,4,\t11,26,\n&#39;</span>
+</pre></div>
+</div>
+<p>Mapping the alignment does not depend on the sequence contents. If we
+delete the sequence contents, the same alignment is found in PSL format
+(though we obviously lose the ability to print the sequence alignment):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment1</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">alignment1</span><span class="o">.</span><span class="n">target</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment1</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">alignment1</span><span class="o">.</span><span class="n">query</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment2</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">alignment2</span><span class="o">.</span><span class="n">target</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment2</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">alignment2</span><span class="o">.</span><span class="n">query</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignment1</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">alignment2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="s2">&quot;psl&quot;</span><span class="p">)</span>
+<span class="go">&#39;8\t0\t0\t0\t0\t0\t1\t11\t+\tquery\t8\t0\t8\ttarget\t40\t11\t30\t2\t4,4,\t0,4,\t11,26,\n&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.Align.PairwiseAlignment.__hash__">
 <span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__hash__" title="Permalink to this definition">¶</a></dt>
