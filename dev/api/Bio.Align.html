@@ -1193,6 +1193,73 @@ delete the sequence contents, the same alignment is found in PSL format
 </div>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.PairwiseAlignment.substitutions">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">substitutions</span></span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.substitutions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an Array with the number of substitutions of letters in the alignment.</p>
+<p>As an example, consider a sequence alignment of two RNA sequences:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">PairwiseAligner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="s2">&quot;ATACTTACCTGGCAGGGGAGATACCATGATCACGAAGGTGGTTTTCCCAGGGCGAGGCTTATCCATTGCACTCCGGATGTGCTGACCCCTGCGATTTCCCCAAATGTGGGAAACTCGACTGCATAATTTGTGGTAGTGGGGGACTGCGTTCGCGCTTTCCCCTG&quot;</span>  <span class="c1"># human spliceosomal small nuclear RNA U1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;ATACTTACCTGACAGGGGAGGCACCATGATCACACAGGTGGTCCTCCCAGGGCGAGGCTCTTCCATTGCACTGCGGGAGGGTTGACCCCTGCGATTTCCCCAAATGTGGGAAACTCGACTGTATAATTTGTGGTAGTGGGGGACTGCGTTCGCGCTATCCCCCG&quot;</span>  <span class="c1"># sea lamprey spliceosomal small RNA U1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">gap_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">ATACTTACCTGGCAGGGGAGATACCATGATCACGAAGGTGGTTTTCCCAGGGCGAGGCTTATCCATTGCACTCCGGATGTGCTGACCCCTGCGATTTCCCCAAATGTGGGAAACTCGACTGCATAATTTGTGGTAGTGGGGGACTGCGTTCGCGCTTTCCCCTG</span>
+<span class="go">|||||||||||.||||||||..|||||||||||..|||||||..|||||||||||||||..|||||||||||.|||..|.|.|||||||||||||||||||||||||||||||||||||||.||||||||||||||||||||||||||||||||||.|||||.|</span>
+<span class="go">ATACTTACCTGACAGGGGAGGCACCATGATCACACAGGTGGTCCTCCCAGGGCGAGGCTCTTCCATTGCACTGCGGGAGGGTTGACCCCTGCGATTTCCCCAAATGTGGGAAACTCGACTGTATAATTTGTGGTAGTGGGGGACTGCGTTCGCGCTATCCCCCG</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">alignment</span><span class="o">.</span><span class="n">substitutions</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="go">     A    C    G    T</span>
+<span class="go">A 28.0  1.0  2.0  1.0</span>
+<span class="go">C  0.0 39.0  1.0  2.0</span>
+<span class="go">G  2.0  0.0 45.0  0.0</span>
+<span class="go">T  2.0  5.0  1.0 35.0</span>
+</pre></div>
+</div>
+<p>Note that the matrix is not symmetric: rows correspond to the target
+sequence, and columns to the query sequence.  For example, the number
+of T’s in the target sequence that are aligned to a C in the query
+sequence is</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
+<span class="go">5.0</span>
+</pre></div>
+</div>
+<p>and the number of C’s in the query sequence tat are aligned to a T in
+the query sequence is</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">]</span>
+<span class="go">2.0</span>
+</pre></div>
+</div>
+<p>For some applications (for example, to define a scoring matrix from
+the substitution matrix), a symmetric matrix may be preferred, which
+can be calculated as follows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">+=</span> <span class="n">m</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">/=</span> <span class="mf">2.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="go">     A    C    G    T</span>
+<span class="go">A 28.0  0.5  2.0  1.5</span>
+<span class="go">C  0.5 39.0  0.5  3.5</span>
+<span class="go">G  2.0  0.5 45.0  0.5</span>
+<span class="go">T  1.5  3.5  0.5 35.0</span>
+</pre></div>
+</div>
+<p>The matrix is now symmetric, with counts divided equally on both sides
+of the diagonal:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">]</span>
+<span class="go">3.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
+<span class="go">3.5</span>
+</pre></div>
+</div>
+<p>The total number of substitutions between T’s and C’s in the alignment
+is 3.5 + 3.5 = 7.</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.Align.PairwiseAlignment.__hash__">
 <span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"> <span class="pre">=</span> <span class="pre">None</span></em><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__hash__" title="Permalink to this definition">¶</a></dt>
