@@ -1202,6 +1202,54 @@ to each other in terms of their aligned sequences.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.PairwiseAlignment.sort">
+<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the sequences of the alignment in place.</p>
+<p>By default, this sorts the sequences alphabetically using their id
+attribute if available, or by their sequence contents otherwise.
+For example,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">PairwiseAligner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">gap_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;AATAA&quot;</span><span class="p">,</span> <span class="s2">&quot;AAGAA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">AATAA</span>
+<span class="go">||.||</span>
+<span class="go">AAGAA</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">AAGAA</span>
+<span class="go">||.||</span>
+<span class="go">AATAA</span>
+</pre></div>
+</div>
+<p>Alternatively, a key function can be supplied that maps each sequence
+to a sort value.  For example, you could sort on the GC content of each
+sequence.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">GC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">GC</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">AATAA</span>
+<span class="go">||.||</span>
+<span class="go">AAGAA</span>
+</pre></div>
+</div>
+<p>You can reverse the sort order by passing <cite>reverse=True</cite>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">GC</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">AAGAA</span>
+<span class="go">||.||</span>
+<span class="go">AATAA</span>
+</pre></div>
+</div>
+<p>The sequences are now sorted by decreasing GC content value.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.PairwiseAlignment.map">
 <span class="sig-name descname"><span class="pre">map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Map the alignment to self.target and return the resulting alignment.</p>
