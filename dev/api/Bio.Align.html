@@ -992,24 +992,25 @@ over a PairwiseAlignments object.</p>
 <dt class="sig sig-object py" id="Bio.Align.PairwiseAlignment.__getitem__">
 <span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAlignment.__getitem__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return self[key].</p>
-<p>Currently, this is implemented only for indices of the form</p>
+<p>Indices of the form</p>
 <p>self[:, :]</p>
-<p>which returns a copy of the PairwiseAlignment object;</p>
+<p>return a copy of the PairwiseAlignment object;</p>
 <p>self[:, i:]
 self[:, :j]
 self[:, i:j]</p>
-<p>which returns a new PairwiseAlignment object spanning the selected
+<p>return a new PairwiseAlignment object spanning the selected
 columns;</p>
 <p>self[k, i]
 self[k, i:]
 self[k, :j]
 self[k, i:j]
+self[k, iterable] (where iterable returns integers)
 self[k] (equivalent to self[k, :])</p>
-<p>which returns a string with the aligned sequence (including gaps)
-for the selected columns, where k = 0 represents the target and
-k = 1 represents the query sequence; and</p>
+<p>return a string with the aligned sequence (including gaps) for the
+selected columns, where k = 0 represents the target and k = 1
+represents the query sequence; and</p>
 <p>self[:, i]</p>
-<p>which returns a string with the selected column in the alignment.</p>
+<p>returns a string with the selected column in the alignment.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">PairwiseAligner</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;ACCGGTTT&quot;</span><span class="p">,</span> <span class="s2">&quot;ACGGGTT&quot;</span><span class="p">)</span>
@@ -1031,6 +1032,10 @@ k = 1 represents the query sequence; and</p>
 <span class="go">&#39;CCGG-T&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
 <span class="go">&#39;C-GGGT&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
+<span class="go">&#39;CC-&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="go">&#39;A-GT-&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="go">&#39;AA&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span>
