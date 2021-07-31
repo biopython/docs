@@ -1,39 +1,26 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
   
-  <title>Bio.bgzf module &mdash; Biopython 1.80.dev0 documentation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
-
-  
+  <title>Bio.bgzf module &mdash; Biopython 1.79.dev0 documentation</title>
   
 
   
   
-
+  
   
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
@@ -41,9 +28,14 @@
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Bio.kNN module" href="Bio.kNN.html" />
+    <link rel="next" title="Bio.cpairwise2 module" href="Bio.cpairwise2.html" />
     <link rel="prev" title="Bio.SeqRecord module" href="Bio.SeqRecord.html" /> 
 </head>
 
@@ -81,7 +73,6 @@
           
         </div>
 
-        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -110,6 +101,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#text-mode">Text Mode</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.cpairwise2.html">Bio.cpairwise2 module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Bio.kNN.html">Bio.kNN module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Bio.pairwise2.html">Bio.pairwise2 module</a></li>
 </ul>
@@ -123,7 +115,6 @@
             
           
         </div>
-        
       </div>
     </nav>
 
@@ -160,13 +151,11 @@
 
 
 
-
-
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html">Docs</a> &raquo;</li>
         
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
         
@@ -175,7 +164,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-          
+            
             
               <!-- User defined GitHub URL -->
               <a href="https://github.com/biopython/biopython/blob/master/Bio/bgzf.py" class="fa fa-github"> Edit on GitHub</a>
@@ -189,10 +178,10 @@
   
   <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
       
-        <a href="Bio.kNN.html" class="btn btn-neutral float-right" title="Bio.kNN module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Bio.cpairwise2.html" class="btn btn-neutral float-right" title="Bio.cpairwise2 module" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Bio.SeqRecord.html" class="btn btn-neutral float-left" title="Bio.SeqRecord module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.SeqRecord.html" class="btn btn-neutral float-left" title="Bio.SeqRecord module" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
   </div>
   
@@ -201,7 +190,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <section id="module-Bio.bgzf">
+  <div class="section" id="module-Bio.bgzf">
 <span id="bio-bgzf-module"></span><h1>Bio.bgzf module<a class="headerlink" href="#module-Bio.bgzf" title="Permalink to this headline">¶</a></h1>
 <p>Read and write BGZF compressed files (the GZIP variant used in BAM).</p>
 <p>The SAM/BAM file format (Sequence Alignment/Map) comes in a plain text
@@ -212,7 +201,7 @@ efficient random access. BGZF is described together with the SAM/BAM
 file format at <a class="reference external" href="http://samtools.sourceforge.net/SAM1.pdf">http://samtools.sourceforge.net/SAM1.pdf</a></p>
 <p>Please read the text below about ‘virtual offsets’ before using BGZF
 files for random access.</p>
-<section id="aim-of-this-module">
+<div class="section" id="aim-of-this-module">
 <h2>Aim of this module<a class="headerlink" href="#aim-of-this-module" title="Permalink to this headline">¶</a></h2>
 <p>The Python gzip library can be used to read BGZF files, since for
 decompression they are just (specialised) gzip files. What this
@@ -227,8 +216,8 @@ data (in the sense of one record after another), such as most of
 the sequence data formats supported in Bio.SeqIO (like FASTA,
 FASTQ, GenBank, etc) or large MAF alignments.</p>
 <p>The Bio.SeqIO indexing functions use this module to support BGZF files.</p>
-</section>
-<section id="technical-introduction-to-bgzf">
+</div>
+<div class="section" id="technical-introduction-to-bgzf">
 <h2>Technical Introduction to BGZF<a class="headerlink" href="#technical-introduction-to-bgzf" title="Permalink to this headline">¶</a></h2>
 <p>The gzip file format allows multiple compressed blocks, each of which
 could be a stand alone gzip file. As an interesting bonus, this means
@@ -266,8 +255,8 @@ is at most 2^16 bytes, or 64kb. Note that this matches the BGZF
 2^16 bytes, allowing for BAM files to use BGZF with no gzip
 compression (useful for intermediate files in memory to reduce
 CPU load).</p>
-</section>
-<section id="warning-about-namespaces">
+</div>
+<div class="section" id="warning-about-namespaces">
 <h2>Warning about namespaces<a class="headerlink" href="#warning-about-namespaces" title="Permalink to this headline">¶</a></h2>
 <p>It is considered a bad idea to use “from XXX import <code class="docutils literal notranslate"><span class="pre">*</span></code>” in Python, because
 it pollutes the namespace. This is a real issue with Bio.bgzf (and the
@@ -295,8 +284,8 @@ need to by importing the built-in open function:</p>
 <span class="go">Bio.bgzf</span>
 </pre></div>
 </div>
-</section>
-<section id="examples">
+</div>
+<div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <p>This is an ordinary GenBank file compressed using BGZF, so it can
 be decompressed using gzip,</p>
@@ -395,8 +384,8 @@ you want to index BGZF compressed sequence files:</p>
 <span class="go">NC_000932.1</span>
 </pre></div>
 </div>
-</section>
-<section id="text-mode">
+</div>
+<div class="section" id="text-mode">
 <h2>Text Mode<a class="headerlink" href="#text-mode" title="Permalink to this headline">¶</a></h2>
 <p>Like the standard library gzip.open(…), the BGZF code defaults to opening
 files in binary mode.</p>
@@ -415,14 +404,14 @@ potentially other character maps (not implemented).</p>
 <p>Furthermore, unlike the default text mode on Python 3, we do not attempt to
 implement universal new line mode. This transforms the various operating system
 new line conventions like Windows (CR LF or “rn”), Unix (just LF, “n”), or
-old Macs (just CR, “r”), into just LF (”n”). Here we have the same problem -
+old Macs (just CR, “r”), into just LF (“n”). Here we have the same problem -
 is “r” at the end of a block an incomplete Windows style new line?</p>
-<p>Instead, you will get the CR (”r”) and LF (”n”) characters as is.</p>
+<p>Instead, you will get the CR (“r”) and LF (“n”) characters as is.</p>
 <p>If your data is in UTF-8 or any other incompatible encoding, you must use
 binary mode, and decode the appropriate fragments yourself.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="Bio.bgzf.open">
-<span class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></span><span class="sig-name descname"><span class="pre">open</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rb'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.open" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.open">
+<code class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></code><code class="sig-name descname"><span class="pre">open</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'rb'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.open" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open a BGZF file for reading, writing or appending.</p>
 <p>If text mode is requested, in order to avoid multi-byte characters, this is
 hard coded to use the “latin1” encoding, and “r” and “n” are passed as is
@@ -432,8 +421,8 @@ binary mode, and decode the appropriate fragments yourself.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="Bio.bgzf.make_virtual_offset">
-<span class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></span><span class="sig-name descname"><span class="pre">make_virtual_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block_start_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">within_block_offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.make_virtual_offset" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.make_virtual_offset">
+<code class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></code><code class="sig-name descname"><span class="pre">make_virtual_offset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">block_start_offset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">within_block_offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.make_virtual_offset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute a BGZF virtual offset from block start and within block offsets.</p>
 <p>The BAM indexing scheme records read positions using a 64 bit
 ‘virtual offset’, comprising in C terms:</p>
@@ -479,8 +468,8 @@ within_block_offset within the (decompressed) block (unsigned
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="Bio.bgzf.split_virtual_offset">
-<span class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></span><span class="sig-name descname"><span class="pre">split_virtual_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">virtual_offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.split_virtual_offset" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.split_virtual_offset">
+<code class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></code><code class="sig-name descname"><span class="pre">split_virtual_offset</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">virtual_offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.split_virtual_offset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Divides a 64-bit BGZF virtual offset into block start &amp; within block offsets.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">split_virtual_offset</span><span class="p">(</span><span class="mi">6553600000</span><span class="p">)</span>
 <span class="go">True</span>
@@ -491,8 +480,8 @@ within_block_offset within the (decompressed) block (unsigned
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfBlocks">
-<span class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></span><span class="sig-name descname"><span class="pre">BgzfBlocks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfBlocks" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfBlocks">
+<code class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></code><code class="sig-name descname"><span class="pre">BgzfBlocks</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfBlocks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Low level debugging function to inspect BGZF blocks.</p>
 <p>Expects a BGZF compressed file opened in binary read mode using
 the builtin open function. Do not use a handle from this bgzf
@@ -561,8 +550,8 @@ the blocks show the same sizes (they contain the same read data):</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></span><span class="sig-name descname"><span class="pre">BgzfReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileobj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></code><code class="sig-name descname"><span class="pre">BgzfReader</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileobj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>BGZF reader, acts like a read only handle but seek/tell differ.</p>
 <p>Let’s use the BgzfBlocks function to have a peak at the BGZF blocks
@@ -626,111 +615,111 @@ block can be up to 64kb, the default cache could take up to 6MB of
 RAM. The cache is not important for reading through the file in one
 pass, but is important for improving performance of random access.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileobj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileobj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_cache</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the class.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.tell">
-<span class="sig-name descname"><span class="pre">tell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.tell" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.tell">
+<code class="sig-name descname"><span class="pre">tell</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.tell" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a 64-bit unsigned BGZF virtual offset.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.seek">
-<span class="sig-name descname"><span class="pre">seek</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual_offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.seek" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.seek">
+<code class="sig-name descname"><span class="pre">seek</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual_offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.seek" title="Permalink to this definition">¶</a></dt>
 <dd><p>Seek to a 64-bit unsigned BGZF virtual offset.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.read">
-<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.read" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.read">
+<code class="sig-name descname"><span class="pre">read</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.read" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read method for the BGZF module.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.readline">
-<span class="sig-name descname"><span class="pre">readline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.readline" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.readline">
+<code class="sig-name descname"><span class="pre">readline</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.readline" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read a single line for the BGZF file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.__next__">
-<span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.__next__" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.__next__">
+<code class="sig-name descname"><span class="pre">__next__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.__next__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the next line.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.__iter__">
-<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.__iter__" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.__iter__">
+<code class="sig-name descname"><span class="pre">__iter__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.__iter__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Iterate over the lines in the BGZF file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.close" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.close">
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close BGZF file.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.seekable">
-<span class="sig-name descname"><span class="pre">seekable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.seekable" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.seekable">
+<code class="sig-name descname"><span class="pre">seekable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.seekable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True indicating the BGZF supports random access.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.isatty">
-<span class="sig-name descname"><span class="pre">isatty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.isatty" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.isatty">
+<code class="sig-name descname"><span class="pre">isatty</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.isatty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if connected to a TTY device.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.fileno">
-<span class="sig-name descname"><span class="pre">fileno</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.fileno" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.fileno">
+<code class="sig-name descname"><span class="pre">fileno</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.fileno" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return integer file descriptor.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.__enter__">
-<span class="sig-name descname"><span class="pre">__enter__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.__enter__" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.__enter__">
+<code class="sig-name descname"><span class="pre">__enter__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.__enter__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open a file operable with WITH statement.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfReader.__exit__">
-<span class="sig-name descname"><span class="pre">__exit__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traceback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.__exit__" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfReader.__exit__">
+<code class="sig-name descname"><span class="pre">__exit__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traceback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfReader.__exit__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close a file with WITH statement.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></span><span class="sig-name descname"><span class="pre">BgzfWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'w'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileobj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compresslevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">Bio.bgzf.</span></code><code class="sig-name descname"><span class="pre">BgzfWriter</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'w'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileobj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compresslevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Define a BGZFWriter object.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'w'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileobj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compresslevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter.__init__">
+<code class="sig-name descname"><span class="pre">__init__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'w'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fileobj</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compresslevel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initilize the class.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter.write">
-<span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.write" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter.write">
+<code class="sig-name descname"><span class="pre">write</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write method for the class.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter.flush">
-<span class="sig-name descname"><span class="pre">flush</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.flush" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter.flush">
+<code class="sig-name descname"><span class="pre">flush</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.flush" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flush data explicitally.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter.close">
-<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.close" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter.close">
+<code class="sig-name descname"><span class="pre">close</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Flush data, write 28 bytes BGZF EOF marker, and close BGZF file.</p>
 <p>samtools will look for a magic EOF marker, just a 28 byte empty BGZF
 block, and if it is missing warns the BAM file may be truncated. In
@@ -739,74 +728,74 @@ implementation does too.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter.tell">
-<span class="sig-name descname"><span class="pre">tell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.tell" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter.tell">
+<code class="sig-name descname"><span class="pre">tell</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.tell" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a BGZF 64-bit virtual offset.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter.seekable">
-<span class="sig-name descname"><span class="pre">seekable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.seekable" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter.seekable">
+<code class="sig-name descname"><span class="pre">seekable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.seekable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True indicating the BGZF supports random access.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter.isatty">
-<span class="sig-name descname"><span class="pre">isatty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.isatty" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter.isatty">
+<code class="sig-name descname"><span class="pre">isatty</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.isatty" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return True if connected to a TTY device.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter.fileno">
-<span class="sig-name descname"><span class="pre">fileno</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.fileno" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter.fileno">
+<code class="sig-name descname"><span class="pre">fileno</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.fileno" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return integer file descriptor.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter.__enter__">
-<span class="sig-name descname"><span class="pre">__enter__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.__enter__" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter.__enter__">
+<code class="sig-name descname"><span class="pre">__enter__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.__enter__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open a file operable with WITH statement.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.bgzf.BgzfWriter.__exit__">
-<span class="sig-name descname"><span class="pre">__exit__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traceback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.__exit__" title="Permalink to this definition">¶</a></dt>
+<dt id="Bio.bgzf.BgzfWriter.__exit__">
+<code class="sig-name descname"><span class="pre">__exit__</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">traceback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.bgzf.BgzfWriter.__exit__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close a file with WITH statement.</p>
 </dd></dl>
 
 </dd></dl>
 
-</section>
-</section>
+</div>
+</div>
 
 
            </div>
            
           </div>
           <footer>
+  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="Bio.kNN.html" class="btn btn-neutral float-right" title="Bio.kNN module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="Bio.SeqRecord.html" class="btn btn-neutral float-left" title="Bio.SeqRecord module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+      
+        <a href="Bio.cpairwise2.html" class="btn btn-neutral float-right" title="Bio.cpairwise2 module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Bio.SeqRecord.html" class="btn btn-neutral float-left" title="Bio.SeqRecord module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
     </div>
+  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &#169; Copyright 1999-2020, The Biopython Contributors.
+        &copy; Copyright 1999-2020, The Biopython Contributors
 
     </p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
+
         </div>
       </div>
 
@@ -818,14 +807,14 @@ implementation does too.</p>
 
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
-      Biopython v: 1.80.dev0
+      Biopython v: 1.79.dev0
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
       <dl>
         <dt>Versions</dt>
         
-          <dd><a href="../../1.78/api/">Previous</a></dd>
+          <dd><a href="../../1.77/api/">Previous</a></dd>
         
           <dd><a href="../../latest/api/">Latest</a></dd>
         
