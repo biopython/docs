@@ -131,7 +131,7 @@
 <p>PICIO: read and write Protein Internal Coordinate (.pic) data files.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="Bio.PDB.PICIO.read_PIC">
-<span class="sig-prename descclassname"><span class="pre">Bio.PDB.PICIO.</span></span><span class="sig-name descname"><span class="pre">read_PIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file:</span> <span class="pre">&lt;class</span> <span class="pre">'TextIO'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="Bio.PDB.Structure.html#Bio.PDB.Structure.Structure" title="Bio.PDB.Structure.Structure"><span class="pre">Bio.PDB.Structure.Structure</span></a></span></span><a class="headerlink" href="#Bio.PDB.PICIO.read_PIC" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Bio.PDB.PICIO.</span></span><span class="sig-name descname"><span class="pre">read_PIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file:</span> <span class="pre">&lt;class</span> <span class="pre">'TextIO'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quick:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">defaults:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="Bio.PDB.Structure.html#Bio.PDB.Structure.Structure" title="Bio.PDB.Structure.Structure"><span class="pre">Bio.PDB.Structure.Structure</span></a></span></span><a class="headerlink" href="#Bio.PDB.PICIO.read_PIC" title="Permalink to this definition"></a></dt>
 <dd><p>Load Protein Internal Coordinate (.pic) data from file.</p>
 <dl class="simple">
 <dt>PIC file format:</dt><dd><ul class="simple">
@@ -160,28 +160,40 @@
 </dd>
 </dl>
 <p>An improvement would define relative positions for HOH (water) entries.</p>
+<p>Defaults will be supplied for any value if defaults=True.  Default values
+are supplied in ic_data.py, but structures degrade quickly with any
+deviation from true coordinates.  Experiment with
+<a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.pic_flags" title="Bio.PDB.internal_coords.IC_Residue.pic_flags"><code class="xref py py-data docutils literal notranslate"><span class="pre">Bio.PDB.internal_coords.IC_Residue.pic_flags</span></code></a> options to
+<a class="reference internal" href="#Bio.PDB.PICIO.write_PIC" title="Bio.PDB.PICIO.write_PIC"><code class="xref py py-func docutils literal notranslate"><span class="pre">write_PIC()</span></code></a> to verify this.</p>
 <p>N.B. dihedron (i-1)C-N-CA-CB is ignored in assembly if O exists.</p>
 <p>C-beta is by default placed using O-C-CA-CB, but O is missing
 in some PDB file residues, which means the sidechain cannot be
 placed.  The alternate CB path (i-1)C-N-CA-CB is provided to
 circumvent this, but if this is needed then it must be adjusted in
-conjunction with PHI ((i-1)C-N-CA-C) as they overlap.  (i-1)C-N-CA-CB is
-included by default in .pic files for consistency and informational
-(e.g. statistics gathering) purposes, as otherwise the dihedron would only
-appear in the few cases it is needed for.</p>
+conjunction with PHI ((i-1)C-N-CA-C) as they overlap (see <a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.bond_set" title="Bio.PDB.internal_coords.IC_Residue.bond_set"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bond_set()</span></code></a>
+and <a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.bond_rotate" title="Bio.PDB.internal_coords.IC_Residue.bond_rotate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bond_rotate()</span></code></a> to handle this automatically).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>file</strong> (<em>Bio.File</em>) – file name or handle</p></li>
+<li><p><strong>file</strong> (<em>Bio.File</em>) – <a class="reference internal" href="Bio.File.html#Bio.File.as_handle" title="Bio.File.as_handle"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_handle()</span></code></a> file name or handle</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em>) – complain when lines not as expected</p></li>
+<li><p><strong>quick</strong> (<em>bool</em>) – don’t check residues for all dihedra (no default values)</p></li>
+<li><p><strong>defaults</strong> (<em>bool</em>) – create di/hedra as needed from reference database.
+Amide proton created if ‘H’ is in IC_Residue.accept_atoms</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Biopython Structure object, Residues with .internal_coord attributes
-but no coordinates except for chain start N, CA, C atoms if supplied,
-<strong>OR</strong> None on parse fail (silent unless verbose=True)</p>
+<dd class="field-even"><p>Biopython Structure object, Residues with .internal_coord
+attributes but no coordinates except for chain start N, CA, C atoms if
+supplied, <strong>OR</strong> None on parse fail (silent unless verbose=True)</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.PDB.PICIO.read_PIC_seq">
+<span class="sig-prename descclassname"><span class="pre">Bio.PDB.PICIO.</span></span><span class="sig-name descname"><span class="pre">read_PIC_seq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seqRec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><s><span class="pre">'SeqIO.SeqRecord'</span></s></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdbid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="Bio.PDB.Structure.html#Bio.PDB.Structure.Structure" title="Bio.PDB.Structure.Structure"><span class="pre">Bio.PDB.Structure.Structure</span></a></span></span><a class="headerlink" href="#Bio.PDB.PICIO.read_PIC_seq" title="Permalink to this definition"></a></dt>
+<dd><p>Read <a class="reference internal" href="Bio.SeqRecord.html#Bio.SeqRecord.SeqRecord" title="Bio.SeqRecord.SeqRecord"><code class="xref py py-class docutils literal notranslate"><span class="pre">SeqRecord</span></code></a> into Structure with default internal coords.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -198,21 +210,87 @@ but no coordinates except for chain start N, CA, C atoms if supplied,
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Bio.PDB.PICIO.write_PIC">
-<span class="sig-prename descclassname"><span class="pre">Bio.PDB.PICIO.</span></span><span class="sig-name descname"><span class="pre">write_PIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdbid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chainid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PICIO.write_PIC" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Bio.PDB.PICIO.</span></span><span class="sig-name descname"><span class="pre">write_PIC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdbid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chainid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">picFlags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">IC_Residue.picFlagsDefault</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hCut</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pCut</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PICIO.write_PIC" title="Permalink to this definition"></a></dt>
 <dd><p>Write Protein Internal Coordinates (PIC) to file.</p>
-<p>See read_PIC() for file format.  Recurses to lower entity levels (M, C, R).</p>
+<p>See <a class="reference internal" href="#Bio.PDB.PICIO.read_PIC" title="Bio.PDB.PICIO.read_PIC"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_PIC()</span></code></a> for file format.
+Recurses to lower entity levels (M, C, R).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>entity</strong> (<a class="reference internal" href="Bio.PDB.Entity.html#Bio.PDB.Entity.Entity" title="Bio.PDB.Entity.Entity"><em>Entity</em></a>) – Biopython PDB Entity object: S, M, C or R</p></li>
-<li><p><strong>file</strong> (<em>Bio.File</em>) – file name or handle</p></li>
+<li><p><strong>file</strong> (<em>Bio.File</em>) – <a class="reference internal" href="Bio.File.html#Bio.File.as_handle" title="Bio.File.as_handle"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_handle()</span></code></a> file name or handle</p></li>
 <li><p><strong>pdbid</strong> (<em>str</em>) – PDB idcode, read from entity if not supplied</p></li>
 <li><p><strong>chainid</strong> (<em>char</em>) – PDB Chain ID, set from C level entity.id if needed</p></li>
+<li><p><strong>picFlags</strong> (<em>int</em>) – <p>boolean flags controlling output, defined in
+<a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.pic_flags" title="Bio.PDB.internal_coords.IC_Residue.pic_flags"><code class="xref py py-data docutils literal notranslate"><span class="pre">Bio.PDB.internal_coords.IC_Residue.pic_flags</span></code></a></p>
+<ul>
+<li><p>”psi”,</p></li>
+<li><p>”omg”,</p></li>
+<li><p>”phi”,</p></li>
+<li><p>”tau”,  # tau hedron (N-Ca-C)</p></li>
+<li><p>”chi1”,</p></li>
+<li><p>”chi2”,</p></li>
+<li><p>”chi3”,</p></li>
+<li><p>”chi4”,</p></li>
+<li><p>”chi5”,</p></li>
+<li><p>”pomg”,  # proline omega</p></li>
+<li><p>”chi”,   # chi1 through chi5</p></li>
+<li><p>”classic_b”,  # psi | phi | tau | pomg</p></li>
+<li><p>”classic”,    # classic_b | chi</p></li>
+<li><p>”hedra”,      # all hedra including bond lengths</p></li>
+<li><p>”primary”,    # all primary dihedra</p></li>
+<li><p>”secondary”,  # all secondary dihedra</p></li>
+<li><p>”all”,        # hedra | primary | secondary</p></li>
+<li><p>”initAtoms”,  # XYZ coordinates of initial Tau (N-Ca-C)</p></li>
+<li><p>”bFactors”</p></li>
+</ul>
+<p>default is everything:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picFlagsDefault</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pic_flags</span><span class="o">.</span><span class="n">all</span> <span class="o">|</span> <span class="n">pic_flags</span><span class="o">.</span><span class="n">initAtoms</span> <span class="o">|</span> <span class="n">pic_flags</span><span class="o">.</span><span class="n">bFactors</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Usage in your code:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># just primary dihedra and all hedra</span>
+<span class="n">picFlags</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">IC_Residue</span><span class="o">.</span><span class="n">pic_flags</span><span class="o">.</span><span class="n">primary</span> <span class="o">|</span> <span class="n">IC_Residue</span><span class="o">.</span><span class="n">pic_flags</span><span class="o">.</span><span class="n">hedra</span>
+<span class="p">)</span>
+
+<span class="c1"># no B-factors:</span>
+<span class="n">picFlags</span> <span class="o">=</span> <span class="n">IC_Residue</span><span class="o">.</span><span class="n">picFlagsDefault</span>
+<span class="n">picFlags</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">IC_Residue</span><span class="o">.</span><span class="n">pic_flags</span><span class="o">.</span><span class="n">bFactors</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="#Bio.PDB.PICIO.read_PIC" title="Bio.PDB.PICIO.read_PIC"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_PIC()</span></code></a> with <cite>(defaults=True)</cite> will use default values for
+anything left out</p>
+</p></li>
+<li><p><strong>hCut</strong> (<em>float</em>) – default None
+only write hedra with ref db angle std dev greater than this value</p></li>
+<li><p><strong>pCut</strong> (<em>float</em>) – default None
+only write primary dihedra with ref db angle std dev greater than this
+value</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
-<dd class="field-even"><ul class="simple">
-<li><p><a class="reference internal" href="Bio.PDB.PDBExceptions.html#Bio.PDB.PDBExceptions.PDBException" title="Bio.PDB.PDBExceptions.PDBException"><strong>PDBException</strong></a> – if entity level not S, M, C, or R</p></li>
+</dl>
+<p><strong>Default values</strong>:</p>
+<p>Data averaged from Sep 2019 Dunbrack cullpdb_pc20_res2.2_R1.0.</p>
+<p>Please see</p>
+<p><a class="reference external" href="https://dunbrack.fccc.edu/pisces/">PISCES: A Protein Sequence Culling Server</a></p>
+<p>‘G. Wang and R. L. Dunbrack, Jr. PISCES: a protein sequence culling
+server. Bioinformatics, 19:1589-1591, 2003.’</p>
+<p>‘primary’ and ‘secondary’ dihedra are defined in ic_data.py.  Specifically,
+secondary dihedra can be determined as a fixed rotation from another known
+angle, for example N-Ca-C-O can be estimated from N-Ca-C-N (psi).</p>
+<p>Standard deviations are listed in
+&lt;biopython distribution&gt;/Bio/PDB/ic_data.py for default values, and can be
+used to limit which hedra and dihedra are defaulted vs. output exact
+measurements from structure (see hCut and pCut above).  Default values for
+primary dihedra (psi, phi, omega, chi1, etc.) are chosen as the most common
+integer value, not an average.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference internal" href="Bio.PDB.PDBExceptions.html#Bio.PDB.PDBExceptions.PDBException" title="Bio.PDB.PDBExceptions.PDBException"><strong>PDBException</strong></a> – if entity level is A (Atom)</p></li>
 <li><p><strong>Exception</strong> – if entity does not have .level attribute</p></li>
 </ul>
 </dd>

@@ -138,23 +138,30 @@ a printable model from the script this software produces.  MeshMixer
 &lt;<a class="reference external" href="http://www.meshmixer.com/">http://www.meshmixer.com/</a>&gt;, various slicer software, and the 3D printer
 technology available to you provide options for addressing the problems around
 physically rendering the model.</p>
+<p>The model generated here consists of OpenSCAD primitives, e.g. spheres and
+cylinders, representing individual atoms and bonds in an explicit model of a
+protein structure.  The benefit is that individual atoms/bonds may be selected
+for specific print customizations relevant to 3D printing (such as rotatable
+bond mechanisms or hydrogen bond magnets).  Alternatively, use e.g. Chimera to
+render a structure as ribbons or similar for printing as a single object.</p>
 <p>I suggest generating your initial model using the OpenSCAD script provided
 here, then modifying that script according to your needs.  Changing the
 atomScale and bondRadius values can simplify the model by removing gaps and
-the corresponding need for supports, or you may wish to modify the hedronDispatch()
-routine to select residues or chain sections for printing separately and
-subsequently joining with rotatable bonds.  During this development phase you
-will likely have your version <cite>include</cite> only the data matrices generated here,
-by using the <cite>includeCode-False</cite> option to write_SCAD().  An example project
-with modifications of the script generated here is
-&lt;<a class="reference external" href="https://www.thingiverse.com/thing:3957471">https://www.thingiverse.com/thing:3957471</a>&gt;.</p>
+the corresponding need for supports, or you may wish to modify the
+hedronDispatch() routine to select residues or chain sections for printing
+separately and subsequently joining with rotatable bonds.  During this
+development phase you will likely have your version include only the data
+matrices generated here, by using the <cite>includeCode=False</cite> option to
+write_SCAD().  An example project using rotatable backbone and magnetic
+hydrogen bonds is at &lt;<a class="reference external" href="https://www.thingiverse.com/thing:3957471">https://www.thingiverse.com/thing:3957471</a>&gt;.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="Bio.PDB.SCADIO.write_SCAD">
-<span class="sig-prename descclassname"><span class="pre">Bio.PDB.SCADIO.</span></span><span class="sig-name descname"><span class="pre">write_SCAD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdbid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backboneOnly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">includeCode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxPeptideBond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'protein'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.SCADIO.write_SCAD" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Bio.PDB.SCADIO.</span></span><span class="sig-name descname"><span class="pre">write_SCAD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdbid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backboneOnly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">includeCode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxPeptideBond</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'protein'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.SCADIO.write_SCAD" title="Permalink to this definition"></a></dt>
 <dd><p>Write hedron assembly to file as OpenSCAD matrices.</p>
-<p>This routine calls both internal_to_atom_coordinates() and
-atom_to_internal_coordinates() due to requirements for scaling, explicit
-bonds around rings, and setting the coordinate space of the output model.</p>
+<p>This routine calls both <a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Chain.internal_to_atom_coordinates" title="Bio.PDB.internal_coords.IC_Chain.internal_to_atom_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IC_Chain.internal_to_atom_coordinates()</span></code></a> and
+<a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Chain.atom_to_internal_coordinates" title="Bio.PDB.internal_coords.IC_Chain.atom_to_internal_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IC_Chain.atom_to_internal_coordinates()</span></code></a> due to requirements for
+scaling, explicit bonds around rings, and setting the coordinate space of
+the output model.</p>
 <p>Output data format is primarily:</p>
 <ul class="simple">
 <li><dl class="simple">
@@ -172,29 +179,61 @@ matrices into a model suitable for a 3D printing project.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>entity</strong> – Biopython PDB structure entity
+<li><p><strong>entity</strong> – Biopython PDB <a class="reference internal" href="Bio.PDB.Structure.html#Bio.PDB.Structure.Structure" title="Bio.PDB.Structure.Structure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Structure</span></code></a> entity
 structure data to export</p></li>
-<li><p><strong>file</strong> – Bipoython as_handle filename or open file pointer
+<li><p><strong>file</strong> – Bipoython <a class="reference internal" href="Bio.File.html#Bio.File.as_handle" title="Bio.File.as_handle"><code class="xref py py-func docutils literal notranslate"><span class="pre">as_handle()</span></code></a> filename or open file pointer
 file to write data to</p></li>
-<li><p><strong>scale</strong> – float
-units (usually mm) per angstrom for STL output, written in output</p></li>
-<li><p><strong>pdbid</strong> – str
-PDB idcode, written in output. Defaults to ‘0PDB’ if not supplied
+<li><p><strong>scale</strong> (<em>float</em>) – units (usually mm) per angstrom for STL output, written in output</p></li>
+<li><p><strong>pdbid</strong> (<em>str</em>) – PDB idcode, written in output. Defaults to ‘0PDB’ if not supplied
 and no ‘idcode’ set in entity</p></li>
-<li><p><strong>backboneOnly</strong> – bool default False
+<li><p><strong>backboneOnly</strong> (<em>bool</em>) – default False.
 Do not output side chain data past Cbeta if True</p></li>
-<li><p><strong>includeCode</strong> – bool default True
+<li><p><strong>includeCode</strong> (<em>bool</em>) – default True.
 Include OpenSCAD software (inline below) so output file can be loaded
 into OpenSCAD; if False, output data matrices only</p></li>
-<li><p><strong>maxPeptideBond</strong> – Optional[float] default None
+<li><p><strong>maxPeptideBond</strong> (<em>float</em>) – Optional default None.
 Override the cut-off in IC_Chain class (default 1.4) for detecting
-chain breaks.  If your target has chain breaks, pass a large number here
-to create a very long ‘bond’ spanning the break.</p></li>
-<li><p><strong>handle</strong> – str, default ‘protein’
+chain breaks.  If your target has chain breaks, pass a large number
+here to create a very long ‘bond’ spanning the break.</p></li>
+<li><p><strong>start</strong><strong>,</strong><strong>fin</strong> (<em>int</em>) – default None
+Parameters for internal_to_atom_coords() to limit chain segment.</p></li>
+<li><p><strong>handle</strong> (<em>str</em>) – default ‘protein’
 name for top level of generated OpenSCAD matrix structure</p></li>
 </ul>
 </dd>
 </dl>
+<p>See <a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.set_flexible" title="Bio.PDB.internal_coords.IC_Residue.set_flexible"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IC_Residue.set_flexible()</span></code></a> to set flags for specific residues to
+have rotatable bonds, and <a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.set_hbond" title="Bio.PDB.internal_coords.IC_Residue.set_hbond"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IC_Residue.set_hbond()</span></code></a> to include cavities
+for small magnets to work as hydrogen bonds.
+See &lt;<a class="reference external" href="https://www.thingiverse.com/thing:3957471">https://www.thingiverse.com/thing:3957471</a>&gt; for implementation example.</p>
+<p>The OpenSCAD code explicitly creates spheres and cylinders to
+represent atoms and bonds in a 3D model.  Options are available
+to support rotatable bonds and magnetic hydrogen bonds.</p>
+<p>Matrices are written to link, enumerate and describe residues,
+dihedra, hedra, and chains, mirroring contents of the relevant IC_*
+data structures.</p>
+<p>The OpenSCAD matrix of hedra has additional information as follows:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>the atom and bond state (single, double, resonance) are logged</dt><dd><p>so that covalent radii may be used for atom spheres in the 3D models</p>
+</dd>
+</dl>
+</li>
+<li><p>bonds and atoms are tracked so that each is only created once</p></li>
+<li><dl class="simple">
+<dt>bond options for rotation and magnet holders for hydrogen bonds</dt><dd><p>may be specified (see <a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.set_flexible" title="Bio.PDB.internal_coords.IC_Residue.set_flexible"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IC_Residue.set_flexible()</span></code></a> and
+<a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.set_hbond" title="Bio.PDB.internal_coords.IC_Residue.set_hbond"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IC_Residue.set_hbond()</span></code></a> )</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Note the application of <a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Chain.MaxPeptideBond" title="Bio.PDB.internal_coords.IC_Chain.MaxPeptideBond"><code class="xref py py-data docutils literal notranslate"><span class="pre">Bio.PDB.internal_coords.IC_Chain.MaxPeptideBond</span></code></a>
+:  missing residues may be linked (joining chain segments with arbitrarily
+long bonds) by setting this to a large value.</p>
+<p>Note this uses the serial assembly per residue, placing each residue at
+the origin and supplying the coordinate space transform to OpenaSCAD</p>
+<p>All ALTLOC (disordered) residues and atoms are written to the output
+model.  (see <a class="reference internal" href="Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.no_altloc" title="Bio.PDB.internal_coords.IC_Residue.no_altloc"><code class="xref py py-data docutils literal notranslate"><span class="pre">Bio.PDB.internal_coords.IC_Residue.no_altloc</span></code></a>)</p>
 </dd></dl>
 
 </section>
