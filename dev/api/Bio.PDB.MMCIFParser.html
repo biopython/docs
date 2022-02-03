@@ -131,12 +131,12 @@
 <p>mmCIF parsers.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.PDB.MMCIFParser.MMCIFParser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.PDB.MMCIFParser.</span></span><span class="sig-name descname"><span class="pre">MMCIFParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QUIET</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.MMCIFParser.MMCIFParser" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.PDB.MMCIFParser.</span></span><span class="sig-name descname"><span class="pre">MMCIFParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_chains</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_residues</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QUIET</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.MMCIFParser.MMCIFParser" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Parse a mmCIF file and return a Structure object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.MMCIFParser.MMCIFParser.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure_builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QUIET</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.MMCIFParser.MMCIFParser.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure_builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_chains</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_residues</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QUIET</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.MMCIFParser.MMCIFParser.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Create a PDBParser object.</p>
 <p>The mmCIF parser calls a number of standard methods in an aggregated
 StructureBuilder object. Normally this object is instantiated by the
@@ -145,6 +145,13 @@ StructureBuilder object, the latter is used instead.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
 <li><p>structure_builder - an optional user implemented StructureBuilder class.</p></li>
+<li><p>auth_chains - True by default. If true, use the author chain IDs.
+If false, use the re-assigned mmCIF chain IDs.</p></li>
+<li><p>auth_residues - True by default. If true, use the author residue numbering.
+If false, use the mmCIF “label” residue numbering, which has no insertion
+codes, and strictly increments residue numbers.
+NOTE: Non-polymers such as water don’t have a “label” residue number,
+and will be skipped.</p></li>
 <li><p>QUIET - Evaluated as a Boolean. If true, warnings issued in constructing
 the SMCRA data will be suppressed. If false (DEFAULT), they will be shown.
 These warnings might be indicative of problems in the mmCIF file!</p></li>
@@ -170,12 +177,12 @@ These warnings might be indicative of problems in the mmCIF file!</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.PDB.MMCIFParser.FastMMCIFParser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.PDB.MMCIFParser.</span></span><span class="sig-name descname"><span class="pre">FastMMCIFParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QUIET</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.MMCIFParser.FastMMCIFParser" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.PDB.MMCIFParser.</span></span><span class="sig-name descname"><span class="pre">FastMMCIFParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_chains</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_residues</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QUIET</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.MMCIFParser.FastMMCIFParser" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Parse an MMCIF file and return a Structure object.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.MMCIFParser.FastMMCIFParser.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure_builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QUIET</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.MMCIFParser.FastMMCIFParser.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure_builder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_chains</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_residues</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">QUIET</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.MMCIFParser.FastMMCIFParser.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Create a FastMMCIFParser object.</p>
 <p>The mmCIF parser calls a number of standard methods in an aggregated
 StructureBuilder object. Normally this object is instantiated by the
@@ -187,6 +194,13 @@ interested only in coordinate information.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
 <li><p>structure_builder - an optional user implemented StructureBuilder class.</p></li>
+<li><p>auth_chains - True by default. If true, use the author chain IDs.
+If false, use the re-assigned mmCIF chain IDs.</p></li>
+<li><p>auth_residues - True by default. If true, use the author residue numbering.
+If false, use the mmCIF “label” residue numbering, which has no insertion
+codes, and strictly increments residue numbers.
+NOTE: Non-polymers such as water don’t have a “label” residue number,
+and will be skipped.</p></li>
 <li><p>QUIET - Evaluated as a Boolean. If true, warnings issued in constructing
 the SMCRA data will be suppressed. If false (DEFAULT), they will be shown.
 These warnings might be indicative of problems in the mmCIF file!</p></li>
