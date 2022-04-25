@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bio.PDB.Superimposer module &mdash; Biopython 1.80.dev0 documentation</title>
+  <title>Bio.PDB.cealign module &mdash; Biopython 1.80.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Bio.PDB.cealign module" href="Bio.PDB.cealign.html" />
-    <link rel="prev" title="Bio.PDB.StructureBuilder module" href="Bio.PDB.StructureBuilder.html" /> 
+    <link rel="next" title="Bio.PDB.ic_data module" href="Bio.PDB.ic_data.html" />
+    <link rel="prev" title="Bio.PDB.Superimposer module" href="Bio.PDB.Superimposer.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -112,66 +112,98 @@
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
           <li><a href="Bio.PDB.html">Bio.PDB package</a> &raquo;</li>
-      <li>Bio.PDB.Superimposer module</li>
+      <li>Bio.PDB.cealign module</li>
       <li class="wy-breadcrumbs-aside">
               <!-- User defined GitHub URL -->
-              <a href="https://github.com/biopython/biopython/blob/master/Bio/PDB/Superimposer.py" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/PDB/cealign.py" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
-        <a href="Bio.PDB.StructureBuilder.html" class="btn btn-neutral float-left" title="Bio.PDB.StructureBuilder module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Bio.PDB.cealign.html" class="btn btn-neutral float-right" title="Bio.PDB.cealign module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Bio.PDB.Superimposer.html" class="btn btn-neutral float-left" title="Bio.PDB.Superimposer module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.PDB.ic_data.html" class="btn btn-neutral float-right" title="Bio.PDB.ic_data module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-Bio.PDB.Superimposer">
-<span id="bio-pdb-superimposer-module"></span><h1>Bio.PDB.Superimposer module<a class="headerlink" href="#module-Bio.PDB.Superimposer" title="Permalink to this headline"></a></h1>
-<p>Superimpose two structures.</p>
+  <section id="module-Bio.PDB.cealign">
+<span id="bio-pdb-cealign-module"></span><h1>Bio.PDB.cealign module<a class="headerlink" href="#module-Bio.PDB.cealign" title="Permalink to this headline"></a></h1>
+<p>Protein Structural Alignment using Combinatorial Extension.</p>
+<p>Python code written by Joao Rodrigues. C++ code and Python/C++ interface
+adapted from open-source Pymol and originally written by Jason Vertrees.
+The original license and notices are available in <cite>cealign</cite> folder.</p>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline"></a></h2>
+<p>Shindyalov, I.N., Bourne P.E. (1998).
+“Protein structure alignment by incremental combinatorial extension (CE)
+of the optimal path”. Protein Engineering. 11 (9): 739–747. PMID 9796821.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="Bio.PDB.Superimposer.Superimposer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.PDB.Superimposer.</span></span><span class="sig-name descname"><span class="pre">Superimposer</span></span><a class="headerlink" href="#Bio.PDB.Superimposer.Superimposer" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.PDB.cealign.CEAligner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.PDB.cealign.</span></span><span class="sig-name descname"><span class="pre">CEAligner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.cealign.CEAligner" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Rotate/translate one set of atoms on top of another to minimize RMSD.</p>
+<p>Protein Structure Alignment by Combinatorial Extension.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.PDB.Superimposer.Superimposer.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Superimposer.Superimposer.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Initialize the class.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="Bio.PDB.Superimposer.Superimposer.set_atoms">
-<span class="sig-name descname"><span class="pre">set_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moving</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Superimposer.Superimposer.set_atoms" title="Permalink to this definition"></a></dt>
-<dd><p>Prepare translation/rotation to minimize RMSD between atoms.</p>
-<p>Put (translate/rotate) the atoms in fixed on the atoms in
-moving, in such a way that the RMSD is minimized.</p>
+<dt class="sig sig-object py" id="Bio.PDB.cealign.CEAligner.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.cealign.CEAligner.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Superimpose one set of atoms onto another using structural data.</p>
+<p>Structures are superimposed using guide atoms, CA and C4’, for protein
+and nucleic acid molecules respectively.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fixed</strong> – list of (fixed) atoms</p></li>
-<li><p><strong>moving</strong> – list of (moving) atoms</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>window_size</strong><span class="classifier">float, optional</span></dt><dd><p>CE algorithm parameter. Used to define paths when building the
+CE similarity matrix. Default is 8.</p>
+</dd>
+<dt><strong>max_gap</strong><span class="classifier">float, optional</span></dt><dd><p>CE algorithm parameter. Maximum gap size. Default is 30.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.PDB.Superimposer.Superimposer.apply">
-<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Superimposer.Superimposer.apply" title="Permalink to this definition"></a></dt>
-<dd><p>Rotate/translate a list of atoms.</p>
+<dt class="sig sig-object py" id="Bio.PDB.cealign.CEAligner.get_guide_coord_from_structure">
+<span class="sig-name descname"><span class="pre">get_guide_coord_from_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.cealign.CEAligner.get_guide_coord_from_structure" title="Permalink to this definition"></a></dt>
+<dd><p>Return the coordinates of guide atoms in the structure.</p>
+<p>We use guide atoms (C-alpha and C4’ atoms) since it is much faster than
+using all atoms in the calculation without a significant loss in
+accuracy.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.PDB.cealign.CEAligner.set_reference">
+<span class="sig-name descname"><span class="pre">set_reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.cealign.CEAligner.set_reference" title="Permalink to this definition"></a></dt>
+<dd><p>Define a reference structure onto which all others will be aligned.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.PDB.cealign.CEAligner.align">
+<span class="sig-name descname"><span class="pre">align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.cealign.CEAligner.align" title="Permalink to this definition"></a></dt>
+<dd><p>Align the input structure onto the reference structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>transform: bool, optional</strong></dt><dd><p>If True (default), apply the rotation/translation that minimizes
+the RMSD between the two structures to the input structure. If
+False, the structure is not modified but the optimal RMSD will
+still be calculated.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Bio.PDB.StructureBuilder.html" class="btn btn-neutral float-left" title="Bio.PDB.StructureBuilder module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Bio.PDB.cealign.html" class="btn btn-neutral float-right" title="Bio.PDB.cealign module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Bio.PDB.Superimposer.html" class="btn btn-neutral float-left" title="Bio.PDB.Superimposer module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.PDB.ic_data.html" class="btn btn-neutral float-right" title="Bio.PDB.ic_data module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
