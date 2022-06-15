@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bio.Align.fasta_m8 module &mdash; Biopython 1.80.dev0 documentation</title>
+  <title>Bio.Align.tabular module &mdash; Biopython 1.80.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Bio.Align.interfaces module" href="Bio.Align.interfaces.html" />
-    <link rel="prev" title="Bio.Align.exonerate module" href="Bio.Align.exonerate.html" /> 
+    <link rel="next" title="Bio.AlignIO package" href="Bio.AlignIO.html" />
+    <link rel="prev" title="Bio.Align.stockholm module" href="Bio.Align.stockholm.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -112,62 +112,65 @@
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="Bio.html">Bio package</a> &raquo;</li>
           <li><a href="Bio.Align.html">Bio.Align package</a> &raquo;</li>
-      <li>Bio.Align.fasta_m8 module</li>
+      <li>Bio.Align.tabular module</li>
       <li class="wy-breadcrumbs-aside">
               <!-- User defined GitHub URL -->
-              <a href="https://github.com/biopython/biopython/blob/master/Bio/Align/fasta_m8.py" class="fa fa-github"> Edit on GitHub</a>
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/Align/tabular.py" class="fa fa-github"> Edit on GitHub</a>
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
-        <a href="Bio.Align.exonerate.html" class="btn btn-neutral float-left" title="Bio.Align.exonerate module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Bio.Align.interfaces.html" class="btn btn-neutral float-right" title="Bio.Align.interfaces module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Bio.Align.stockholm.html" class="btn btn-neutral float-left" title="Bio.Align.stockholm module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.AlignIO.html" class="btn btn-neutral float-right" title="Bio.AlignIO package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-Bio.Align.fasta_m8">
-<span id="bio-align-fasta-m8-module"></span><h1>Bio.Align.fasta_m8 module<a class="headerlink" href="#module-Bio.Align.fasta_m8" title="Permalink to this headline"></a></h1>
-<p>Bio.Align support for output from William Pearson’s FASTA alignment tools.</p>
-<p>This module contains a parser for output from the FASTA programs generated with
-the ‘-m 8CB’ or ‘-m 8CC’ output formats.</p>
+  <section id="module-Bio.Align.tabular">
+<span id="bio-align-tabular-module"></span><h1>Bio.Align.tabular module<a class="headerlink" href="#module-Bio.Align.tabular" title="Permalink to this headline"></a></h1>
+<p>Bio.Align support for tabular output from BLAST or FASTA.</p>
+<p>This module contains a parser for tabular output from BLAST run with the
+‘-outfmt 7’ argument, as well as tabular output from William Pearson’s
+FASTA alignment tools using the ‘-m 8CB’ or ‘-m 8CC’ arguments.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.State">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.fasta_m8.</span></span><span class="sig-name descname"><span class="pre">State</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.fasta_m8.State" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.State">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.tabular.</span></span><span class="sig-name descname"><span class="pre">State</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.tabular.State" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
 <p>Enumerate alignment states needed when parsing a BTOP string.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.State.MATCH">
-<span class="sig-name descname"><span class="pre">MATCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#Bio.Align.fasta_m8.State.MATCH" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.State.MATCH">
+<span class="sig-name descname"><span class="pre">MATCH</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#Bio.Align.tabular.State.MATCH" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.State.QUERY_GAP">
-<span class="sig-name descname"><span class="pre">QUERY_GAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#Bio.Align.fasta_m8.State.QUERY_GAP" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.State.QUERY_GAP">
+<span class="sig-name descname"><span class="pre">QUERY_GAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#Bio.Align.tabular.State.QUERY_GAP" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.State.TARGET_GAP">
-<span class="sig-name descname"><span class="pre">TARGET_GAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#Bio.Align.fasta_m8.State.TARGET_GAP" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.State.TARGET_GAP">
+<span class="sig-name descname"><span class="pre">TARGET_GAP</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#Bio.Align.tabular.State.TARGET_GAP" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.State.NONE">
-<span class="sig-name descname"><span class="pre">NONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#Bio.Align.fasta_m8.State.NONE" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.State.NONE">
+<span class="sig-name descname"><span class="pre">NONE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#Bio.Align.tabular.State.NONE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.AlignmentIterator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.fasta_m8.</span></span><span class="sig-name descname"><span class="pre">AlignmentIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.fasta_m8.AlignmentIterator" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.AlignmentIterator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.tabular.</span></span><span class="sig-name descname"><span class="pre">AlignmentIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.tabular.AlignmentIterator" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.Align.interfaces.html#Bio.Align.interfaces.AlignmentIterator" title="Bio.Align.interfaces.AlignmentIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Align.interfaces.AlignmentIterator</span></code></a></p>
-<p>FASTA output alignment iterator.</p>
-<p>For reading the (pairwise) alignments from the FASTA alignment programs
-using the ‘-m 8CB’ or ‘-m 8CC’ output formats.</p>
+<p>Alignment iterator for tabular output from BLAST or FASTA.</p>
+<p>For reading (pairwise) alignments from tabular output generated by BLAST
+run with the ‘-outfmt 7’ argument, as well as tabular output generated by
+William Pearson’s FASTA alignment programs with the ‘-m 8CB’ or ‘-m 8CC’
+output formats.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.AlignmentIterator.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.fasta_m8.AlignmentIterator.__init__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.AlignmentIterator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.tabular.AlignmentIterator.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Create an AlignmentIterator object.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -178,28 +181,28 @@ using the ‘-m 8CB’ or ‘-m 8CC’ output formats.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.AlignmentIterator.parse">
-<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.fasta_m8.AlignmentIterator.parse" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.AlignmentIterator.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.tabular.AlignmentIterator.parse" title="Permalink to this definition"></a></dt>
 <dd><p>Parse the next alignment from the stream.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.AlignmentIterator.create_alignment">
-<span class="sig-name descname"><span class="pre">create_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.fasta_m8.AlignmentIterator.create_alignment" title="Permalink to this definition"></a></dt>
-<dd><p>Parse one line of FASTA output and return an Alignment object.</p>
+<dt class="sig sig-object py" id="Bio.Align.tabular.AlignmentIterator.create_alignment">
+<span class="sig-name descname"><span class="pre">create_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.tabular.AlignmentIterator.create_alignment" title="Permalink to this definition"></a></dt>
+<dd><p>Parse one line of output and return an Alignment object.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.AlignmentIterator.parse_btop">
-<span class="sig-name descname"><span class="pre">parse_btop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">btop</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.fasta_m8.AlignmentIterator.parse_btop" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.AlignmentIterator.parse_btop">
+<span class="sig-name descname"><span class="pre">parse_btop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">btop</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.tabular.AlignmentIterator.parse_btop" title="Permalink to this definition"></a></dt>
 <dd><p>Parse a BTOP string and return alignment coordinates.</p>
 <p>A BTOP (Blast trace-back operations) string is used by BLAST to
 describe a sequence alignment.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.AlignmentIterator.parse_cigar">
-<span class="sig-name descname"><span class="pre">parse_cigar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cigar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.fasta_m8.AlignmentIterator.parse_cigar" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.AlignmentIterator.parse_cigar">
+<span class="sig-name descname"><span class="pre">parse_cigar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cigar</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.tabular.AlignmentIterator.parse_cigar" title="Permalink to this definition"></a></dt>
 <dd><p>Parse a CIGAR string and return alignment coordinates.</p>
 <p>A CIGAR string, as defined by the SAM Sequence Alignment/Map format,
 describes a sequence alignment as a series of lengths and operation
@@ -207,8 +210,8 @@ describes a sequence alignment as a series of lengths and operation
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="Bio.Align.fasta_m8.AlignmentIterator.__abstractmethods__">
-<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.Align.fasta_m8.AlignmentIterator.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.tabular.AlignmentIterator.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.Align.tabular.AlignmentIterator.__abstractmethods__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -219,8 +222,8 @@ describes a sequence alignment as a series of lengths and operation
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="Bio.Align.exonerate.html" class="btn btn-neutral float-left" title="Bio.Align.exonerate module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Bio.Align.interfaces.html" class="btn btn-neutral float-right" title="Bio.Align.interfaces module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Bio.Align.stockholm.html" class="btn btn-neutral float-left" title="Bio.Align.stockholm module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.AlignIO.html" class="btn btn-neutral float-right" title="Bio.AlignIO package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
