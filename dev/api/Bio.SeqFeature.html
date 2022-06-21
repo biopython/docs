@@ -1157,6 +1157,18 @@ in the optional dictionary references.</p>
 <dd><p>Represent the AbstractPosition object as a string for debugging.</p>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.SeqFeature.AbstractPosition.position">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#Bio.SeqFeature.AbstractPosition.position" title="Permalink to this definition"></a></dt>
+<dd><p>Legacy attribute to get (left-most) position as an integer (DEPRECATED).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.SeqFeature.AbstractPosition.extension">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#Bio.SeqFeature.AbstractPosition.extension" title="Permalink to this definition"></a></dt>
+<dd><p>Legacy attribute to get the position’s ‘width’ as an integer, typically zero (DEPRECATED).</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -1216,18 +1228,6 @@ of arguments can be passed to all position types.</p></li>
 <dd><p>Represent the ExactPosition object as a string for debugging.</p>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="Bio.SeqFeature.ExactPosition.position">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#Bio.SeqFeature.ExactPosition.position" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get position as integer (OBSOLETE).</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="Bio.SeqFeature.ExactPosition.extension">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#Bio.SeqFeature.ExactPosition.extension" title="Permalink to this definition"></a></dt>
-<dd><p>Not present in this object, return zero (OBSOLETE).</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -1260,13 +1260,15 @@ XML format explicitly marked as uncertain. Does not apply to GenBank/EMBL.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="Bio.SeqFeature.UnknownPosition.position">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#Bio.SeqFeature.UnknownPosition.position" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get location (None) (OBSOLETE).</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="Bio.SeqFeature.UnknownPosition.extension">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#Bio.SeqFeature.UnknownPosition.extension" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get extension (zero) as integer (OBSOLETE).</p>
+<dd><p>Legacy attribute to get location (None) (DEPRECATED).</p>
+<p>In general you can use the location directly as with the exception of
+UnknownPosition it subclasses int, or use int(location), rather than
+this location.position legacy attribute.</p>
+<p>However, the UnknownPosition cannot be cast to an integer, and thus
+does not subclass int, and int(…) will fail. The legacy attribute
+would return None instead.</p>
+<p>Note that while None == None, UnknownPosition() != UnknownPosition()
+which is like the behavour for NaN.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1280,10 +1282,10 @@ XML format explicitly marked as uncertain. Does not apply to GenBank/EMBL.</p>
 - position - The default integer position
 - left - The start (left) position of the boundary
 - right - The end (right) position of the boundary</p>
-<p>This allows dealing with a location like ((1.4)..100). This
-indicates that the start of the sequence is somewhere between 1
-and 4. Since this is a start coordinate, it should acts like
-it is at position 1 (or in Python counting, 0).</p>
+<p>This allows dealing with a location like ((11.14)..100). This
+indicates that the start of the sequence is somewhere between 11
+and 14. Since this is a start coordinate, it should act like
+it is at position 11 (or in Python counting, 10).</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">WithinPosition</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
 <span class="go">WithinPosition(10, left=10, right=13)</span>
@@ -1325,7 +1327,8 @@ where again the integer behaviour is used:</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>If this were an end point, you would want the position to be 13:</p>
+<p>If this were an end point, you would want the position to be 13
+(the right/larger value, not the left/smaller value as above):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">WithinPosition</span><span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span>
 <span class="go">WithinPosition(13, left=10, right=13)</span>
@@ -1336,23 +1339,6 @@ where again the integer behaviour is used:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">==</span> <span class="mi">13</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">==</span> <span class="n">ExactPosition</span><span class="p">(</span><span class="mi">13</span><span class="p">)</span>
-<span class="go">True</span>
-</pre></div>
-</div>
-<p>The old legacy properties of position and extension give the
-starting/lower/left position as an integer, and the distance
-to the ending/higher/right position as an integer. Note that
-the position object will act like either the left or the right
-end-point depending on how it was created:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="mi">10</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="mi">3</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">10</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">==</span> <span class="mi">13</span>
 <span class="go">True</span>
 </pre></div>
 </div>
@@ -1384,13 +1370,13 @@ end-point depending on how it was created:</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="Bio.SeqFeature.WithinPosition.position">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#Bio.SeqFeature.WithinPosition.position" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get (left) position as integer (OBSOLETE).</p>
+<dd><p>Legacy attribute to get (left) position as integer (DEPRECATED).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="Bio.SeqFeature.WithinPosition.extension">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#Bio.SeqFeature.WithinPosition.extension" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get extension (from left to right) as an integer (OBSOLETE).</p>
+<dd><p>Legacy attribute to get the within-position’s ‘width’ as an integer (DEPRECATED).</p>
 </dd></dl>
 
 </dd></dl>
@@ -1437,14 +1423,6 @@ to the ending/higher/right position as an integer. Note that
 the position object will act like either the left or the right
 end-point depending on how it was created:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">BetweenPosition</span><span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">123</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">456</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="mi">123</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">extension</span>
-<span class="go">333</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span><span class="o">.</span><span class="n">extension</span>
-<span class="go">333</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="mi">333</span>
-<span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">456</span>
@@ -1492,13 +1470,13 @@ integers.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="Bio.SeqFeature.BetweenPosition.position">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#Bio.SeqFeature.BetweenPosition.position" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get (left) position as integer (OBSOLETE).</p>
+<dd><p>Legacy attribute to get (left) position as integer (DEPRECATED).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="Bio.SeqFeature.BetweenPosition.extension">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#Bio.SeqFeature.BetweenPosition.extension" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get extension (from left to right) as an integer (OBSOLETE).</p>
+<dd><p>Legacy attribute to get the between-position’s ‘width’ as an integer (DEPRECATED).</p>
 </dd></dl>
 
 </dd></dl>
@@ -1543,18 +1521,6 @@ like integers.</p>
 <dt class="sig sig-object py" id="Bio.SeqFeature.BeforePosition.__new__">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.BeforePosition.__new__" title="Permalink to this definition"></a></dt>
 <dd><p>Create a new instance in BeforePosition object.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="Bio.SeqFeature.BeforePosition.position">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#Bio.SeqFeature.BeforePosition.position" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get position as integer (OBSOLETE).</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="Bio.SeqFeature.BeforePosition.extension">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#Bio.SeqFeature.BeforePosition.extension" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get extension (zero) as integer (OBSOLETE).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1621,18 +1587,6 @@ like integers.</p>
 <dd><p>Create a new instance of the AfterPosition object.</p>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="Bio.SeqFeature.AfterPosition.position">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#Bio.SeqFeature.AfterPosition.position" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get position as integer (OBSOLETE).</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="Bio.SeqFeature.AfterPosition.extension">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#Bio.SeqFeature.AfterPosition.extension" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get extension (zero) as integer (OBSOLETE).</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.SeqFeature.AfterPosition.__repr__">
 <span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.AfterPosition.__repr__" title="Permalink to this definition"></a></dt>
@@ -1681,24 +1635,6 @@ a start position it should act like 1888, but as an end position 1901.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>The old legacy properties of position and extension give the
-starting/lowest/left-most position as an integer, and the
-distance to the ending/highest/right-most position as an integer.
-Note that the position object will act like one of the list of
-possible locations depending on how it was created:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">=</span> <span class="n">OneOfPosition</span><span class="p">(</span><span class="mi">1901</span><span class="p">,</span> <span class="p">[</span><span class="n">ExactPosition</span><span class="p">(</span><span class="mi">1888</span><span class="p">),</span> <span class="n">ExactPosition</span><span class="p">(</span><span class="mi">1901</span><span class="p">)])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">position</span> <span class="o">==</span> <span class="mi">1888</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="n">p2</span><span class="o">.</span><span class="n">extension</span> <span class="o">==</span> <span class="mi">13</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">p2</span><span class="p">)</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">==</span> <span class="mi">1888</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">p2</span> <span class="o">==</span> <span class="mi">1901</span>
-<span class="go">True</span>
-</pre></div>
-</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.SeqFeature.OneOfPosition.__new__">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.__new__" title="Permalink to this definition"></a></dt>
@@ -1718,13 +1654,13 @@ specifying possible locations.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="Bio.SeqFeature.OneOfPosition.position">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.position" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get (left) position as integer (OBSOLETE).</p>
+<dd><p>Legacy attribute to get (left) position as integer (DEPRECATED).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="Bio.SeqFeature.OneOfPosition.extension">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.extension" title="Permalink to this definition"></a></dt>
-<dd><p>Legacy attribute to get extension as integer (OBSOLETE).</p>
+<dd><p>Legacy attribute to get the one-of-position’s ‘width’ as an integer (DEPRECATED).</p>
 </dd></dl>
 
 <dl class="py method">
