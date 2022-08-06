@@ -239,7 +239,7 @@ If obsolete <code class="docutils literal notranslate"><span class="pre">==</spa
 <li><p>”pdb” (format PDB),</p></li>
 <li><p>”xml” (PDBML/XML format),</p></li>
 <li><p>”mmtf” (highly compressed),</p></li>
-<li><p>”bundle” (PDB formatted archive for large structure}</p></li>
+<li><p>”bundle” (PDB formatted archive for large structure)</p></li>
 </ul>
 </p></li>
 <li><p><strong>overwrite</strong> (<em>bool</em>) – if set to True, existing structure files will be overwritten. Default: False</p></li>
@@ -265,7 +265,7 @@ Default: False</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.PDBList.PDBList.update_pdb">
-<span class="sig-name descname"><span class="pre">update_pdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.update_pdb" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">update_pdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_assemblies</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.update_pdb" title="Permalink to this definition"></a></dt>
 <dd><p>Update your local copy of the PDB files.</p>
 <p>I guess this is the ‘most wanted’ function from this module.
 It gets the weekly lists of new and modified pdb entries and
@@ -289,7 +289,7 @@ If obsolete <code class="docutils literal notranslate"><span class="pre">==</spa
 <li><p>”pdb” (format PDB),</p></li>
 <li><p>”xml” (PMDML/XML format),</p></li>
 <li><p>”mmtf” (highly compressed),</p></li>
-<li><p>”bundle” (PDB formatted archive for large structure}</p></li>
+<li><p>”bundle” (PDB formatted archive for large structure)</p></li>
 </ul>
 </p></li>
 <li><p><strong>overwrite</strong> (<em>bool</em>) – if set to True, existing structure files will be overwritten. Default: False</p></li>
@@ -311,6 +311,49 @@ This option doesn’t work for mmtf format as obsoleted structures are not avail
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Bio.PDB.PDBList.PDBList.get_all_assemblies">
+<span class="sig-name descname"><span class="pre">get_all_assemblies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mmCif'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.get_all_assemblies" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve the list of PDB entries with an associated bio assembly.</p>
+<p>The requested list will be cached to avoid multiple calls to the FTP
+server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_format</strong> (<em>str</em><em>, </em><em>optional</em>) – format in which to download the entries. Available
+options are “mmCif” or “pdb”. Defaults to mmCif.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.PDB.PDBList.PDBList.retrieve_assembly_file">
+<span class="sig-name descname"><span class="pre">retrieve_assembly_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assembly_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.retrieve_assembly_file" title="Permalink to this definition"></a></dt>
+<dd><p>Fetch one or more assembly structures associated with a PDB entry.</p>
+<p>Unless noted below, parameters are described in <code class="docutils literal notranslate"><span class="pre">retrieve_pdb_file</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>assembly_num</strong> (<em>int</em>) – assembly number to download.</p>
+</dd>
+</dl>
+<p>:rtype : str
+:return: file name of the downloaded assembly file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.PDB.PDBList.PDBList.download_all_assemblies">
+<span class="sig-name descname"><span class="pre">download_all_assemblies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_all_assemblies" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve all biological assemblies not in the local PDB copy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>listfile</strong> (<em>str</em><em>, </em><em>optional</em>) – file name to which all assembly codes will be written</p></li>
+<li><p><strong>file_format</strong> (<em>str</em><em>, </em><em>optional</em>) – format in which to download the entries. Available
+options are “mmCif” or “pdb”. Defaults to mmCif.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.PDBList.PDBList.download_entire_pdb">
 <span class="sig-name descname"><span class="pre">download_entire_pdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_entire_pdb" title="Permalink to this definition"></a></dt>
 <dd><p>Retrieve all PDB entries not present in the local PDB copy.</p>
@@ -324,7 +367,7 @@ This option doesn’t work for mmtf format as obsoleted structures are not avail
 <li><p>”pdb” (format PDB),</p></li>
 <li><p>”xml” (PMDML/XML format),</p></li>
 <li><p>”mmtf” (highly compressed),</p></li>
-<li><p>”bundle” (PDB formatted archive for large structure}</p></li>
+<li><p>”bundle” (PDB formatted archive for large structure)</p></li>
 </ul>
 </p></li>
 </ul>
