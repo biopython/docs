@@ -148,18 +148,76 @@
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Bio.SeqUtils" title="Permalink to this headline"></a></h2>
 <p>Miscellaneous functions for dealing with sequences.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="Bio.SeqUtils.GC">
-<span class="sig-prename descclassname"><span class="pre">Bio.SeqUtils.</span></span><span class="sig-name descname"><span class="pre">GC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.GC" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate G+C content, return percentage (as float between 0 and 100).</p>
-<p>Copes mixed case sequences, and with the ambiguous nucleotide S (G or C)
-when counting the G and C content.  The percentage is calculated against
-the full length, e.g.:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">GC</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">GC</span><span class="p">(</span><span class="s2">&quot;ACTGN&quot;</span><span class="p">)</span>
-<span class="go">40.0</span>
+<dt class="sig sig-object py" id="Bio.SeqUtils.gc_fraction">
+<span class="sig-prename descclassname"><span class="pre">Bio.SeqUtils.</span></span><span class="sig-name descname"><span class="pre">gc_fraction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ambiguous</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'remove'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.gc_fraction" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate G+C percentage in seq (float between 0 and 1).</p>
+<p>Copes with mixed case sequences. Ambiguous Nucleotides in this context are
+those different from ATCGSW (S is G or C, and W is A or T).</p>
+<p>If ambiguous equals “remove” (default), will only count GCS and will only
+include ACTGSW when calculating the sequence length. Equivalent to removing
+all characters in the set BDHKMNRVXY before calculating the GC content, as
+each of these ambiguous nucleotides can either be in (A,T) or in (C,G).</p>
+<p>If ambiguous equals “ignore”, it will treat only unambiguous nucleotides (GCS)
+as counting towards the GC percentage, but will include all ambiguous and
+unambiguous nucleotides when calculating the sequence length.</p>
+<p>If ambiguous equals “weighted”, will use a “mean” value when counting the
+ambiguous characters, for example, G and C will be counted as 1, N and X will
+be counted as 0.5, D will be counted as 0.33 etc. See Bio.SeqUtils._gc_values
+for a full list.</p>
+<p>Will raise a ValueError for any other value of the ambiguous parameter.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">gc_fraction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="s2">&quot;ACTG&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GC content of </span><span class="si">{</span><span class="n">seq</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">gc_fraction</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">GC content of ACTG : 0.50</span>
+</pre></div>
+</div>
+<p>S and W are ambiguous for the purposes of calculating the GC content.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="s2">&quot;ACTGSSSS&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gc</span> <span class="o">=</span> <span class="n">gc_fraction</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">&quot;remove&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GC content of </span><span class="si">{</span><span class="n">seq</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">gc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">GC content of ACTGSSSS : 0.75</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gc</span> <span class="o">=</span> <span class="n">gc_fraction</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GC content of </span><span class="si">{</span><span class="n">seq</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">gc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">GC content of ACTGSSSS : 0.75</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gc</span> <span class="o">=</span> <span class="n">gc_fraction</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">&quot;weighted&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GC content with ambiguous counting: </span><span class="si">{</span><span class="n">gc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">GC content with ambiguous counting: 0.75</span>
+</pre></div>
+</div>
+<p>Some examples with ambiguous nucleotides.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="s2">&quot;ACTGN&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gc</span> <span class="o">=</span> <span class="n">gc_fraction</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GC content of </span><span class="si">{</span><span class="n">seq</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">gc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">GC content of ACTGN : 0.40</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gc</span> <span class="o">=</span> <span class="n">gc_fraction</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">&quot;weighted&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GC content with ambiguous counting: </span><span class="si">{</span><span class="n">gc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">GC content with ambiguous counting: 0.50</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gc</span> <span class="o">=</span> <span class="n">gc_fraction</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">&quot;remove&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GC content with ambiguous removing: </span><span class="si">{</span><span class="n">gc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">GC content with ambiguous removing: 0.50</span>
+</pre></div>
+</div>
+<p>Ambiguous nucleotides are also removed from the length of the sequence.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="s2">&quot;GDVV&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gc</span> <span class="o">=</span> <span class="n">gc_fraction</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GC content of </span><span class="si">{</span><span class="n">seq</span><span class="si">}</span><span class="s2"> : </span><span class="si">{</span><span class="n">gc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">GC content of GDVV : 0.25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gc</span> <span class="o">=</span> <span class="n">gc_fraction</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">&quot;weighted&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GC content with ambiguous counting: </span><span class="si">{</span><span class="n">gc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">GC content with ambiguous counting: 0.6667</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gc</span> <span class="o">=</span> <span class="n">gc_fraction</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="s2">&quot;remove&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;GC content with ambiguous removing: </span><span class="si">{</span><span class="n">gc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">GC content with ambiguous removing: 1.00</span>
 </pre></div>
 </div>
 <p>Note that this will return zero for an empty sequence.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SeqUtils.GC">
+<span class="sig-prename descclassname"><span class="pre">Bio.SeqUtils.</span></span><span class="sig-name descname"><span class="pre">GC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.GC" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate G+C content (DEPRECATED).</p>
+<p>Use Bio.SeqUtils.gc_fraction instead.</p>
 </dd></dl>
 
 <dl class="py function">
