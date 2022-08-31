@@ -1847,6 +1847,99 @@ over a PairwiseAlignments object.</p>
 
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Align.write">
+<span class="sig-prename descclassname"><span class="pre">Bio.Align.</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.write" title="Permalink to this definition"></a></dt>
+<dd><p>Write alignments to a file.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>alignments - List (or iterator) of Alignment objects, or a single
+Alignment.</p></li>
+<li><p>target     - File or file-like object to write to, or filename as string.</p></li>
+<li><p>fmt        - String describing the file format (case-insensitive).</p></li>
+</ul>
+</dd>
+</dl>
+<p>Note if providing a file or file-like object, your code should close the
+target after calling this function, or call .flush(), to ensure the data
+gets flushed to disk.</p>
+<p>Returns the number of alignments written (as an integer).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Align.parse">
+<span class="sig-prename descclassname"><span class="pre">Bio.Align.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Parse an alignment file and return an iterator over alignments.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>source - File or file-like object to read from, or filename as string.</p></li>
+<li><p>fmt    - String describing the file format (case-insensitive).</p></li>
+</ul>
+</dd>
+</dl>
+<p>Typical usage, opening a file to read in, and looping over the aligments:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Exonerate/exn_22_m_ner_cigar.exn&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">Align</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;exonerate&quot;</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of sequences in alignment&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">alignment</span><span class="p">))</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alignment score:&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+<span class="go">Number of sequences in alignment 2</span>
+<span class="go">Alignment score: 6150</span>
+<span class="go">Number of sequences in alignment 2</span>
+<span class="go">Alignment score: 502</span>
+<span class="go">Number of sequences in alignment 2</span>
+<span class="go">Alignment score: 440</span>
+</pre></div>
+</div>
+<p>For lazy-loading file formats such as bigMaf, for which the file contents
+is read on demand only, ensure that the file remains open while extracting
+alignment data.</p>
+<p>You can use the Bio.Align.read(…) function when the file contains only
+one alignment.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Align.read">
+<span class="sig-prename descclassname"><span class="pre">Bio.Align.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.read" title="Permalink to this definition"></a></dt>
+<dd><p>Parse a file containing one alignment, and return it.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>source - File or file-like object to read from, or filename as string.</p></li>
+<li><p>fmt    - String describing the file format (case-insensitive).</p></li>
+</ul>
+</dd>
+</dl>
+<p>This function is for use parsing alignment files containing exactly one
+alignment.  For example, reading a Clustal file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Clustalw/opuntia.aln&quot;</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alignment shape:&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">Alignment shape: (7, 156)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">sequence</span> <span class="ow">in</span> <span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">sequence</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequence</span><span class="p">))</span>
+<span class="go">gi|6273285|gb|AF191659.1|AF191 146</span>
+<span class="go">gi|6273284|gb|AF191658.1|AF191 148</span>
+<span class="go">gi|6273287|gb|AF191661.1|AF191 146</span>
+<span class="go">gi|6273286|gb|AF191660.1|AF191 146</span>
+<span class="go">gi|6273290|gb|AF191664.1|AF191 150</span>
+<span class="go">gi|6273289|gb|AF191663.1|AF191 150</span>
+<span class="go">gi|6273291|gb|AF191665.1|AF191 156</span>
+</pre></div>
+</div>
+<p>If the file contains no records, or more than one record, an exception is
+raised.  For example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Exonerate/exn_22_m_ner_cigar.exn&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;exonerate&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">More than one alignment found in file</span>
+</pre></div>
+</div>
+<p>Use the Bio.Align.parse function if you want to read a file containing
+more than one alignment.</p>
+</dd></dl>
+
 </section>
 </section>
 
