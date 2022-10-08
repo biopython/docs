@@ -195,20 +195,6 @@ given if required), or None.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>An invalid strand will trigger an exception:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f4</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="n">strand</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Strand should be +1, -1, 0 or None, not 2</span>
-</pre></div>
-</div>
-<p>Similarly if set via the SimpleLocation directly:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loc4</span> <span class="o">=</span> <span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="n">strand</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-   <span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Strand should be +1, -1, 0 or None, not 2</span>
-</pre></div>
-</div>
 <p>For exact start/end positions, an integer can be used (as shown above)
 as shorthand for the ExactPosition object. For non-exact locations, the
 SimpleLocation must be specified via the appropriate position objects.</p>
@@ -610,10 +596,10 @@ would use a BeforePosition object for the start.</p>
 <dd><p>Initialize the class.</p>
 <p>start and end arguments specify the values where the feature begins
 and ends. These can either by any of the <code class="docutils literal notranslate"><span class="pre">*Position</span></code> objects that
-inherit from AbstractPosition, or can just be integers specifying the
-position. In the case of integers, the values are assumed to be
-exact and are converted in ExactPosition arguments. This is meant
-to make it easy to deal with non-fuzzy ends.</p>
+inherit from Position, or can just be integers specifying the position.
+In the case of integers, the values are assumed to be exact and are
+converted in ExactPosition arguments. This is meant to make it easy
+to deal with non-fuzzy ends.</p>
 <p>i.e. Short form:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SimpleLocation</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">loc</span> <span class="o">=</span> <span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">strand</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
@@ -825,9 +811,9 @@ length is zero (in order to better match normal python behavior)!</p>
 <dt class="sig sig-object py" id="Bio.SeqFeature.SimpleLocation.parts">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parts</span></span><a class="headerlink" href="#Bio.SeqFeature.SimpleLocation.parts" title="Permalink to this definition"></a></dt>
 <dd><p>Read only list of sections (always one, the SimpleLocation object).</p>
-<p>This is a convenience property allowing you to write code handling both
-SimpleLocation objects (with one part) and more complex CompoundLocation
-objects (with multiple parts) interchangeably.</p>
+<p>This is a convenience property allowing you to write code handling
+both SimpleLocation objects (with one part) and more complex
+CompoundLocation objects (with multiple parts) interchangeably.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -951,10 +937,10 @@ give the full span covered, 0 &lt;= start &lt;= end &lt;= full sequence length.<
 <span class="go">True</span>
 </pre></div>
 </div>
-<p>This is consistent with the behavior of the SimpleLocation for a
-simple region, where again the ‘start’ and ‘end’ do not necessarily
-give the biological start and end, but rather the ‘minimal’ and
-‘maximal’ coordinate boundaries.</p>
+<p>This is consistent with the behavior of the SimpleLocation for a single
+region, where again the ‘start’ and ‘end’ do not necessarily give the
+biological start and end, but rather the ‘minimal’ and ‘maximal’
+coordinate boundaries.</p>
 <p>Note that adding locations provides a more intuitive method of
 construction:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">strand</span><span class="o">=+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="n">strand</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
@@ -1169,34 +1155,103 @@ in the optional dictionary references.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="Bio.SeqFeature.AbstractPosition">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">AbstractPosition</span></span><a class="headerlink" href="#Bio.SeqFeature.AbstractPosition" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dt class="sig sig-object py" id="Bio.SeqFeature.Position">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">Position</span></span><a class="headerlink" href="#Bio.SeqFeature.Position" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract base class representing a position.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.SeqFeature.AbstractPosition.__repr__">
-<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.AbstractPosition.__repr__" title="Permalink to this definition"></a></dt>
-<dd><p>Represent the AbstractPosition object as a string for debugging.</p>
+<dt class="sig sig-object py" id="Bio.SeqFeature.Position.__repr__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.Position.__repr__" title="Permalink to this definition"></a></dt>
+<dd><p>Represent the Position object as a string for debugging.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="Bio.SeqFeature.AbstractPosition.position">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#Bio.SeqFeature.AbstractPosition.position" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.SeqFeature.Position.position">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">position</span></span><a class="headerlink" href="#Bio.SeqFeature.Position.position" title="Permalink to this definition"></a></dt>
 <dd><p>Legacy attribute to get (left-most) position as an integer (DEPRECATED).</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="Bio.SeqFeature.AbstractPosition.extension">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#Bio.SeqFeature.AbstractPosition.extension" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.SeqFeature.Position.extension">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extension</span></span><a class="headerlink" href="#Bio.SeqFeature.Position.extension" title="Permalink to this definition"></a></dt>
 <dd><p>Legacy attribute to get the position’s ‘width’ as an integer, typically zero (DEPRECATED).</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.Position.fromstring">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromstring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.Position.fromstring" title="Permalink to this definition"></a></dt>
+<dd><p>Build a Position object from the text string.</p>
+<p>For an end position, leave offset as zero (default):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Position</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;5&quot;</span><span class="p">)</span>
+<span class="go">ExactPosition(5)</span>
+</pre></div>
+</div>
+<p>For a start position, set offset to minus one (for Python counting):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Position</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;5&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">ExactPosition(4)</span>
+</pre></div>
+</div>
+<p>This also covers fuzzy positions:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Position</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;&lt;5&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
+<span class="go">BeforePosition(5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">&lt;5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Position</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;&gt;5&quot;</span><span class="p">)</span>
+<span class="go">AfterPosition(5)</span>
+</pre></div>
+</div>
+<p>By default assumes an end position, so note the integer behavior:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Position</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;one-of(5,8,11)&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
+<span class="go">OneOfPosition(11, choices=[ExactPosition(5), ExactPosition(8), ExactPosition(11)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">one-of(5,8,11)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">11</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Position</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;(8.10)&quot;</span><span class="p">)</span>
+<span class="go">WithinPosition(10, left=8, right=10)</span>
+</pre></div>
+</div>
+<p>Fuzzy start positions:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Position</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;&lt;5&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
+<span class="go">BeforePosition(4)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">&lt;4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+<p>Notice how the integer behavior changes too!</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">Position</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;one-of(5,8,11)&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">p</span>
+<span class="go">OneOfPosition(4, choices=[ExactPosition(4), ExactPosition(7), ExactPosition(10)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">one-of(4,7,10)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.Position.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({'__repr__'})</span></em><a class="headerlink" href="#Bio.SeqFeature.Position.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqFeature.ExactPosition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">ExactPosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.ExactPosition" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.Position" title="Bio.SeqFeature.Position"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.Position</span></code></a></p>
 <p>Specify the specific position of a boundary.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -1215,7 +1270,7 @@ of arguments can be passed to all position types.</p></li>
 <span class="go">5</span>
 </pre></div>
 </div>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">AbstractPosition</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Position</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 <span class="go">True</span>
@@ -1229,7 +1284,7 @@ of arguments can be passed to all position types.</p></li>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">&lt;=</span> <span class="mi">5</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">+</span> <span class="mi">10</span>
-<span class="go">15</span>
+<span class="go">ExactPosition(15)</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -1250,6 +1305,17 @@ of arguments can be passed to all position types.</p></li>
 <dd><p>Represent the ExactPosition object as a string for debugging.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.ExactPosition.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.ExactPosition.__add__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the position object with its location shifted (PRIVATE).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.ExactPosition.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.ExactPosition.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -1259,12 +1325,17 @@ of arguments can be passed to all position types.</p></li>
 <p>Specify a specific position which is uncertain.</p>
 <p>This is used in UniProt, e.g. ?222 for uncertain position 222, or in the
 XML format explicitly marked as uncertain. Does not apply to GenBank/EMBL.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.UncertainPosition.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.UncertainPosition.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqFeature.UnknownPosition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">UnknownPosition</span></span><a class="headerlink" href="#Bio.SeqFeature.UnknownPosition" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#Bio.SeqFeature.Position" title="Bio.SeqFeature.Position"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.Position</span></code></a></p>
 <p>Specify a specific position which is unknown (has no position).</p>
 <p>This is used in UniProt, e.g. ? or in the XML as unknown.</p>
 <dl class="py method">
@@ -1293,12 +1364,23 @@ would return None instead.</p>
 which is like the behavour for NaN.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.UnknownPosition.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.UnknownPosition.__add__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the position object with its location shifted (PRIVATE).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.UnknownPosition.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.UnknownPosition.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqFeature.WithinPosition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">WithinPosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.WithinPosition" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.Position" title="Bio.SeqFeature.Position"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.Position</span></code></a></p>
 <p>Specify the position of a boundary within some coordinates.</p>
 <p>Arguments:
 - position - The default integer position
@@ -1326,12 +1408,12 @@ this were a plain integer:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">&lt;</span> <span class="mi">11</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">+</span> <span class="mi">10</span>
-<span class="go">20</span>
+<span class="go">WithinPosition(20, left=20, right=23)</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">WithinPosition</span><span class="p">)</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">AbstractPosition</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Position</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 <span class="go">True</span>
@@ -1401,12 +1483,23 @@ where again the integer behavior is used:</p>
 <dd><p>Legacy attribute to get the within-position’s ‘width’ as an integer (DEPRECATED).</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.WithinPosition.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.WithinPosition.__add__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the position object with its location shifted.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.WithinPosition.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.WithinPosition.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqFeature.BetweenPosition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">BetweenPosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.BetweenPosition" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.Position" title="Bio.SeqFeature.Position"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.Position</span></code></a></p>
 <p>Specify the position of a boundary between two coordinates (OBSOLETE?).</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -1501,12 +1594,23 @@ integers.</p>
 <dd><p>Legacy attribute to get the between-position’s ‘width’ as an integer (DEPRECATED).</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.BetweenPosition.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.BetweenPosition.__add__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the position object with its location shifted (PRIVATE).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.BetweenPosition.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.BetweenPosition.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqFeature.BeforePosition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">BeforePosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.BeforePosition" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.Position" title="Bio.SeqFeature.Position"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.Position</span></code></a></p>
 <p>Specify a position where the actual location occurs before it.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -1527,7 +1631,7 @@ occurs somewhere before position 10.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 <span class="go">5</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">+</span> <span class="mi">10</span>
-<span class="go">15</span>
+<span class="go">BeforePosition(15)</span>
 </pre></div>
 </div>
 <p>Note this potentially surprising behavior:</p>
@@ -1557,12 +1661,23 @@ like integers.</p>
 <dd><p>Return a representation of the BeforePosition object (with python counting).</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.BeforePosition.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.BeforePosition.__add__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the position object with its location shifted (PRIVATE).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.BeforePosition.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.BeforePosition.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqFeature.AfterPosition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">AfterPosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.AfterPosition" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.Position" title="Bio.SeqFeature.Position"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.Position</span></code></a></p>
 <p>Specify a position where the actual location is found after it.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -1583,12 +1698,12 @@ occurs somewhere after position 10.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 <span class="go">7</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">+</span> <span class="mi">10</span>
-<span class="go">17</span>
+<span class="go">AfterPosition(17)</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">AfterPosition</span><span class="p">)</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">AbstractPosition</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Position</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 <span class="go">True</span>
@@ -1621,12 +1736,23 @@ like integers.</p>
 <dd><p>Return a representation of the AfterPosition object (with python counting).</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.AfterPosition.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.AfterPosition.__add__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the position object with its location shifted (PRIVATE).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.AfterPosition.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.AfterPosition.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqFeature.OneOfPosition">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">OneOfPosition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.AbstractPosition" title="Bio.SeqFeature.AbstractPosition"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.AbstractPosition</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <a class="reference internal" href="#Bio.SeqFeature.Position" title="Bio.SeqFeature.Position"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.Position</span></code></a></p>
 <p>Specify a position where the location can be multiple positions.</p>
 <p>This models the GenBank ‘one-of(1888,1901)’ function, and tries
 to make this fit within the Biopython Position models. If this was
@@ -1646,12 +1772,12 @@ a start position it should act like 1888, but as an end position 1901.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">&gt;</span> <span class="mi">1888</span>
 <span class="go">False</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">+</span> <span class="mi">100</span>
-<span class="go">1988</span>
+<span class="go">OneOfPosition(1988, choices=[ExactPosition(1988), ExactPosition(2001)])</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">OneOfPosition</span><span class="p">)</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">AbstractPosition</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">Position</span><span class="p">)</span>
 <span class="go">True</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
 <span class="go">True</span>
@@ -1661,8 +1787,8 @@ a start position it should act like 1888, but as an end position 1901.</p>
 <dt class="sig sig-object py" id="Bio.SeqFeature.OneOfPosition.__new__">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">choices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.__new__" title="Permalink to this definition"></a></dt>
 <dd><p>Initialize with a set of possible positions.</p>
-<p>position_list is a list of AbstractPosition derived objects,
-specifying possible locations.</p>
+<p>choices is a list of Position derived objects, specifying possible
+locations.</p>
 <p>position is an integer specifying the default behavior.</p>
 </dd></dl>
 
@@ -1696,6 +1822,17 @@ specifying possible locations.</p>
 <span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.__str__" title="Permalink to this definition"></a></dt>
 <dd><p>Return a representation of the OneOfPosition object (with python counting).</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.OneOfPosition.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.__add__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the position object with its location shifted (PRIVATE).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.OneOfPosition.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
