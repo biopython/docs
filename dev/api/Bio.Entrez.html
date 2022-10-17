@@ -158,6 +158,15 @@ parser to parse the data.</p>
 which has a <code class="docutils literal notranslate"><span class="pre">.name</span></code> attribute giving the filename, the handles from
 <code class="docutils literal notranslate"><span class="pre">Bio.Entrez</span></code> all have a <code class="docutils literal notranslate"><span class="pre">.url</span></code> attribute instead giving the URL
 used to connect to the NCBI Entrez API.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">epost</span></code>, <code class="docutils literal notranslate"><span class="pre">efetch</span></code>, and <code class="docutils literal notranslate"><span class="pre">esummary</span></code> tools take an “id” parameter
+which corresponds to one or more database UIDs (or accession.version
+identifiers in the case of sequence databases such as “nuccore” or
+“protein”). The Python value of the “id” keyword passed to these functions
+may be either a single ID as a string or integer or multiple IDs as an
+iterable of strings/integers. You may also pass a single string containing
+multiple IDs delimited by commas. The <code class="docutils literal notranslate"><span class="pre">elink</span></code> tool also accepts multiple
+IDs but the argument is handled differently than the other three. See that
+function’s docstring for more information.</p>
 <p>All the functions that send requests to the NCBI Entrez API will
 automatically respect the NCBI rate limit (of 3 requests per second
 without an API key, or 10 requests per second with an API key) and
@@ -333,6 +342,12 @@ hyperlink to the primary LinkOut provider for a specific ID and
 database, or lists LinkOut URLs and attributes for multiple IDs.</p>
 <p>See the online documentation for an explanation of the parameters:
 <a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ELink">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ELink</a></p>
+<p>Note that ELink treats the “id” parameter differently than the other
+tools when multiple values are given. You should generally pass multiple
+UIDs as a list of strings or integers. This will provide a “one-to-one”
+mapping from source database UIDs to destination database UIDs in the
+result. If multiple source UIDs are passed as a single comma-delimited
+string all destination UIDs will be mixed together in the result.</p>
 <p>This example finds articles related to the Biopython application
 note’s entry in the PubMed database:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
