@@ -131,19 +131,35 @@ This has the advantages of allowing us to handle fuzzy stuff in case anyone
 needs it, and also be compatible with BioPerl etc and BioSQL.</p>
 <dl class="simple">
 <dt>Classes:</dt><dd><ul class="simple">
+<li><p>Location - abstract base class of SimpleLocation and CompoundLocation.</p></li>
 <li><p>SimpleLocation - Specify the start and end location of a feature.</p></li>
 <li><p>CompoundLocation - Collection of SimpleLocation objects (for joins etc).</p></li>
+<li><p>Position - abstract base class of ExactPosition, WithinPosition,
+BetweenPosition, AfterPosition, OneOfPosition, UncertainPosition, and
+UnknownPosition.</p></li>
 <li><p>ExactPosition - Specify the position as being exact.</p></li>
 <li><p>WithinPosition - Specify a position occurring within some range.</p></li>
 <li><p>BetweenPosition - Specify a position occurring between a range (OBSOLETE?).</p></li>
 <li><p>BeforePosition - Specify the position as being found before some base.</p></li>
 <li><p>AfterPosition - Specify the position as being found after some base.</p></li>
-<li><p>OneOfPosition - Specify a position where the location can be multiple positions.</p></li>
+<li><p>OneOfPosition - Specify a position consisting of multiple alternative positions.</p></li>
 <li><p>UncertainPosition - Specify a specific position which is uncertain.</p></li>
 <li><p>UnknownPosition - Represents missing information like ‘?’ in UniProt.</p></li>
 </ul>
 </dd>
+<dt>Exceptions:</dt><dd><ul class="simple">
+<li><p>LocationParserError - Exception indicating a failure to parse a location
+string.</p></li>
+</ul>
+</dd>
 </dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="Bio.SeqFeature.LocationParserError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">LocationParserError</span></span><a class="headerlink" href="#Bio.SeqFeature.LocationParserError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>Could not parse a feature location string.</p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqFeature.SeqFeature">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">SeqFeature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">location</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_operator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;unknown</span> <span class="pre">id&gt;'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualifiers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sub_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.SeqFeature" title="Permalink to this definition"></a></dt>
@@ -529,9 +545,76 @@ until then __eq__ for the SimpleLocation class was not defined.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="Bio.SeqFeature.Location">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">Location</span></span><a class="headerlink" href="#Bio.SeqFeature.Location" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Abstract base class representing a location.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.Location.__repr__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.Location.__repr__" title="Permalink to this definition"></a></dt>
+<dd><p>Represent the Location object as a string for debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.Location.fromstring">
+<span class="sig-name descname"><span class="pre">fromstring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stranded</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.Location.fromstring" title="Permalink to this definition"></a></dt>
+<dd><p>Create a Location object from a string.</p>
+<p>This should accept any valid location string in the INSDC Feature Table
+format (<a class="reference external" href="https://www.insdc.org/submitting-standards/feature-table/">https://www.insdc.org/submitting-standards/feature-table/</a>) as
+used in GenBank, DDBJ and EMBL files.</p>
+<p>Simple examples:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;123..456&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="go">SimpleLocation(ExactPosition(122), ExactPosition(456), strand=1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;complement(&lt;123..&gt;456)&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="go">SimpleLocation(BeforePosition(122), AfterPosition(456), strand=-1)</span>
+</pre></div>
+</div>
+<p>A more complex location using within positions,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;(9.10)..(20.25)&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="go">SimpleLocation(WithinPosition(8, left=8, right=9), WithinPosition(25, left=20, right=25), strand=1)</span>
+</pre></div>
+</div>
+<p>Notice how that will act as though it has overall start 8 and end 25.</p>
+<p>Zero length between feature,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;123^124&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="go">SimpleLocation(ExactPosition(123), ExactPosition(123), strand=1)</span>
+</pre></div>
+</div>
+<p>The expected sequence length is needed for a special case, a between
+position at the start/end of a circular genome:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;1000^1&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="go">SimpleLocation(ExactPosition(1000), ExactPosition(1000), strand=1)</span>
+</pre></div>
+</div>
+<p>Apart from this special case, between positions P^Q must have P+1==Q,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;123^456&quot;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+   <span class="c">...</span>
+<span class="gr">Bio.SeqFeature.LocationParserError</span>: <span class="n">invalid feature location &#39;123^456&#39;</span>
+</pre></div>
+</div>
+<p>You can optionally provide a reference name:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;AL391218.9:105173..108462&quot;</span><span class="p">,</span> <span class="mi">2000000</span><span class="p">)</span>
+<span class="go">SimpleLocation(ExactPosition(105172), ExactPosition(108462), strand=1, ref=&#39;AL391218.9&#39;)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Location</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="s2">&quot;&lt;2644..159&quot;</span><span class="p">,</span> <span class="mi">2868</span><span class="p">,</span> <span class="s2">&quot;circular&quot;</span><span class="p">)</span>
+<span class="go">CompoundLocation([SimpleLocation(BeforePosition(2643), ExactPosition(2868), strand=1), SimpleLocation(ExactPosition(0), ExactPosition(159), strand=1)], &#39;join&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.Location.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({'__repr__'})</span></em><a class="headerlink" href="#Bio.SeqFeature.Location.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqFeature.SimpleLocation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">SimpleLocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_db</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.SimpleLocation" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#Bio.SeqFeature.Location" title="Bio.SeqFeature.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.Location</span></code></a></p>
 <p>Specify the location of a feature along a sequence.</p>
 <p>The SimpleLocation is used for simple continuous features, which can
 be described as running from a start position to and end position
@@ -644,6 +727,12 @@ be given with the optional ref and db_ref strings:</p>
 <span class="go">AL391218.9</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqFeature.SimpleLocation.fromstring">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fromstring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.SimpleLocation.fromstring" title="Permalink to this definition"></a></dt>
+<dd><p>Create a SimpleLocation object from a string.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -870,6 +959,11 @@ in the optional dictionary references.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.SimpleLocation.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.SimpleLocation.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.SeqFeature.SimpleLocation.__hash__">
 <span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#Bio.SeqFeature.SimpleLocation.__hash__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -885,7 +979,7 @@ in the optional dictionary references.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqFeature.CompoundLocation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqFeature.</span></span><span class="sig-name descname"><span class="pre">CompoundLocation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'join'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#Bio.SeqFeature.Location" title="Bio.SeqFeature.Location"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqFeature.Location</span></code></a></p>
 <p>For handling joins etc where a feature location has several parts.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.SeqFeature.CompoundLocation.__init__">
@@ -1146,6 +1240,11 @@ in the optional dictionary references.</p>
 </pre></div>
 </div>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.CompoundLocation.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.CompoundLocation.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.SeqFeature.CompoundLocation.__hash__">
@@ -1811,6 +1910,11 @@ locations.</p>
 <dd><p>Legacy attribute to get the one-of-position’s ‘width’ as an integer (DEPRECATED).</p>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqFeature.OneOfPosition.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.SeqFeature.OneOfPosition.__repr__">
 <span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.__repr__" title="Permalink to this definition"></a></dt>
@@ -1828,11 +1932,6 @@ locations.</p>
 <span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">offset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.__add__" title="Permalink to this definition"></a></dt>
 <dd><p>Return a copy of the position object with its location shifted (PRIVATE).</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="Bio.SeqFeature.OneOfPosition.__abstractmethods__">
-<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqFeature.OneOfPosition.__abstractmethods__" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
