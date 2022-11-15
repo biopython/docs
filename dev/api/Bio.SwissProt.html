@@ -179,7 +179,11 @@
 <li><p>sequence_update   A tuple of (date, release).</p></li>
 <li><p>annotation_update A tuple of (date, release).</p></li>
 <li><p>description       Free-format description.</p></li>
-<li><p>gene_name         Gene name.  See userman.txt for description.</p></li>
+<li><dl class="simple">
+<dt>gene_name         A list of dictionaries with keys ‘Name’, ‘Synonyms’,</dt><dd><p>‘OrderedLocusNames’ and ‘ORFNames’.</p>
+</dd>
+</dl>
+</li>
 <li><p>organism          The source of the sequence.</p></li>
 <li><p>organelle         The origin of the sequence.</p></li>
 <li><p>organism_classification  The taxonomy classification.  List of strings.
@@ -202,21 +206,21 @@ numbers, ‘&lt;’, ‘&gt;’, or ‘?’</p></li>
 </dl>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SwissProt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">example_filename</span> <span class="o">=</span> <span class="s2">&quot;SwissProt/sp008&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example_filename</span> <span class="o">=</span> <span class="s2">&quot;SwissProt/P68308.txt&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">example_filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">records</span> <span class="o">=</span> <span class="n">SwissProt</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">entry_name</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">accessions</span><span class="p">))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">accessions</span><span class="p">)</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">keywords</span><span class="p">)</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">organism</span><span class="p">))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">organism</span><span class="p">)</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">sequence</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="go">1A02_HUMAN</span>
-<span class="go">P01892,P06338,P30514,P30444,P30445,P30446,Q29680,Q29899,Q95352,Q29837,Q95380</span>
-<span class="go">[&#39;MHC I&#39;, &#39;Transmembrane&#39;, &#39;Glycoprotein&#39;, &#39;Signal&#39;, &#39;Polymorphism&#39;, &#39;3D-structure&#39;]</span>
-<span class="go">&#39;Homo sapiens (Human).&#39;</span>
-<span class="go">MAVMAPRTLVLLLSGALALT...</span>
+<span class="go">NU3M_BALPH</span>
+<span class="go">[&#39;P68308&#39;, &#39;P24973&#39;]</span>
+<span class="go">[&#39;Electron transport&#39;, &#39;Membrane&#39;, &#39;Mitochondrion&#39;, &#39;Mitochondrion inner membrane&#39;, &#39;NAD&#39;, &#39;Respiratory chain&#39;, &#39;Translocase&#39;, &#39;Transmembrane&#39;, &#39;Transmembrane helix&#39;, &#39;Transport&#39;, &#39;Ubiquinone&#39;]</span>
+<span class="go">Balaenoptera physalus (Fin whale) (Balaena physalus).</span>
+<span class="go">MNLLLTLLTNTTLALLLVFI...</span>
 </pre></div>
 </div>
 <dl class="py method">
