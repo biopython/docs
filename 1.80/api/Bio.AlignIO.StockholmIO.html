@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio.AlignIO.StockholmIO module &mdash; Biopython 1.80 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.Application package" href="Bio.Application.html" />
+    <link rel="prev" title="Bio.AlignIO.PhylipIO module" href="Bio.AlignIO.PhylipIO.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+            <a href="index.html">
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="Bio.AlignIO.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.AlignIO.html#module-Bio.AlignIO">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="Bio.html">Bio package</a></li>
+          <li class="breadcrumb-item"><a href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+      <li class="breadcrumb-item active">Bio.AlignIO.StockholmIO module</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/AlignIO/StockholmIO.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="Bio.AlignIO.PhylipIO.html" class="btn btn-neutral float-left" title="Bio.AlignIO.PhylipIO module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.Application.html" class="btn btn-neutral float-right" title="Bio.Application package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-Bio.AlignIO.StockholmIO">
+<span id="bio-alignio-stockholmio-module"></span><h1>Bio.AlignIO.StockholmIO module<a class="headerlink" href="#module-Bio.AlignIO.StockholmIO" title="Permalink to this headline"></a></h1>
+<p>Bio.AlignIO support for “stockholm” format (used in the PFAM database).</p>
+<p>You are expected to use this module via the Bio.AlignIO functions (or the
+Bio.SeqIO functions if you want to work directly with the gapped sequences).</p>
+<p>For example, consider a Stockholm alignment file containing the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># STOCKHOLM 1.0</span>
+<span class="c1">#=GC SS_cons       .................&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;...&lt;&lt;&lt;&lt;&lt;&lt;&lt;........&gt;&gt;&gt;&gt;&gt;&gt;&gt;..</span>
+<span class="n">AP001509</span><span class="mf">.1</span>         <span class="n">UUAAUCGAGCUCAACACUCUUCGUAUAUCCUC</span><span class="o">-</span><span class="n">UCAAUAUGG</span><span class="o">-</span><span class="n">GAUGAGGGU</span>
+<span class="c1">#=GR AP001509.1 SS -----------------&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;---..&lt;&lt;-&lt;&lt;--------&gt;&gt;-&gt;&gt;..--</span>
+<span class="n">AE007476</span><span class="mf">.1</span>         <span class="n">AAAAUUGAAUAUCGUUUUACUUGUUUAU</span><span class="o">-</span><span class="n">GUCGUGAAU</span><span class="o">-</span><span class="n">UGG</span><span class="o">-</span><span class="n">CACGA</span><span class="o">-</span><span class="n">CGU</span>
+<span class="c1">#=GR AE007476.1 SS -----------------&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;-----&lt;&lt;.&lt;&lt;--------&gt;&gt;.&gt;&gt;----</span>
+
+<span class="c1">#=GC SS_cons       ......&lt;&lt;&lt;&lt;&lt;&lt;&lt;.......&gt;&gt;&gt;&gt;&gt;&gt;&gt;..&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;...............</span>
+<span class="n">AP001509</span><span class="mf">.1</span>         <span class="n">CUCUAC</span><span class="o">-</span><span class="n">AGGUA</span><span class="o">-</span><span class="n">CCGUAAA</span><span class="o">-</span><span class="n">UACCUAGCUACGAAAAGAAUGCAGUUAAUGU</span>
+<span class="c1">#=GR AP001509.1 SS -------&lt;&lt;&lt;&lt;&lt;---------&gt;&gt;&gt;&gt;&gt;---&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;---------------</span>
+<span class="n">AE007476</span><span class="mf">.1</span>         <span class="n">UUCUACAAGGUG</span><span class="o">-</span><span class="n">CCGG</span><span class="o">-</span><span class="n">AA</span><span class="o">-</span><span class="n">CACCUAACAAUAAGUAAGUCAGCAGUGAGAU</span>
+<span class="c1">#=GR AE007476.1 SS ------.&lt;&lt;&lt;&lt;&lt;---------&gt;&gt;&gt;&gt;&gt;.--&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;---------------</span>
+<span class="o">//</span>
+</pre></div>
+</div>
+<p>This is a single multiple sequence alignment, so you would probably load this
+using the Bio.AlignIO.read() function:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Stockholm/simple.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">Alignment with 2 rows and 104 columns</span>
+<span class="go">UUAAUCGAGCUCAACACUCUUCGUAUAUCCUC-UCAAUAUGG-G...UGU AP001509.1</span>
+<span class="go">AAAAUUGAAUAUCGUUUUACUUGUUUAU-GUCGUGAAU-UGG-C...GAU AE007476.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
+<span class="go">AP001509.1 104</span>
+<span class="go">AE007476.1 104</span>
+</pre></div>
+</div>
+<p>In addition to the sequences themselves, this example alignment also includes
+some GR lines for the secondary structure of the sequences.  These are
+strings, with one character for each letter in the associated sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">align</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s1">&#39;secondary_structure&#39;</span><span class="p">])</span>
+<span class="go">AP001509.1</span>
+<span class="go">UUAAUCGAGCUCAACACUCUUCGUAUAUCCUC-UCAAUAUGG-GAUGAGGGUCUCUAC-AGGUA-CCGUAAA-UACCUAGCUACGAAAAGAAUGCAGUUAAUGU</span>
+<span class="go">-----------------&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;---..&lt;&lt;-&lt;&lt;--------&gt;&gt;-&gt;&gt;..---------&lt;&lt;&lt;&lt;&lt;---------&gt;&gt;&gt;&gt;&gt;---&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;---------------</span>
+<span class="go">AE007476.1</span>
+<span class="go">AAAAUUGAAUAUCGUUUUACUUGUUUAU-GUCGUGAAU-UGG-CACGA-CGUUUCUACAAGGUG-CCGG-AA-CACCUAACAAUAAGUAAGUCAGCAGUGAGAU</span>
+<span class="go">-----------------&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;-----&lt;&lt;.&lt;&lt;--------&gt;&gt;.&gt;&gt;----------.&lt;&lt;&lt;&lt;&lt;---------&gt;&gt;&gt;&gt;&gt;.--&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;---------------</span>
+</pre></div>
+</div>
+<p>Any general annotation for each row is recorded in the SeqRecord’s annotations
+dictionary.  Any per-column annotation for the entire alignment in in the
+alignment’s column annotations dictionary, such as the secondary structure
+consensus in this example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">align</span><span class="o">.</span><span class="n">column_annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;secondary_structure&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">column_annotations</span><span class="p">[</span><span class="s2">&quot;secondary_structure&quot;</span><span class="p">]</span>
+<span class="go">&#39;.................&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;...&lt;&lt;&lt;&lt;&lt;&lt;&lt;........&gt;&gt;&gt;&gt;&gt;&gt;&gt;........&lt;&lt;&lt;&lt;&lt;&lt;&lt;.......&gt;&gt;&gt;&gt;&gt;&gt;&gt;..&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;...............&#39;</span>
+</pre></div>
+</div>
+<p>You can output this alignment in many different file formats
+using Bio.AlignIO.write(), or the MultipleSeqAlignment object’s format method:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">align</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+<span class="go">&gt;AP001509.1</span>
+<span class="go">UUAAUCGAGCUCAACACUCUUCGUAUAUCCUC-UCAAUAUGG-GAUGAGGGUCUCUAC-A</span>
+<span class="go">GGUA-CCGUAAA-UACCUAGCUACGAAAAGAAUGCAGUUAAUGU</span>
+<span class="go">&gt;AE007476.1</span>
+<span class="go">AAAAUUGAAUAUCGUUUUACUUGUUUAU-GUCGUGAAU-UGG-CACGA-CGUUUCUACAA</span>
+<span class="go">GGUG-CCGG-AA-CACCUAACAAUAAGUAAGUCAGCAGUGAGAU</span>
+</pre></div>
+</div>
+<p>Most output formats won’t be able to hold the annotation possible in a
+Stockholm file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">align</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">))</span>
+<span class="go"># STOCKHOLM 1.0</span>
+<span class="go">#=GF SQ 2</span>
+<span class="go">AP001509.1 UUAAUCGAGCUCAACACUCUUCGUAUAUCCUC-UCAAUAUGG-GAUGAGGGUCUCUAC-AGGUA-CCGUAAA-UACCUAGCUACGAAAAGAAUGCAGUUAAUGU</span>
+<span class="go">#=GS AP001509.1 AC AP001509.1</span>
+<span class="go">#=GS AP001509.1 DE AP001509.1</span>
+<span class="go">#=GR AP001509.1 SS -----------------&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;---..&lt;&lt;-&lt;&lt;--------&gt;&gt;-&gt;&gt;..---------&lt;&lt;&lt;&lt;&lt;---------&gt;&gt;&gt;&gt;&gt;---&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;---------------</span>
+<span class="go">AE007476.1 AAAAUUGAAUAUCGUUUUACUUGUUUAU-GUCGUGAAU-UGG-CACGA-CGUUUCUACAAGGUG-CCGG-AA-CACCUAACAAUAAGUAAGUCAGCAGUGAGAU</span>
+<span class="go">#=GS AE007476.1 AC AE007476.1</span>
+<span class="go">#=GS AE007476.1 DE AE007476.1</span>
+<span class="go">#=GR AE007476.1 SS -----------------&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;-----&lt;&lt;.&lt;&lt;--------&gt;&gt;.&gt;&gt;----------.&lt;&lt;&lt;&lt;&lt;---------&gt;&gt;&gt;&gt;&gt;.--&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;---------------</span>
+<span class="go">#=GC SS_cons .................&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;...&lt;&lt;&lt;&lt;&lt;&lt;&lt;........&gt;&gt;&gt;&gt;&gt;&gt;&gt;........&lt;&lt;&lt;&lt;&lt;&lt;&lt;.......&gt;&gt;&gt;&gt;&gt;&gt;&gt;..&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;...............</span>
+<span class="go">//</span>
+</pre></div>
+</div>
+<p>Note that when writing Stockholm files, AlignIO does not break long sequences
+up and interleave them (as in the input file shown above).  The standard
+allows this simpler layout, and it is more likely to be understood by other
+tools.</p>
+<p>Finally, as an aside, it can sometimes be useful to use Bio.SeqIO.parse() to
+iterate over the alignment rows as SeqRecord objects - rather than working
+with Alignnment objects.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Stockholm/simple.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s1">&#39;secondary_structure&#39;</span><span class="p">])</span>
+<span class="go">AP001509.1</span>
+<span class="go">UUAAUCGAGCUCAACACUCUUCGUAUAUCCUC-UCAAUAUGG-GAUGAGGGUCUCUAC-AGGUA-CCGUAAA-UACCUAGCUACGAAAAGAAUGCAGUUAAUGU</span>
+<span class="go">-----------------&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;---..&lt;&lt;-&lt;&lt;--------&gt;&gt;-&gt;&gt;..---------&lt;&lt;&lt;&lt;&lt;---------&gt;&gt;&gt;&gt;&gt;---&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;---------------</span>
+<span class="go">AE007476.1</span>
+<span class="go">AAAAUUGAAUAUCGUUUUACUUGUUUAU-GUCGUGAAU-UGG-CACGA-CGUUUCUACAAGGUG-CCGG-AA-CACCUAACAAUAAGUAAGUCAGCAGUGAGAU</span>
+<span class="go">-----------------&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;-----&lt;&lt;.&lt;&lt;--------&gt;&gt;.&gt;&gt;----------.&lt;&lt;&lt;&lt;&lt;---------&gt;&gt;&gt;&gt;&gt;.--&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;---------------</span>
+</pre></div>
+</div>
+<p>Remember that if you slice a SeqRecord, the per-letter-annotations like the
+secondary structure string here, are also sliced:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub_record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">AUCGUUUUAC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub_record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s1">&#39;secondary_structure&#39;</span><span class="p">])</span>
+<span class="go">-------&lt;&lt;&lt;</span>
+</pre></div>
+</div>
+<p>Likewise with the alignment object, as long as you are not dropping any rows,
+slicing specific columns of an alignment will slice any per-column-annotations:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">align</span><span class="o">.</span><span class="n">column_annotations</span><span class="p">[</span><span class="s2">&quot;secondary_structure&quot;</span><span class="p">]</span>
+<span class="go">&#39;.................&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;...&lt;&lt;&lt;&lt;&lt;&lt;&lt;........&gt;&gt;&gt;&gt;&gt;&gt;&gt;........&lt;&lt;&lt;&lt;&lt;&lt;&lt;.......&gt;&gt;&gt;&gt;&gt;&gt;&gt;..&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;...............&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">part_align</span> <span class="o">=</span> <span class="n">align</span><span class="p">[:,</span><span class="mi">10</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">part_align</span><span class="o">.</span><span class="n">column_annotations</span><span class="p">[</span><span class="s2">&quot;secondary_structure&quot;</span><span class="p">]</span>
+<span class="go">&#39;.......&lt;&lt;&lt;&#39;</span>
+</pre></div>
+</div>
+<p>You can also see this in the Stockholm output of this partial-alignment:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">part_align</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">))</span>
+<span class="go"># STOCKHOLM 1.0</span>
+<span class="go">#=GF SQ 2</span>
+<span class="go">AP001509.1 UCAACACUCU</span>
+<span class="go">#=GS AP001509.1 AC AP001509.1</span>
+<span class="go">#=GS AP001509.1 DE AP001509.1</span>
+<span class="go">#=GR AP001509.1 SS -------&lt;&lt;&lt;</span>
+<span class="go">AE007476.1 AUCGUUUUAC</span>
+<span class="go">#=GS AE007476.1 AC AE007476.1</span>
+<span class="go">#=GS AE007476.1 DE AE007476.1</span>
+<span class="go">#=GR AE007476.1 SS -------&lt;&lt;&lt;</span>
+<span class="go">#=GC SS_cons .......&lt;&lt;&lt;</span>
+<span class="go">//</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.AlignIO.StockholmIO.StockholmWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.AlignIO.StockholmIO.</span></span><span class="sig-name descname"><span class="pre">StockholmWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmWriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.AlignIO.Interfaces.html#Bio.AlignIO.Interfaces.SequentialAlignmentWriter" title="Bio.AlignIO.Interfaces.SequentialAlignmentWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.AlignIO.Interfaces.SequentialAlignmentWriter</span></code></a></p>
+<p>Stockholm/PFAM alignment writer.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.AlignIO.StockholmIO.StockholmWriter.pfam_gr_mapping">
+<span class="sig-name descname"><span class="pre">pfam_gr_mapping</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'active_site':</span> <span class="pre">'AS',</span> <span class="pre">'intron':</span> <span class="pre">'IN',</span> <span class="pre">'ligand_binding':</span> <span class="pre">'LI',</span> <span class="pre">'posterior_probability':</span> <span class="pre">'PP',</span> <span class="pre">'secondary_structure':</span> <span class="pre">'SS',</span> <span class="pre">'surface_accessibility':</span> <span class="pre">'SA',</span> <span class="pre">'transmembrane':</span> <span class="pre">'TM'}</span></em><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmWriter.pfam_gr_mapping" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.AlignIO.StockholmIO.StockholmWriter.pfam_gc_mapping">
+<span class="sig-name descname"><span class="pre">pfam_gc_mapping</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'model_mask':</span> <span class="pre">'MM',</span> <span class="pre">'reference_annotation':</span> <span class="pre">'RF'}</span></em><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmWriter.pfam_gc_mapping" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.AlignIO.StockholmIO.StockholmWriter.pfam_gs_mapping">
+<span class="sig-name descname"><span class="pre">pfam_gs_mapping</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'look':</span> <span class="pre">'LO',</span> <span class="pre">'organism':</span> <span class="pre">'OS',</span> <span class="pre">'organism_classification':</span> <span class="pre">'OC'}</span></em><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmWriter.pfam_gs_mapping" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.AlignIO.StockholmIO.StockholmWriter.write_alignment">
+<span class="sig-name descname"><span class="pre">write_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignment</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmWriter.write_alignment" title="Permalink to this definition"></a></dt>
+<dd><p>Use this to write (another) single alignment to an open file.</p>
+<p>Note that sequences and their annotation are recorded
+together (rather than having a block of annotation followed
+by a block of aligned sequences).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.AlignIO.StockholmIO.StockholmIterator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.AlignIO.StockholmIO.</span></span><span class="sig-name descname"><span class="pre">StockholmIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.AlignIO.Interfaces.html#Bio.AlignIO.Interfaces.AlignmentIterator" title="Bio.AlignIO.Interfaces.AlignmentIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.AlignIO.Interfaces.AlignmentIterator</span></code></a></p>
+<p>Loads a Stockholm file from PFAM into MultipleSeqAlignment objects.</p>
+<p>The file may contain multiple concatenated alignments, which are loaded
+and returned incrementally.</p>
+<p>This parser will detect if the Stockholm file follows the PFAM
+conventions for sequence specific meta-data (lines starting #=GS
+and #=GR) and populates the SeqRecord fields accordingly.</p>
+<p>Any annotation which does not follow the PFAM conventions is currently
+ignored.</p>
+<p>If an accession is provided for an entry in the meta data, IT WILL NOT
+be used as the record.id (it will be recorded in the record’s
+annotations).  This is because some files have (sub) sequences from
+different parts of the same accession (differentiated by different
+start-end positions).</p>
+<p>Wrap-around alignments are not supported - each sequences must be on
+a single line.  However, interlaced sequences should work.</p>
+<p>For more information on the file format, please see:
+<a class="reference external" href="http://sonnhammer.sbc.su.se/Stockholm.html">http://sonnhammer.sbc.su.se/Stockholm.html</a>
+<a class="reference external" href="https://en.wikipedia.org/wiki/Stockholm_format">https://en.wikipedia.org/wiki/Stockholm_format</a>
+<a class="reference external" href="http://bioperl.org/formats/alignment_formats/Stockholm_multiple_alignment_format.html">http://bioperl.org/formats/alignment_formats/Stockholm_multiple_alignment_format.html</a></p>
+<p>For consistency with BioPerl and EMBOSS we call this the “stockholm”
+format.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.AlignIO.StockholmIO.StockholmIterator.pfam_gr_mapping">
+<span class="sig-name descname"><span class="pre">pfam_gr_mapping</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'AS':</span> <span class="pre">'active_site',</span> <span class="pre">'IN':</span> <span class="pre">'intron',</span> <span class="pre">'LI':</span> <span class="pre">'ligand_binding',</span> <span class="pre">'PP':</span> <span class="pre">'posterior_probability',</span> <span class="pre">'SA':</span> <span class="pre">'surface_accessibility',</span> <span class="pre">'SS':</span> <span class="pre">'secondary_structure',</span> <span class="pre">'TM':</span> <span class="pre">'transmembrane'}</span></em><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmIterator.pfam_gr_mapping" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.AlignIO.StockholmIO.StockholmIterator.pfam_gc_mapping">
+<span class="sig-name descname"><span class="pre">pfam_gc_mapping</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'MM':</span> <span class="pre">'model_mask',</span> <span class="pre">'RF':</span> <span class="pre">'reference_annotation'}</span></em><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmIterator.pfam_gc_mapping" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.AlignIO.StockholmIO.StockholmIterator.pfam_gs_mapping">
+<span class="sig-name descname"><span class="pre">pfam_gs_mapping</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'LO':</span> <span class="pre">'look',</span> <span class="pre">'OC':</span> <span class="pre">'organism_classification',</span> <span class="pre">'OS':</span> <span class="pre">'organism'}</span></em><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmIterator.pfam_gs_mapping" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.AlignIO.StockholmIO.StockholmIterator.__next__">
+<span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.StockholmIO.StockholmIterator.__next__" title="Permalink to this definition"></a></dt>
+<dd><p>Parse the next alignment from the handle.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Bio.AlignIO.PhylipIO.html" class="btn btn-neutral float-left" title="Bio.AlignIO.PhylipIO module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.Application.html" class="btn btn-neutral float-right" title="Bio.Application package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2020, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.80
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.79/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

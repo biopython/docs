@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio.Seq module &mdash; Biopython 1.80 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.SeqFeature module" href="Bio.SeqFeature.html" />
+    <link rel="prev" title="Bio.NaiveBayes module" href="Bio.NaiveBayes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+            <a href="index.html">
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.File.html">Bio.File module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.LogisticRegression.html">Bio.LogisticRegression module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.MarkovModel.html">Bio.MarkovModel module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.MaxEntropy.html">Bio.MaxEntropy module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NaiveBayes.html">Bio.NaiveBayes module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Bio.Seq module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqFeature.html">Bio.SeqFeature module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqRecord.html">Bio.SeqRecord module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.bgzf.html">Bio.bgzf module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.kNN.html">Bio.kNN module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.pairwise2.html">Bio.pairwise2 module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="Bio.html">Bio package</a></li>
+      <li class="breadcrumb-item active">Bio.Seq module</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/Seq.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="Bio.NaiveBayes.html" class="btn btn-neutral float-left" title="Bio.NaiveBayes module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.SeqFeature.html" class="btn btn-neutral float-right" title="Bio.SeqFeature module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-Bio.Seq">
+<span id="bio-seq-module"></span><h1>Bio.Seq module<a class="headerlink" href="#module-Bio.Seq" title="Permalink to this headline"></a></h1>
+<p>Provide objects to represent biological sequences.</p>
+<dl class="simple">
+<dt>See also the <a class="reference external" href="http://biopython.org/wiki/Seq">Seq</a> wiki and the chapter in our tutorial:</dt><dd><ul class="simple">
+<li><p><a class="reference external" href="http://biopython.org/DIST/docs/tutorial/Tutorial.html">HTML Tutorial</a></p></li>
+<li><p><a class="reference external" href="http://biopython.org/DIST/docs/tutorial/Tutorial.pdf">PDF Tutorial</a></p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">SequenceDataAbstractBaseClass</span></span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Abstract base class for sequence content providers.</p>
+<p>Most users will not need to use this class. It is used internally as a base
+class for sequence content provider classes such as _UndefinedSequenceData
+defined in this module, and _TwoBitSequenceData in Bio.SeqIO.TwoBitIO.
+Instances of these classes can be used instead of a <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object as the
+data argument when creating a Seq object, and provide the sequence content
+only when requested via <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code>. This allows lazy parsers to load
+and parse sequence data from a file only for the requested sequence regions,
+and _UndefinedSequenceData instances to raise an exception when undefined
+sequence data are requested.</p>
+<p>Future implementations of lazy parsers that similarly provide on-demand
+parsing of sequence data should use a subclass of this abstract class and
+implement the abstract methods <code class="docutils literal notranslate"><span class="pre">__len__</span></code> and <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code>:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">__len__</span></code> must return the sequence length;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> must return</p>
+<ul class="simple">
+<li><p>a <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object for the requested region; or</p></li>
+<li><p>a new instance of the subclass for the requested region; or</p></li>
+<li><p>raise an <code class="docutils literal notranslate"><span class="pre">UndefinedSequenceError</span></code>.</p></li>
+</ul>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> for a sequence region of size zero should always
+return an empty <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object.
+Calling <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> for the full sequence (as in data[:]) should
+either return a <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object with the full sequence, or raise an
+<code class="docutils literal notranslate"><span class="pre">UndefinedSequenceError</span></code>.</p>
+</li>
+</ul>
+<p>Subclasses of SequenceDataAbstractBaseClass must call <code class="docutils literal notranslate"><span class="pre">super().__init__()</span></code>
+as part of their <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__slots__">
+<span class="sig-name descname"><span class="pre">__slots__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__slots__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Check if <code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> returns a bytes-like object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__len__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__len__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__getitem__">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__getitem__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__bytes__">
+<span class="sig-name descname"><span class="pre">__bytes__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__bytes__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__hash__">
+<span class="sig-name descname"><span class="pre">__hash__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__hash__" title="Permalink to this definition"></a></dt>
+<dd><p>Return hash(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__eq__" title="Permalink to this definition"></a></dt>
+<dd><p>Return self==value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__lt__" title="Permalink to this definition"></a></dt>
+<dd><p>Return self&lt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__le__">
+<span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__le__" title="Permalink to this definition"></a></dt>
+<dd><p>Return self&lt;=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__gt__" title="Permalink to this definition"></a></dt>
+<dd><p>Return self&gt;value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__ge__">
+<span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__ge__" title="Permalink to this definition"></a></dt>
+<dd><p>Return self&gt;=value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__add__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__radd__">
+<span class="sig-name descname"><span class="pre">__radd__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__radd__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__mul__">
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__mul__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__contains__">
+<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__contains__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.decode">
+<span class="sig-name descname"><span class="pre">decode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.decode" title="Permalink to this definition"></a></dt>
+<dd><p>Decode the data as bytes using the codec registered for encoding.</p>
+<dl class="simple">
+<dt>encoding</dt><dd><p>The encoding with which to decode the bytes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.count" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of non-overlapping occurrences of sub in data[start:end].</p>
+<p>Optional arguments start and end are interpreted as in slice notation.
+This method behaves as the count method of Python strings.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.find" title="Permalink to this definition"></a></dt>
+<dd><p>Return the lowest index in data where subsection sub is found.</p>
+<p>Return the lowest index in data where subsection sub is found,
+such that sub is contained within data[start,end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Return -1 on failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.rfind">
+<span class="sig-name descname"><span class="pre">rfind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.rfind" title="Permalink to this definition"></a></dt>
+<dd><p>Return the highest index in data where subsection sub is found.</p>
+<p>Return the highest index in data where subsection sub is found,
+such that sub is contained within data[start,end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Return -1 on failure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.index" title="Permalink to this definition"></a></dt>
+<dd><p>Return the lowest index in data where subsection sub is found.</p>
+<p>Return the lowest index in data where subsection sub is found,
+such that sub is contained within data[start,end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Raises ValueError when the subsection is not found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.rindex">
+<span class="sig-name descname"><span class="pre">rindex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.rindex" title="Permalink to this definition"></a></dt>
+<dd><p>Return the highest index in data where subsection sub is found.</p>
+<p>Return the highest index in data where subsection sub is found,
+such that sub is contained within data[start,end].  Optional
+arguments start and end are interpreted as in slice notation.</p>
+<p>Raise ValueError when the subsection is not found.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.startswith">
+<span class="sig-name descname"><span class="pre">startswith</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prefix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.startswith" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if data starts with the specified prefix, False otherwise.</p>
+<p>With optional start, test data beginning at that position.
+With optional end, stop comparing data at that position.
+prefix can also be a tuple of bytes to try.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.endswith">
+<span class="sig-name descname"><span class="pre">endswith</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">suffix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.endswith" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if data ends with the specified suffix, False otherwise.</p>
+<p>With optional start, test data beginning at that position.
+With optional end, stop comparing data at that position.
+suffix can also be a tuple of bytes to try.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.split">
+<span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsplit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.split" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of the sections in the data, using sep as the delimiter.</p>
+<dl class="simple">
+<dt>sep</dt><dd><p>The delimiter according which to split the data.
+None (the default value) means split on ASCII whitespace characters
+(space, tab, return, newline, formfeed, vertical tab).</p>
+</dd>
+<dt>maxsplit</dt><dd><p>Maximum number of splits to do.
+-1 (the default value) means no limit.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.rsplit">
+<span class="sig-name descname"><span class="pre">rsplit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maxsplit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.rsplit" title="Permalink to this definition"></a></dt>
+<dd><p>Return a list of the sections in the data, using sep as the delimiter.</p>
+<dl class="simple">
+<dt>sep</dt><dd><p>The delimiter according which to split the data.
+None (the default value) means split on ASCII whitespace characters
+(space, tab, return, newline, formfeed, vertical tab).</p>
+</dd>
+<dt>maxsplit</dt><dd><p>Maximum number of splits to do.
+-1 (the default value) means no limit.</p>
+</dd>
+</dl>
+<p>Splitting is done starting at the end of the data and working to the front.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.strip">
+<span class="sig-name descname"><span class="pre">strip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.strip" title="Permalink to this definition"></a></dt>
+<dd><p>Strip leading and trailing characters contained in the argument.</p>
+<p>If the argument is omitted or None, strip leading and trailing ASCII whitespace.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.lstrip">
+<span class="sig-name descname"><span class="pre">lstrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.lstrip" title="Permalink to this definition"></a></dt>
+<dd><p>Strip leading characters contained in the argument.</p>
+<p>If the argument is omitted or None, strip leading ASCII whitespace.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.rstrip">
+<span class="sig-name descname"><span class="pre">rstrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chars</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.rstrip" title="Permalink to this definition"></a></dt>
+<dd><p>Strip trailing characters contained in the argument.</p>
+<p>If the argument is omitted or None, strip trailing ASCII whitespace.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.upper">
+<span class="sig-name descname"><span class="pre">upper</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.upper" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of data with all ASCII characters converted to uppercase.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.lower">
+<span class="sig-name descname"><span class="pre">lower</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.lower" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of data with all ASCII characters converted to lowercase.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.isupper">
+<span class="sig-name descname"><span class="pre">isupper</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.isupper" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if all ASCII characters in data are uppercase.</p>
+<p>If there are no cased characters, the method returns False.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.islower">
+<span class="sig-name descname"><span class="pre">islower</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.islower" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if all ASCII characters in data are lowercase.</p>
+<p>If there are no cased characters, the method returns False.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.replace">
+<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.replace" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy with all occurrences of substring old replaced by new.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delete</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">b''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.translate" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy with each character mapped by the given translation table.</p>
+<blockquote>
+<div><dl class="simple">
+<dt>table</dt><dd><p>Translation table, which must be a bytes object of length 256.</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>All characters occurring in the optional argument delete are removed.
+The remaining characters are mapped through the given translation table.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.defined">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defined</span></span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.defined" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if the sequence is defined, False if undefined or partially defined.</p>
+<p>Zero-length sequences are always considered to be defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.defined_ranges">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defined_ranges</span></span><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.defined_ranges" title="Permalink to this definition"></a></dt>
+<dd><p>Return a tuple of the ranges where the sequence contents is defined.</p>
+<p>The return value has the format ((start1, end1), (start2, end2), …).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Seq.SequenceDataAbstractBaseClass.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({'__getitem__',</span> <span class="pre">'__len__'})</span></em><a class="headerlink" href="#Bio.Seq.SequenceDataAbstractBaseClass.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Seq.Seq">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">Seq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Seq._SeqAbstractBaseClass</span></code></p>
+<p>Read-only sequence object (essentially a string with biological methods).</p>
+<p>Like normal python strings, our basic sequence object is immutable.
+This prevents you from doing my_seq[5] = “A” for example, but does allow
+Seq objects to be used as dictionary keys.</p>
+<p>The Seq object provides a number of string like methods (such as count,
+find, split and strip).</p>
+<p>The Seq object also provides some biological methods, such as complement,
+reverse_complement, transcribe, back_transcribe and translate (which are
+not applicable to protein sequences).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.Seq.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Create a Seq object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>data - Sequence, required (string)</p></li>
+<li><p>length - Sequence length, used only if data is None or a dictionary (integer)</p></li>
+</ul>
+</dd>
+</dl>
+<p>You will typically use Bio.SeqIO to read in sequences from files as
+SeqRecord objects, whose sequence will be exposed as a Seq object via
+the seq property.</p>
+<p>However, you can also create a Seq object directly:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">MKQHKAMIVALIVICITAVVAALVTRKDLCEVHIRTGQTEVAVF</span>
+</pre></div>
+</div>
+<p>To create a Seq object with for a sequence of known length but
+unknown sequence contents, use None for the data argument and pass
+the sequence length for the length argument. Trying to access the
+sequence contents of a Seq object created in this way will raise
+an UndefinedSequenceError:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_undefined_sequence</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_undefined_sequence</span>
+<span class="go">Seq(None, length=20)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">my_undefined_sequence</span><span class="p">)</span>
+<span class="go">20</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_undefined_sequence</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">Bio.Seq.UndefinedSequenceError</span>: <span class="n">Sequence content is undefined</span>
+</pre></div>
+</div>
+<p>If the sequence contents is known for parts of the sequence only, use
+a dictionary for the data argument to pass the known sequence segments:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_partially_defined_sequence</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">({</span><span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;ACGT&quot;</span><span class="p">},</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_partially_defined_sequence</span>
+<span class="go">Seq({3: &#39;ACGT&#39;}, length=10)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">my_partially_defined_sequence</span><span class="p">)</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_partially_defined_sequence</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">Bio.Seq.UndefinedSequenceError</span>: <span class="n">Sequence content is only partially defined</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_partially_defined_sequence</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
+<span class="go">Seq(&#39;ACGT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_partially_defined_sequence</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">])</span>
+<span class="go">ACGT</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.Seq.__hash__">
+<span class="sig-name descname"><span class="pre">__hash__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.__hash__" title="Permalink to this definition"></a></dt>
+<dd><p>Hash of the sequence as a string for comparison.</p>
+<p>See Seq object comparison documentation (method <code class="docutils literal notranslate"><span class="pre">__eq__</span></code> in
+particular) as this has changed in Biopython 1.65. Older versions
+would hash on object identity.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.Seq.tomutable">
+<span class="sig-name descname"><span class="pre">tomutable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.tomutable" title="Permalink to this definition"></a></dt>
+<dd><p>Return the full sequence as a MutableSeq object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">tomutable</span><span class="p">()</span>
+<span class="go">MutableSeq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.Seq.encode">
+<span class="sig-name descname"><span class="pre">encode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'utf-8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'strict'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.encode" title="Permalink to this definition"></a></dt>
+<dd><p>Return an encoded version of the sequence as a bytes object.</p>
+<p>The Seq object aims to match the interface of a Python string.</p>
+<p>This is essentially to save you doing str(my_seq).encode() when
+you need a bytes string, for example for computing a hash:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+<span class="go">b&#39;ACGT&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.Seq.ungap">
+<span class="sig-name descname"><span class="pre">ungap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.ungap" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the sequence without the gap character(s) (DEPRECATED).</p>
+<p>The gap character now defaults to the minus sign, and can only
+be specified via the method argument. This is no longer possible
+via the sequence’s alphabet (as was possible up to Biopython 1.77):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;-ATA--TGAAAT-TTGAAAA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
+<span class="go">Seq(&#39;-ATA--TGAAAT-TTGAAAA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<span class="go">Seq(&#39;ATATGAAATTTGAAAA&#39;)</span>
+</pre></div>
+</div>
+<p>This method is DEPRECATED; please use my_dna.replace(gap, “”) instead.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Seq.Seq.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.Seq.Seq.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">UnknownSeq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'?'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.Seq.Seq" title="Bio.Seq.Seq"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Seq.Seq</span></code></a></p>
+<p>Read-only sequence object of known length but unknown contents (DEPRECATED).</p>
+<p>If you have an unknown sequence, you can represent this with a normal
+Seq object, for example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="o">*</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">Seq(&#39;NNNNN&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">NNNNN</span>
+</pre></div>
+</div>
+<p>However, this is rather wasteful of memory (especially for large
+sequences), which is where this class is most useful:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unk_five</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unk_five</span>
+<span class="go">UnknownSeq(5, character=&#39;?&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">unk_five</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unk_five</span><span class="p">)</span>
+<span class="go">?????</span>
+</pre></div>
+</div>
+<p>You can add unknown sequence together. Provided the characters are the
+same, you get another memory saving UnknownSeq:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unk_four</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unk_four</span>
+<span class="go">UnknownSeq(4, character=&#39;?&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unk_four</span> <span class="o">+</span> <span class="n">unk_five</span>
+<span class="go">UnknownSeq(9, character=&#39;?&#39;)</span>
+</pre></div>
+</div>
+<p>If the characters are different, addition gives an ordinary Seq object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unk_nnnn</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unk_nnnn</span>
+<span class="go">UnknownSeq(4, character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unk_nnnn</span> <span class="o">+</span> <span class="n">unk_four</span>
+<span class="go">Seq(&#39;NNNN????&#39;)</span>
+</pre></div>
+</div>
+<p>Combining with a real Seq gives a new Seq object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">known_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unk_four</span> <span class="o">+</span> <span class="n">known_seq</span>
+<span class="go">Seq(&#39;????ACGT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">known_seq</span> <span class="o">+</span> <span class="n">unk_four</span>
+<span class="go">Seq(&#39;ACGT????&#39;)</span>
+</pre></div>
+</div>
+<p>Although originally intended for unknown sequences (thus the class name),
+this can be used for homopolymer sequences like AAAAAA, and the biological
+methods will respect this:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">homopolymer</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">homopolymer</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
+<span class="go">UnknownSeq(6, character=&#39;T&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">homopolymer</span><span class="o">.</span><span class="n">complement_rna</span><span class="p">()</span>
+<span class="go">UnknownSeq(6, character=&#39;U&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">homopolymer</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span>
+<span class="go">UnknownSeq(2, character=&#39;K&#39;)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">character</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'?'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Create a new UnknownSeq object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>length - Integer, required.</p></li>
+<li><p>alphabet - no longer used, must be None.</p></li>
+<li><p>character - single letter string, default “?”. Typically “N”
+for nucleotides, “X” for proteins, and “?” otherwise.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__len__" title="Permalink to this definition"></a></dt>
+<dd><p>Return the stated length of the unknown sequence.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__bytes__">
+<span class="sig-name descname"><span class="pre">__bytes__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__bytes__" title="Permalink to this definition"></a></dt>
+<dd><p>Return the unknown sequence as full string of the given length.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return the unknown sequence as full string of the given length.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__repr__" title="Permalink to this definition"></a></dt>
+<dd><p>Return (truncated) representation of the sequence for debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__add__" title="Permalink to this definition"></a></dt>
+<dd><p>Add another sequence or string to this sequence.</p>
+<p>Adding two UnknownSeq objects returns another UnknownSeq object
+provided the character is the same.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+<span class="go">UnknownSeq(15, character=&#39;X&#39;)</span>
+</pre></div>
+</div>
+<p>If the characters differ, an UnknownSeq object cannot be used, so a
+Seq object is returned:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="go">Seq(&#39;XXXXXXXXXXxxxxx&#39;)</span>
+</pre></div>
+</div>
+<p>If adding a string to an UnknownSeq, a new Seq is returned:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;X&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;LV&quot;</span>
+<span class="go">Seq(&#39;XXXXXLV&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__radd__">
+<span class="sig-name descname"><span class="pre">__radd__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__radd__" title="Permalink to this definition"></a></dt>
+<dd><p>Add a sequence on the left.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__mul__">
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__mul__" title="Permalink to this definition"></a></dt>
+<dd><p>Multiply UnknownSeq by integer.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="go">UnknownSeq(6, character=&#39;?&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="go">UnknownSeq(6, character=&#39;N&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__rmul__">
+<span class="sig-name descname"><span class="pre">__rmul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__rmul__" title="Permalink to this definition"></a></dt>
+<dd><p>Multiply integer by UnknownSeq.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="o">*</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">UnknownSeq(6, character=&#39;?&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="o">*</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="go">UnknownSeq(6, character=&#39;N&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__imul__">
+<span class="sig-name descname"><span class="pre">__imul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__imul__" title="Permalink to this definition"></a></dt>
+<dd><p>Multiply UnknownSeq in-place.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">*=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span>
+<span class="go">UnknownSeq(6, character=&#39;N&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.__getitem__" title="Permalink to this definition"></a></dt>
+<dd><p>Get a subsequence from the UnknownSeq object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unk</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unk</span><span class="p">[:])</span>
+<span class="go">NNNNNNNN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unk</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unk</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">NNNNNN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unk</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">NNN</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.count" title="Permalink to this definition"></a></dt>
+<dd><p>Return a non-overlapping count, like that of a python string.</p>
+<p>This behaves like the python string (and Seq object) method of the
+same name, which does a non-overlapping count!</p>
+<p>For an overlapping search use the newer count_overlap() method.</p>
+<p>Returns an integer, the number of occurrences of substring
+argument sub in the (sub)sequence given by [start:end].
+Optional arguments start and end are interpreted as in slice
+notation.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>sub - a string or another Seq object to look for</p></li>
+<li><p>start - optional integer, slice start</p></li>
+<li><p>end - optional integer, slice end</p></li>
+</ul>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;NNNN&quot;</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;NNNN&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;AA&quot;</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<p>HOWEVER, please note because that python strings and Seq objects (and
+MutableSeq objects) do a non-overlapping search, this may not give
+the answer you expect:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;NN&quot;</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;NNN&quot;</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.count_overlap">
+<span class="sig-name descname"><span class="pre">count_overlap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.count_overlap" title="Permalink to this definition"></a></dt>
+<dd><p>Return an overlapping count.</p>
+<p>For a non-overlapping search use the count() method.</p>
+<p>Returns an integer, the number of occurrences of substring
+argument sub in the (sub)sequence given by [start:end].
+Optional arguments start and end are interpreted as in slice
+notation.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>sub - a string or another Seq object to look for</p></li>
+<li><p>start - optional integer, slice start</p></li>
+<li><p>end - optional integer, slice end</p></li>
+</ul>
+</dd>
+</dl>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count_overlap</span><span class="p">(</span><span class="s2">&quot;NN&quot;</span><span class="p">)</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count_overlap</span><span class="p">(</span><span class="s2">&quot;NNN&quot;</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>Where substrings do not overlap, should behave the same as
+the count() method:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count_overlap</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count_overlap</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count_overlap</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count_overlap</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count_overlap</span><span class="p">(</span><span class="s2">&quot;AA&quot;</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count_overlap</span><span class="p">(</span><span class="s2">&quot;AA&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;AA&quot;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.complement">
+<span class="sig-name descname"><span class="pre">complement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.complement" title="Permalink to this definition"></a></dt>
+<dd><p>Return the complement assuming it is DNA.</p>
+<p>In typical usage this will return the same unknown sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_nuc</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_nuc</span>
+<span class="go">UnknownSeq(8, character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_nuc</span><span class="p">)</span>
+<span class="go">NNNNNNNN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_nuc</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
+<span class="go">UnknownSeq(8, character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_nuc</span><span class="o">.</span><span class="n">complement</span><span class="p">())</span>
+<span class="go">NNNNNNNN</span>
+</pre></div>
+</div>
+<p>If your sequence isn’t actually unknown, and has a nucleotide letter
+other than N, the appropriate DNA complement base is used:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
+<span class="go">UnknownSeq(8, character=&#39;T&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.complement_rna">
+<span class="sig-name descname"><span class="pre">complement_rna</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.complement_rna" title="Permalink to this definition"></a></dt>
+<dd><p>Return the complement assuming it is RNA.</p>
+<p>In typical usage this will return the same unknown sequence. If your
+sequence isn’t actually unknown, the appropriate RNA complement base
+is used:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">complement_rna</span><span class="p">()</span>
+<span class="go">UnknownSeq(8, character=&#39;U&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.reverse_complement">
+<span class="sig-name descname"><span class="pre">reverse_complement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.reverse_complement" title="Permalink to this definition"></a></dt>
+<dd><p>Return the reverse complement assuming it is DNA.</p>
+<p>In typical usage this will return the same unknown sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">example</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+<span class="go">NNNNNN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">())</span>
+<span class="go">NNNNNN</span>
+</pre></div>
+</div>
+<p>If your sequence isn’t actually unknown, the appropriate DNA
+complement base is used:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="go">UnknownSeq(8, character=&#39;T&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.reverse_complement_rna">
+<span class="sig-name descname"><span class="pre">reverse_complement_rna</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.reverse_complement_rna" title="Permalink to this definition"></a></dt>
+<dd><p>Return the reverse complement assuming it is RNA.</p>
+<p>In typical usage this will return the same unknown sequence. If your
+sequence isn’t actually unknown, the appropriate RNA complement base
+is used:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reverse_complement_rna</span><span class="p">()</span>
+<span class="go">UnknownSeq(8, character=&#39;U&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.transcribe">
+<span class="sig-name descname"><span class="pre">transcribe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.transcribe" title="Permalink to this definition"></a></dt>
+<dd><p>Return an unknown RNA sequence from an unknown DNA sequence.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
+<span class="go">UnknownSeq(10, character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_dna</span><span class="p">)</span>
+<span class="go">NNNNNNNNNN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_rna</span> <span class="o">=</span> <span class="n">my_dna</span><span class="o">.</span><span class="n">transcribe</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_rna</span>
+<span class="go">UnknownSeq(10, character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_rna</span><span class="p">)</span>
+<span class="go">NNNNNNNNNN</span>
+</pre></div>
+</div>
+<p>In typical usage this will return the same unknown sequence. If your
+sequence isn’t actually unknown, but a homopolymer of T, the standard
+DNA to RNA transcription is done, replacing T with U:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transcribe</span><span class="p">()</span>
+<span class="go">UnknownSeq(9, character=&#39;u&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.back_transcribe">
+<span class="sig-name descname"><span class="pre">back_transcribe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.back_transcribe" title="Permalink to this definition"></a></dt>
+<dd><p>Return an unknown DNA sequence from an unknown RNA sequence.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_rna</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;N&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_rna</span>
+<span class="go">UnknownSeq(20, character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_rna</span><span class="p">)</span>
+<span class="go">NNNNNNNNNNNNNNNNNNNN</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">my_rna</span><span class="o">.</span><span class="n">back_transcribe</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
+<span class="go">UnknownSeq(20, character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_dna</span><span class="p">)</span>
+<span class="go">NNNNNNNNNNNNNNNNNNNN</span>
+</pre></div>
+</div>
+<p>In typical usage this will return the same unknown sequence. If your
+sequence is actually a U homopolymer, the standard RNA to DNA back
+translation applies, replacing U with T:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;U&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">back_transcribe</span><span class="p">()</span>
+<span class="go">UnknownSeq(9, character=&#39;T&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.upper">
+<span class="sig-name descname"><span class="pre">upper</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.upper" title="Permalink to this definition"></a></dt>
+<dd><p>Return an upper case copy of the sequence.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">UnknownSeq(20, character=&#39;n&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">nnnnnnnnnnnnnnnnnnnn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="go">UnknownSeq(20, character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+<span class="go">NNNNNNNNNNNNNNNNNNNN</span>
+</pre></div>
+</div>
+<p>See also the lower method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.lower">
+<span class="sig-name descname"><span class="pre">lower</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.lower" title="Permalink to this definition"></a></dt>
+<dd><p>Return a lower case copy of the sequence.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">UnknownSeq(20, character=&#39;X&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">XXXXXXXXXXXXXXXXXXXX</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="go">UnknownSeq(20, character=&#39;x&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+<span class="go">xxxxxxxxxxxxxxxxxxxx</span>
+</pre></div>
+</div>
+<p>See also the upper method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.translate">
+<span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Standard'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.translate" title="Permalink to this definition"></a></dt>
+<dd><p>Translate an unknown nucleotide sequence into an unknown protein.</p>
+<p>If your sequence makes sense as codons (e.g. a poly-A tail AAAAAA),
+it will be translated accordingly:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span>
+<span class="go">UnknownSeq(2, character=&#39;K&#39;)</span>
+</pre></div>
+</div>
+<p>Otherwise, it will be translated as X for unknown amino acid:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span>
+<span class="go">UnknownSeq(2, character=&#39;X&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.ungap">
+<span class="sig-name descname"><span class="pre">ungap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.ungap" title="Permalink to this definition"></a></dt>
+<dd><p>Return a copy of the sequence without the gap character(s).</p>
+<p>The gap character now defaults to the minus sign, and can only
+be specified via the method argument. This is no longer possible
+via the sequence’s alphabet (as was possible up to Biopython 1.77):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">UnknownSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
+<span class="go">UnknownSeq(20, character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>  <span class="c1"># using default</span>
+<span class="go">UnknownSeq(20, character=&#39;N&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<span class="go">UnknownSeq(20, character=&#39;N&#39;)</span>
+</pre></div>
+</div>
+<p>If the UnknownSeq is using the gap character, then an empty Seq is
+returned:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="n">character</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span>
+<span class="go">UnknownSeq(20, character=&#39;-&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span><span class="o">.</span><span class="n">ungap</span><span class="p">()</span>  <span class="c1"># using default</span>
+<span class="go">Seq(&#39;&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_gap</span><span class="o">.</span><span class="n">ungap</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<span class="go">Seq(&#39;&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.join">
+<span class="sig-name descname"><span class="pre">join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.UnknownSeq.join" title="Permalink to this definition"></a></dt>
+<dd><p>Return a merge of the sequences in other, spaced by the sequence from self.</p>
+<p>Accepts either a Seq or string (and iterates over the letters), or an
+iterable containing Seq or string objects. These arguments will be
+concatenated with the calling sequence as the spacer:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">concatenated</span> <span class="o">=</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAA&quot;</span><span class="p">),</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TTT&quot;</span><span class="p">),</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;PPP&quot;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">concatenated</span>
+<span class="go">Seq(&#39;AAA?????TTT?????PPP&#39;)</span>
+</pre></div>
+</div>
+<p>If all the inputs are also UnknownSeq using the same character, then it
+returns a new UnknownSeq:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+<span class="go">UnknownSeq(19, character=&#39;?&#39;)</span>
+</pre></div>
+</div>
+<p>Examples taking a single sequence and joining the letters:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
+<span class="go">Seq(&#39;A???C???G???T&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">UnknownSeq</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+<span class="go">UnknownSeq(13, character=&#39;?&#39;)</span>
+</pre></div>
+</div>
+<p>Will only return an UnknownSeq object if all of the objects to be joined are
+also UnknownSeqs with the same character as the spacer, similar to how the
+addition of an UnknownSeq and another UnknownSeq would work.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.defined">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defined</span></span><a class="headerlink" href="#Bio.Seq.UnknownSeq.defined" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if the sequence is defined, False if undefined or partially defined.</p>
+<p>Zero-length sequences are always considered to be defined.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.defined_ranges">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">defined_ranges</span></span><a class="headerlink" href="#Bio.Seq.UnknownSeq.defined_ranges" title="Permalink to this definition"></a></dt>
+<dd><p>Return a tuple of the ranges where the sequence contents is defined.</p>
+<p>As the sequence contents of an UnknownSeq object is fully undefined,
+the return value is always an empty tuple.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Seq.UnknownSeq.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.Seq.UnknownSeq.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">MutableSeq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Seq._SeqAbstractBaseClass</span></code></p>
+<p>An editable sequence object.</p>
+<p>Unlike normal python strings and our basic sequence object (the Seq class)
+which are immutable, the MutableSeq lets you edit the sequence in place.
+However, this means you cannot use a MutableSeq object as a dictionary key.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ACTCGTCGTCG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;ACTCGTCGTCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">&#39;T&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;A&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;ACTCGACGTCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+<span class="go">&#39;A&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;NNN&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;ACTCGNNNTCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">11</span>
+</pre></div>
+</div>
+<p>Note that the MutableSeq object does not support as many string-like
+or biological methods as the Seq object.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Create a MutableSeq object.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.data">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#Bio.Seq.MutableSeq.data" title="Permalink to this definition"></a></dt>
+<dd><p>Get the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.__setitem__">
+<span class="sig-name descname"><span class="pre">__setitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.__setitem__" title="Permalink to this definition"></a></dt>
+<dd><p>Set a subsequence of single letter via value parameter.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ACTCGACGTCG&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;T&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;TCTCGACGTCG&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.__delitem__">
+<span class="sig-name descname"><span class="pre">__delitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.__delitem__" title="Permalink to this definition"></a></dt>
+<dd><p>Delete a subsequence of single letter.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ACTCGACGTCG&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">del</span> <span class="n">my_seq</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;CTCGACGTCG&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.append" title="Permalink to this definition"></a></dt>
+<dd><p>Add a subsequence to the mutable sequence object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ACTCGACGTCG&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;ACTCGACGTCGA&#39;)</span>
+</pre></div>
+</div>
+<p>No return value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.insert">
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.insert" title="Permalink to this definition"></a></dt>
+<dd><p>Add a subsequence to the mutable sequence object at a given index.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ACTCGACGTCG&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;AACTCGACGTCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="s1">&#39;G&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;AACTCGACGGTCG&#39;)</span>
+</pre></div>
+</div>
+<p>No return value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.pop">
+<span class="sig-name descname"><span class="pre">pop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.pop" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a subsequence of a single letter at given index.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ACTCGACGTCG&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="go">&#39;G&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;ACTCGACGTC&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="go">&#39;C&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;ACTCGACGT&#39;)</span>
+</pre></div>
+</div>
+<p>Returns the last character of the sequence.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Remove a subsequence of a single letter from mutable sequence.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ACTCGACGTCG&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;ATCGACGTCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;TCGACGTCG&#39;)</span>
+</pre></div>
+</div>
+<p>No return value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.reverse">
+<span class="sig-name descname"><span class="pre">reverse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.reverse" title="Permalink to this definition"></a></dt>
+<dd><p>Modify the mutable sequence to reverse itself.</p>
+<p>No return value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.extend">
+<span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.extend" title="Permalink to this definition"></a></dt>
+<dd><p>Add a sequence to the original mutable sequence object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s1">&#39;ACTCGACGTCG&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;ACTCGACGTCGA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="s1">&#39;TTT&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;ACTCGACGTCGATTT&#39;)</span>
+</pre></div>
+</div>
+<p>No return value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.toseq">
+<span class="sig-name descname"><span class="pre">toseq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.MutableSeq.toseq" title="Permalink to this definition"></a></dt>
+<dd><p>Return the full sequence as a new immutable Seq object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_mseq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;MKQHKAMIVALIVICITAVVAAL&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_mseq</span>
+<span class="go">MutableSeq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_mseq</span><span class="o">.</span><span class="n">toseq</span><span class="p">()</span>
+<span class="go">Seq(&#39;MKQHKAMIVALIVICITAVVAAL&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Seq.MutableSeq.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.Seq.MutableSeq.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="Bio.Seq.UndefinedSequenceError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">UndefinedSequenceError</span></span><a class="headerlink" href="#Bio.Seq.UndefinedSequenceError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>Sequence contents is undefined.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Seq.transcribe">
+<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">transcribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dna</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.transcribe" title="Permalink to this definition"></a></dt>
+<dd><p>Transcribe a DNA sequence into RNA.</p>
+<p>If given a string, returns a new string object.</p>
+<p>Given a Seq or MutableSeq, returns a new Seq object.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transcribe</span><span class="p">(</span><span class="s2">&quot;ACTGN&quot;</span><span class="p">)</span>
+<span class="go">&#39;ACUGN&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Seq.back_transcribe">
+<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">back_transcribe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rna</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.back_transcribe" title="Permalink to this definition"></a></dt>
+<dd><p>Return the RNA sequence back-transcribed into DNA.</p>
+<p>If given a string, returns a new string object.</p>
+<p>Given a Seq or MutableSeq, returns a new Seq object.</p>
+<p>e.g.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">back_transcribe</span><span class="p">(</span><span class="s2">&quot;ACUGN&quot;</span><span class="p">)</span>
+<span class="go">&#39;ACTGN&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Seq.translate">
+<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">translate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Standard'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_symbol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.translate" title="Permalink to this definition"></a></dt>
+<dd><p>Translate a nucleotide sequence into amino acids.</p>
+<p>If given a string, returns a new string object. Given a Seq or
+MutableSeq, returns a Seq object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>table - Which codon table to use?  This can be either a name
+(string), an NCBI identifier (integer), or a CodonTable object
+(useful for non-standard genetic codes).  Defaults to the “Standard”
+table.</p></li>
+<li><p>stop_symbol - Single character string, what to use for any
+terminators, defaults to the asterisk, “*”.</p></li>
+<li><p>to_stop - Boolean, defaults to False meaning do a full
+translation continuing on past any stop codons
+(translated as the specified stop_symbol).  If
+True, translation is terminated at the first in
+frame stop codon (and the stop_symbol is not
+appended to the returned protein sequence).</p></li>
+<li><p>cds - Boolean, indicates this is a complete CDS.  If True, this
+checks the sequence starts with a valid alternative start
+codon (which will be translated as methionine, M), that the
+sequence length is a multiple of three, and that there is a
+single in frame stop codon at the end (this will be excluded
+from the protein sequence, regardless of the to_stop option).
+If these tests fail, an exception is raised.</p></li>
+<li><p>gap - Single character string to denote symbol used for gaps.
+Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+<p>A simple string example using the default (standard) genetic code:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span> <span class="o">=</span> <span class="s2">&quot;GTGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna</span><span class="p">)</span>
+<span class="go">&#39;VAIVMGR*KGAR*&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna</span><span class="p">,</span> <span class="n">stop_symbol</span><span class="o">=</span><span class="s2">&quot;@&quot;</span><span class="p">)</span>
+<span class="go">&#39;VAIVMGR@KGAR@&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna</span><span class="p">,</span> <span class="n">to_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&#39;VAIVMGR&#39;</span>
+</pre></div>
+</div>
+<p>Now using NCBI table 2, where TGA is not a stop codon:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">&#39;VAIVMGRWKGAR*&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">to_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&#39;VAIVMGRWKGAR&#39;</span>
+</pre></div>
+</div>
+<p>In fact this example uses an alternative start codon valid under NCBI
+table 2, GTG, which means this example is a complete valid CDS which
+when translated should really start with methionine (not valine):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">cds</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&#39;MAIVMGRWKGAR&#39;</span>
+</pre></div>
+</div>
+<p>Note that if the sequence has no in-frame stop codon, then the to_stop
+argument has no effect:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna2</span> <span class="o">=</span> <span class="s2">&quot;GTGGCCATTGTAATGGGCCGC&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna2</span><span class="p">)</span>
+<span class="go">&#39;VAIVMGR&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna2</span><span class="p">,</span> <span class="n">to_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&#39;VAIVMGR&#39;</span>
+</pre></div>
+</div>
+<p>NOTE - Ambiguous codons like “TAN” or “NNN” could be an amino acid
+or a stop codon.  These are translated as “X”.  Any invalid codon
+(e.g. “TA?” or “T-A”) will throw a TranslationError.</p>
+<p>It will however translate either DNA or RNA.</p>
+<p>NOTE - Since version 1.71 Biopython contains codon tables with ‘ambiguous
+stop codons’. These are stop codons with unambiguous sequence but which
+have a context dependent coding as STOP or as amino acid. With these tables
+‘to_stop’ must be False (otherwise a ValueError is raised). The dual
+coding codons will always be translated as amino acid, except for
+‘cds=True’, where the last codon will be translated as STOP.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna3</span> <span class="o">=</span> <span class="s2">&quot;ATGGCACGGAAGTGA&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna3</span><span class="p">)</span>
+<span class="go">&#39;MARK*&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna3</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="mi">27</span><span class="p">)</span>  <span class="c1"># Table 27: TGA -&gt; STOP or W</span>
+<span class="go">&#39;MARKW&#39;</span>
+</pre></div>
+</div>
+<p>It will however raise a BiopythonWarning (not shown).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna3</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">cds</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&#39;MARK&#39;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">coding_dna3</span><span class="p">,</span> <span class="n">table</span><span class="o">=</span><span class="mi">27</span><span class="p">,</span> <span class="n">to_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+   <span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">You cannot use &#39;to_stop=True&#39; with this table ...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Seq.reverse_complement">
+<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">reverse_complement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.reverse_complement" title="Permalink to this definition"></a></dt>
+<dd><p>Return the reverse complement as a DNA sequence.</p>
+<p>If given a string, returns a new string object.
+Given a Seq object, returns a new Seq object.
+Given a MutableSeq, returns a new MutableSeq object.
+Given a SeqRecord object, returns a new SeqRecord object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="s2">&quot;CGA&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&#39;TCG&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">Seq(&#39;TCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;TCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;CGA&#39;)</span>
+</pre></div>
+</div>
+<p>Any U in the sequence is treated as a T:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">Seq(&#39;AATCG&#39;)</span>
+</pre></div>
+</div>
+<p>In contrast, <code class="docutils literal notranslate"><span class="pre">reverse_complement_rna</span></code> returns an RNA sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement_rna</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">))</span>
+<span class="go">Seq(&#39;AAUCG&#39;)</span>
+</pre></div>
+</div>
+<p>Supports and lower- and upper-case characters, and unambiguous and
+ambiguous nucleotides. All other characters are not converted:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="s2">&quot;ACGTUacgtuXYZxyz&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&#39;zrxZRXaacgtAACGT&#39;</span>
+</pre></div>
+</div>
+<p>The sequence is modified in-place and returned if inplace is True:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;TCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;TCG&#39;)</span>
+</pre></div>
+</div>
+<p>As strings and <code class="docutils literal notranslate"><span class="pre">Seq</span></code> objects are immutable, a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> is
+raised if <code class="docutils literal notranslate"><span class="pre">reverse_complement</span></code> is called on a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object with
+<code class="docutils literal notranslate"><span class="pre">inplace=True</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Seq.reverse_complement_rna">
+<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">reverse_complement_rna</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.reverse_complement_rna" title="Permalink to this definition"></a></dt>
+<dd><p>Return the reverse complement as an RNA sequence.</p>
+<p>If given a string, returns a new string object.
+Given a Seq object, returns a new Seq object.
+Given a MutableSeq, returns a new MutableSeq object.
+Given a SeqRecord object, returns a new SeqRecord object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="s2">&quot;CGA&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement_rna</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">&#39;UCG&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement_rna</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">Seq(&#39;UCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement_rna</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;UCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;CGA&#39;)</span>
+</pre></div>
+</div>
+<p>Any T in the sequence is treated as a U:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement_rna</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">))</span>
+<span class="go">Seq(&#39;AAUCG&#39;)</span>
+</pre></div>
+</div>
+<p>In contrast, <code class="docutils literal notranslate"><span class="pre">reverse_complement</span></code> returns a DNA sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">Seq(&#39;AATCG&#39;)</span>
+</pre></div>
+</div>
+<p>Supports and lower- and upper-case characters, and unambiguous and
+ambiguous nucleotides. All other characters are not converted:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement_rna</span><span class="p">(</span><span class="s2">&quot;ACGTUacgtuXYZxyz&quot;</span><span class="p">)</span>
+<span class="go">&#39;zrxZRXaacguAACGU&#39;</span>
+</pre></div>
+</div>
+<p>The sequence is modified in-place and returned if inplace is True:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement_rna</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;UCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;UCG&#39;)</span>
+</pre></div>
+</div>
+<p>As strings and <code class="docutils literal notranslate"><span class="pre">Seq</span></code> objects are immutable, a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> is
+raised if <code class="docutils literal notranslate"><span class="pre">reverse_complement</span></code> is called on a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object with
+<code class="docutils literal notranslate"><span class="pre">inplace=True</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Seq.complement">
+<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">complement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.complement" title="Permalink to this definition"></a></dt>
+<dd><p>Return the complement as a DNA sequence.</p>
+<p>If given a string, returns a new string object.
+Given a Seq object, returns a new Seq object.
+Given a MutableSeq, returns a new MutableSeq object.
+Given a SeqRecord object, returns a new SeqRecord object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="s2">&quot;CGA&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&#39;GCT&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">Seq(&#39;GCT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;GCT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;CGA&#39;)</span>
+</pre></div>
+</div>
+<p>Any U in the sequence is treated as a T:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">Seq(&#39;GCTAA&#39;)</span>
+</pre></div>
+</div>
+<p>In contrast, <code class="docutils literal notranslate"><span class="pre">complement_rna</span></code> returns an RNA sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement_rna</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">))</span>
+<span class="go">Seq(&#39;GCUAA&#39;)</span>
+</pre></div>
+</div>
+<p>Supports and lower- and upper-case characters, and unambiguous and
+ambiguous nucleotides. All other characters are not converted:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="s2">&quot;ACGTUacgtuXYZxyz&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">&#39;TGCAAtgcaaXRZxrz&#39;</span>
+</pre></div>
+</div>
+<p>The sequence is modified in-place and returned if inplace is True:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;GCT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;GCT&#39;)</span>
+</pre></div>
+</div>
+<p>As strings and <code class="docutils literal notranslate"><span class="pre">Seq</span></code> objects are immutable, a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> is
+raised if <code class="docutils literal notranslate"><span class="pre">reverse_complement</span></code> is called on a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object with
+<code class="docutils literal notranslate"><span class="pre">inplace=True</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Seq.complement_rna">
+<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">complement_rna</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.complement_rna" title="Permalink to this definition"></a></dt>
+<dd><p>Return the complement as an RNA sequence.</p>
+<p>If given a string, returns a new string object.
+Given a Seq object, returns a new Seq object.
+Given a MutableSeq, returns a new MutableSeq object.
+Given a SeqRecord object, returns a new SeqRecord object.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="s2">&quot;CGA&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement_rna</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">&#39;GCU&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement_rna</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">Seq(&#39;GCU&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement_rna</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;GCU&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;CGA&#39;)</span>
+</pre></div>
+</div>
+<p>Any T in the sequence is treated as a U:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement_rna</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">))</span>
+<span class="go">Seq(&#39;GCUAA&#39;)</span>
+</pre></div>
+</div>
+<p>In contrast, <code class="docutils literal notranslate"><span class="pre">complement</span></code> returns a DNA sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">),</span><span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="go">Seq(&#39;GCTAA&#39;)</span>
+</pre></div>
+</div>
+<p>Supports and lower- and upper-case characters, and unambiguous and
+ambiguous nucleotides. All other characters are not converted:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement_rna</span><span class="p">(</span><span class="s2">&quot;ACGTUacgtuXYZxyz&quot;</span><span class="p">)</span>
+<span class="go">&#39;UGCAAugcaaXRZxrz&#39;</span>
+</pre></div>
+</div>
+<p>The sequence is modified in-place and returned if inplace is True:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">MutableSeq(&#39;GCT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">MutableSeq(&#39;GCT&#39;)</span>
+</pre></div>
+</div>
+<p>As strings and <code class="docutils literal notranslate"><span class="pre">Seq</span></code> objects are immutable, a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> is
+raised if <code class="docutils literal notranslate"><span class="pre">reverse_complement</span></code> is called on a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object with
+<code class="docutils literal notranslate"><span class="pre">inplace=True</span></code>.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Bio.NaiveBayes.html" class="btn btn-neutral float-left" title="Bio.NaiveBayes module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.SeqFeature.html" class="btn btn-neutral float-right" title="Bio.SeqFeature module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2020, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.80
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.79/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

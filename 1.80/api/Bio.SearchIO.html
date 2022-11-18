@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio.SearchIO package &mdash; Biopython 1.80 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.SearchIO.BlastIO package" href="Bio.SearchIO.BlastIO.html" />
+    <link rel="prev" title="Bio.SVDSuperimposer package" href="Bio.SVDSuperimposer.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+            <a href="index.html">
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Bio.SearchIO package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-Bio.SearchIO">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="Bio.html">Bio package</a></li>
+      <li class="breadcrumb-item active">Bio.SearchIO package</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/SearchIO/__init__.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="Bio.SVDSuperimposer.html" class="btn btn-neutral float-left" title="Bio.SVDSuperimposer package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.SearchIO.BlastIO.html" class="btn btn-neutral float-right" title="Bio.SearchIO.BlastIO package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bio-searchio-package">
+<h1>Bio.SearchIO package<a class="headerlink" href="#bio-searchio-package" title="Permalink to this headline"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Bio.SearchIO.BlastIO.html">Bio.SearchIO.BlastIO package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.BlastIO.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.BlastIO.blast_tab.html">Bio.SearchIO.BlastIO.blast_tab module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.BlastIO.blast_text.html">Bio.SearchIO.BlastIO.blast_text module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.BlastIO.blast_xml.html">Bio.SearchIO.BlastIO.blast_xml module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.BlastIO.html#module-Bio.SearchIO.BlastIO">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.BlastIO.html#supported-formats">Supported Formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.BlastIO.html#blast-xml">blast-xml</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.BlastIO.html#blast-tab">blast-tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.BlastIO.html#blast-text">blast-text</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.SearchIO.ExonerateIO.html">Bio.SearchIO.ExonerateIO package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.ExonerateIO.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.ExonerateIO.exonerate_cigar.html">Bio.SearchIO.ExonerateIO.exonerate_cigar module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.ExonerateIO.exonerate_text.html">Bio.SearchIO.ExonerateIO.exonerate_text module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.ExonerateIO.exonerate_vulgar.html">Bio.SearchIO.ExonerateIO.exonerate_vulgar module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.ExonerateIO.html#module-Bio.SearchIO.ExonerateIO">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.ExonerateIO.html#supported-formats">Supported Formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.ExonerateIO.html#exonerate-text">exonerate-text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.ExonerateIO.html#exonerate-vulgar">exonerate-vulgar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.ExonerateIO.html#exonerate-cigar">exonerate-cigar</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.SearchIO.HHsuiteIO.html">Bio.SearchIO.HHsuiteIO package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.HHsuiteIO.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.HHsuiteIO.hhsuite2_text.html">Bio.SearchIO.HHsuiteIO.hhsuite2_text module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.HHsuiteIO.html#module-Bio.SearchIO.HHsuiteIO">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.SearchIO.HmmerIO.html">Bio.SearchIO.HmmerIO package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.HmmerIO.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.HmmerIO.hmmer2_text.html">Bio.SearchIO.HmmerIO.hmmer2_text module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.HmmerIO.hmmer3_domtab.html">Bio.SearchIO.HmmerIO.hmmer3_domtab module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.HmmerIO.hmmer3_tab.html">Bio.SearchIO.HmmerIO.hmmer3_tab module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.HmmerIO.hmmer3_text.html">Bio.SearchIO.HmmerIO.hmmer3_text module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.HmmerIO.html#module-Bio.SearchIO.HmmerIO">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.HmmerIO.html#supported-formats">Supported formats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.HmmerIO.html#hmmer2-text-and-hmmer3-text">hmmer2-text and hmmer3-text</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.HmmerIO.html#hmmer3-tab">hmmer3-tab</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.HmmerIO.html#hmmer3-domtab">hmmer3-domtab</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.SearchIO.InterproscanIO.html">Bio.SearchIO.InterproscanIO package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.InterproscanIO.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.InterproscanIO.interproscan_xml.html">Bio.SearchIO.InterproscanIO.interproscan_xml module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.InterproscanIO.html#module-Bio.SearchIO.InterproscanIO">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.InterproscanIO.html#supported-format">Supported format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.InterproscanIO.html#interproscan-xml">interproscan-xml</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Bio.SearchIO.BlatIO.html">Bio.SearchIO.BlatIO module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.BlatIO.html#supported-formats">Supported Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.SearchIO.FastaIO.html">Bio.SearchIO.FastaIO module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.FastaIO.html#supported-formats">Supported Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.SearchIO.FastaIO.html#fasta-m10">fasta-m10</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-Bio.SearchIO">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Bio.SearchIO" title="Permalink to this headline"></a></h2>
+<p>Biopython interface for sequence search program outputs.</p>
+<p>The SearchIO submodule provides parsers, indexers, and writers for outputs from
+various sequence search programs. It provides an API similar to SeqIO and
+AlignIO, with the following main functions: <code class="docutils literal notranslate"><span class="pre">parse</span></code>, <code class="docutils literal notranslate"><span class="pre">read</span></code>, <code class="docutils literal notranslate"><span class="pre">to_dict</span></code>,
+<code class="docutils literal notranslate"><span class="pre">index</span></code>, <code class="docutils literal notranslate"><span class="pre">index_db</span></code>, <code class="docutils literal notranslate"><span class="pre">write</span></code>, and <code class="docutils literal notranslate"><span class="pre">convert</span></code>.</p>
+<p>SearchIO parses a search output file’s contents into a hierarchy of four nested
+objects: QueryResult, Hit, HSP, and HSPFragment. Each of them models a part of
+the search output file:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>QueryResult represents a search query. This is the main object returned
+by the input functions and it contains all other objects.</p></li>
+<li><p>Hit represents a database hit,</p></li>
+<li><p>HSP represents high-scoring alignment region(s) in the hit,</p></li>
+<li><p>HSPFragment represents a contiguous alignment within the HSP</p></li>
+</ul>
+</div></blockquote>
+<p>In addition to the four objects above, SearchIO is also tightly integrated with
+the SeqRecord objects (see SeqIO) and MultipleSeqAlignment objects (see
+AlignIO). SeqRecord objects are used to store the actual matching hit and query
+sequences, while MultipleSeqAlignment objects store the alignment between them.</p>
+<p>A detailed description of these objects’ features and their example usages are
+available in their respective documentations.</p>
+<section id="input">
+<h3>Input<a class="headerlink" href="#input" title="Permalink to this headline"></a></h3>
+<p>The main function for parsing search output files is Bio.SearchIO.parse(…).
+This function parses a given search output file and returns a generator object
+that yields one QueryResult object per iteration.</p>
+<p><code class="docutils literal notranslate"><span class="pre">parse</span></code> takes two arguments: 1) a file handle or a filename of the input file
+(the search output file) and 2) the format name.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">qresult</span> <span class="ow">in</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;Blast/mirna.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">qresult</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">qresult</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">33211 mir_1</span>
+<span class="go">33212 mir_2</span>
+<span class="go">33213 mir_3</span>
+</pre></div>
+</div>
+<p>SearchIO also provides the Bio.SearchIO.read(…) function, which is intended
+for use on search output files containing only one query. <code class="docutils literal notranslate"><span class="pre">read</span></code> returns one
+QueryResult object and will raise an exception if the source file contains more
+than one query:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/xml_2226_blastp_004.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">qresult</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">qresult</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">gi|11464971:4-101 pleckstrin [Mus musculus]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/mirna.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">...</span>
+</pre></div>
+</div>
+<p>For accessing search results of large output files, you may use the indexing
+functions Bio.SearchIO.index(…) or Bio.SearchIO.index_db(…). They have a
+similar interface to their counterparts in SeqIO and AlignIO, with the addition
+of optional, format-specific keyword arguments.</p>
+</section>
+<section id="output">
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline"></a></h3>
+<p>SearchIO has write support for several formats, accessible from the
+Bio.SearchIO.write(…) function. This function returns a tuple of four
+numbers: the number of QueryResult, Hit, HSP, and HSPFragment written:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qresults</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;Blast/mirna.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="n">SearchIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">qresults</span><span class="p">,</span> <span class="s1">&#39;results.tab&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">stdout</span><span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="mi">277</span><span class="p">,</span> <span class="mi">277</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that different writers may require different attribute values of the
+SearchIO objects. This limits the scope of writable search results to search
+results possessing the required attributes.</p>
+<p>For example, the writer for HMMER domain table output requires
+the conditional e-value attribute from each HSP object, among others. If you
+try to write to the HMMER domain table format and your HSPs do not have this
+attribute, an exception will be raised.</p>
+</section>
+<section id="conversion">
+<h3>Conversion<a class="headerlink" href="#conversion" title="Permalink to this headline"></a></h3>
+<p>SearchIO provides a shortcut function Bio.SearchIO.convert(…) to convert a
+given file into another format. Under the hood, <code class="docutils literal notranslate"><span class="pre">convert</span></code> simply parses a given
+output file and writes it to another using the <code class="docutils literal notranslate"><span class="pre">parse</span></code> and <code class="docutils literal notranslate"><span class="pre">write</span></code> functions.</p>
+<p>Note that the same restrictions found in Bio.SearchIO.write(…) apply to the
+convert function as well.</p>
+</section>
+<section id="conventions">
+<h3>Conventions<a class="headerlink" href="#conventions" title="Permalink to this headline"></a></h3>
+<p>The main goal of creating SearchIO is to have a common, easy to use interface
+across different search output files. As such, we have also created some
+conventions / standards for SearchIO that extend beyond the common object model.
+These conventions apply to all files parsed by SearchIO, regardless of their
+individual formats.</p>
+<section id="python-style-sequence-coordinates">
+<h4>Python-style sequence coordinates<a class="headerlink" href="#python-style-sequence-coordinates" title="Permalink to this headline"></a></h4>
+<p>When storing sequence coordinates (start and end values), SearchIO uses
+the Python-style slice convention: zero-based and half-open intervals. For
+example, if in a BLAST XML output file the start and end coordinates of an
+HSP are 10 and 28, they would become 9 and 28 in SearchIO. The start
+coordinate becomes 9 because Python indices start from zero, while the end
+coordinate remains 28 as Python slices omit the last item in an interval.</p>
+<p>Beside giving you the benefits of standardization, this convention also
+makes the coordinates usable for slicing sequences. For example, given a
+full query sequence and the start and end coordinates of an HSP, one can
+use the coordinates to extract part of the query sequence that results in
+the database hit.</p>
+<p>When these objects are written to an output file using
+SearchIO.write(…), the coordinate values are restored to their
+respective format’s convention. Using the example above, if the HSP would
+be written to an XML file, the start and end coordinates would become 10
+and 28 again.</p>
+</section>
+<section id="sequence-coordinate-order">
+<h4>Sequence coordinate order<a class="headerlink" href="#sequence-coordinate-order" title="Permalink to this headline"></a></h4>
+<p>Some search output formats reverse the start and end coordinate sequences
+according to the sequence’s strand. For example, in BLAST plain text
+format if the matching strand lies in the minus orientation, then the
+start coordinate will always be bigger than the end coordinate.</p>
+<p>In SearchIO, start coordinates are always smaller than the end
+coordinates, regardless of their originating strand. This ensures
+consistency when using the coordinates to slice full sequences.</p>
+<p>Note that this coordinate order convention is only enforced in the
+HSPFragment level. If an HSP object has several HSPFragment objects, each
+individual fragment will conform to this convention. But the order of the
+fragments within the HSP object follows what the search output file uses.</p>
+<p>Similar to the coordinate style convention, the start and end coordinates’
+order are restored to their respective formats when the objects are
+written using Bio.SearchIO.write(…).</p>
+</section>
+<section id="frames-and-strand-values">
+<h4>Frames and strand values<a class="headerlink" href="#frames-and-strand-values" title="Permalink to this headline"></a></h4>
+<p>SearchIO only allows -1, 0, 1 and None as strand values. For frames, the
+only allowed values are integers from -3 to 3 (inclusive) and None. Both
+of these are standard Biopython conventions.</p>
+</section>
+</section>
+<section id="supported-formats">
+<h3>Supported Formats<a class="headerlink" href="#supported-formats" title="Permalink to this headline"></a></h3>
+<p>Below is a list of search program output formats supported by SearchIO.</p>
+<p>Support for parsing, indexing, and writing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>blast-tab        - BLAST+ tabular output. Both variants without comments</dt><dd><p>(-m 6 flag) and with comments (-m 7 flag) are supported.</p>
+</dd>
+</dl>
+</li>
+<li><p>blast-xml        - BLAST+ XML output.</p></li>
+<li><dl class="simple">
+<dt>blat-psl         - The default output of BLAT (PSL format). Variants with or</dt><dd><p>without header are both supported. PSLX (PSL + sequences)
+is also supported.</p>
+</dd>
+</dl>
+</li>
+<li><p>hmmer3-tab       - HMMER3 table output.</p></li>
+<li><dl class="simple">
+<dt>hmmer3-domtab    - HMMER3 domain table output. When using this format, the</dt><dd><p>program name has to be specified. For example, for parsing
+hmmscan output, the name would be ‘hmmscan-domtab’.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Support for parsing and indexing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>exonerate-text   - Exonerate plain text output.</p></li>
+<li><p>exonerate-vulgar - Exonerate vulgar line.</p></li>
+<li><p>exonerate-cigar  - Exonerate cigar line.</p></li>
+<li><p>fasta-m10        - Bill Pearson’s FASTA -m 10 output.</p></li>
+<li><dl class="simple">
+<dt>hmmer3-text      - HMMER3 regular text output format. Supported HMMER3</dt><dd><p>subprograms are hmmscan, hmmsearch, and phmmer.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>hmmer2-text      - HMMER2 regular text output format. Supported HMMER2</dt><dd><p>subprograms are hmmpfam, hmmsearch.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Support for parsing:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>blast-text       - BLAST+ plain text output.</p></li>
+<li><p>hhsuite2-text    - HHSUITE plain text output.</p></li>
+</ul>
+</div></blockquote>
+<p>Each of these formats have different keyword arguments available for use with
+the main SearchIO functions. More details and examples are available in each
+of the format’s documentation.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SearchIO.read">
+<span class="sig-prename descclassname"><span class="pre">Bio.SearchIO.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.read" title="Permalink to this definition"></a></dt>
+<dd><p>Turn a search output file containing one query into a single QueryResult.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>handle - Handle to the file, or the filename as a string.</p></li>
+<li><p>format - Lower case string denoting one of the supported formats.</p></li>
+<li><p>kwargs - Format-specific keyword arguments.</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">read</span></code> is used for parsing search output files containing exactly one query:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/xml_2226_blastp_004.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">qresult</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">qresult</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">gi|11464971:4-101 pleckstrin [Mus musculus]</span>
+</pre></div>
+</div>
+<p>If the given handle has no results, an exception will be raised:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/tab_2226_tblastn_002.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">No query results found in handle</span>
+</pre></div>
+</div>
+<p>Similarly, if the given handle has more than one result, an exception will
+be raised:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;Blast/tab_2226_tblastn_001.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">More than one query result found in handle</span>
+</pre></div>
+</div>
+<p>Like <code class="docutils literal notranslate"><span class="pre">parse</span></code>, <code class="docutils literal notranslate"><span class="pre">read</span></code> may also accept keyword argument(s) depending on the
+search output file format.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SearchIO.parse">
+<span class="sig-prename descclassname"><span class="pre">Bio.SearchIO.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Iterate over search tool output file as QueryResult objects.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle - Handle to the file, or the filename as a string.</p></li>
+<li><p>format - Lower case string denoting one of the supported formats.</p></li>
+<li><p>kwargs - Format-specific keyword arguments.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This function is used to iterate over each query in a given search output
+file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresults</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;Blast/mirna.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresults</span>
+<span class="go">&lt;generator object ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">qresult</span> <span class="ow">in</span> <span class="n">qresults</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Search </span><span class="si">%s</span><span class="s2"> has </span><span class="si">%i</span><span class="s2"> hits&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">qresult</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">qresult</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">Search 33211 has 100 hits</span>
+<span class="go">Search 33212 has 44 hits</span>
+<span class="go">Search 33213 has 95 hits</span>
+</pre></div>
+</div>
+<p>Depending on the file format, <code class="docutils literal notranslate"><span class="pre">parse</span></code> may also accept additional keyword
+argument(s) that modifies the behavior of the format parser. Here is a
+simple example, where the keyword argument enables parsing of a commented
+BLAST tabular output file:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">qresult</span> <span class="ow">in</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;Blast/mirna.tab&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Search </span><span class="si">%s</span><span class="s2"> has </span><span class="si">%i</span><span class="s2"> hits&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">qresult</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">qresult</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">Search 33211 has 100 hits</span>
+<span class="go">Search 33212 has 44 hits</span>
+<span class="go">Search 33213 has 95 hits</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SearchIO.to_dict">
+<span class="sig-prename descclassname"><span class="pre">Bio.SearchIO.</span></span><span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qresults</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.to_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Turn a QueryResult iterator or list into a dictionary.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>qresults     - Iterable returning QueryResult objects.</p></li>
+<li><dl class="simple">
+<dt>key_function - Optional callback function which when given a</dt><dd><p>QueryResult object should return a unique key for the
+dictionary. Defaults to using .id of the result.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>This function enables access of QueryResult objects from a single search
+output file using its identifier.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresults</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;Blast/wnts.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_dict</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">qresults</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">search_dict</span><span class="p">)</span>
+<span class="go">[&#39;gi|195230749:301-1383&#39;, &#39;gi|325053704:108-1166&#39;, ..., &#39;gi|53729353:216-1313&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_dict</span><span class="p">[</span><span class="s1">&#39;gi|156630997:105-1160&#39;</span><span class="p">]</span>
+<span class="go">QueryResult(id=&#39;gi|156630997:105-1160&#39;, 5 hits)</span>
+</pre></div>
+</div>
+<p>By default, the dictionary key is the QueryResult’s string ID. This may be
+changed by supplying a callback function that returns the desired identifier.
+Here is an example using a function that removes the ‘gi|’ part in the
+beginning of the QueryResult ID.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresults</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;Blast/wnts.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">qresult</span><span class="p">:</span> <span class="n">qresult</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_dict</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">qresults</span><span class="p">,</span> <span class="n">key_func</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">search_dict</span><span class="p">)</span>
+<span class="go">[&#39;195230749:301-1383&#39;, &#39;325053704:108-1166&#39;, ..., &#39;53729353:216-1313&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_dict</span><span class="p">[</span><span class="s1">&#39;156630997:105-1160&#39;</span><span class="p">]</span>
+<span class="go">QueryResult(id=&#39;gi|156630997:105-1160&#39;, 5 hits)</span>
+</pre></div>
+</div>
+<p>Note that the callback function does not change the QueryResult’s ID value.
+It only changes the key value used to retrieve the associated QueryResult.</p>
+<p>As this function loads all QueryResult objects into memory, it may be
+unsuitable for dealing with files containing many queries. In that case, it
+is recommended that you use either <code class="docutils literal notranslate"><span class="pre">index</span></code> or <code class="docutils literal notranslate"><span class="pre">index_db</span></code>.</p>
+<p>Since Python 3.7, the default dict class maintains key order, meaning
+this dictionary will reflect the order of records given to it. For
+CPython and PyPy, this was already implemented for Python 3.6, so
+effectively you can always assume the record order is preserved.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SearchIO.index">
+<span class="sig-prename descclassname"><span class="pre">Bio.SearchIO.</span></span><span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.index" title="Permalink to this definition"></a></dt>
+<dd><p>Indexes a search output file and returns a dictionary-like object.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>filename     - string giving name of file to be indexed</p></li>
+<li><p>format       - Lower case string denoting one of the supported formats.</p></li>
+<li><dl class="simple">
+<dt>key_function - Optional callback function which when given a</dt><dd><p>QueryResult should return a unique key for the dictionary.</p>
+</dd>
+</dl>
+</li>
+<li><p>kwargs       - Format-specific keyword arguments.</p></li>
+</ul>
+</div></blockquote>
+<p>Index returns a pseudo-dictionary object with QueryResult objects as its
+values and a string identifier as its keys. The function is mainly useful
+for dealing with large search output files, as it enables access to any
+given QueryResult object much faster than using parse or read.</p>
+<p>Index works by storing in-memory the start locations of all queries in a
+file. When a user requests access to the query, this function will jump
+to its start position, parse the whole query, and return it as a
+QueryResult object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;Blast/wnts.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span>
+<span class="go">SearchIO.index(&#39;Blast/wnts.xml&#39;, &#39;blast-xml&#39;, key_function=None)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">search_idx</span><span class="p">)</span>
+<span class="go">[&#39;gi|156630997:105-1160&#39;, &#39;gi|195230749:301-1383&#39;, ..., &#39;gi|53729353:216-1313&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span><span class="p">[</span><span class="s1">&#39;gi|195230749:301-1383&#39;</span><span class="p">]</span>
+<span class="go">QueryResult(id=&#39;gi|195230749:301-1383&#39;, 5 hits)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If the file is BGZF compressed, this is detected automatically. Ordinary
+GZIP files are not supported:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;Blast/wnts.xml.bgz&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span>
+<span class="go">SearchIO.index(&#39;Blast/wnts.xml.bgz&#39;, &#39;blast-xml&#39;, key_function=None)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span><span class="p">[</span><span class="s1">&#39;gi|195230749:301-1383&#39;</span><span class="p">]</span>
+<span class="go">QueryResult(id=&#39;gi|195230749:301-1383&#39;, 5 hits)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can supply a custom callback function to alter the default identifier
+string. This function should accept as its input the QueryResult ID string
+and return a modified version of it.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">key_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;Blast/wnts.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">,</span> <span class="n">key_func</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span>
+<span class="go">SearchIO.index(&#39;Blast/wnts.xml&#39;, &#39;blast-xml&#39;, key_function=&lt;function &lt;lambda&gt; at ...&gt;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">search_idx</span><span class="p">)</span>
+<span class="go">[&#39;156630997:105-1160&#39;, ..., &#39;371502086:108-1205&#39;, &#39;53729353:216-1313&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span><span class="p">[</span><span class="s1">&#39;156630997:105-1160&#39;</span><span class="p">]</span>
+<span class="go">QueryResult(id=&#39;gi|156630997:105-1160&#39;, 5 hits)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">search_idx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that the callback function does not change the QueryResult’s ID value.
+It only changes the key value used to retrieve the associated QueryResult.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SearchIO.index_db">
+<span class="sig-prename descclassname"><span class="pre">Bio.SearchIO.</span></span><span class="sig-name descname"><span class="pre">index_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filenames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.index_db" title="Permalink to this definition"></a></dt>
+<dd><p>Indexes several search output files into an SQLite database.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>index_filename - The SQLite filename.</p></li>
+<li><dl class="simple">
+<dt>filenames    - List of strings specifying file(s) to be indexed, or when</dt><dd><p>indexing a single file this can be given as a string.
+(optional if reloading an existing index, but must match)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>format       - Lower case string denoting one of the supported formats.</dt><dd><p>(optional if reloading an existing index, but must match)</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>key_function - Optional callback function which when given a</dt><dd><p>QueryResult identifier string should return a unique
+key for the dictionary.</p>
+</dd>
+</dl>
+</li>
+<li><p>kwargs       - Format-specific keyword arguments.</p></li>
+</ul>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">index_db</span></code> function is similar to <code class="docutils literal notranslate"><span class="pre">index</span></code> in that it indexes the start
+position of all queries from search output files. The main difference is
+instead of storing these indices in-memory, they are written to disk as an
+SQLite database file. This allows the indices to persist between Python
+sessions. This enables access to any queries in the file without any
+indexing overhead, provided it has been indexed at least once.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">idx_filename</span> <span class="o">=</span> <span class="s2">&quot;:memory:&quot;</span> <span class="c1"># Use a real filename, this is in RAM only!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db_idx</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">index_db</span><span class="p">(</span><span class="n">idx_filename</span><span class="p">,</span> <span class="s1">&#39;Blast/mirna.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">db_idx</span><span class="p">)</span>
+<span class="go">[&#39;33211&#39;, &#39;33212&#39;, &#39;33213&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db_idx</span><span class="p">[</span><span class="s1">&#39;33212&#39;</span><span class="p">]</span>
+<span class="go">QueryResult(id=&#39;33212&#39;, 44 hits)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db_idx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">index_db</span></code> can also index multiple files and store them in the same
+database, making it easier to group multiple search files and access them
+from a single interface.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">idx_filename</span> <span class="o">=</span> <span class="s2">&quot;:memory:&quot;</span> <span class="c1"># Use a real filename, this is in RAM only!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Blast/mirna.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;Blast/wnts.xml&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db_idx</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">index_db</span><span class="p">(</span><span class="n">idx_filename</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">sorted</span><span class="p">(</span><span class="n">db_idx</span><span class="p">)</span>
+<span class="go">[&#39;33211&#39;, &#39;33212&#39;, &#39;33213&#39;, &#39;gi|156630997:105-1160&#39;, ..., &#39;gi|53729353:216-1313&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db_idx</span><span class="p">[</span><span class="s1">&#39;33212&#39;</span><span class="p">]</span>
+<span class="go">QueryResult(id=&#39;33212&#39;, 44 hits)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db_idx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>One common example where this is helpful is if you had a large set of
+query sequences (say ten thousand) which you split into ten query files
+of one thousand sequences each in order to run as ten separate BLAST jobs
+on a cluster. You could use <code class="docutils literal notranslate"><span class="pre">index_db</span></code> to index the ten BLAST output
+files together for seamless access to all the results as one dictionary.</p>
+<p>Note that ‘:memory:’ rather than an index filename tells SQLite to hold
+the index database in memory. This is useful for quick tests, but using
+the Bio.SearchIO.index(…) function instead would use less memory.</p>
+<p>BGZF compressed files are supported, and detected automatically. Ordinary
+GZIP compressed files are not supported.</p>
+<p>See also Bio.SearchIO.index(), Bio.SearchIO.to_dict(), and the Python module
+glob which is useful for building lists of files.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SearchIO.write">
+<span class="sig-prename descclassname"><span class="pre">Bio.SearchIO.</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qresults</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.write" title="Permalink to this definition"></a></dt>
+<dd><p>Write QueryResult objects to a file in the given format.</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>qresults - An iterator returning QueryResult objects or a single</dt><dd><p>QueryResult object.</p>
+</dd>
+</dl>
+</li>
+<li><p>handle   - Handle to the file, or the filename as a string.</p></li>
+<li><p>format   - Lower case string denoting one of the supported formats.</p></li>
+<li><p>kwargs   - Format-specific keyword arguments.</p></li>
+</ul>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">write</span></code> function writes QueryResult object(s) into the given output
+handle / filename. You can supply it with a single QueryResult object or an
+iterable returning one or more QueryResult objects. In both cases, the
+function will return a tuple of four values: the number of QueryResult, Hit,
+HSP, and HSPFragment objects it writes to the output file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="n">qresults</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;Blast/mirna.xml&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-xml&#39;</span><span class="p">)</span>
+<span class="n">SearchIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">qresults</span><span class="p">,</span> <span class="s1">&#39;results.tab&#39;</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">stdout</span><span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="mi">277</span><span class="p">,</span> <span class="mi">277</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output of different formats may be adjusted using the format-specific
+keyword arguments. Here is an example that writes BLAT PSL output file with
+a header:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="n">qresults</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s1">&#39;Blat/psl_34_001.psl&#39;</span><span class="p">,</span> <span class="s1">&#39;blat-psl&#39;</span><span class="p">)</span>
+<span class="n">SearchIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">qresults</span><span class="p">,</span> <span class="s1">&#39;results.tab&#39;</span><span class="p">,</span> <span class="s1">&#39;blat-psl&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">stdout</span><span class="o">&gt;</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">26</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SearchIO.convert">
+<span class="sig-prename descclassname"><span class="pre">Bio.SearchIO.</span></span><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SearchIO.convert" title="Permalink to this definition"></a></dt>
+<dd><p>Convert between two search output formats, return number of records.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>in_file    - Handle to the input file, or the filename as string.</p></li>
+<li><p>in_format  - Lower case string denoting the format of the input file.</p></li>
+<li><p>out_file   - Handle to the output file, or the filename as string.</p></li>
+<li><p>out_format - Lower case string denoting the format of the output file.</p></li>
+<li><p>in_kwargs  - Dictionary of keyword arguments for the input function.</p></li>
+<li><p>out_kwargs - Dictionary of keyword arguments for the output function.</p></li>
+</ul>
+</div></blockquote>
+<p>The convert function is a shortcut function for <code class="docutils literal notranslate"><span class="pre">parse</span></code> and <code class="docutils literal notranslate"><span class="pre">write</span></code>. It has
+the same return type as <code class="docutils literal notranslate"><span class="pre">write</span></code>. Format-specific arguments may be passed to
+the convert function, but only as dictionaries.</p>
+<p>Here is an example of using <code class="docutils literal notranslate"><span class="pre">convert</span></code> to convert from a BLAST+ XML file
+into a tabular file with comments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="n">in_file</span> <span class="o">=</span> <span class="s1">&#39;Blast/mirna.xml&#39;</span>
+<span class="n">in_fmt</span> <span class="o">=</span> <span class="s1">&#39;blast-xml&#39;</span>
+<span class="n">out_file</span> <span class="o">=</span> <span class="s1">&#39;results.tab&#39;</span>
+<span class="n">out_fmt</span> <span class="o">=</span> <span class="s1">&#39;blast-tab&#39;</span>
+<span class="n">out_kwarg</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;comments&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">SearchIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">in_file</span><span class="p">,</span> <span class="n">in_fmt</span><span class="p">,</span> <span class="n">out_file</span><span class="p">,</span> <span class="n">out_fmt</span><span class="p">,</span> <span class="n">out_kwargs</span><span class="o">=</span><span class="n">out_kwarg</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">stdout</span><span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="mi">277</span><span class="p">,</span> <span class="mi">277</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Given that different search output file provide different statistics and
+different level of details, the convert function is limited only to
+converting formats that have the same statistics and for conversion to
+formats with the same level of detail, or less.</p>
+<p>For example, converting from a BLAST+ XML output to a HMMER table file
+is not possible, as these are two search programs with different kinds of
+statistics. In theory, you may provide the necessary values required by the
+HMMER table file (e.g. conditional e-values, envelope coordinates, etc).
+However, these values are likely to hold little meaning as they are not true
+HMMER-computed values.</p>
+<p>Another example is converting from BLAST+ XML to BLAST+ tabular file. This
+is possible, as BLAST+ XML provide all the values necessary to create a
+BLAST+ tabular file. However, the reverse conversion may not be possible.
+There are more details covered in the XML file that are not found in a
+tabular file (e.g. the lambda and kappa values)</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Bio.SVDSuperimposer.html" class="btn btn-neutral float-left" title="Bio.SVDSuperimposer package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.SearchIO.BlastIO.html" class="btn btn-neutral float-right" title="Bio.SearchIO.BlastIO package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2020, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.80
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.79/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

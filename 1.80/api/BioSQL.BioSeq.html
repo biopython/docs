@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioSQL.BioSeq module &mdash; Biopython 1.80 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="BioSQL.BioSeqDatabase module" href="BioSQL.BioSeqDatabase.html" />
+    <link rel="prev" title="BioSQL package" href="BioSQL.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+            <a href="index.html">
+            <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Bio.html">Bio package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="BioSQL.html">BioSQL package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="BioSQL.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">BioSQL.BioSeq module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BioSQL.BioSeqDatabase.html">BioSQL.BioSeqDatabase module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BioSQL.DBUtils.html">BioSQL.DBUtils module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BioSQL.Loader.html">BioSQL.Loader module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="BioSQL.html#module-BioSQL">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="BioSQL.html">BioSQL package</a></li>
+      <li class="breadcrumb-item active">BioSQL.BioSeq module</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/BioSQL/BioSeq.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="BioSQL.html" class="btn btn-neutral float-left" title="BioSQL package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="BioSQL.BioSeqDatabase.html" class="btn btn-neutral float-right" title="BioSQL.BioSeqDatabase module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-BioSQL.BioSeq">
+<span id="biosql-bioseq-module"></span><h1>BioSQL.BioSeq module<a class="headerlink" href="#module-BioSQL.BioSeq" title="Permalink to this headline"></a></h1>
+<p>Implementations of Biopython-like Seq objects on top of BioSQL.</p>
+<p>This allows retrieval of items stored in a BioSQL database using
+a biopython-like SeqRecord and Seq interface.</p>
+<p>Note: Currently we do not support recording per-letter-annotations
+(like quality scores) in BioSQL.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="BioSQL.BioSeq.DBSeqRecord">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">BioSQL.BioSeq.</span></span><span class="sig-name descname"><span class="pre">DBSeqRecord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adaptor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqRecord.html#Bio.SeqRecord.SeqRecord" title="Bio.SeqRecord.SeqRecord"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqRecord.SeqRecord</span></code></a></p>
+<p>BioSQL equivalent of the Biopython SeqRecord object.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="BioSQL.BioSeq.DBSeqRecord.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adaptor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Create a DBSeqRecord object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>adaptor - A BioSQL.BioSeqDatabase.Adaptor object</p></li>
+<li><p>primary_id - An internal integer ID used by BioSQL</p></li>
+</ul>
+</dd>
+</dl>
+<p>You wouldn’t normally create a DBSeqRecord object yourself,
+this is done for you when using a BioSeqDatabase object</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="BioSQL.BioSeq.DBSeqRecord.seq">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">seq</span></span><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord.seq" title="Permalink to this definition"></a></dt>
+<dd><p>Seq object</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="BioSQL.BioSeq.DBSeqRecord.dbxrefs">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dbxrefs</span></span><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord.dbxrefs" title="Permalink to this definition"></a></dt>
+<dd><p>Database cross references</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="BioSQL.BioSeq.DBSeqRecord.features">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">features</span></span><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord.features" title="Permalink to this definition"></a></dt>
+<dd><p>Features</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="BioSQL.BioSeq.DBSeqRecord.annotations">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">annotations</span></span><a class="headerlink" href="#BioSQL.BioSeq.DBSeqRecord.annotations" title="Permalink to this definition"></a></dt>
+<dd><p>Annotations</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="BioSQL.html" class="btn btn-neutral float-left" title="BioSQL package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="BioSQL.BioSeqDatabase.html" class="btn btn-neutral float-right" title="BioSQL.BioSeqDatabase module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2020, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.80
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.79/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
