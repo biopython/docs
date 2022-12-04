@@ -133,14 +133,27 @@
 use this module.  It provides base classes to try and simplify things.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentIterator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.interfaces.</span></span><span class="sig-name descname"><span class="pre">AlignmentIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentIterator" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.interfaces.</span></span><span class="sig-name descname"><span class="pre">AlignmentIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentIterator" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class for building Alignment iterators.</p>
 <p>You should write a parse method that returns an Alignment generator.  You
 may wish to redefine the __init__ method as well.</p>
+<p>Subclasses may define the following class attributes:
+- mode   - ‘t’ or ‘b’ for text or binary files, respectively
+- fmt    - a human-readable name for the file format.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentIterator.mode">
+<span class="sig-name descname"><span class="pre">mode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'t'</span></em><a class="headerlink" href="#Bio.Align.interfaces.AlignmentIterator.mode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentIterator.fmt">
+<span class="sig-name descname"><span class="pre">fmt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#Bio.Align.interfaces.AlignmentIterator.fmt" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentIterator.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentIterator.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentIterator.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Create an AlignmentIterator object.</p>
 <p>Arguments:
 - source - input file stream, or path to input file</p>
@@ -174,22 +187,39 @@ to actually parse the file.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentWriter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.interfaces.</span></span><span class="sig-name descname"><span class="pre">AlignmentWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'w'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentWriter" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.interfaces.</span></span><span class="sig-name descname"><span class="pre">AlignmentWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentWriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Base class for alignment writers. This class should be subclassed.</p>
-<p>It is intended for sequential file formats with an (optional)
+<p>It is intended for alignment file formats with an (optional)
 header, one or more alignments, and an (optional) footer.</p>
 <p>The user may call the write_file() method to write a complete
 file containing the alignments.</p>
 <p>Alternatively, users may call the write_header(), followed
 by multiple calls to format_alignment() and/or write_alignments(),
 followed finally by write_footer().</p>
-<p>Note that write_header() cannot require any assumptions about
-the number of alignments.</p>
+<p>Subclasses may define the following class attributes:
+- mode   - ‘w’ or ‘wb’ for text or binary files, respectively
+- fmt    - a human-readable name for the file format.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentWriter.mode">
+<span class="sig-name descname"><span class="pre">mode</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'w'</span></em><a class="headerlink" href="#Bio.Align.interfaces.AlignmentWriter.mode" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentWriter.fmt">
+<span class="sig-name descname"><span class="pre">fmt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#Bio.Align.interfaces.AlignmentWriter.fmt" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentWriter.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'w'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentWriter.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentWriter.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Create the writer object.</p>
+<p>Arguments:
+- target - output file stream, or path to output file</p>
+<p>This method MAY be overridden by any subclass.</p>
+<p>Note when subclassing:
+- there should be a single non-optional argument, the target.
+- you can add additional optional arguments.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -212,6 +242,20 @@ the number of alignments.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentWriter.write_single_alignment">
+<span class="sig-name descname"><span class="pre">write_single_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignments</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentWriter.write_single_alignment" title="Permalink to this definition"></a></dt>
+<dd><p>Write a single alignment to the output file, and return 1.</p>
+<p>alignments - A list or iterator returning Alignment objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentWriter.write_multiple_alignments">
+<span class="sig-name descname"><span class="pre">write_multiple_alignments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignments</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentWriter.write_multiple_alignments" title="Permalink to this definition"></a></dt>
+<dd><p>Write alignments to the output file, and return the number of alignments.</p>
+<p>alignments - A list or iterator returning Alignment objects</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentWriter.write_alignments">
 <span class="sig-name descname"><span class="pre">write_alignments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignments</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentWriter.write_alignments" title="Permalink to this definition"></a></dt>
 <dd><p>Write alignments to the output file, and return the number of alignments.</p>
@@ -224,6 +268,11 @@ the number of alignments.</p>
 <dd><p>Write a file with the alignments, and return the number of alignments.</p>
 <p>alignments - A list or iterator returning Alignment objects</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentWriter.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.Align.interfaces.AlignmentWriter.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
