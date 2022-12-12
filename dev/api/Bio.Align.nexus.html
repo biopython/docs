@@ -135,7 +135,7 @@ as this offers more than just accessing the alignment or its
 sequences as SeqRecord objects.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.Align.nexus.AlignmentWriter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.nexus.</span></span><span class="sig-name descname"><span class="pre">AlignmentWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.nexus.AlignmentWriter" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.nexus.</span></span><span class="sig-name descname"><span class="pre">AlignmentWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interleave</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.nexus.AlignmentWriter" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.Align.interfaces.html#Bio.Align.interfaces.AlignmentWriter" title="Bio.Align.interfaces.AlignmentWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Align.interfaces.AlignmentWriter</span></code></a></p>
 <p>Nexus alignment writer.</p>
 <p>Note that Nexus files are only expected to hold ONE alignment
@@ -147,6 +147,24 @@ matrix.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.nexus.AlignmentWriter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interleave</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.nexus.AlignmentWriter.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Create an AlignmentWriter object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>target     - output stream or file name</p></li>
+<li><dl class="simple">
+<dt>interleave - if None (default): interleave if columns &gt; 1000</dt><dd><p>if True: use interleaved format
+if False: do not use interleaved format</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.nexus.AlignmentWriter.write_file">
 <span class="sig-name descname"><span class="pre">write_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignments</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.nexus.AlignmentWriter.write_file" title="Permalink to this definition"></a></dt>
 <dd><p>Write a file with the alignments, and return the number of alignments.</p>
@@ -154,19 +172,45 @@ matrix.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.Align.nexus.AlignmentWriter.write_header">
-<span class="sig-name descname"><span class="pre">write_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignments</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.nexus.AlignmentWriter.write_header" title="Permalink to this definition"></a></dt>
-<dd><p>Use this to write the file header.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.nexus.AlignmentWriter.format_alignment">
 <span class="sig-name descname"><span class="pre">format_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interleave</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.nexus.AlignmentWriter.format_alignment" title="Permalink to this definition"></a></dt>
 <dd><p>Return a string with a single alignment in the Nexus format.</p>
 <p>Creates an empty Nexus object, adds the sequences
-and then gets Nexus to prepare the output.
-Default interleave behavior: Interleave if columns &gt; 1000
-–&gt; Override with interleave=[True/False]</p>
+and then gets Nexus to prepare the output.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>alignment  - An Alignment object</p></li>
+<li><dl class="simple">
+<dt>interleave - if None (default): interleave if columns &gt; 1000</dt><dd><p>if True: use interleaved format
+if False: do not use interleaved format</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.nexus.AlignmentWriter.write_alignment">
+<span class="sig-name descname"><span class="pre">write_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignment</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interleave</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.nexus.AlignmentWriter.write_alignment" title="Permalink to this definition"></a></dt>
+<dd><p>Write a single alignment to the output file.</p>
+<ul class="simple">
+<li><p>alignment  - An Alignment object</p></li>
+<li><p>stream     - output stream</p></li>
+<li><dl class="simple">
+<dt>interleave - if None (default): interleave if columns &gt; 1000</dt><dd><p>if True: use interleaved format
+if False: do not use interleaved format</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.nexus.AlignmentWriter.write_alignments">
+<span class="sig-name descname"><span class="pre">write_alignments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignments</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.nexus.AlignmentWriter.write_alignments" title="Permalink to this definition"></a></dt>
+<dd><p>Write alignments to the output file, and return the number of alignments.</p>
+<p>alignments - A list or iterator returning Alignment objects</p>
 </dd></dl>
 
 <dl class="py attribute">
