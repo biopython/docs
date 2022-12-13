@@ -143,22 +143,32 @@
 </dl>
 <section id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h2>
-<p>You need to download the Cellosaurus database for this examples to
-run, e.g. from <a class="reference external" href="ftp://ftp.expasy.org/databases/cellosaurus/cellosaurus.txt">ftp://ftp.expasy.org/databases/cellosaurus/cellosaurus.txt</a></p>
-<blockquote>
-<div><p>&gt;&gt; from Bio.ExPASy import cellosaurus
-&gt;&gt; with open(‘cellosaurus.txt’) as handle:
-…    records = cellosaurus.parse(handle)
-…    for record in records:
-…        if ‘Homo sapiens’ in record[‘OX’][0]:
-…            print(record[‘ID’])
-…
-#15310-LN
-#W7079
-(L)PC6
-00136
-…</p>
-</div></blockquote>
+<p>This example downloads the Cellosaurus database and parses it. Note that
+urlopen returns a stream of bytes, while the parser expects a stream of plain
+string, so we use TextIOWrapper to convert bytes to string using the UTF-8
+encoding. This is not needed if you download the cellosaurus.txt file in
+advance and open it (see the comment below).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">TextIOWrapper</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.ExPASy</span> <span class="kn">import</span> <span class="n">cellosaurus</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;ftp://ftp.expasy.org/databases/cellosaurus/cellosaurus.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bytestream</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">textstream</span> <span class="o">=</span> <span class="n">TextIOWrapper</span><span class="p">(</span><span class="n">bytestream</span><span class="p">,</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># alternatively, use</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># textstream = open(&quot;cellosaurus.txt&quot;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># if you downloaded the cellosaurus.txt file in advance.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">cellosaurus</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">textstream</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="s1">&#39;Homo sapiens&#39;</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;OX&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;ID&#39;</span><span class="p">])</span>  
+<span class="gp">...</span>
+<span class="go">#15310-LN</span>
+<span class="go">#W7079</span>
+<span class="go">(L)PC6</span>
+<span class="go">0.5alpha</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="Bio.ExPASy.cellosaurus.parse">
 <span class="sig-prename descclassname"><span class="pre">Bio.ExPASy.cellosaurus.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.ExPASy.cellosaurus.parse" title="Permalink to this definition"></a></dt>
