@@ -133,6 +133,15 @@
 <dt class="sig sig-object py" id="Bio.PDB.ic_rebuild.structure_rebuild_test">
 <span class="sig-prename descclassname"><span class="pre">Bio.PDB.ic_rebuild.</span></span><span class="sig-name descname"><span class="pre">structure_rebuild_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quick</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#Bio.PDB.ic_rebuild.structure_rebuild_test" title="Permalink to this definition"></a></dt>
 <dd><p>Test rebuild PDB structure from internal coordinates.</p>
+<p>Generates internal coordinates for entity and writes to a .pic file in
+memory, then generates XYZ coordinates from the .pic file and compares the
+resulting entity against the original.</p>
+<p>See <code class="xref py py-data docutils literal notranslate"><span class="pre">IC_Residue.pic_accuracy</span></code> to vary numeric accuracy of the
+intermediate .pic file if the only issue is small differences in coordinates.</p>
+<p>Note that with default settings, deuterated initial structures will fail
+the comparison, as will structures loaded with alternate <cite>IC_Residue.accept_atoms</cite>
+settings.  Use <cite>quick=True</cite> and/or variations on <cite>AtomKey.d2h</cite> and
+<cite>IC_Residue.accept_atoms</cite> settings.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -141,8 +150,7 @@ Structure to test</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em>) – default False.
 print extra messages</p></li>
 <li><p><strong>quick</strong> (<em>bool</em>) – default False.
-only check atomArrays are identical
-in internal_to_atom_coords computation</p></li>
+only check the internal coords atomArrays are identical</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -196,7 +204,7 @@ Calls <a class="reference internal" href="Bio.PDB.Chain.html#Bio.PDB.Chain.Chain
 <dd class="field-odd"><p><strong>entity</strong> (<a class="reference internal" href="Bio.PDB.Entity.html#Bio.PDB.Entity.Entity" title="Bio.PDB.Entity.Entity"><em>Entity</em></a>) – Biopython PDB Entity (will fail for Atom)</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Biopython PDBStructure, no Atom objects</p>
+<dd class="field-even"><p>Biopython PDBStructure, no Atom objects except initial coords</p>
 </dd>
 </dl>
 </dd></dl>
@@ -214,10 +222,10 @@ Structures, Models or Chains to be compared</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print mismatch info, default False</p></li>
 <li><p><strong>quick</strong> (<em>bool</em>) – default False.
 Only check atomArrays are identical, aCoordMatchCount=0 if different</p></li>
-<li><p><strong>atol</strong> (<em>float rtol</em><em>,</em>) – default 1e-03, 1e-05 or round to 3 places.
+<li><p><strong>atol</strong> (<em>float rtol</em><em>,</em>) – default 1e-03, 1e-03 or round to 3 places.
 Numpy allclose parameters; default is to round atom coordinates to 3
 places and test equal.  For ‘quick’ will use defaults above for
-comparing ataomArrays</p></li>
+comparing atomArrays</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns dict</dt>

@@ -139,6 +139,157 @@ environments in 3D structures, support for 2D atom distance plots, converting a
 distance plot plus chirality information to a structure, generating an OpenSCAD
 description of a structure for 3D printing, and reading/writing structures as
 internal coordinate data files.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.PDB.PDBParser</span> <span class="kn">import</span> <span class="n">PDBParser</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.Chain</span> <span class="kn">import</span> <span class="n">Chain</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.internal_coords</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.PICIO</span> <span class="kn">import</span> <span class="n">write_PIC</span><span class="p">,</span> <span class="n">read_PIC</span><span class="p">,</span> <span class="n">read_PIC_seq</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.ic_rebuild</span> <span class="kn">import</span> <span class="n">write_PDB</span><span class="p">,</span> <span class="n">IC_duplicate</span><span class="p">,</span> <span class="n">structure_rebuild_test</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.SCADIO</span> <span class="kn">import</span> <span class="n">write_SCAD</span>
+<span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="kn">from</span> <span class="nn">Bio.PDB.PDBIO</span> <span class="kn">import</span> <span class="n">PDBIO</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># load a structure as normal, get first chain</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">PDBParser</span><span class="p">()</span>
+<span class="n">myProtein</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">&quot;7rsa&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb7rsa.ent&quot;</span><span class="p">)</span>
+<span class="n">myChain</span> <span class="o">=</span> <span class="n">myProtein</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;A&quot;</span><span class="p">]</span>
+
+<span class="c1"># compute bond lengths, angles, dihedral angles</span>
+<span class="n">myChain</span><span class="o">.</span><span class="n">atom_to_internal_coordinates</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># check myChain makes sense (can get angles and rebuild same structure)</span>
+<span class="n">resultDict</span> <span class="o">=</span> <span class="n">structure_rebuild_test</span><span class="p">(</span><span class="n">myChain</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">resultDict</span><span class="p">[</span><span class="s1">&#39;pass&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span>
+
+<span class="c1"># get residue 1 chi2 angle</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">myChain</span><span class="o">.</span><span class="n">get_residues</span><span class="p">())</span>
+<span class="n">r1chi2</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;chi2&quot;</span><span class="p">)</span>
+
+<span class="c1"># rotate residue 1 chi2 angle by 120 degrees (loops w/in +/-180)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">set_angle</span><span class="p">(</span><span class="s2">&quot;chi2&quot;</span><span class="p">,</span> <span class="n">r1chi2</span> <span class="o">+</span> <span class="mf">120.0</span><span class="p">)</span>
+<span class="c1"># update myChain XYZ coordinates with chi2 changed</span>
+<span class="n">myChain</span><span class="o">.</span><span class="n">internal_to_atom_coordinates</span><span class="p">()</span>
+<span class="c1"># write new conformation with PDBIO</span>
+<span class="n">write_PDB</span><span class="p">(</span><span class="n">myProtein</span><span class="p">,</span> <span class="s2">&quot;myChain.pdb&quot;</span><span class="p">)</span>
+<span class="c1"># or just the ATOM records without headers:</span>
+<span class="n">io</span> <span class="o">=</span> <span class="n">PDBIO</span><span class="p">()</span>
+<span class="n">io</span><span class="o">.</span><span class="n">set_structure</span><span class="p">(</span><span class="n">myProtein</span><span class="p">)</span>
+<span class="n">io</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;myChain2.pdb&quot;</span><span class="p">)</span>
+
+<span class="c1"># write chain as &#39;protein internal coordinates&#39; (.pic) file</span>
+<span class="n">write_PIC</span><span class="p">(</span><span class="n">myProtein</span><span class="p">,</span> <span class="s2">&quot;myChain.pic&quot;</span><span class="p">)</span>
+<span class="c1"># read .pic file</span>
+<span class="n">myProtein2</span> <span class="o">=</span> <span class="n">read_PIC</span><span class="p">(</span><span class="s2">&quot;myChain.pic&quot;</span><span class="p">)</span>
+
+<span class="c1"># create default structure for random sequence by reading as .pic file</span>
+<span class="n">myProtein3</span> <span class="o">=</span> <span class="n">read_PIC_seq</span><span class="p">(</span>
+    <span class="n">SeqRecord</span><span class="p">(</span>
+        <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GAVLIMFPSTCNQYWDEHKR&quot;</span><span class="p">),</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;1RND&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;my random sequence&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+<span class="n">myProtein3</span><span class="o">.</span><span class="n">internal_to_atom_coordinates</span><span class="p">()</span>
+<span class="n">write_PDB</span><span class="p">(</span><span class="n">myProtein3</span><span class="p">,</span> <span class="s2">&quot;myRandom.pdb&quot;</span><span class="p">)</span>
+
+<span class="c1"># access the all-dihedrals array for the chain, e.g. residue 1 chi2 angle:</span>
+<span class="n">r1chi2_obj</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">pick_angle</span><span class="p">(</span><span class="s2">&quot;chi2&quot;</span><span class="p">)</span>
+<span class="c1"># or same thing: r1chi2_obj = r1.internal_coord.pick_angle(&quot;CA:CB:CG:CD&quot;)</span>
+<span class="n">r1chi2_key</span> <span class="o">=</span> <span class="n">r1chi2_obj</span><span class="o">.</span><span class="n">atomkeys</span>
+<span class="c1"># r1chi2_key is tuple of AtomKeys (1_K_CA, 1_K_CB, 1_K_CG, 1_K_CD)</span>
+<span class="n">r1chi2_index</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">dihedraNdx</span><span class="p">[</span><span class="n">r1chi2_key</span><span class="p">]</span>
+<span class="c1"># or same thing: r1chi2_index = r1chi2_obj.ndx</span>
+<span class="n">r1chi2_value</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">dihedraAngle</span><span class="p">[</span><span class="n">r1chi2_index</span><span class="p">]</span>
+<span class="c1"># also true: r1chi2_obj == myChain.internal_coord.dihedra[r1chi2_index]</span>
+
+<span class="c1"># access the array of all atoms for the chain, e.g. residue 1 C-beta</span>
+<span class="n">r1_cBeta_index</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">atomArrayIndex</span><span class="p">[</span><span class="n">AtomKey</span><span class="p">(</span><span class="s2">&quot;1_K_CB&quot;</span><span class="p">)]</span>
+<span class="n">r1_cBeta_coords</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">atomArray</span><span class="p">[</span><span class="n">r1_cBeta_index</span><span class="p">]</span>
+<span class="c1"># r1_cBeta_coords = [ x, y, z, 1.0 ]</span>
+
+<span class="c1"># the Biopython Atom coord array is now a view into atomArray, so</span>
+<span class="k">assert</span> <span class="n">r1_cBeta_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">r1</span><span class="p">[</span><span class="s2">&quot;CB&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">r1_cBeta_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">1.0</span>  <span class="c1"># change the Y coord 1 angstrom</span>
+<span class="k">assert</span> <span class="n">r1_cBeta_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">r1</span><span class="p">[</span><span class="s2">&quot;CB&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1"># they are always the same (they share the same memory)</span>
+<span class="n">r1_cBeta_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">1.0</span>  <span class="c1"># restore</span>
+
+<span class="c1"># create a selector to filter just the C-alpha atoms from the all atom array</span>
+<span class="n">atmNameNdx</span> <span class="o">=</span> <span class="n">AtomKey</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">atm</span>
+<span class="n">atomArrayIndex</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">atomArrayIndex</span>
+<span class="n">CaSelect</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">atmNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CA&quot;</span>
+<span class="p">]</span>
+<span class="c1"># now the ordered array of C-alpha atom coordinates is:</span>
+<span class="n">CA_coords</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">atomArray</span><span class="p">[</span><span class="n">CaSelect</span><span class="p">]</span>
+<span class="c1"># note this uses Numpy fancy indexing, so CA_coords is a new copy</span>
+
+<span class="c1"># create a C-alpha distance plot</span>
+<span class="n">caDistances</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">distance_plot</span><span class="p">(</span><span class="n">CaSelect</span><span class="p">)</span>
+<span class="c1"># display with e.g. MatPlotLib:</span>
+<span class="c1"># import matplotlib.pyplot as plt</span>
+<span class="c1"># plt.imshow(caDistances, cmap=&quot;hot&quot;, interpolation=&quot;nearest&quot;)</span>
+<span class="c1"># plt.show()</span>
+
+<span class="c1"># build structure from distance plot:</span>
+<span class="c1">## create the all-atom distance plot</span>
+<span class="n">distances</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">distance_plot</span><span class="p">()</span>
+<span class="c1">## get the sign of the dihedral angles</span>
+<span class="n">chirality</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">dihedral_signs</span><span class="p">()</span>
+<span class="c1">## get new, empty data structure : copy data structure from myChain</span>
+<span class="n">myChain2</span> <span class="o">=</span> <span class="n">IC_duplicate</span><span class="p">(</span><span class="n">myChain</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;A&quot;</span><span class="p">]</span>
+<span class="n">cic2</span> <span class="o">=</span> <span class="n">myChain2</span><span class="o">.</span><span class="n">internal_coord</span>
+<span class="c1">## clear the new atomArray and di/hedra value arrays, just for proof</span>
+<span class="n">cic2</span><span class="o">.</span><span class="n">atomArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">cic2</span><span class="o">.</span><span class="n">AAsiz</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="n">cic2</span><span class="o">.</span><span class="n">dihedraAngle</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">cic2</span><span class="o">.</span><span class="n">hedraAngle</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">cic2</span><span class="o">.</span><span class="n">hedraL12</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">cic2</span><span class="o">.</span><span class="n">hedraL23</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="c1">## copy just the first N-Ca-C coords so structures will superimpose:</span>
+<span class="n">cic2</span><span class="o">.</span><span class="n">copy_initNCaCs</span><span class="p">(</span><span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="p">)</span>
+<span class="c1">## copy distances to chain arrays:</span>
+<span class="n">cic2</span><span class="o">.</span><span class="n">distplot_to_dh_arrays</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <span class="n">chirality</span><span class="p">)</span>
+<span class="c1">## compute angles and dihedral angles from distances:</span>
+<span class="n">cic2</span><span class="o">.</span><span class="n">distance_to_internal_coordinates</span><span class="p">()</span>
+<span class="c1">## generate XYZ coordinates from internal coordinates:</span>
+<span class="n">myChain2</span><span class="o">.</span><span class="n">internal_to_atom_coordinates</span><span class="p">()</span>
+<span class="c1">## confirm result atomArray matches original structure:</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">cic2</span><span class="o">.</span><span class="n">atomArray</span><span class="p">,</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">atomArray</span><span class="p">)</span>
+
+<span class="c1"># superimpose all phe-phe pairs - quick hack just to demonstrate concept</span>
+<span class="c1"># for analyzing pairwise residue interactions.  Generates PDB ATOM records</span>
+<span class="c1"># placing each PHE at origin and showing all other PHEs in environment</span>
+<span class="c1">## shorthand for key variables:</span>
+<span class="n">cic</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span>
+<span class="n">resNameNdx</span> <span class="o">=</span> <span class="n">AtomKey</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">resname</span>
+<span class="n">aaNdx</span> <span class="o">=</span> <span class="n">cic</span><span class="o">.</span><span class="n">atomArrayIndex</span>
+<span class="c1">## select just PHE atoms:</span>
+<span class="n">pheAtomSelect</span> <span class="o">=</span> <span class="p">[</span><span class="n">aaNdx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">aaNdx</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">resNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span><span class="p">]</span>
+<span class="n">aaF</span> <span class="o">=</span> <span class="n">cic</span><span class="o">.</span><span class="n">atomArray</span><span class="p">[</span> <span class="n">pheAtomSelect</span> <span class="p">]</span>  <span class="c1"># numpy fancy indexing makes COPY not view</span>
+
+<span class="k">for</span> <span class="n">ric</span> <span class="ow">in</span> <span class="n">cic</span><span class="o">.</span><span class="n">ordered_aa_ic_list</span><span class="p">:</span>  <span class="c1"># internal_coords version of get_residues()</span>
+    <span class="k">if</span> <span class="n">ric</span><span class="o">.</span><span class="n">rbase</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span>  <span class="c1"># if PHE, get transform matrices for chi1 dihedral</span>
+        <span class="n">chi1</span> <span class="o">=</span> <span class="n">ric</span><span class="o">.</span><span class="n">pick_angle</span><span class="p">(</span><span class="s2">&quot;N:CA:CB:CG&quot;</span><span class="p">)</span>  <span class="c1"># chi1 space has C-alpha at origin</span>
+        <span class="n">cst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">chi1</span><span class="o">.</span><span class="n">cst</span><span class="p">)</span>  <span class="c1"># transform TO chi1 space</span>
+        <span class="c1"># rcst = np.transpose(chi1.rcst)  # transform FROM chi1 space</span>
+        <span class="n">cic</span><span class="o">.</span><span class="n">atomArray</span><span class="p">[</span><span class="n">pheAtomSelect</span><span class="p">]</span> <span class="o">=</span> <span class="n">aaF</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span>  <span class="c1"># transform just the PHEs</span>
+        <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">myChain</span><span class="o">.</span><span class="n">get_residues</span><span class="p">():</span>  <span class="c1"># print PHEs in new coordinate space</span>
+            <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">resname</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PHE&quot;</span><span class="p">]:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">pdb_residue_string</span><span class="p">())</span>
+        <span class="n">cic</span><span class="o">.</span><span class="n">atomArray</span><span class="p">[</span><span class="n">pheAtomSelect</span><span class="p">]</span> <span class="o">=</span> <span class="n">aaF</span>  <span class="c1"># restore coordinate space from copy</span>
+
+<span class="c1"># write OpenSCAD program of spheres and cylinders to 3d print myChain backbone</span>
+<span class="c1">## set atom load filter to accept backbone only:</span>
+<span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_atoms</span> <span class="o">=</span> <span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_backbone</span>
+<span class="c1">## delete existing data to force re-read of all atoms:</span>
+<span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">write_SCAD</span><span class="p">(</span><span class="n">myChain</span><span class="p">,</span> <span class="s2">&quot;myChain.scad&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See the <cite>‘’Internal coordinates module’’</cite> section of the <cite>Biopython Tutorial
+and Cookbook</cite> for further discussion.</p>
 <p><strong>Terms and key data structures:</strong>
 Internal coordinates are defined on sequences of atoms which span
 residues or follow accepted nomenclature along sidechains.  To manage these
@@ -289,7 +440,7 @@ assemble and bond_rotate to find dihedra with h1 key</p>
 </dd>
 <dt><strong>hAtoms_needs_update: numpy array of bool</strong></dt><dd><p>indicates whether hAtoms represent hedraL12/A/L23</p>
 </dd>
-<dt><strong>dihedraAngle: numpy array</strong></dt><dd><p>dihedral angles for each dihedron</p>
+<dt><strong>dihedraAngle: numpy array</strong></dt><dd><p>dihedral angles (degrees) for each dihedron</p>
 </dd>
 <dt><strong>dAtoms: numpy array</strong></dt><dd><p>homogeneous atom coordinates (4x4) of dihedra, second atom at origin</p>
 </dd>
@@ -298,7 +449,7 @@ assemble and bond_rotate to find dihedra with h1 key</p>
 <dt><strong>dCoordSpace: numpy array</strong></dt><dd><p>forward and reverse transform matrices standardising positions of first
 hedron.  See <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.dCoordSpace" title="Bio.PDB.internal_coords.IC_Chain.dCoordSpace"><code class="xref py py-data docutils literal notranslate"><span class="pre">dCoordSpace</span></code></a>.</p>
 </dd>
-<dt><strong>dcs_valid: bool</strong></dt><dd><p>indicates dCoordSpace up to date</p>
+<dt><strong>dcsValid: bool</strong></dt><dd><p>indicates dCoordSpace up to date</p>
 </dd>
 <dt><strong>See also attributes generated by</strong><span class="classifier">meth:<cite>build_edraArrays</cite> for indexing</span></dt><dd></dd>
 <dt><strong>di/hedra data elements.</strong></dt><dd></dd>
@@ -665,7 +816,7 @@ classic C-alpha distance plot, pass a boolean mask array like:</p>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">atmNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CA&quot;</span>
 <span class="p">]</span>
-<span class="n">plot</span> <span class="o">=</span> <span class="n">distance_plot</span><span class="p">(</span><span class="n">CaSelect</span><span class="p">)</span>
+<span class="n">plot</span> <span class="o">=</span> <span class="n">cic</span><span class="o">.</span><span class="n">distance_plot</span><span class="p">(</span><span class="n">CaSelect</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Alternatively, this will select all backbone atoms:</p>
@@ -697,34 +848,35 @@ default all atom distance plot.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.IC_Chain.distplot_to_dh_arrays">
-<span class="sig-name descname"><span class="pre">distplot_to_dh_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distplot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.distplot_to_dh_arrays" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">distplot_to_dh_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distplot</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dihedra_signs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.distplot_to_dh_arrays" title="Permalink to this definition"></a></dt>
 <dd><p>Load di/hedra distance arays from distplot.</p>
 <p>Fill <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain" title="Bio.PDB.internal_coords.IC_Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">IC_Chain</span></code></a> arrays hedraL12, L23, L13 and dihedraL14
-distance value arrays from input distplot.  Distplot and di/hedra
-distance arrays must index according to AtomKey mappings in
-<a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain" title="Bio.PDB.internal_coords.IC_Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">IC_Chain</span></code></a> .hedraNdx and .dihedraNdx (created in
-<a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.init_edra" title="Bio.PDB.internal_coords.IC_Chain.init_edra"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IC_Chain.init_edra()</span></code></a>)</p>
+distance value arrays from input distplot, dihedra_signs array from
+input dihedra_signs.  Distplot and di/hedra distance arrays must index
+according to AtomKey mappings in <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain" title="Bio.PDB.internal_coords.IC_Chain"><code class="xref py py-class docutils literal notranslate"><span class="pre">IC_Chain</span></code></a> .hedraNdx and .dihedraNdx
+(created in <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.init_edra" title="Bio.PDB.internal_coords.IC_Chain.init_edra"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IC_Chain.init_edra()</span></code></a>)</p>
 <p>Call <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.atom_to_internal_coordinates" title="Bio.PDB.internal_coords.IC_Chain.atom_to_internal_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">atom_to_internal_coordinates()</span></code></a> (or at least <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.init_edra" title="Bio.PDB.internal_coords.IC_Chain.init_edra"><code class="xref py py-meth docutils literal notranslate"><span class="pre">init_edra()</span></code></a>)
 to generate a2ha_map and d2a_map before running this.</p>
 <p>Explcitly removed from <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.distance_to_internal_coordinates" title="Bio.PDB.internal_coords.IC_Chain.distance_to_internal_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">distance_to_internal_coordinates()</span></code></a> so
-user may populate these chain di/hedra distance arrays by other
+user may populate these chain di/hedra arrays by other
 methods.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.IC_Chain.distance_to_internal_coordinates">
-<span class="sig-name descname"><span class="pre">distance_to_internal_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dihedra_signs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.distance_to_internal_coordinates" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">distance_to_internal_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resetAtoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.distance_to_internal_coordinates" title="Permalink to this definition"></a></dt>
 <dd><p>Compute chain di/hedra from from distance and chirality data.</p>
 <p>Distance properties on hedra L12, L23, L13 and dihedra L14 configured
 by <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.distplot_to_dh_arrays" title="Bio.PDB.internal_coords.IC_Chain.distplot_to_dh_arrays"><code class="xref py py-meth docutils literal notranslate"><span class="pre">distplot_to_dh_arrays()</span></code></a> or alternative loader.</p>
-<p>dihedraAngles result multiplied by dihedra_signs at final step to
+<p>dihedraAngles result is multiplied by dihedra_signs at final step
 recover chirality information lost in distance plot (mirror image of
 structure has same distances but opposite sign dihedral angles).</p>
 <p>Note that chain breaks will cause errors in rebuilt structure, use
 <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.copy_initNCaCs" title="Bio.PDB.internal_coords.IC_Chain.copy_initNCaCs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">copy_initNCaCs()</span></code></a> to avoid this</p>
-<p>Based on Blue’s answer to <a class="reference external" href="https://math.stackexchange.com/a/49340/972353">The dihedral angles of a tetrahedron
+<p>Based on Blue, the Hedronometer’s answer to <a class="reference external" href="https://math.stackexchange.com/a/49340/972353">The dihedral angles of a tetrahedron
 in terms of its edge lengths</a>
-on <a class="reference external" href="https://math.stackexchange.com/">math.stackexchange.com</a>.</p>
+on <a class="reference external" href="https://math.stackexchange.com/">math.stackexchange.com</a>.  See also:
+<a class="reference external" href="http://daylateanddollarshort.com/mathdocs/Heron-like-Results-for-Tetrahedral-Volume.pdf">“Heron-like Hedronometric Results for Tetrahedral Volume”</a>.</p>
 <p>Other values from that analysis included here as comments for
 completeness:</p>
 <ul class="simple">
@@ -735,15 +887,27 @@ completeness:</p>
 <li><p>oc = hedron2 L13 = law of cosines on OA, AC (hedron2 L12, L23)</p></li>
 <li><p>bc = dihedron L14</p></li>
 </ul>
-<p>target is OA, the dihedral angle along edge oa</p>
+<p>target is OA, the dihedral angle along edge oa.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>resetAtoms</strong> (<em>bool</em>) – default True.
+Mark all atoms in di/hedra and atomArray for updating by
+<a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.internal_to_atom_coordinates" title="Bio.PDB.internal_coords.IC_Chain.internal_to_atom_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">internal_to_atom_coordinates()</span></code></a>.  Alternatvely set this to
+False and manipulate <cite>atomArrayValid</cite>, <cite>dAtoms_needs_update</cite> and
+<cite>hAtoms_needs_update</cite> directly to reduce computation.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.IC_Chain.copy_initNCaCs">
 <span class="sig-name descname"><span class="pre">copy_initNCaCs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain" title="Bio.PDB.internal_coords.IC_Chain"><span class="pre">Bio.PDB.internal_coords.IC_Chain</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Chain.copy_initNCaCs" title="Permalink to this definition"></a></dt>
 <dd><p>Copy atom coordinates for initNCaC atoms from other IC_Chain.</p>
+<p>Copies the coordinates and sets atomArrayValid flags True for initial
+NCaC and after any chain breaks.</p>
 <p>Needed for <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.distance_to_internal_coordinates" title="Bio.PDB.internal_coords.IC_Chain.distance_to_internal_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">distance_to_internal_coordinates()</span></code></a> if target has
-chain breaks (otherwise each fragment will start at origin)</p>
+chain breaks (otherwise each fragment will start at origin).</p>
+<p>Also useful if copying internal coordinates from another chain.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -800,6 +964,10 @@ structure alignment in dihedral angle space, use:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_atoms</span> <span class="o">=</span> <span class="n">accept_backbone</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;CB&#39;</span><span class="p">,)</span>
 </pre></div>
 </div>
+<p>Changing accept_atoms will cause the default <cite>structure_rebuild_test</cite> in
+<a class="reference internal" href="Bio.PDB.ic_rebuild.html#module-Bio.PDB.ic_rebuild" title="Bio.PDB.ic_rebuild"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ic_rebuild</span></code></a> to fail if some atoms are filtered (obviously).  Use
+the <cite>quick=True</cite> option to test only the coordinates of filtered atoms
+to avoid this.</p>
 <p>There is currently no option to output internal coordinates with D
 instead of H.</p>
 </dd>
@@ -811,10 +979,20 @@ override at your own risk.  To generate sidechain, add appropriate
 entries to <cite>ic_data_sidechains</cite> in <a class="reference internal" href="Bio.PDB.ic_data.html#module-Bio.PDB.ic_data" title="Bio.PDB.ic_data"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ic_data</span></code></a> and support in
 <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.atom_to_internal_coordinates" title="Bio.PDB.internal_coords.IC_Chain.atom_to_internal_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IC_Chain.atom_to_internal_coordinates()</span></code></a>.</p>
 </dd>
-<dt><strong>gly_Cbeta: bool default False</strong></dt><dd><p><strong>Class</strong> variable !data:<cite>gly_Cbeta</cite>, override to True to generate
+<dt><strong>gly_Cbeta: bool default False</strong></dt><dd><p><strong>Class</strong> variable <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Residue.gly_Cbeta" title="Bio.PDB.internal_coords.IC_Residue.gly_Cbeta"><code class="xref py py-data docutils literal notranslate"><span class="pre">gly_Cbeta</span></code></a>, override to True to generate
 internal coordinates for glycine CB atoms in
 <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.atom_to_internal_coordinates" title="Bio.PDB.internal_coords.IC_Chain.atom_to_internal_coordinates"><code class="xref py py-meth docutils literal notranslate"><span class="pre">IC_Chain.atom_to_internal_coordinates()</span></code></a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IC_Residue</span><span class="o">.</span><span class="n">gly_Cbeta</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+</dd>
+<dt><strong>pic_accuracy: str default “17.13f”</strong></dt><dd><p><strong>Class</strong> variable <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Residue.pic_accuracy" title="Bio.PDB.internal_coords.IC_Residue.pic_accuracy"><code class="xref py py-data docutils literal notranslate"><span class="pre">pic_accuracy</span></code></a> sets accuracy for numeric values
+(angles, lengths) in .pic files.  Default set high to support mmCIF file
+accuracy in rebuild tests.  If you find rebuild tests fail with
+‘ERROR -COORDINATES-’ and verbose=True shows only small discrepancies,
+try raising this value (or lower it to 9.5 if only working with PDB
+format files).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IC_Residue</span><span class="o">.</span><span class="n">pic_accuracy</span> <span class="o">=</span> <span class="s2">&quot;9.5f&quot;</span>
 </pre></div>
 </div>
 </dd>
@@ -827,7 +1005,10 @@ internal coordinates for glycine CB atoms in
 <dt><strong>rprev, rnext: lists of IC_Residue objects</strong></dt><dd><p>References to adjacent (bonded, not missing, possibly disordered)
 residues in chain</p>
 </dd>
-<dt><strong>atom_coords: AtomKey indexed dict of numpy [4] arrays</strong></dt><dd><p>View into IC_Chain’s atomArray of homogeneous coordinates</p>
+<dt><strong>atom_coords: AtomKey indexed dict of numpy [4] arrays</strong></dt><dd><p><strong>removed</strong>
+Use AtomKeys and atomArrayIndex to build if needed</p>
+</dd>
+<dt><strong>ak_set: set of AtomKeys in dihedra</strong></dt><dd><p>AtomKeys in all dihedra overlapping this residue (see __contains__())</p>
 </dd>
 <dt><strong>alt_ids: list of char</strong></dt><dd><p>AltLoc IDs from PDB file</p>
 </dd>
@@ -927,8 +1108,8 @@ server. Bioinformatics, 19:1589-1591, 2003.’</p>
 <span class="p">(</span><span class="n">case</span> <span class="n">when</span> <span class="n">f</span><span class="o">.</span><span class="n">rslt</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="n">then</span> <span class="n">f</span><span class="o">.</span><span class="n">rslt</span><span class="o">-</span><span class="mf">360.0</span> <span class="k">else</span> <span class="n">f</span><span class="o">.</span><span class="n">rslt</span> <span class="n">end</span><span class="p">)</span> <span class="k">as</span> <span class="n">rslt</span>
 <span class="kn">from</span> <span class="p">(</span><span class="n">select</span> <span class="n">d1</span><span class="o">.</span><span class="n">angle</span> <span class="k">as</span> <span class="n">d1d</span><span class="p">,</span> <span class="n">d2</span><span class="o">.</span><span class="n">angle</span> <span class="k">as</span> <span class="n">d2d</span><span class="p">,</span>
 <span class="p">(</span><span class="n">d2</span><span class="o">.</span><span class="n">angle</span> <span class="o">-</span> <span class="n">d1</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span> <span class="k">as</span> <span class="n">rslt</span> <span class="kn">from</span> <span class="nn">dihedron</span> <span class="n">d1</span><span class="p">,</span>
-<span class="n">dihedron</span> <span class="n">d2</span> <span class="n">where</span> <span class="n">d1</span><span class="o">.</span><span class="n">rdh_class</span><span class="o">=</span><span class="s1">&#39;AOACACAACB&#39;</span> <span class="ow">and</span>
-<span class="n">d2</span><span class="o">.</span><span class="n">rdh_class</span><span class="o">=</span><span class="s1">&#39;ANACAACAO&#39;</span> <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">pdb</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">pdb</span> <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">chn</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">chn</span>
+<span class="n">dihedron</span> <span class="n">d2</span> <span class="n">where</span> <span class="n">d1</span><span class="o">.</span><span class="n">re_class</span><span class="o">=</span><span class="s1">&#39;AOACACAACB&#39;</span> <span class="ow">and</span>
+<span class="n">d2</span><span class="o">.</span><span class="n">re_class</span><span class="o">=</span><span class="s1">&#39;ANACAACAO&#39;</span> <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">pdb</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">pdb</span> <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">chn</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">chn</span>
 <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">res</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">res</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">)</span> <span class="k">as</span> <span class="n">g</span>
 </pre></div>
 </div>
@@ -938,6 +1119,11 @@ server. Bioinformatics, 19:1589-1591, 2003.’</p>
 </pre></div>
 </div>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.PDB.internal_coords.IC_Residue.pic_accuracy">
+<span class="sig-name descname"><span class="pre">pic_accuracy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'17.13f'</span></em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.pic_accuracy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.IC_Residue.accept_backbone">
@@ -987,6 +1173,12 @@ The Biopython Residue this object extends</p>
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.IC_Residue.__deepcopy__">
 <span class="sig-name descname"><span class="pre">__deepcopy__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">memo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.__deepcopy__" title="Permalink to this definition"></a></dt>
 <dd><p>Deep copy implementation for IC_Residue.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.PDB.internal_coords.IC_Residue.__contains__">
+<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ak</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#Bio.PDB.internal_coords.AtomKey" title="Bio.PDB.internal_coords.AtomKey"><span class="pre">Bio.PDB.internal_coords.AtomKey</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.__contains__" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if atomkey is in this residue.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1093,13 +1285,13 @@ space relative to previous residue</p>
 be specific to this Residue’s altlocs etc., e.g.
 ‘(N-Ca_A_0.3-C, N-Ca_B_0.7-C)’</p>
 <dl>
-<dt>Given a list of AtomKeys (aks) for a Hedron or Dihedron,</dt><dd><dl>
+<dt>Given a list of AtomKeys for a Hedron or Dihedron,</dt><dd><dl>
 <dt>return:</dt><dd><blockquote>
-<div><p>list of matching aks that have id3_dh in this residue
+<div><p>list of matching atomkeys that have id3_dh in this residue
 (ak may change if occupancy != 1.00)</p>
 </div></blockquote>
 <dl class="simple">
-<dt>or</dt><dd><p>multiple lists of matching aks expanded for all atom altlocs</p>
+<dt>or</dt><dd><p>multiple lists of matching atomkeys expanded for all atom altlocs</p>
 </dd>
 <dt>or</dt><dd><p>empty list if any of atom_coord(ak) missing and not missingOK</p>
 </dd>
@@ -1288,6 +1480,9 @@ preceding peptide bond.  Position specifiers are -1, 0, 1.</p></li>
 <span class="p">)</span>
 </pre></div>
 </div>
+<p>If atom not found on current residue then will look on rprev[0] to
+handle cases like Gly N:CA.  For finer control please access
+<cite>IC_Chain.hedra</cite> directly.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>list of hedra containing specified atom pair as tuples of
@@ -1300,7 +1495,7 @@ AtomKeys</p>
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.IC_Residue.get_length">
 <span class="sig-name descname"><span class="pre">get_length</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ak_spec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#Bio.PDB.internal_coords.AtomKey" title="Bio.PDB.internal_coords.AtomKey"><span class="pre">Bio.PDB.internal_coords.AtomKey</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#Bio.PDB.internal_coords.AtomKey" title="Bio.PDB.internal_coords.AtomKey"><span class="pre">Bio.PDB.internal_coords.AtomKey</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.get_length" title="Permalink to this definition"></a></dt>
 <dd><p>Get bond length for specified atom pair.</p>
-<p>See <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Residue.pick_length" title="Bio.PDB.internal_coords.IC_Residue.pick_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pick_length()</span></code></a> for ak_spec.</p>
+<p>See <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Residue.pick_length" title="Bio.PDB.internal_coords.IC_Residue.pick_length"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pick_length()</span></code></a> for ak_spec and details.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1318,7 +1513,7 @@ AtomKeys</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.IC_Residue.__annotations__">
-<span class="sig-name descname"><span class="pre">__annotations__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'_AllBonds':</span> <span class="pre">&lt;class</span> <span class="pre">'bool'&gt;,</span> <span class="pre">'ak_set':</span> <span class="pre">'Set[AtomKey]',</span> <span class="pre">'akc':</span> <span class="pre">'Dict[Union[str,</span> <span class="pre">Atom],</span> <span class="pre">AtomKey]',</span> <span class="pre">'alt_ids':</span> <span class="pre">'Union[List[str],</span> <span class="pre">None]',</span> <span class="pre">'bfactors':</span> <span class="pre">'Dict[str,</span> <span class="pre">float]',</span> <span class="pre">'cic':</span> <span class="pre">'IC_Chain',</span> <span class="pre">'dihedra':</span> <span class="pre">'Dict[DKT,</span> <span class="pre">Dihedron]',</span> <span class="pre">'gly_Cbeta':</span> <span class="pre">&lt;class</span> <span class="pre">'bool'&gt;,</span> <span class="pre">'hedra':</span> <span class="pre">'Dict[HKT,</span> <span class="pre">Hedron]',</span> <span class="pre">'no_altloc':</span> <span class="pre">&lt;class</span> <span class="pre">'bool'&gt;,</span> <span class="pre">'rnext':</span> <span class="pre">'List[IC_Residue]',</span> <span class="pre">'rprev':</span> <span class="pre">'List[IC_Residue]'}</span></em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.__annotations__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__annotations__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'_AllBonds':</span> <span class="pre">&lt;class</span> <span class="pre">'bool'&gt;,</span> <span class="pre">'ak_set':</span> <span class="pre">'Set[AtomKey]',</span> <span class="pre">'akc':</span> <span class="pre">'Dict[Union[str,</span> <span class="pre">Atom],</span> <span class="pre">AtomKey]',</span> <span class="pre">'alt_ids':</span> <span class="pre">'Union[List[str],</span> <span class="pre">None]',</span> <span class="pre">'bfactors':</span> <span class="pre">'Dict[str,</span> <span class="pre">float]',</span> <span class="pre">'cic':</span> <span class="pre">'IC_Chain',</span> <span class="pre">'dihedra':</span> <span class="pre">'Dict[DKT,</span> <span class="pre">Dihedron]',</span> <span class="pre">'gly_Cbeta':</span> <span class="pre">&lt;class</span> <span class="pre">'bool'&gt;,</span> <span class="pre">'hedra':</span> <span class="pre">'Dict[HKT,</span> <span class="pre">Hedron]',</span> <span class="pre">'no_altloc':</span> <span class="pre">&lt;class</span> <span class="pre">'bool'&gt;,</span> <span class="pre">'pic_accuracy':</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">'rnext':</span> <span class="pre">'List[IC_Residue]',</span> <span class="pre">'rprev':</span> <span class="pre">'List[IC_Residue]'}</span></em><a class="headerlink" href="#Bio.PDB.internal_coords.IC_Residue.__annotations__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1332,19 +1527,19 @@ AtomKeys</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>aks: tuple</strong></dt><dd><p>3 (hedron) or 4 (dihedron) <a class="reference internal" href="#Bio.PDB.internal_coords.AtomKey" title="Bio.PDB.internal_coords.AtomKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomKey</span></code></a> s defining this di/hedron</p>
+<dt><strong>atomkeys: tuple</strong></dt><dd><p>3 (hedron) or 4 (dihedron) <a class="reference internal" href="#Bio.PDB.internal_coords.AtomKey" title="Bio.PDB.internal_coords.AtomKey"><code class="xref py py-class docutils literal notranslate"><span class="pre">AtomKey</span></code></a> s defining this di/hedron</p>
 </dd>
 <dt><strong>id: str</strong></dt><dd><p>‘:’-joined string of AtomKeys for this di/hedron</p>
 </dd>
 <dt><strong>needs_update: bool</strong></dt><dd><p>indicates di/hedron local atom_coords do NOT reflect current di/hedron
 angle and length values in hedron local coordinate space</p>
 </dd>
-<dt><strong>dh_class: str</strong></dt><dd><p>sequence of atoms (no position or residue) comprising di/hedron
+<dt><strong>e_class: str</strong></dt><dd><p>sequence of atoms (no position or residue) comprising di/hedron
 for statistics</p>
 </dd>
-<dt><strong>rdh_class: str</strong></dt><dd><p>sequence of residue, atoms comprising di/hedron for statistics</p>
+<dt><strong>re_class: str</strong></dt><dd><p>sequence of residue, atoms comprising di/hedron for statistics</p>
 </dd>
-<dt><strong>crdh_class: tuple</strong></dt><dd><p>tuple of covalent radii classses comprising di/hedron for statistics</p>
+<dt><strong>cre_class: str</strong></dt><dd><p>sequence of covalent radii classses comprising di/hedron for statistics</p>
 </dd>
 <dt><strong>edron_re: compiled regex (Class Attribute)</strong></dt><dd><p>A compiled regular expression matching string IDs for Hedron
 and Dihedron objects</p>
@@ -1362,15 +1557,15 @@ Set in <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.ini
 <p class="rubric">Methods</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 56%" />
-<col style="width: 44%" />
+<col style="width: 54%" />
+<col style="width: 46%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><strong>gen_key([AtomKey, …] or AtomKey, …) (Static Method)</strong></p></td>
 <td><p>generate a ‘:’-joined string of AtomKey Ids</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>is_backbone()</strong></p></td>
-<td><p>Return True if all aks atoms are N, Ca, C or O</p></td>
+<td><p>Return True if all atomkeys atoms are N, Ca, C or O</p></td>
 </tr>
 </tbody>
 </table>
@@ -1385,11 +1580,16 @@ Dihedron objects</p>
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.Edron.gen_key">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lst</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#Bio.PDB.internal_coords.AtomKey" title="Bio.PDB.internal_coords.AtomKey"><span class="pre">Bio.PDB.internal_coords.AtomKey</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.Edron.gen_key" title="Permalink to this definition"></a></dt>
 <dd><p>Generate string of ‘:’-joined AtomKey strings from input.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>lst</strong> (<em>list</em>) – list of AtomKey objects</p>
-</dd>
-</dl>
+<p>Generate ‘2_A_C:3_P_N:3_P_CA’ from (2_A_C, 3_P_N, 3_P_CA)
+:param list lst: list of AtomKey objects</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.PDB.internal_coords.Edron.gen_tuple">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gen_tuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">akstr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.Edron.gen_tuple" title="Permalink to this definition"></a></dt>
+<dd><p>Generate AtomKey tuple for ‘:’-joined AtomKey string.</p>
+<p>Generate (2_A_C, 3_P_N, 3_P_CA) from ‘2_A_C:3_P_N:3_P_CA’
+:param str akstr: string of ‘:’-separated AtomKey strings</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1411,6 +1611,12 @@ AtomKey, …      : sequence of AtomKeys as args
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Bio.PDB.internal_coords.Edron.__contains__">
+<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ak</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#Bio.PDB.internal_coords.AtomKey" title="Bio.PDB.internal_coords.AtomKey"><span class="pre">Bio.PDB.internal_coords.AtomKey</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__contains__" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if atomkey is in this edron.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.Edron.is_backbone">
 <span class="sig-name descname"><span class="pre">is_backbone</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.Edron.is_backbone" title="Permalink to this definition"></a></dt>
 <dd><p>Report True for contains only N, C, CA, O, H atoms.</p>
@@ -1425,7 +1631,7 @@ AtomKey, …      : sequence of AtomKeys as args
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.Edron.__hash__">
 <span class="sig-name descname"><span class="pre">__hash__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.Edron.__hash__" title="Permalink to this definition"></a></dt>
-<dd><p>Hash calculated at init from aks tuple.</p>
+<dd><p>Hash calculated at init from atomkeys tuple.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1599,7 +1805,7 @@ in hedra</p>
 </dd>
 <dt><strong>primary: bool</strong></dt><dd><p>True if this is psi, phi, omega or a sidechain chi angle</p>
 </dd>
-<dt><strong>pclass: string (primary angle class)</strong></dt><dd><p>rdh_class with X for adjacent residue according to nomenclature
+<dt><strong>pclass: string (primary angle class)</strong></dt><dd><p>re_class with X for adjacent residue according to nomenclature
 (psi, omega, phi)</p>
 </dd>
 <dt><strong>cst, rcst: numpy [4][4] arrays</strong></dt><dd><p>transformations to (cst) and from (rcst) Dihedron coordinate space
@@ -1773,11 +1979,14 @@ note the issue.  Set by <a class="reference internal" href="#Bio.PDB.internal_co
 <tr class="row-odd"><td><p><strong>atm()</strong></p></td>
 <td><p>Returns atom name, e.g. N, CA, CB, etc.</p></td>
 </tr>
+<tr class="row-even"><td><p><strong>cr_class()</strong></p></td>
+<td><p>Returns covalent radii class e.g. Csb</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.AtomKey.atom_re">
-<span class="sig-name descname"><span class="pre">atom_re</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('^(?P&lt;respos&gt;-?\\d+)(?P&lt;icode&gt;[A-Za-z])?_(?P&lt;resname&gt;[a-zA-Z]+)_(?P&lt;atm&gt;[A-Za-z0-9]+)(?:_(?P&lt;altloc&gt;\\w))?(?:_(?P&lt;occ&gt;-?\\d\\.\\d?\\d?))?$')</span></em><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.atom_re" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">atom_re</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">re.compile('^(?P&lt;respos&gt;-?\\d+)(?P&lt;icode&gt;[A-Za-z])?_(?P&lt;resname&gt;[a-zA-Z]+)_(?P&lt;atm&gt;[A-Za-z0-9]+)(?:_(?P&lt;altloc&gt;\\w))?(?:_(?P&lt;occ&gt;-?\\d\\.\\d+?))?$')</span></em><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.atom_re" title="Permalink to this definition"></a></dt>
 <dd><p>Pre-compiled regular expression to match an AtomKey string.</p>
 </dd></dl>
 
@@ -1851,6 +2060,12 @@ note the issue.  Set by <a class="reference internal" href="#Bio.PDB.internal_co
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Bio.PDB.internal_coords.AtomKey.cr_class">
+<span class="sig-name descname"><span class="pre">cr_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.cr_class" title="Permalink to this definition"></a></dt>
+<dd><p>Return covalent radii class for atom or None.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.AtomKey.__ne__">
 <span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__ne__" title="Permalink to this definition"></a></dt>
 <dd><p>Test for inequality.</p>
@@ -1892,7 +2107,7 @@ note the issue.  Set by <a class="reference internal" href="#Bio.PDB.internal_co
 <dt class="sig sig-object py" id="Bio.PDB.internal_coords.set_accuracy_95">
 <span class="sig-prename descclassname"><span class="pre">Bio.PDB.internal_coords.</span></span><span class="sig-name descname"><span class="pre">set_accuracy_95</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.set_accuracy_95" title="Permalink to this definition"></a></dt>
 <dd><p>Reduce floating point accuracy to 9.5 (xxxx.xxxxx).</p>
-<p>Used by <a class="reference internal" href="#Bio.PDB.internal_coords.Hedron" title="Bio.PDB.internal_coords.Hedron"><code class="xref py py-class docutils literal notranslate"><span class="pre">Hedron</span></code></a> and <a class="reference internal" href="#Bio.PDB.internal_coords.Dihedron" title="Bio.PDB.internal_coords.Dihedron"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dihedron</span></code></a> classes writing PIC and SCAD
+<p>Used by <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Residue" title="Bio.PDB.internal_coords.IC_Residue"><code class="xref py py-class docutils literal notranslate"><span class="pre">IC_Residue</span></code></a> class writing PIC and SCAD
 files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
