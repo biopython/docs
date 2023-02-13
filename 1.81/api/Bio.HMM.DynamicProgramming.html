@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio.HMM.DynamicProgramming module &mdash; Biopython 1.81 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.HMM.MarkovModel module" href="Bio.HMM.MarkovModel.html" />
+    <link rel="prev" title="Bio.HMM package" href="Bio.HMM.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="Bio.HMM.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.HMM.html#module-Bio.HMM">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="Bio.html">Bio package</a></li>
+          <li class="breadcrumb-item"><a href="Bio.HMM.html">Bio.HMM package</a></li>
+      <li class="breadcrumb-item active">Bio.HMM.DynamicProgramming module</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/HMM/DynamicProgramming.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="Bio.HMM.html" class="btn btn-neutral float-left" title="Bio.HMM package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.HMM.MarkovModel.html" class="btn btn-neutral float-right" title="Bio.HMM.MarkovModel module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-Bio.HMM.DynamicProgramming">
+<span id="bio-hmm-dynamicprogramming-module"></span><h1>Bio.HMM.DynamicProgramming module<a class="headerlink" href="#module-Bio.HMM.DynamicProgramming" title="Permalink to this headline"></a></h1>
+<p>Dynamic Programming algorithms for general usage.</p>
+<p>This module contains classes which implement Dynamic Programming
+algorithms that can be used generally.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.HMM.DynamicProgramming.</span></span><span class="sig-name descname"><span class="pre">AbstractDPAlgorithms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markov_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An abstract class to calculate forward and backward probabilities.</p>
+<p>This class should not be instantiated directly, but should be used
+through a derived class which implements proper scaling of variables.</p>
+<p>This class is just meant to encapsulate the basic forward and backward
+algorithms, and allow derived classes to deal with the problems of
+multiplying probabilities.</p>
+<p>Derived class of this must implement:</p>
+<ul class="simple">
+<li><p>_forward_recursion – Calculate the forward values in the recursion
+using some kind of technique for preventing underflow errors.</p></li>
+<li><p>_backward_recursion – Calculate the backward values in the recursion
+step using some technique to prevent underflow errors.</p></li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markov_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize to calculate forward and backward probabilities.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>markov_model – The current Markov model we are working with.</p></li>
+<li><p>sequence – A training sequence containing a set of emissions.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.forward_algorithm">
+<span class="sig-name descname"><span class="pre">forward_algorithm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.forward_algorithm" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate sequence probability using the forward algorithm.</p>
+<p>This implements the forward algorithm, as described on p57-58 of
+Durbin et al.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>A dictionary containing the forward variables. This has keys of the
+form (state letter, position in the training sequence), and values
+containing the calculated forward variable.</p></li>
+<li><p>The calculated probability of the sequence.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.backward_algorithm">
+<span class="sig-name descname"><span class="pre">backward_algorithm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms.backward_algorithm" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate sequence probability using the backward algorithm.</p>
+<p>This implements the backward algorithm, as described on p58-59 of
+Durbin et al.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><ul class="simple">
+<li><p>A dictionary containing the backwards variables. This has keys
+of the form (state letter, position in the training sequence),
+and values containing the calculated backward variable.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.HMM.DynamicProgramming.ScaledDPAlgorithms">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.HMM.DynamicProgramming.</span></span><span class="sig-name descname"><span class="pre">ScaledDPAlgorithms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markov_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.ScaledDPAlgorithms" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms" title="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.HMM.DynamicProgramming.AbstractDPAlgorithms</span></code></a></p>
+<p>Implement forward and backward algorithms using a rescaling approach.</p>
+<p>This scales the f and b variables, so that they remain within a
+manageable numerical interval during calculations. This approach is
+described in Durbin et al. on p 78.</p>
+<p>This approach is a little more straightforward then log transformation
+but may still give underflow errors for some types of models. In these
+cases, the LogDPAlgorithms class should be used.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.HMM.DynamicProgramming.ScaledDPAlgorithms.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markov_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.ScaledDPAlgorithms.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the scaled approach to calculating probabilities.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>markov_model – The current Markov model we are working with.</p></li>
+<li><p>sequence – A TrainingSequence object that must have a
+set of emissions to work with.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.HMM.DynamicProgramming.LogDPAlgorithms">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.HMM.DynamicProgramming.</span></span><span class="sig-name descname"><span class="pre">LogDPAlgorithms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markov_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.LogDPAlgorithms" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.HMM.DynamicProgramming.AbstractDPAlgorithms" title="Bio.HMM.DynamicProgramming.AbstractDPAlgorithms"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.HMM.DynamicProgramming.AbstractDPAlgorithms</span></code></a></p>
+<p>Implement forward and backward algorithms using a log approach.</p>
+<p>This uses the approach of calculating the sum of log probabilities
+using a lookup table for common values.</p>
+<p>XXX This is not implemented yet!</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.HMM.DynamicProgramming.LogDPAlgorithms.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">markov_model</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.HMM.DynamicProgramming.LogDPAlgorithms.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Bio.HMM.html" class="btn btn-neutral float-left" title="Bio.HMM package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.HMM.MarkovModel.html" class="btn btn-neutral float-right" title="Bio.HMM.MarkovModel module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2020, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.81
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.80/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio.Entrez package &mdash; Biopython 1.81 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.Entrez.Parser module" href="Bio.Entrez.Parser.html" />
+    <link rel="prev" title="Bio.Emboss.PrimerSearch module" href="Bio.Emboss.PrimerSearch.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Bio.Entrez package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-Bio.Entrez">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="Bio.html">Bio package</a></li>
+      <li class="breadcrumb-item active">Bio.Entrez package</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/Entrez/__init__.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="Bio.Emboss.PrimerSearch.html" class="btn btn-neutral float-left" title="Bio.Emboss.PrimerSearch module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.Entrez.Parser.html" class="btn btn-neutral float-right" title="Bio.Entrez.Parser module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bio-entrez-package">
+<h1>Bio.Entrez package<a class="headerlink" href="#bio-entrez-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Bio.Entrez.Parser.html">Bio.Entrez.Parser module</a></li>
+</ul>
+</div>
+</section>
+<section id="module-Bio.Entrez">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Bio.Entrez" title="Permalink to this headline"></a></h2>
+<p>Provides code to access NCBI over the WWW.</p>
+<p>The main Entrez web page is available at:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/Entrez/">http://www.ncbi.nlm.nih.gov/Entrez/</a></p>
+<p>Entrez Programming Utilities web page is available at:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25501/">http://www.ncbi.nlm.nih.gov/books/NBK25501/</a></p>
+<p>This module provides a number of functions like <code class="docutils literal notranslate"><span class="pre">efetch</span></code> (short for
+Entrez Fetch) which will return the data as a handle object. This is
+a standard interface used in Python for reading data from a file, or
+in this case a remote network connection, and provides methods like
+<code class="docutils literal notranslate"><span class="pre">.read()</span></code> or offers iteration over the contents line by line. See
+also “What the heck is a handle?” in the Biopython Tutorial and
+Cookbook: <a class="reference external" href="http://biopython.org/DIST/docs/tutorial/Tutorial.html">http://biopython.org/DIST/docs/tutorial/Tutorial.html</a>
+<a class="reference external" href="http://biopython.org/DIST/docs/tutorial/Tutorial.pdf">http://biopython.org/DIST/docs/tutorial/Tutorial.pdf</a>
+The handle returned by these functions can be either in text mode or
+in binary mode, depending on the data requested and the results
+returned by NCBI Entrez. Typically, XML data will be in binary mode
+while other data will be in text mode, as required by the downstream
+parser to parse the data.</p>
+<p>Unlike a handle to a file on disk from the <code class="docutils literal notranslate"><span class="pre">open(filename)</span></code> function,
+which has a <code class="docutils literal notranslate"><span class="pre">.name</span></code> attribute giving the filename, the handles from
+<code class="docutils literal notranslate"><span class="pre">Bio.Entrez</span></code> all have a <code class="docutils literal notranslate"><span class="pre">.url</span></code> attribute instead giving the URL
+used to connect to the NCBI Entrez API.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">epost</span></code>, <code class="docutils literal notranslate"><span class="pre">efetch</span></code>, and <code class="docutils literal notranslate"><span class="pre">esummary</span></code> tools take an “id” parameter
+which corresponds to one or more database UIDs (or accession.version
+identifiers in the case of sequence databases such as “nuccore” or
+“protein”). The Python value of the “id” keyword passed to these functions
+may be either a single ID as a string or integer or multiple IDs as an
+iterable of strings/integers. You may also pass a single string containing
+multiple IDs delimited by commas. The <code class="docutils literal notranslate"><span class="pre">elink</span></code> tool also accepts multiple
+IDs but the argument is handled differently than the other three. See that
+function’s docstring for more information.</p>
+<p>All the functions that send requests to the NCBI Entrez API will
+automatically respect the NCBI rate limit (of 3 requests per second
+without an API key, or 10 requests per second with an API key) and
+will automatically retry when encountering transient failures
+(i.e. connection failures or HTTP 5XX codes). By default, Biopython
+does a maximum of three tries before giving up, and sleeps for 15
+seconds between tries. You can tweak these parameters by setting
+<code class="docutils literal notranslate"><span class="pre">Bio.Entrez.max_tries</span></code> and <code class="docutils literal notranslate"><span class="pre">Bio.Entrez.sleep_between_tries</span></code>.</p>
+<p>The Entrez module also provides an XML parser which takes a handle
+as input.</p>
+<p>Variables:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>email        Set the Entrez email parameter (default is not set).</p></li>
+<li><p>tool         Set the Entrez tool parameter (default is <code class="docutils literal notranslate"><span class="pre">biopython</span></code>).</p></li>
+<li><p>api_key      Personal API key from NCBI. If not set, only 3 queries per
+second are allowed. 10 queries per seconds otherwise with a
+valid API key.</p></li>
+<li><p>max_tries    Configures how many times failed requests will be
+automatically retried on error (default is 3).</p></li>
+<li><p>sleep_between_tries   The delay, in seconds, before retrying a request on
+error (default is 15).</p></li>
+</ul>
+</div></blockquote>
+<p>Functions:</p>
+<blockquote>
+<div><ul>
+<li><p>efetch       Retrieves records in the requested format from a list of one or
+more primary IDs or from the user’s environment</p></li>
+<li><p>epost        Posts a file containing a list of primary IDs for future use in
+the user’s environment to use with subsequent search strategies</p></li>
+<li><p>esearch      Searches and retrieves primary IDs (for use in EFetch, ELink,
+and ESummary) and term translations and optionally retains
+results for future use in the user’s environment.</p></li>
+<li><p>elink        Checks for the existence of an external or Related Articles link
+from a list of one or more primary IDs.  Retrieves primary IDs
+and relevancy scores for links to Entrez databases or Related
+Articles;  creates a hyperlink to the primary LinkOut provider
+for a specific ID and database, or lists LinkOut URLs
+and Attributes for multiple IDs.</p></li>
+<li><p>einfo        Provides field index term counts, last update, and available
+links for each database.</p></li>
+<li><p>esummary     Retrieves document summaries from a list of primary IDs or from
+the user’s environment.</p></li>
+<li><p>egquery      Provides Entrez database counts in XML for a single search
+using Global Query.</p></li>
+<li><p>espell       Retrieves spelling suggestions.</p></li>
+<li><p>ecitmatch    Retrieves PubMed IDs (PMIDs) that correspond to a set of
+input citation strings.</p></li>
+<li><p>read         Parses the XML results returned by any of the above functions.
+Alternatively, the XML data can be read from a file opened in binary mode.
+Typical usage is:</p>
+<blockquote>
+<div><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">einfo</span><span class="p">()</span> <span class="c1"># or esearch, efetch, ...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>where record is now a Python dictionary or list.</p>
+</div></blockquote>
+</li>
+<li><p>parse        Parses the XML results returned by those of the above functions
+which can return multiple records - such as efetch, esummary
+and elink. Typical usage is:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">esummary</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;pubmed&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;19304878,14630660&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="c1"># each record is a Python dictionary or list.</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">])</span>
+<span class="go">Biopython: freely available Python tools for computational molecular biology and bioinformatics.</span>
+<span class="go">PDB file parser and structure class implemented in Python.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This function is appropriate only if the XML file contains
+multiple records, and is particular useful for large files.</p>
+</li>
+<li><p>_open        Internally used function.</p></li>
+</ul>
+</div></blockquote>
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.epost">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">epost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.epost" title="Permalink to this definition"></a></dt>
+<dd><p>Post a file of identifiers for future use.</p>
+<p>Posts a file containing a list of UIs for future use in the user’s
+environment to use with subsequent search strategies.</p>
+<p>See the online documentation for an explanation of the parameters:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EPost">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EPost</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Handle to the results.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>urllib.error.URLError</strong> – If there’s a network error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.efetch">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">efetch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywords</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.efetch" title="Permalink to this definition"></a></dt>
+<dd><p>Fetch Entrez results which are returned as a handle.</p>
+<p>EFetch retrieves records in the requested format from a list or set of one or
+more UIs or from user’s environment.</p>
+<p>See the online documentation for an explanation of the parameters:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch</a></p>
+<p>Short example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;nucleotide&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;AY851612&quot;</span><span class="p">,</span> <span class="n">rettype</span><span class="o">=</span><span class="s2">&quot;gb&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+<span class="go">LOCUS       AY851612                 892 bp    DNA     linear   PLN 10-APR-2007</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This will automatically use an HTTP POST rather than HTTP GET if there
+are over 200 identifiers as recommended by the NCBI.</p>
+<p><strong>Warning:</strong> The NCBI changed the default retmode in Feb 2012, so many
+databases which previously returned text output now give XML.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Handle to the results.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>urllib.error.URLError</strong> – If there’s a network error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.esearch">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">esearch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">term</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.esearch" title="Permalink to this definition"></a></dt>
+<dd><p>Run an Entrez search and return a handle to the results.</p>
+<p>ESearch searches and retrieves primary IDs (for use in EFetch, ELink
+and ESummary) and term translations, and optionally retains results
+for future use in the user’s environment.</p>
+<p>See the online documentation for an explanation of the parameters:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch</a></p>
+<p>Short example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">esearch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;nucleotide&quot;</span><span class="p">,</span> <span class="n">retmax</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">term</span><span class="o">=</span><span class="s2">&quot;opuntia[ORGN] accD&quot;</span><span class="p">,</span> <span class="n">idtype</span><span class="o">=</span><span class="s2">&quot;acc&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;Count&quot;</span><span class="p">])</span> <span class="o">&gt;=</span> <span class="mi">2</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;EF590893.1&quot;</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;IdList&quot;</span><span class="p">]</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;EF590892.1&quot;</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;IdList&quot;</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Handle to the results, which are always in XML format.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>urllib.error.URLError</strong> – If there’s a network error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.elink">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">elink</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.elink" title="Permalink to this definition"></a></dt>
+<dd><p>Check for linked external articles and return a handle.</p>
+<p>ELink checks for the existence of an external or Related Articles link
+from a list of one or more primary IDs;  retrieves IDs and relevancy
+scores for links to Entrez databases or Related Articles; creates a
+hyperlink to the primary LinkOut provider for a specific ID and
+database, or lists LinkOut URLs and attributes for multiple IDs.</p>
+<p>See the online documentation for an explanation of the parameters:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ELink">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ELink</a></p>
+<p>Note that ELink treats the “id” parameter differently than the other
+tools when multiple values are given. You should generally pass multiple
+UIDs as a list of strings or integers. This will provide a “one-to-one”
+mapping from source database UIDs to destination database UIDs in the
+result. If multiple source UIDs are passed as a single comma-delimited
+string all destination UIDs will be mixed together in the result.</p>
+<p>This example finds articles related to the Biopython application
+note’s entry in the PubMed database:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pmid</span> <span class="o">=</span> <span class="s2">&quot;19304878&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">elink</span><span class="p">(</span><span class="n">dbfrom</span><span class="o">=</span><span class="s2">&quot;pubmed&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">pmid</span><span class="p">,</span> <span class="n">linkname</span><span class="o">=</span><span class="s2">&quot;pubmed_pubmed&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;LinkSetDb&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;LinkName&quot;</span><span class="p">])</span>
+<span class="go">pubmed_pubmed</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">linked</span> <span class="o">=</span> <span class="p">[</span><span class="n">link</span><span class="p">[</span><span class="s2">&quot;Id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;LinkSetDb&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;Link&quot;</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;14630660&quot;</span> <span class="ow">in</span> <span class="n">linked</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>This is explained in much more detail in the Biopython Tutorial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Handle to the results, by default in XML format.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>urllib.error.URLError</strong> – If there’s a network error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.einfo">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">einfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.einfo" title="Permalink to this definition"></a></dt>
+<dd><p>Return a summary of the Entrez databases as a results handle.</p>
+<p>EInfo provides field names, index term counts, last update, and
+available links for each Entrez database.</p>
+<p>See the online documentation for an explanation of the parameters:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EInfo">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EInfo</a></p>
+<p>Short example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">Entrez</span><span class="o">.</span><span class="n">einfo</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;pubmed&#39;</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="s1">&#39;DbList&#39;</span><span class="p">]</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Handle to the results, by default in XML format.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>urllib.error.URLError</strong> – If there’s a network error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.esummary">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">esummary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.esummary" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve document summaries as a results handle.</p>
+<p>ESummary retrieves document summaries from a list of primary IDs or
+from the user’s environment.</p>
+<p>See the online documentation for an explanation of the parameters:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESummary">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESummary</a></p>
+<p>This example discovers more about entry 19923 in the structure
+database:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">esummary</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;structure&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;19923&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;Id&quot;</span><span class="p">])</span>
+<span class="go">19923</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;PdbDescr&quot;</span><span class="p">])</span>
+<span class="go">Crystal Structure Of E. Coli Aconitase B</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Handle to the results, by default in XML format.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>urllib.error.URLError</strong> – If there’s a network error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.egquery">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">egquery</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.egquery" title="Permalink to this definition"></a></dt>
+<dd><p>Provide Entrez database counts for a global search.</p>
+<p>EGQuery provides Entrez database counts in XML for a single search
+using Global Query.</p>
+<p>See the online documentation for an explanation of the parameters:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EGQuery">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EGQuery</a></p>
+<p>This quick example based on a longer version from the Biopython
+Tutorial just checks there are over 60 matches for ‘Biopython’
+in PubMedCentral:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">egquery</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="s2">&quot;biopython&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;eGQueryResult&quot;</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="s2">&quot;pmc&quot;</span> <span class="ow">in</span> <span class="n">row</span><span class="p">[</span><span class="s2">&quot;DbName&quot;</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;Count&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">60</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Handle to the results, by default in XML format.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>urllib.error.URLError</strong> – If there’s a network error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.espell">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">espell</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.espell" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve spelling suggestions as a results handle.</p>
+<p>ESpell retrieves spelling suggestions, if available.</p>
+<p>See the online documentation for an explanation of the parameters:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESpell">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESpell</a></p>
+<p>Short example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">Entrez</span><span class="o">.</span><span class="n">espell</span><span class="p">(</span><span class="n">term</span><span class="o">=</span><span class="s2">&quot;biopythooon&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;Query&quot;</span><span class="p">])</span>
+<span class="go">biopythooon</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;CorrectedQuery&quot;</span><span class="p">])</span>
+<span class="go">biopython</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Handle to the results, by default in XML format.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>urllib.error.URLError</strong> – If there’s a network error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.ecitmatch">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">ecitmatch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">keywds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.ecitmatch" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve PMIDs for input citation strings, returned as a handle.</p>
+<p>ECitMatch retrieves PubMed IDs (PMIDs) that correspond to a set of input
+citation strings.</p>
+<p>See the online documentation for an explanation of the parameters:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ECitMatch">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ECitMatch</a></p>
+<p>Short example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">citation_1</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;journal_title&quot;</span><span class="p">:</span> <span class="s2">&quot;proc natl acad sci u s a&quot;</span><span class="p">,</span>
+<span class="gp">... </span>              <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="s2">&quot;1991&quot;</span><span class="p">,</span> <span class="s2">&quot;volume&quot;</span><span class="p">:</span> <span class="s2">&quot;88&quot;</span><span class="p">,</span> <span class="s2">&quot;first_page&quot;</span><span class="p">:</span> <span class="s2">&quot;3248&quot;</span><span class="p">,</span>
+<span class="gp">... </span>              <span class="s2">&quot;author_name&quot;</span><span class="p">:</span> <span class="s2">&quot;mann bj&quot;</span><span class="p">,</span> <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;citation_1&quot;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">ecitmatch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;pubmed&quot;</span><span class="p">,</span> <span class="n">bdata</span><span class="o">=</span><span class="p">[</span><span class="n">citation_1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">))</span>
+<span class="go">[&#39;proc natl acad sci u s a&#39;, &#39;1991&#39;, &#39;88&#39;, &#39;3248&#39;, &#39;mann bj&#39;, &#39;citation_1&#39;, &#39;2014248&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Handle to the results, by default in plain text.</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>urllib.error.URLError</strong> – If there’s a network error.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.read">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.read" title="Permalink to this definition"></a></dt>
+<dd><p>Parse an XML file from the NCBI Entrez Utilities into python objects.</p>
+<p>This function parses an XML file created by NCBI’s Entrez Utilities,
+returning a multilevel data structure of Python lists and dictionaries.
+Most XML files returned by NCBI’s Entrez Utilities can be parsed by
+this function, provided its DTD is available. Biopython includes the
+DTDs for most commonly used Entrez Utilities.</p>
+<p>The handle must be in binary mode. This allows the parser to detect the
+encoding from the XML file, and to use it to convert all text in the XML
+to the correct Unicode string. The functions in Bio.Entrez to access NCBI
+Entrez will automatically return XML data in binary mode. For files,
+please use mode “rb” when opening the file, as in</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Entrez/esearch1.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;QueryTranslation&#39;</span><span class="p">])</span>
+<span class="go">biopython[All Fields]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If validate is True (default), the parser will validate the XML file
+against the DTD, and raise an error if the XML file contains tags that
+are not represented in the DTD. If validate is False, the parser will
+simply skip such tags.</p>
+<p>If escape is True, all characters that are not valid HTML are replaced
+by HTML escape characters to guarantee that the returned strings are
+valid HTML fragments. For example, a less-than sign (&lt;) is replaced by
+&amp;lt;. If escape is False (default), the string is returned as is.</p>
+<p>If ignore_errors is False (default), any error messages in the XML file
+will raise a RuntimeError. If ignore_errors is True, error messages will
+be stored as ErrorElement items, without raising an exception.</p>
+<p>Whereas the data structure seems to consist of generic Python lists,
+dictionaries, strings, and so on, each of these is actually a class
+derived from the base type. This allows us to store the attributes
+(if any) of each element in a dictionary my_element.attributes, and
+the tag name in my_element.tag.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Entrez.parse">
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Parse an XML file from the NCBI Entrez Utilities into python objects.</p>
+<p>This function parses an XML file created by NCBI’s Entrez Utilities,
+returning a multilevel data structure of Python lists and dictionaries.
+This function is suitable for XML files that (in Python) can be represented
+as a list of individual records. Whereas ‘read’ reads the complete file
+and returns a single Python list, ‘parse’ is a generator function that
+returns the records one by one. This function is therefore particularly
+useful for parsing large files.</p>
+<p>Most XML files returned by NCBI’s Entrez Utilities can be parsed by
+this function, provided its DTD is available. Biopython includes the
+DTDs for most commonly used Entrez Utilities.</p>
+<p>The handle must be in binary mode. This allows the parser to detect the
+encoding from the XML file, and to use it to convert all text in the XML
+to the correct Unicode string. The functions in Bio.Entrez to access NCBI
+Entrez will automatically return XML data in binary mode. For files,
+please use mode “rb” when opening the file, as in</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Entrez/pubmed1.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;MedlineCitation&#39;</span><span class="p">][</span><span class="s1">&#39;Article&#39;</span><span class="p">][</span><span class="s1">&#39;Journal&#39;</span><span class="p">][</span><span class="s1">&#39;Title&#39;</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="go">Social justice (San Francisco, Calif.)</span>
+<span class="go">Biochimica et biophysica acta</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If validate is True (default), the parser will validate the XML file
+against the DTD, and raise an error if the XML file contains tags that
+are not represented in the DTD. If validate is False, the parser will
+simply skip such tags.</p>
+<p>If escape is True, all characters that are not valid HTML are replaced
+by HTML escape characters to guarantee that the returned strings are
+valid HTML fragments. For example, a less-than sign (&lt;) is replaced by
+&amp;lt;. If escape is False (default), the string is returned as is.</p>
+<p>If ignore_errors is False (default), any error messages in the XML file
+will raise a RuntimeError. If ignore_errors is True, error messages will
+be stored as ErrorElement items, without raising an exception.</p>
+<p>Whereas the data structure seems to consist of generic Python lists,
+dictionaries, strings, and so on, each of these is actually a class
+derived from the base type. This allows us to store the attributes
+(if any) of each element in a dictionary my_element.attributes, and
+the tag name in my_element.tag.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Bio.Emboss.PrimerSearch.html" class="btn btn-neutral float-left" title="Bio.Emboss.PrimerSearch module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.Entrez.Parser.html" class="btn btn-neutral float-right" title="Bio.Entrez.Parser module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2020, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.81
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.80/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

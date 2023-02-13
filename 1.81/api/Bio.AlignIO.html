@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio.AlignIO package &mdash; Biopython 1.81 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.AlignIO.ClustalIO module" href="Bio.AlignIO.ClustalIO.html" />
+    <link rel="prev" title="Bio.Align.tabular module" href="Bio.Align.tabular.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Bio.AlignIO package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-Bio.AlignIO">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Wise.html">Bio.Wise package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="Bio.html">Bio package</a></li>
+      <li class="breadcrumb-item active">Bio.AlignIO package</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/AlignIO/__init__.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="Bio.Align.tabular.html" class="btn btn-neutral float-left" title="Bio.Align.tabular module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.AlignIO.ClustalIO.html" class="btn btn-neutral float-right" title="Bio.AlignIO.ClustalIO module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bio-alignio-package">
+<h1>Bio.AlignIO package<a class="headerlink" href="#bio-alignio-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Bio.AlignIO.ClustalIO.html">Bio.AlignIO.ClustalIO module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.AlignIO.EmbossIO.html">Bio.AlignIO.EmbossIO module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.AlignIO.FastaIO.html">Bio.AlignIO.FastaIO module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.AlignIO.Interfaces.html">Bio.AlignIO.Interfaces module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.AlignIO.MafIO.html">Bio.AlignIO.MafIO module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.AlignIO.MauveIO.html">Bio.AlignIO.MauveIO module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.AlignIO.MsfIO.html">Bio.AlignIO.MsfIO module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.AlignIO.NexusIO.html">Bio.AlignIO.NexusIO module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.AlignIO.PhylipIO.html">Bio.AlignIO.PhylipIO module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Bio.AlignIO.PhylipIO.html#note">Note</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.AlignIO.StockholmIO.html">Bio.AlignIO.StockholmIO module</a></li>
+</ul>
+</div>
+</section>
+<section id="module-Bio.AlignIO">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Bio.AlignIO" title="Permalink to this headline"></a></h2>
+<p>Multiple sequence alignment input/output as alignment objects.</p>
+<p>The Bio.AlignIO interface is deliberately very similar to Bio.SeqIO, and in
+fact the two are connected internally.  Both modules use the same set of file
+format names (lower case strings).  From the user’s perspective, you can read
+in a PHYLIP file containing one or more alignments using Bio.AlignIO, or you
+can read in the sequences within these alignments using Bio.SeqIO.</p>
+<p>Bio.AlignIO is also documented at <a class="reference external" href="http://biopython.org/wiki/AlignIO">http://biopython.org/wiki/AlignIO</a> and by
+a whole chapter in our tutorial:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="http://biopython.org/DIST/docs/tutorial/Tutorial.html">HTML Tutorial</a></p></li>
+<li><p><a class="reference external" href="http://biopython.org/DIST/docs/tutorial/Tutorial.pdf">PDF Tutorial</a></p></li>
+</ul>
+<section id="input">
+<h3>Input<a class="headerlink" href="#input" title="Permalink to this headline"></a></h3>
+<p>For the typical special case when your file or handle contains one and only
+one alignment, use the function Bio.AlignIO.read().  This takes an input file
+handle (or in recent versions of Biopython a filename as a string), format
+string and optional number of sequences per alignment.  It will return a single
+MultipleSeqAlignment object (or raise an exception if there isn’t just one
+alignment):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Phylip/interlaced.phy&quot;</span><span class="p">,</span> <span class="s2">&quot;phylip&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">Alignment with 3 rows and 384 columns</span>
+<span class="go">-----MKVILLFVLAVFTVFVSS---------------RGIPPE...I-- CYS1_DICDI</span>
+<span class="go">MAHARVLLLALAVLATAAVAVASSSSFADSNPIRPVTDRAASTL...VAA ALEU_HORVU</span>
+<span class="go">------MWATLPLLCAGAWLLGV--------PVCGAAELSVNSL...PLV CATH_HUMAN</span>
+</pre></div>
+</div>
+<p>For the general case, when the handle could contain any number of alignments,
+use the function Bio.AlignIO.parse(…) which takes the same arguments, but
+returns an iterator giving MultipleSeqAlignment objects (typically used in a
+for loop). If you want random access to the alignments by number, turn this
+into a list:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">AlignIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Emboss/needle.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;emboss&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">Alignment with 2 rows and 120 columns</span>
+<span class="go">-KILIVDDQYGIRILLNEVFNKEGYQTFQAANGLQALDIVTKER...--- ref_rec</span>
+<span class="go">LHIVVVDDDPGTCVYIESVFAELGHTCKSFVRPEAAEEYILTHP...HKE gi|94967506|receiver</span>
+</pre></div>
+</div>
+<p>Most alignment file formats can be concatenated so as to hold as many
+different multiple sequence alignments as possible.  One common example
+is the output of the tool seqboot in the PHLYIP suite.  Sometimes there
+can be a file header and footer, as seen in the EMBOSS alignment output.</p>
+</section>
+<section id="output">
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this headline"></a></h3>
+<p>Use the function Bio.AlignIO.write(…), which takes a complete set of
+Alignment objects (either as a list, or an iterator), an output file handle
+(or filename in recent versions of Biopython) and of course the file format:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="n">alignments</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">alignments</span><span class="p">,</span> <span class="s2">&quot;example.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If using a handle make sure to close it to flush the data to the disk:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="n">alignments</span> <span class="o">=</span> <span class="o">...</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">alignments</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In general, you are expected to call this function once (with all your
+alignments) and then close the file handle.  However, for file formats
+like PHYLIP where multiple alignments are stored sequentially (with no file
+header and footer), then multiple calls to the write function should work as
+expected when using handles.</p>
+<p>If you are using a filename, the repeated calls to the write functions will
+overwrite the existing file each time.</p>
+</section>
+<section id="conversion">
+<h3>Conversion<a class="headerlink" href="#conversion" title="Permalink to this headline"></a></h3>
+<p>The Bio.AlignIO.convert(…) function allows an easy interface for simple
+alignment file format conversions. Additionally, it may use file format
+specific optimisations so this should be the fastest way too.</p>
+<p>In general however, you can combine the Bio.AlignIO.parse(…) function with
+the Bio.AlignIO.write(…) function for sequence file conversion. Using
+generator expressions provides a memory efficient way to perform filtering or
+other extra operations as part of the process.</p>
+</section>
+<section id="file-formats">
+<h3>File Formats<a class="headerlink" href="#file-formats" title="Permalink to this headline"></a></h3>
+<p>When specifying the file format, use lowercase strings.  The same format
+names are also used in Bio.SeqIO and include the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>clustal -   Output from Clustal W or X.</p></li>
+<li><p>emboss    - EMBOSS tools’ “pairs” and “simple” alignment formats.</p></li>
+<li><p>fasta     - The generic sequence file format where each record starts with
+an identifier line starting with a “&gt;” character, followed by
+lines of sequence.</p></li>
+<li><p>fasta-m10 - For the pairwise alignments output by Bill Pearson’s FASTA
+tools when used with the -m 10 command line option for machine
+readable output.</p></li>
+<li><p>ig        - The IntelliGenetics file format, apparently the same as the
+MASE alignment format.</p></li>
+<li><p>msf       - The GCG MSF alignment format, originally from PileUp tool.</p></li>
+<li><p>nexus     - Output from NEXUS, see also the module Bio.Nexus which can also
+read any phylogenetic trees in these files.</p></li>
+<li><p>phylip    - Interlaced PHYLIP, as used by the PHYLIP tools.</p></li>
+<li><p>phylip-sequential - Sequential PHYLIP.</p></li>
+<li><p>phylip-relaxed - PHYLIP like format allowing longer names.</p></li>
+<li><p>stockholm - A richly annotated alignment file format used by PFAM.</p></li>
+<li><p>mauve - Output from progressiveMauve/Mauve</p></li>
+</ul>
+</div></blockquote>
+<p>Note that while Bio.AlignIO can read all the above file formats, it cannot
+write to all of them.</p>
+<p>You can also use any file format supported by Bio.SeqIO, such as “fasta” or
+“ig” (which are listed above), PROVIDED the sequences in your file are all the
+same length.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.AlignIO.write">
+<span class="sig-prename descclassname"><span class="pre">Bio.AlignIO.</span></span><span class="sig-name descname"><span class="pre">write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignments</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.write" title="Permalink to this definition"></a></dt>
+<dd><p>Write complete set of alignments to a file.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>alignments - A list (or iterator) of MultipleSeqAlignment objects,
+or a single alignment object.</p></li>
+<li><p>handle    - File handle object to write to, or filename as string
+(note older versions of Biopython only took a handle).</p></li>
+<li><p>format    - lower case string describing the file format to write.</p></li>
+</ul>
+</dd>
+</dl>
+<p>You should close the handle after calling this function.</p>
+<p>Returns the number of alignments written (as an integer).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.AlignIO.parse">
+<span class="sig-prename descclassname"><span class="pre">Bio.AlignIO.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Iterate over an alignment file as MultipleSeqAlignment objects.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle    - handle to the file, or the filename as a string
+(note older versions of Biopython only took a handle).</p></li>
+<li><p>format    - string describing the file format.</p></li>
+<li><p>seq_count - Optional integer, number of sequences expected in each
+alignment.  Recommended for fasta format files.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If you have the file name in a string ‘filename’, use:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Emboss/needle.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;emboss&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alignment of length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">alignment</span><span class="o">.</span><span class="n">get_alignment_length</span><span class="p">())</span>
+<span class="go">Alignment of length 124</span>
+<span class="go">Alignment of length 119</span>
+<span class="go">Alignment of length 120</span>
+<span class="go">Alignment of length 118</span>
+<span class="go">Alignment of length 125</span>
+</pre></div>
+</div>
+<p>If you have a string ‘data’ containing the file contents, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="n">my_iterator</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">StringIO</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">format</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Use the Bio.AlignIO.read() function when you expect a single record only.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.AlignIO.read">
+<span class="sig-prename descclassname"><span class="pre">Bio.AlignIO.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seq_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.read" title="Permalink to this definition"></a></dt>
+<dd><p>Turn an alignment file into a single MultipleSeqAlignment object.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>handle    - handle to the file, or the filename as a string
+(note older versions of Biopython only took a handle).</p></li>
+<li><p>format    - string describing the file format.</p></li>
+<li><p>seq_count - Optional integer, number of sequences expected in each
+alignment.  Recommended for fasta format files.</p></li>
+</ul>
+</dd>
+</dl>
+<p>If the handle contains no alignments, or more than one alignment,
+an exception is raised.  For example, using a PFAM/Stockholm file
+containing one alignment:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Clustalw/protein.aln&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;clustal&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alignment of length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">alignment</span><span class="o">.</span><span class="n">get_alignment_length</span><span class="p">())</span>
+<span class="go">Alignment of length 411</span>
+</pre></div>
+</div>
+<p>If however you want the first alignment from a file containing
+multiple alignments this function would raise an exception.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Emboss/needle.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;emboss&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">    </span><span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">More than one record found in handle</span>
+</pre></div>
+</div>
+<p>Instead use:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;Emboss/needle.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span> <span class="o">=</span> <span class="s2">&quot;emboss&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">AlignIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">format</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First alignment has length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">alignment</span><span class="o">.</span><span class="n">get_alignment_length</span><span class="p">())</span>
+<span class="go">First alignment has length 124</span>
+</pre></div>
+</div>
+<p>You must use the Bio.AlignIO.parse() function if you want to read multiple
+records from the handle.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.AlignIO.convert">
+<span class="sig-prename descclassname"><span class="pre">Bio.AlignIO.</span></span><span class="sig-name descname"><span class="pre">convert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">in_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_format</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">molecule_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.AlignIO.convert" title="Permalink to this definition"></a></dt>
+<dd><p>Convert between two alignment files, returns number of alignments.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>in_file - an input handle or filename</p></li>
+<li><p>in_format - input file format, lower case string</p></li>
+<li><p>output - an output handle or filename</p></li>
+<li><p>out_file - output file format, lower case string</p></li>
+<li><p>molecule_type - optional molecule type to apply, string containing
+“DNA”, “RNA” or “protein”.</p></li>
+</ul>
+</dd>
+</dl>
+<p><strong>NOTE</strong> - If you provide an output filename, it will be opened which will
+overwrite any existing file without warning. This may happen if even the
+conversion is aborted (e.g. an invalid out_format name is given).</p>
+<p>Some output formats require the molecule type be specified where this
+cannot be determined by the parser. For example, converting to FASTA,
+Clustal, or PHYLIP format to NEXUS:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AlignIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;Phylip/horses.phy&quot;</span><span class="p">,</span> <span class="s2">&quot;phylip&quot;</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;nexus&quot;</span><span class="p">,</span> <span class="s2">&quot;DNA&quot;</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>
+<span class="go">#NEXUS</span>
+<span class="go">begin data;</span>
+<span class="go">dimensions ntax=10 nchar=40;</span>
+<span class="go">format datatype=dna missing=? gap=-;</span>
+<span class="go">matrix</span>
+<span class="go">Mesohippus   AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Hypohippus   AAACCCCCCCAAAAAAAAACAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Archaeohip   CAAAAAAAAAAAAAAAACACAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Parahippus   CAAACAACAACAAAAAAAACAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Merychippu   CCAACCACCACCCCACACCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">&#39;M. secundu&#39; CCAACCACCACCCACACCCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Nannipus     CCAACCACAACCCCACACCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Neohippari   CCAACCCCCCCCCCACACCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Calippus     CCAACCACAACCCACACCCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">Pliohippus   CCCACCCCCCCCCACACCCCAAAAAAAAAAAAAAAAAAAA</span>
+<span class="go">;</span>
+<span class="go">end;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Bio.Align.tabular.html" class="btn btn-neutral float-left" title="Bio.Align.tabular module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.AlignIO.ClustalIO.html" class="btn btn-neutral float-right" title="Bio.AlignIO.ClustalIO module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2020, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.81
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.80/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
