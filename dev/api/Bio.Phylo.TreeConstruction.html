@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bio.Phylo.TreeConstruction module &mdash; Biopython 1.81.dev0 documentation</title>
+  <title>Bio.Phylo.TreeConstruction module &mdash; Biopython 1.82.dev0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
@@ -175,9 +175,9 @@ the ‘write’ method, such as StringIO or sys.stdout.</p>
 <dt class="sig sig-object py" id="Bio.Phylo.TreeConstruction.DistanceCalculator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Phylo.TreeConstruction.</span></span><span class="sig-name descname"><span class="pre">DistanceCalculator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'identity'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_letters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.TreeConstruction.DistanceCalculator" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class to calculate the distance matrix from a DNA or Protein.</p>
-<p>Multiple Sequence Alignment(MSA) and the given name of the
-substitution model.</p>
+<p>Calculates the distance matrix from a DNA or protein sequence alignment.</p>
+<p>This class calculates the distance matrix from a multiple sequence alignment
+of DNA or protein sequences, and the given name of the substitution model.</p>
 <p>Currently only scoring matrices are used.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -192,49 +192,76 @@ sequences.</p>
 </dl>
 <p class="rubric">Examples</p>
 <p>Loading a small PHYLIP alignment from which to compute distances:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.Phylo.TreeConstruction</span> <span class="kn">import</span> <span class="n">DistanceCalculator</span>
-<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
-<span class="n">aln</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/msa.phy&#39;</span><span class="p">),</span> <span class="s1">&#39;phylip&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Alignment</span> <span class="k">with</span> <span class="mi">5</span> <span class="n">rows</span> <span class="ow">and</span> <span class="mi">13</span> <span class="n">columns</span>
-<span class="n">AACGTGGCCACAT</span> <span class="n">Alpha</span>
-<span class="n">AAGGTCGCCACAC</span> <span class="n">Beta</span>
-<span class="n">CAGTTCGCCACAA</span> <span class="n">Gamma</span>
-<span class="n">GAGATTTCCGCCT</span> <span class="n">Delta</span>
-<span class="n">GAGATCTCCGCCC</span> <span class="n">Epsilon</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Phylo.TreeConstruction</span> <span class="kn">import</span> <span class="n">DistanceCalculator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/msa.phy&#39;</span><span class="p">),</span> <span class="s1">&#39;phylip&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>  
+<span class="go">Alignment with 5 rows and 13 columns</span>
+<span class="go">AACGTGGCCACAT Alpha</span>
+<span class="go">AAGGTCGCCACAC Beta</span>
+<span class="go">CAGTTCGCCACAA Gamma</span>
+<span class="go">GAGATTTCCGCCT Delta</span>
+<span class="go">GAGATCTCCGCCC Epsilon</span>
 </pre></div>
 </div>
 <p>DNA calculator with ‘identity’ model:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">calculator</span> <span class="o">=</span> <span class="n">DistanceCalculator</span><span class="p">(</span><span class="s1">&#39;identity&#39;</span><span class="p">)</span>
-<span class="n">dm</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Alpha</span>   <span class="mi">0</span>
-<span class="n">Beta</span>    <span class="mf">0.23076923076923073</span>     <span class="mi">0</span>
-<span class="n">Gamma</span>   <span class="mf">0.3846153846153846</span>      <span class="mf">0.23076923076923073</span>     <span class="mi">0</span>
-<span class="n">Delta</span>   <span class="mf">0.5384615384615384</span>      <span class="mf">0.5384615384615384</span>      <span class="mf">0.5384615384615384</span>      <span class="mi">0</span>
-<span class="n">Epsilon</span> <span class="mf">0.6153846153846154</span>      <span class="mf">0.3846153846153846</span>      <span class="mf">0.46153846153846156</span>     <span class="mf">0.15384615384615385</span>     <span class="mi">0</span>
-    <span class="n">Alpha</span>       <span class="n">Beta</span>    <span class="n">Gamma</span>   <span class="n">Delta</span>   <span class="n">Epsilon</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calculator</span> <span class="o">=</span> <span class="n">DistanceCalculator</span><span class="p">(</span><span class="s1">&#39;identity&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>  
+<span class="go">  Alpha   0.000000</span>
+<span class="go">  Beta    0.230769    0.000000</span>
+<span class="go">  Gamma   0.384615    0.230769    0.000000</span>
+<span class="go">  Delta   0.538462    0.538462    0.538462    0.000000</span>
+<span class="go">  Epsilon 0.615385    0.384615    0.461538    0.153846    0.000000</span>
+<span class="go">      Alpha   Beta    Gamma   Delta   Epsilon</span>
 </pre></div>
 </div>
 <p>Protein calculator with ‘blosum62’ model:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">calculator</span> <span class="o">=</span> <span class="n">DistanceCalculator</span><span class="p">(</span><span class="s1">&#39;blosum62&#39;</span><span class="p">)</span>
-<span class="n">dm</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calculator</span> <span class="o">=</span> <span class="n">DistanceCalculator</span><span class="p">(</span><span class="s1">&#39;blosum62&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>  
+<span class="go">Alpha   0.000000</span>
+<span class="go">Beta    0.369048    0.000000</span>
+<span class="go">Gamma   0.493976    0.250000    0.000000</span>
+<span class="go">Delta   0.585366    0.547619    0.566265    0.000000</span>
+<span class="go">Epsilon 0.700000    0.355556    0.488889    0.222222    0.000000</span>
+<span class="go">    Alpha   Beta    Gamma   Delta   Epsilon</span>
 </pre></div>
 </div>
-<p>Output:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Alpha</span>   <span class="mi">0</span>
-<span class="n">Beta</span>    <span class="mf">0.36904761904761907</span>     <span class="mi">0</span>
-<span class="n">Gamma</span>   <span class="mf">0.49397590361445787</span>     <span class="mf">0.25</span>    <span class="mi">0</span>
-<span class="n">Delta</span>   <span class="mf">0.5853658536585367</span>      <span class="mf">0.5476190476190477</span>      <span class="mf">0.5662650602409638</span>      <span class="mi">0</span>
-<span class="n">Epsilon</span> <span class="mf">0.7</span>     <span class="mf">0.3555555555555555</span>      <span class="mf">0.48888888888888893</span>     <span class="mf">0.2222222222222222</span>      <span class="mi">0</span>
-    <span class="n">Alpha</span>       <span class="n">Beta</span>    <span class="n">Gamma</span>   <span class="n">Delta</span>   <span class="n">Epsilon</span>
+<p>Same calculation, using the new Alignment object:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Phylo.TreeConstruction</span> <span class="kn">import</span> <span class="n">DistanceCalculator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/msa.phy&#39;</span><span class="p">,</span> <span class="s1">&#39;phylip&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>  
+<span class="go">Alpha             0 AACGTGGCCACAT 13</span>
+<span class="go">Beta              0 AAGGTCGCCACAC 13</span>
+<span class="go">Gamma             0 CAGTTCGCCACAA 13</span>
+<span class="go">Delta             0 GAGATTTCCGCCT 13</span>
+<span class="go">Epsilon           0 GAGATCTCCGCCC 13</span>
+</pre></div>
+</div>
+<p>DNA calculator with ‘identity’ model:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calculator</span> <span class="o">=</span> <span class="n">DistanceCalculator</span><span class="p">(</span><span class="s1">&#39;identity&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>  
+<span class="go">Alpha   0.000000</span>
+<span class="go">Beta    0.230769    0.000000</span>
+<span class="go">Gamma   0.384615    0.230769    0.000000</span>
+<span class="go">Delta   0.538462    0.538462    0.538462    0.000000</span>
+<span class="go">Epsilon 0.615385    0.384615    0.461538    0.153846    0.000000</span>
+<span class="go">    Alpha   Beta    Gamma   Delta   Epsilon</span>
+</pre></div>
+</div>
+<p>Protein calculator with ‘blosum62’ model:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calculator</span> <span class="o">=</span> <span class="n">DistanceCalculator</span><span class="p">(</span><span class="s1">&#39;blosum62&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>  
+<span class="go">Alpha   0.000000</span>
+<span class="go">Beta    0.369048    0.000000</span>
+<span class="go">Gamma   0.493976    0.250000    0.000000</span>
+<span class="go">Delta   0.585366    0.547619    0.566265    0.000000</span>
+<span class="go">Epsilon 0.700000    0.355556    0.488889    0.222222    0.000000</span>
+<span class="go">    Alpha   Beta    Gamma   Delta   Epsilon</span>
 </pre></div>
 </div>
 <dl class="py attribute">
@@ -261,11 +288,11 @@ sequences.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Phylo.TreeConstruction.DistanceCalculator.get_distance">
 <span class="sig-name descname"><span class="pre">get_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msa</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.TreeConstruction.DistanceCalculator.get_distance" title="Permalink to this definition"></a></dt>
-<dd><p>Return a DistanceMatrix for MSA object.</p>
+<dd><p>Return a DistanceMatrix for an Alignment or MultipleSeqAlignment object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt>msa<span class="classifier">MultipleSeqAlignment</span></dt><dd><p>DNA or Protein multiple sequence alignment.</p>
+<dt>msa<span class="classifier">Alignment or MultipleSeqAlignment object representing a</span></dt><dd><p>DNA or protein multiple sequence alignment.</p>
 </dd>
 </dl>
 </dd>
@@ -282,7 +309,7 @@ sequences.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Phylo.TreeConstruction.TreeConstructor.build_tree">
 <span class="sig-name descname"><span class="pre">build_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msa</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.TreeConstruction.TreeConstructor.build_tree" title="Permalink to this definition"></a></dt>
-<dd><p>Caller to built the tree from a MultipleSeqAlignment object.</p>
+<dd><p>Caller to build the tree from an Alignment or MultipleSeqAlignment object.</p>
 <p>This should be implemented in subclass.</p>
 </dd></dl>
 
@@ -307,45 +334,75 @@ It must be provided if <code class="docutils literal notranslate"><span class="p
 <p class="rubric">Examples</p>
 <p>Loading a small PHYLIP alignment from which to compute distances, and then
 build a upgma Tree:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.Phylo.TreeConstruction</span> <span class="kn">import</span> <span class="n">DistanceTreeConstructor</span>
-<span class="kn">from</span> <span class="nn">Bio.Phylo.TreeConstruction</span> <span class="kn">import</span> <span class="n">DistanceCalculator</span>
-<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
-<span class="n">aln</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/msa.phy&#39;</span><span class="p">),</span> <span class="s1">&#39;phylip&#39;</span><span class="p">)</span>
-<span class="n">constructor</span> <span class="o">=</span> <span class="n">DistanceTreeConstructor</span><span class="p">()</span>
-<span class="n">calculator</span> <span class="o">=</span> <span class="n">DistanceCalculator</span><span class="p">(</span><span class="s1">&#39;identity&#39;</span><span class="p">)</span>
-<span class="n">dm</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
-<span class="n">upgmatree</span> <span class="o">=</span> <span class="n">constructor</span><span class="o">.</span><span class="n">upgma</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">upgmatree</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Tree</span><span class="p">(</span><span class="n">rooted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner4&#39;</span><span class="p">)</span>
-        <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.18749999999999994</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner1&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.07692307692307693</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Epsilon&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.07692307692307693</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Delta&#39;</span><span class="p">)</span>
-        <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.11057692307692304</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner3&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.038461538461538464</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner2&#39;</span><span class="p">)</span>
-                <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.11538461538461536</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Gamma&#39;</span><span class="p">)</span>
-                <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.11538461538461536</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Beta&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.15384615384615383</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Alpha&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Phylo.TreeConstruction</span> <span class="kn">import</span> <span class="n">DistanceTreeConstructor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Phylo.TreeConstruction</span> <span class="kn">import</span> <span class="n">DistanceCalculator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/msa.phy&#39;</span><span class="p">),</span> <span class="s1">&#39;phylip&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">constructor</span> <span class="o">=</span> <span class="n">DistanceTreeConstructor</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calculator</span> <span class="o">=</span> <span class="n">DistanceCalculator</span><span class="p">(</span><span class="s1">&#39;identity&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upgmatree</span> <span class="o">=</span> <span class="n">constructor</span><span class="o">.</span><span class="n">upgma</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">upgmatree</span><span class="p">)</span>
+<span class="go">Tree(rooted=True)</span>
+<span class="go">    Clade(branch_length=0, name=&#39;Inner4&#39;)</span>
+<span class="go">        Clade(branch_length=0.18749999999999994, name=&#39;Inner1&#39;)</span>
+<span class="go">            Clade(branch_length=0.07692307692307693, name=&#39;Epsilon&#39;)</span>
+<span class="go">            Clade(branch_length=0.07692307692307693, name=&#39;Delta&#39;)</span>
+<span class="go">        Clade(branch_length=0.11057692307692304, name=&#39;Inner3&#39;)</span>
+<span class="go">            Clade(branch_length=0.038461538461538464, name=&#39;Inner2&#39;)</span>
+<span class="go">                Clade(branch_length=0.11538461538461536, name=&#39;Gamma&#39;)</span>
+<span class="go">                Clade(branch_length=0.11538461538461536, name=&#39;Beta&#39;)</span>
+<span class="go">            Clade(branch_length=0.15384615384615383, name=&#39;Alpha&#39;)</span>
 </pre></div>
 </div>
 <p>Build a NJ Tree:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">njtree</span> <span class="o">=</span> <span class="n">constructor</span><span class="o">.</span><span class="n">nj</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">njtree</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">njtree</span> <span class="o">=</span> <span class="n">constructor</span><span class="o">.</span><span class="n">nj</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">njtree</span><span class="p">)</span>
+<span class="go">Tree(rooted=False)</span>
+<span class="go">    Clade(branch_length=0, name=&#39;Inner3&#39;)</span>
+<span class="go">        Clade(branch_length=0.18269230769230765, name=&#39;Alpha&#39;)</span>
+<span class="go">        Clade(branch_length=0.04807692307692307, name=&#39;Beta&#39;)</span>
+<span class="go">        Clade(branch_length=0.04807692307692307, name=&#39;Inner2&#39;)</span>
+<span class="go">            Clade(branch_length=0.27884615384615385, name=&#39;Inner1&#39;)</span>
+<span class="go">                Clade(branch_length=0.051282051282051266, name=&#39;Epsilon&#39;)</span>
+<span class="go">                Clade(branch_length=0.10256410256410259, name=&#39;Delta&#39;)</span>
+<span class="go">            Clade(branch_length=0.14423076923076922, name=&#39;Gamma&#39;)</span>
 </pre></div>
 </div>
-<p>Output:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Tree</span><span class="p">(</span><span class="n">rooted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner3&#39;</span><span class="p">)</span>
-        <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.18269230769230765</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Alpha&#39;</span><span class="p">)</span>
-        <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.04807692307692307</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Beta&#39;</span><span class="p">)</span>
-        <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.04807692307692307</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner2&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.27884615384615385</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner1&#39;</span><span class="p">)</span>
-                <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.051282051282051266</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Epsilon&#39;</span><span class="p">)</span>
-                <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.10256410256410259</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Delta&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.14423076923076922</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Gamma&#39;</span><span class="p">)</span>
+<p>Same example, using the new Alignment class:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Phylo.TreeConstruction</span> <span class="kn">import</span> <span class="n">DistanceTreeConstructor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Phylo.TreeConstruction</span> <span class="kn">import</span> <span class="n">DistanceCalculator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/msa.phy&#39;</span><span class="p">),</span> <span class="s1">&#39;phylip&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">constructor</span> <span class="o">=</span> <span class="n">DistanceTreeConstructor</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">calculator</span> <span class="o">=</span> <span class="n">DistanceCalculator</span><span class="p">(</span><span class="s1">&#39;identity&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span> <span class="o">=</span> <span class="n">calculator</span><span class="o">.</span><span class="n">get_distance</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">upgmatree</span> <span class="o">=</span> <span class="n">constructor</span><span class="o">.</span><span class="n">upgma</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">upgmatree</span><span class="p">)</span>
+<span class="go">Tree(rooted=True)</span>
+<span class="go">    Clade(branch_length=0, name=&#39;Inner4&#39;)</span>
+<span class="go">        Clade(branch_length=0.18749999999999994, name=&#39;Inner1&#39;)</span>
+<span class="go">            Clade(branch_length=0.07692307692307693, name=&#39;Epsilon&#39;)</span>
+<span class="go">            Clade(branch_length=0.07692307692307693, name=&#39;Delta&#39;)</span>
+<span class="go">        Clade(branch_length=0.11057692307692304, name=&#39;Inner3&#39;)</span>
+<span class="go">            Clade(branch_length=0.038461538461538464, name=&#39;Inner2&#39;)</span>
+<span class="go">                Clade(branch_length=0.11538461538461536, name=&#39;Gamma&#39;)</span>
+<span class="go">                Clade(branch_length=0.11538461538461536, name=&#39;Beta&#39;)</span>
+<span class="go">            Clade(branch_length=0.15384615384615383, name=&#39;Alpha&#39;)</span>
+</pre></div>
+</div>
+<p>Build a NJ Tree:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">njtree</span> <span class="o">=</span> <span class="n">constructor</span><span class="o">.</span><span class="n">nj</span><span class="p">(</span><span class="n">dm</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">njtree</span><span class="p">)</span>
+<span class="go">Tree(rooted=False)</span>
+<span class="go">    Clade(branch_length=0, name=&#39;Inner3&#39;)</span>
+<span class="go">        Clade(branch_length=0.18269230769230765, name=&#39;Alpha&#39;)</span>
+<span class="go">        Clade(branch_length=0.04807692307692307, name=&#39;Beta&#39;)</span>
+<span class="go">        Clade(branch_length=0.04807692307692307, name=&#39;Inner2&#39;)</span>
+<span class="go">            Clade(branch_length=0.27884615384615385, name=&#39;Inner1&#39;)</span>
+<span class="go">                Clade(branch_length=0.051282051282051266, name=&#39;Epsilon&#39;)</span>
+<span class="go">                Clade(branch_length=0.10256410256410259, name=&#39;Delta&#39;)</span>
+<span class="go">            Clade(branch_length=0.14423076923076922, name=&#39;Gamma&#39;)</span>
 </pre></div>
 </div>
 <dl class="py attribute">
@@ -454,7 +511,7 @@ different trees during NNI algorithm.</p>
 <dd class="field-odd"><dl class="simple">
 <dt>starting_tree<span class="classifier">Tree</span></dt><dd><p>starting tree of NNI method.</p>
 </dd>
-<dt>alignment<span class="classifier">MultipleSeqAlignment</span></dt><dd><p>multiple sequence alignment used to calculate parsimony
+<dt>alignment<span class="classifier">Alignment or MultipleSeqAlignment object</span></dt><dd><p>multiple sequence alignment used to calculate parsimony
 score of different NNI trees.</p>
 </dd>
 </dl>
@@ -513,56 +570,90 @@ or the Sankoff algorithm (with a matrix).</p>
 </dl>
 <p class="rubric">Examples</p>
 <p>We will load an alignment, and then load various trees which have already been computed from it:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span><span class="p">,</span> <span class="n">Phylo</span>
-<span class="n">aln</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/msa.phy&#39;</span><span class="p">),</span> <span class="s1">&#39;phylip&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Alignment</span> <span class="k">with</span> <span class="mi">5</span> <span class="n">rows</span> <span class="ow">and</span> <span class="mi">13</span> <span class="n">columns</span>
-<span class="n">AACGTGGCCACAT</span> <span class="n">Alpha</span>
-<span class="n">AAGGTCGCCACAC</span> <span class="n">Beta</span>
-<span class="n">CAGTTCGCCACAA</span> <span class="n">Gamma</span>
-<span class="n">GAGATTTCCGCCT</span> <span class="n">Delta</span>
-<span class="n">GAGATCTCCGCCC</span> <span class="n">Epsilon</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span><span class="p">,</span> <span class="n">Phylo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/msa.phy&#39;</span><span class="p">),</span> <span class="s1">&#39;phylip&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="go">Alignment with 5 rows and 13 columns</span>
+<span class="go">AACGTGGCCACAT Alpha</span>
+<span class="go">AAGGTCGCCACAC Beta</span>
+<span class="go">CAGTTCGCCACAA Gamma</span>
+<span class="go">GAGATTTCCGCCT Delta</span>
+<span class="go">GAGATCTCCGCCC Epsilon</span>
 </pre></div>
 </div>
 <p>Load a starting tree:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">starting_tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/nj.tre&#39;</span><span class="p">,</span> <span class="s1">&#39;newick&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">starting_tree</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Output:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Tree</span><span class="p">(</span><span class="n">rooted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-    <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner3&#39;</span><span class="p">)</span>
-        <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.01421</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner2&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.23927</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner1&#39;</span><span class="p">)</span>
-                <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.08531</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Epsilon&#39;</span><span class="p">)</span>
-                <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.13691</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Delta&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.2923</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Alpha&#39;</span><span class="p">)</span>
-        <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.07477</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Beta&#39;</span><span class="p">)</span>
-        <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.17523</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Gamma&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">starting_tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/nj.tre&#39;</span><span class="p">,</span> <span class="s1">&#39;newick&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">starting_tree</span><span class="p">)</span>
+<span class="go">Tree(rooted=False, weight=1.0)</span>
+<span class="go">    Clade(branch_length=0.0, name=&#39;Inner3&#39;)</span>
+<span class="go">        Clade(branch_length=0.01421, name=&#39;Inner2&#39;)</span>
+<span class="go">            Clade(branch_length=0.23927, name=&#39;Inner1&#39;)</span>
+<span class="go">                Clade(branch_length=0.08531, name=&#39;Epsilon&#39;)</span>
+<span class="go">                Clade(branch_length=0.13691, name=&#39;Delta&#39;)</span>
+<span class="go">            Clade(branch_length=0.2923, name=&#39;Alpha&#39;)</span>
+<span class="go">        Clade(branch_length=0.07477, name=&#39;Beta&#39;)</span>
+<span class="go">        Clade(branch_length=0.17523, name=&#39;Gamma&#39;)</span>
 </pre></div>
 </div>
 <p>Build the Parsimony tree from the starting tree:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scorer</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">TreeConstruction</span><span class="o">.</span><span class="n">ParsimonyScorer</span><span class="p">()</span>
-<span class="n">searcher</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">TreeConstruction</span><span class="o">.</span><span class="n">NNITreeSearcher</span><span class="p">(</span><span class="n">scorer</span><span class="p">)</span>
-<span class="n">constructor</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">TreeConstruction</span><span class="o">.</span><span class="n">ParsimonyTreeConstructor</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">starting_tree</span><span class="p">)</span>
-<span class="n">pars_tree</span> <span class="o">=</span> <span class="n">constructor</span><span class="o">.</span><span class="n">build_tree</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">pars_tree</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scorer</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">TreeConstruction</span><span class="o">.</span><span class="n">ParsimonyScorer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">searcher</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">TreeConstruction</span><span class="o">.</span><span class="n">NNITreeSearcher</span><span class="p">(</span><span class="n">scorer</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">constructor</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">TreeConstruction</span><span class="o">.</span><span class="n">ParsimonyTreeConstructor</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">starting_tree</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pars_tree</span> <span class="o">=</span> <span class="n">constructor</span><span class="o">.</span><span class="n">build_tree</span><span class="p">(</span><span class="n">aln</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pars_tree</span><span class="p">)</span>
+<span class="go">Tree(rooted=True, weight=1.0)</span>
+<span class="go">    Clade(branch_length=0.0)</span>
+<span class="go">        Clade(branch_length=0.19732999999999998, name=&#39;Inner1&#39;)</span>
+<span class="go">            Clade(branch_length=0.13691, name=&#39;Delta&#39;)</span>
+<span class="go">            Clade(branch_length=0.08531, name=&#39;Epsilon&#39;)</span>
+<span class="go">        Clade(branch_length=0.04194000000000003, name=&#39;Inner2&#39;)</span>
+<span class="go">            Clade(branch_length=0.01421, name=&#39;Inner3&#39;)</span>
+<span class="go">                Clade(branch_length=0.17523, name=&#39;Gamma&#39;)</span>
+<span class="go">                Clade(branch_length=0.07477, name=&#39;Beta&#39;)</span>
+<span class="go">            Clade(branch_length=0.2923, name=&#39;Alpha&#39;)</span>
 </pre></div>
 </div>
-<p>Output:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Tree</span><span class="p">(</span><span class="n">rooted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-    <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
-        <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.19732999999999998</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner1&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.13691</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Delta&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.08531</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Epsilon&#39;</span><span class="p">)</span>
-        <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.04194000000000003</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner2&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.01421</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Inner3&#39;</span><span class="p">)</span>
-                <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.17523</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Gamma&#39;</span><span class="p">)</span>
-                <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.07477</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Beta&#39;</span><span class="p">)</span>
-            <span class="n">Clade</span><span class="p">(</span><span class="n">branch_length</span><span class="o">=</span><span class="mf">0.2923</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Alpha&#39;</span><span class="p">)</span>
+<p>Same example, using the new Alignment class:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span><span class="p">,</span> <span class="n">Phylo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/msa.phy&#39;</span><span class="p">),</span> <span class="s1">&#39;phylip&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">Alpha             0 AACGTGGCCACAT 13</span>
+<span class="go">Beta              0 AAGGTCGCCACAC 13</span>
+<span class="go">Gamma             0 CAGTTCGCCACAA 13</span>
+<span class="go">Delta             0 GAGATTTCCGCCT 13</span>
+<span class="go">Epsilon           0 GAGATCTCCGCCC 13</span>
+</pre></div>
+</div>
+<p>Load a starting tree:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">starting_tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;TreeConstruction/nj.tre&#39;</span><span class="p">,</span> <span class="s1">&#39;newick&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">starting_tree</span><span class="p">)</span>
+<span class="go">Tree(rooted=False, weight=1.0)</span>
+<span class="go">    Clade(branch_length=0.0, name=&#39;Inner3&#39;)</span>
+<span class="go">        Clade(branch_length=0.01421, name=&#39;Inner2&#39;)</span>
+<span class="go">            Clade(branch_length=0.23927, name=&#39;Inner1&#39;)</span>
+<span class="go">                Clade(branch_length=0.08531, name=&#39;Epsilon&#39;)</span>
+<span class="go">                Clade(branch_length=0.13691, name=&#39;Delta&#39;)</span>
+<span class="go">            Clade(branch_length=0.2923, name=&#39;Alpha&#39;)</span>
+<span class="go">        Clade(branch_length=0.07477, name=&#39;Beta&#39;)</span>
+<span class="go">        Clade(branch_length=0.17523, name=&#39;Gamma&#39;)</span>
+</pre></div>
+</div>
+<p>Build the Parsimony tree from the starting tree:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">scorer</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">TreeConstruction</span><span class="o">.</span><span class="n">ParsimonyScorer</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">searcher</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">TreeConstruction</span><span class="o">.</span><span class="n">NNITreeSearcher</span><span class="p">(</span><span class="n">scorer</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">constructor</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">TreeConstruction</span><span class="o">.</span><span class="n">ParsimonyTreeConstructor</span><span class="p">(</span><span class="n">searcher</span><span class="p">,</span> <span class="n">starting_tree</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pars_tree</span> <span class="o">=</span> <span class="n">constructor</span><span class="o">.</span><span class="n">build_tree</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pars_tree</span><span class="p">)</span>
+<span class="go">Tree(rooted=True, weight=1.0)</span>
+<span class="go">    Clade(branch_length=0.0)</span>
+<span class="go">        Clade(branch_length=0.19732999999999998, name=&#39;Inner1&#39;)</span>
+<span class="go">            Clade(branch_length=0.13691, name=&#39;Delta&#39;)</span>
+<span class="go">            Clade(branch_length=0.08531, name=&#39;Epsilon&#39;)</span>
+<span class="go">        Clade(branch_length=0.04194000000000003, name=&#39;Inner2&#39;)</span>
+<span class="go">            Clade(branch_length=0.01421, name=&#39;Inner3&#39;)</span>
+<span class="go">                Clade(branch_length=0.17523, name=&#39;Gamma&#39;)</span>
+<span class="go">                Clade(branch_length=0.07477, name=&#39;Beta&#39;)</span>
+<span class="go">            Clade(branch_length=0.2923, name=&#39;Alpha&#39;)</span>
 </pre></div>
 </div>
 <dl class="py method">
@@ -618,14 +709,14 @@ or the Sankoff algorithm (with a matrix).</p>
 
   <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
     <span class="rst-current-version" data-toggle="rst-current-version">
-      Biopython v: 1.81.dev0
+      Biopython v: 1.82.dev0
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">
       <dl>
         <dt>Versions</dt>
         
-          <dd><a href="../../1.79/api/">Previous</a></dd>
+          <dd><a href="../../1.80/api/">Previous</a></dd>
         
           <dd><a href="../../latest/api/">Latest</a></dd>
         
