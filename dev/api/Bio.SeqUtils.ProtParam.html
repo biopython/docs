@@ -157,7 +157,11 @@
 <span class="go">7.72</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sec_struc</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">secondary_structure_fraction</span><span class="p">()</span>  <span class="c1"># [helix, turn, sheet]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sec_struc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># helix</span>
-<span class="go">0.28</span>
+<span class="go">0.33</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sec_struc</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># turn</span>
+<span class="go">0.29</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">sec_struc</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># sheet</span>
+<span class="go">0.37</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">epsilon_prot</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">molar_extinction_coefficient</span><span class="p">()</span>  <span class="c1"># [reduced, oxidized]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">epsilon_prot</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># with reduced cysteines</span>
 <span class="go">17420</span>
@@ -311,10 +315,13 @@ favorites to the ProtParamData modules.</p>
 <span class="sig-name descname"><span class="pre">secondary_structure_fraction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqUtils.ProtParam.ProteinAnalysis.secondary_structure_fraction" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate fraction of helix, turn and sheet.</p>
 <p>Returns a list of the fraction of amino acids which tend
-to be in Helix, Turn or Sheet.</p>
-<p>Amino acids in helix: V, I, Y, F, W, L.
-Amino acids in Turn: N, P, G, S.
-Amino acids in sheet: E, M, A, L.</p>
+to be in Helix, Turn or Sheet, according to Haimov and Srebnik, 2016;
+Hutchinson and Thornton, 1994; and Kim and Berg, 1993, respectively.</p>
+<p>Amino acids in helix: E, M, A, L, K.
+Amino acids in turn: N, P, G, S, D.
+Amino acids in sheet: V, I, Y, F, W, L, T.</p>
+<p>Note that, prior to v1.82, this method wrongly returned
+(Sheet, Turn, Helix) while claiming to return (Helix, Turn, Sheet).</p>
 <p>Returns a tuple of three floats (Helix, Turn, Sheet).</p>
 </dd></dl>
 
