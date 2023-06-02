@@ -142,6 +142,92 @@ and are indexed as bigBed files.</p>
 <p>See <a class="reference external" href="http://genome.ucsc.edu/goldenPath/help/bigPsl.html">http://genome.ucsc.edu/goldenPath/help/bigPsl.html</a> for more information.</p>
 <p>You are expected to use this module via the Bio.Align functions.</p>
 <dl class="py class">
+<dt class="sig sig-object py" id="Bio.Align.bigpsl.AlignmentWriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.bigpsl.</span></span><span class="sig-name descname"><span class="pre">AlignmentWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraIndex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wildcard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.bigpsl.AlignmentWriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.Align.bigbed.html#Bio.Align.bigbed.AlignmentWriter" title="Bio.Align.bigbed.AlignmentWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Align.bigbed.AlignmentWriter</span></code></a></p>
+<p>Alignment file writer for the bigPsl file format.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Align.bigpsl.AlignmentWriter.fmt">
+<span class="sig-name descname"><span class="pre">fmt</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bigPsl'</span></em><a class="headerlink" href="#Bio.Align.bigpsl.AlignmentWriter.fmt" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.bigpsl.AlignmentWriter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extraIndex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fa</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wildcard</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'N'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.bigpsl.AlignmentWriter.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Create an AlignmentWriter object.</p>
+<dl>
+<dt>Arguments:</dt><dd><ul>
+<li><p>target      - output stream or file name.</p></li>
+<li><dl>
+<dt>targets     - A list of SeqRecord objects with the chromosomes in the</dt><dd><p>order as they appear in the alignments. The sequence
+contents in each SeqRecord may be undefined, but the
+sequence length must be defined, as in this example:</p>
+<p>SeqRecord(Seq(None, length=248956422), id=”chr1”)</p>
+<p>If targets is None (the default value), the alignments
+must have an attribute .targets providing the list of
+SeqRecord objects.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>compress    - If True (default), compress data using zlib.</dt><dd><p>If False, do not compress data.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>extraIndex  - List of strings with the names of extra columns to be</dt><dd><p>indexed.
+Default value is an empty list.</p>
+</dd>
+</dl>
+</li>
+<li><p>target      - output stream or file name</p></li>
+<li><dl class="simple">
+<dt>cds         - If True, look for a query feature of type CDS and write</dt><dd><p>it in NCBI style in the PSL file (default: False).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>fa          - If True, include the query sequence in the PSL file</dt><dd><p>(default: False).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>mask        - Specify if repeat regions in the target sequence are</dt><dd><p>masked and should be reported in the <cite>repMatches</cite> field
+of the PSL file instead of in the <cite>matches</cite> field.
+Acceptable values are
+None   : no masking (default);
+“lower”: masking by lower-case characters;
+“upper”: masking by upper-case characters.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>wildcard    - Report alignments to the wildcard character in the</dt><dd><p>target or query sequence in the <cite>nCount</cite> field of the
+PSL file instead of in the <cite>matches</cite>, <cite>misMatches</cite>, or
+<cite>repMatches</cite> fields.
+Default value is ‘N’.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.bigpsl.AlignmentWriter.write_file">
+<span class="sig-name descname"><span class="pre">write_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stream</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignments</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.bigpsl.AlignmentWriter.write_file" title="Permalink to this definition"></a></dt>
+<dd><p>Write the file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Align.bigpsl.AlignmentWriter.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.Align.bigpsl.AlignmentWriter.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="Bio.Align.bigpsl.AlignmentIterator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.bigpsl.</span></span><span class="sig-name descname"><span class="pre">AlignmentIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.bigpsl.AlignmentIterator" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.Align.bigbed.html#Bio.Align.bigbed.AlignmentIterator" title="Bio.Align.bigbed.AlignmentIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Align.bigbed.AlignmentIterator</span></code></a></p>
