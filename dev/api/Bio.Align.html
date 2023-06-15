@@ -1722,6 +1722,35 @@ namedtuple. This is calculated for all the pairs of sequences in the
 alignment.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.Alignment.reverse_complement">
+<span class="sig-name descname"><span class="pre">reverse_complement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.reverse_complement" title="Permalink to this definition"></a></dt>
+<dd><p>Reverse-complement the alignment and return it.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;ATCG&quot;</span><span class="p">,</span> <span class="s2">&quot;AAG&quot;</span><span class="p">,</span> <span class="s2">&quot;ATC&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">                  0 ATCG 4</span>
+<span class="go">                  0 AA-G 3</span>
+<span class="go">                  0 ATC- 3</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rc_alignment</span> <span class="o">=</span> <span class="n">alignment</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rc_alignment</span><span class="p">)</span>
+<span class="go">                  0 CGAT 4</span>
+<span class="go">                  0 C-TT 3</span>
+<span class="go">                  0 -GAT 3</span>
+</pre></div>
+</div>
+<p>The attribute <cite>column_annotations</cite>, if present, is associated with the
+reverse-complemented alignment, with its values in reverse order.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">column_annotations</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rc_alignment</span> <span class="o">=</span> <span class="n">alignment</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rc_alignment</span><span class="o">.</span><span class="n">column_annotations</span><span class="p">)</span>
+<span class="go">{&#39;score&#39;: [2, 2, 2, 3]}</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.Align.Alignment.__hash__">
 <span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#Bio.Align.Alignment.__hash__" title="Permalink to this definition"></a></dt>
