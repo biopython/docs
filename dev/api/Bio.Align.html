@@ -1769,6 +1769,89 @@ delete the sequence contents, the same alignment is found in PSL format
 <span class="go">&#39;8\t0\t0\t0\t0\t0\t1\t11\t+\tquery\t8\t0\t8\ttarget\t40\t11\t30\t2\t4,4,\t0,4,\t11,26,\n&#39;</span>
 </pre></div>
 </div>
+<p>The map method can also be used to lift over an alignment between
+different genome assemblies. In this case, self is a DNA alignment
+between two genome assemblies, and the argument is an alignment of a
+transcript against one of the genome assemblies:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">threshold</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># print 5 array elements per row</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Blat/panTro5ToPanTro6.over.chain&quot;</span><span class="p">,</span> <span class="s2">&quot;chain&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;chr1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">228573443</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;chr1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">224244399</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[122250000 122250400 122250400 ... 122909818 122909819 122909835]</span>
+<span class="go"> [111776384 111776784 111776785 ... 112019962 112019962 112019978]]</span>
+</pre></div>
+</div>
+<p>showing that the range 122250000:122909835 of chr1 on chimpanzee genome
+assembly panTro5 aligns to range 111776384:112019978 of chr1 of
+chimpanzee genome assembly panTro6.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Blat/est.panTro5.psl&quot;</span><span class="p">,</span> <span class="s2">&quot;psl&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;chr1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">228573443</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;DC525629&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">407</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[122835789 122835847 122840993 122841145 122907212 122907314]</span>
+<span class="go"> [       32        90        90       242       242       344]]</span>
+</pre></div>
+</div>
+<p>This shows that nucleotide range 32:344 of expressed sequence tag
+DC525629 aligns to range 122835789:122907314 of chr1 of chimpanzee
+genome assembly panTro5.</p>
+<p>Note that the target sequence chain.sequences[0].seq and the target
+sequence alignment.sequences[0] have the same length:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>We swap the target and query of the chain such that the query of the
+chain corresponds to the target of alignment:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span> <span class="o">=</span> <span class="n">chain</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;chr1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">224244399</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">chain</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;chr1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">228573443</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">chain</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[111776384 111776784 111776785 ... 112019962 112019962 112019978]</span>
+<span class="go"> [122250000 122250400 122250400 ... 122909818 122909819 122909835]]</span>
+</pre></div>
+</div>
+<p>Now we can get the coordinates of DC525629 against chimpanzee genome
+assembly panTro6 by calling map on the chain, with alignment as the
+argument:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lifted_alignment</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lifted_alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;chr1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">lifted_alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">224244399</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lifted_alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;DC525629&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">lifted_alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">407</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">lifted_alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[111982717 111982775 111987921 111988073 112009200 112009302]</span>
+<span class="go"> [       32        90        90       242       242       344]]</span>
+</pre></div>
+</div>
+<p>This shows that nucleotide range 32:344 of expressed sequence tag
+DC525629 aligns to range 111982717:112009302 of chr1 of chimpanzee
+genome assembly panTro6. Note that the genome span of DC525629 on
+chimpanzee genome assembly panTro5 is 122907314 - 122835789 = 71525 bp,
+while on panTro6 the genome span is 112009302 - 111982717 = 26585 bp.</p>
 </dd></dl>
 
 <dl class="py property">
