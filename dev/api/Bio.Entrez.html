@@ -530,26 +530,35 @@ citation strings.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Bio.Entrez.read">
-<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.read" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.read" title="Permalink to this definition"></a></dt>
 <dd><p>Parse an XML file from the NCBI Entrez Utilities into python objects.</p>
 <p>This function parses an XML file created by NCBI’s Entrez Utilities,
 returning a multilevel data structure of Python lists and dictionaries.
 Most XML files returned by NCBI’s Entrez Utilities can be parsed by
 this function, provided its DTD is available. Biopython includes the
 DTDs for most commonly used Entrez Utilities.</p>
-<p>The handle must be in binary mode. This allows the parser to detect the
-encoding from the XML file, and to use it to convert all text in the XML
-to the correct Unicode string. The functions in Bio.Entrez to access NCBI
-Entrez will automatically return XML data in binary mode. For files,
-please use mode “rb” when opening the file, as in</p>
+<p>The argument <code class="docutils literal notranslate"><span class="pre">source</span></code> must be a file or file-like object opened in binary
+mode, or a filename. The parser detects the encoding from the XML file, and
+uses it to convert all text in the XML to the correct Unicode string. The
+functions in Bio.Entrez to access NCBI Entrez will automatically return XML
+data in binary mode. For files, use mode “rb” when opening the file, as in</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Entrez/esearch1.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;Entrez/esearch1.xml&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;QueryTranslation&#39;</span><span class="p">])</span>
 <span class="go">biopython[All Fields]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>Alternatively, you can use the filename directly, as in</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;QueryTranslation&#39;</span><span class="p">])</span>
+<span class="go">biopython[All Fields]</span>
+</pre></div>
+</div>
+<p>which is safer, as the file stream will automatically be closed after the
+record has been read, or if an error occurs.</p>
 <p>If validate is True (default), the parser will validate the XML file
 against the DTD, and raise an error if the XML file contains tags that
 are not represented in the DTD. If validate is False, the parser will
@@ -570,7 +579,7 @@ the tag name in my_element.tag.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Bio.Entrez.parse">
-<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.parse" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Bio.Entrez.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">escape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_errors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Entrez.parse" title="Permalink to this definition"></a></dt>
 <dd><p>Parse an XML file from the NCBI Entrez Utilities into python objects.</p>
 <p>This function parses an XML file created by NCBI’s Entrez Utilities,
 returning a multilevel data structure of Python lists and dictionaries.
@@ -582,22 +591,34 @@ useful for parsing large files.</p>
 <p>Most XML files returned by NCBI’s Entrez Utilities can be parsed by
 this function, provided its DTD is available. Biopython includes the
 DTDs for most commonly used Entrez Utilities.</p>
-<p>The handle must be in binary mode. This allows the parser to detect the
-encoding from the XML file, and to use it to convert all text in the XML
-to the correct Unicode string. The functions in Bio.Entrez to access NCBI
-Entrez will automatically return XML data in binary mode. For files,
-please use mode “rb” when opening the file, as in</p>
+<p>The argument <code class="docutils literal notranslate"><span class="pre">source</span></code> must be a file or file-like object opened in binary
+mode, or a filename. The parser detects the encoding from the XML file, and
+uses it to convert all text in the XML to the correct Unicode string. The
+functions in Bio.Entrez to access NCBI Entrez will automatically return XML
+data in binary mode. For files, use mode “rb” when opening the file, as in</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Entrez/pubmed1.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;Entrez/pubmed1.xml&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;MedlineCitation&#39;</span><span class="p">][</span><span class="s1">&#39;Article&#39;</span><span class="p">][</span><span class="s1">&#39;Journal&#39;</span><span class="p">][</span><span class="s1">&#39;Title&#39;</span><span class="p">])</span>
 <span class="gp">...</span>
 <span class="go">Social justice (San Francisco, Calif.)</span>
 <span class="go">Biochimica et biophysica acta</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
+<p>Alternatively, you can use the filename directly, as in</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;MedlineCitation&#39;</span><span class="p">][</span><span class="s1">&#39;Article&#39;</span><span class="p">][</span><span class="s1">&#39;Journal&#39;</span><span class="p">][</span><span class="s1">&#39;Title&#39;</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="go">Social justice (San Francisco, Calif.)</span>
+<span class="go">Biochimica et biophysica acta</span>
+</pre></div>
+</div>
+<p>which is safer, as the file stream will automatically be closed after all
+the records have been read, or if an error occurs.</p>
 <p>If validate is True (default), the parser will validate the XML file
 against the DTD, and raise an error if the XML file contains tags that
 are not represented in the DTD. If validate is False, the parser will
