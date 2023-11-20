@@ -509,24 +509,6 @@ particular) as this has changed in Biopython 1.65. Older versions
 would hash on object identity.</p>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="Bio.Seq.Seq.ungap">
-<span class="sig-name descname"><span class="pre">ungap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'-'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.Seq.ungap" title="Permalink to this definition"></a></dt>
-<dd><p>Return a copy of the sequence without the gap character(s) (DEPRECATED).</p>
-<p>The gap character now defaults to the minus sign, and can only
-be specified via the method argument. This is no longer possible
-via the sequence’s alphabet (as was possible up to Biopython 1.77):</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;-ATA--TGAAAT-TTGAAAA&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span>
-<span class="go">Seq(&#39;-ATA--TGAAAT-TTGAAAA&#39;)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_dna</span><span class="o">.</span><span class="n">ungap</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
-<span class="go">Seq(&#39;ATATGAAATTTGAAAA&#39;)</span>
-</pre></div>
-</div>
-<p>This method is DEPRECATED; please use my_dna.replace(gap, “”) instead.</p>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.Seq.Seq.__abstractmethods__">
 <span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.Seq.Seq.__abstractmethods__" title="Permalink to this definition"></a></dt>
@@ -825,27 +807,27 @@ coding codons will always be translated as amino acid, except for
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Bio.Seq.reverse_complement">
-<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">reverse_complement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.reverse_complement" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">reverse_complement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.reverse_complement" title="Permalink to this definition"></a></dt>
 <dd><p>Return the reverse complement as a DNA sequence.</p>
 <p>If given a string, returns a new string object.
 Given a Seq object, returns a new Seq object.
 Given a MutableSeq, returns a new MutableSeq object.
 Given a SeqRecord object, returns a new SeqRecord object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="s2">&quot;CGA&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
 <span class="go">&#39;TCG&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
 <span class="go">Seq(&#39;TCG&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
 <span class="go">MutableSeq(&#39;TCG&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
 <span class="go">MutableSeq(&#39;CGA&#39;)</span>
 </pre></div>
 </div>
 <p>Any U in the sequence is treated as a T:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">))</span>
 <span class="go">Seq(&#39;AATCG&#39;)</span>
 </pre></div>
 </div>
@@ -856,7 +838,7 @@ Given a SeqRecord object, returns a new SeqRecord object.</p>
 </div>
 <p>Supports and lower- and upper-case characters, and unambiguous and
 ambiguous nucleotides. All other characters are not converted:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="s2">&quot;ACGTUacgtuXYZxyz&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="s2">&quot;ACGTUacgtuXYZxyz&quot;</span><span class="p">)</span>
 <span class="go">&#39;zrxZRXaacgtAACGT&#39;</span>
 </pre></div>
 </div>
@@ -925,27 +907,27 @@ raised if <code class="docutils literal notranslate"><span class="pre">reverse_c
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Bio.Seq.complement">
-<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">complement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.complement" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">Bio.Seq.</span></span><span class="sig-name descname"><span class="pre">complement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inplace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Seq.complement" title="Permalink to this definition"></a></dt>
 <dd><p>Return the complement as a DNA sequence.</p>
 <p>If given a string, returns a new string object.
 Given a Seq object, returns a new Seq object.
 Given a MutableSeq, returns a new MutableSeq object.
 Given a SeqRecord object, returns a new SeqRecord object.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="s2">&quot;CGA&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
 <span class="go">&#39;GCT&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
 <span class="go">Seq(&#39;GCT&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;CGA&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
 <span class="go">MutableSeq(&#39;GCT&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
 <span class="go">MutableSeq(&#39;CGA&#39;)</span>
 </pre></div>
 </div>
 <p>Any U in the sequence is treated as a T:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">))</span>
 <span class="go">Seq(&#39;GCTAA&#39;)</span>
 </pre></div>
 </div>
@@ -956,7 +938,7 @@ Given a SeqRecord object, returns a new SeqRecord object.</p>
 </div>
 <p>Supports and lower- and upper-case characters, and unambiguous and
 ambiguous nucleotides. All other characters are not converted:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="s2">&quot;ACGTUacgtuXYZxyz&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="s2">&quot;ACGTUacgtuXYZxyz&quot;</span><span class="p">)</span>
 <span class="go">&#39;TGCAAtgcaaXRZxrz&#39;</span>
 </pre></div>
 </div>
@@ -1000,7 +982,7 @@ Given a SeqRecord object, returns a new SeqRecord object.</p>
 </pre></div>
 </div>
 <p>In contrast, <code class="docutils literal notranslate"><span class="pre">complement</span></code> returns a DNA sequence:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">),</span><span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">complement</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CGAUT&quot;</span><span class="p">))</span>
 <span class="go">Seq(&#39;GCTAA&#39;)</span>
 </pre></div>
 </div>
