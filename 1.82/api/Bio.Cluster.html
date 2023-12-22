@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio.Cluster package &mdash; Biopython 1.82 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.Compass package" href="Bio.Compass.html" />
+    <link rel="prev" title="Bio.CAPS package" href="Bio.CAPS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Bio.Cluster package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-Bio.Cluster">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="Bio.html">Bio package</a></li>
+      <li class="breadcrumb-item active">Bio.Cluster package</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/Cluster/__init__.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="Bio.CAPS.html" class="btn btn-neutral float-left" title="Bio.CAPS package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.Compass.html" class="btn btn-neutral float-right" title="Bio.Compass package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bio-cluster-package">
+<h1>Bio.Cluster package<a class="headerlink" href="#bio-cluster-package" title="Permalink to this headline"></a></h1>
+<section id="module-Bio.Cluster">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Bio.Cluster" title="Permalink to this headline"></a></h2>
+<p>Cluster Analysis.</p>
+<p>The Bio.Cluster provides commonly used clustering algorithms and was
+designed with the application to gene expression data in mind. However,
+this module can also be used for cluster analysis of other types of data.</p>
+<p>Bio.Cluster and the underlying C Clustering Library is described in
+M. de Hoon et al. (2004) <a class="reference external" href="https://doi.org/10.1093/bioinformatics/bth078">https://doi.org/10.1093/bioinformatics/bth078</a></p>
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Cluster.Node">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">Node</span></span><a class="headerlink" href="#Bio.Cluster.Node" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_cluster.Node</span></code></p>
+<p>A Node object describes a single node in a hierarchical clustering tree.
+The integer attributes ‘left’ and ‘right’ represent the two members that
+make up this node; the floating point attribute ‘distance’ contains the
+distance between the two members of this node.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Cluster.Tree">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">Tree</span></span><a class="headerlink" href="#Bio.Cluster.Tree" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_cluster.Tree</span></code></p>
+<p>Hierarchical clustering tree.</p>
+<p>A Tree consists of Nodes.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Cluster.Tree.sort">
+<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Tree.sort" title="Permalink to this definition"></a></dt>
+<dd><p>Sort the hierarchical clustering tree.</p>
+<p>Sort the hierarchical clustering tree by switching the left and
+right subnode of nodes such that the elements in the left-to-right
+order of the tree tend to have increasing order values.</p>
+<p>Return the indices of the elements in the left-to-right order in
+the hierarchical clustering tree, such that the element with index
+indices[i] occurs at position i in the dendrogram.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Cluster.Tree.cut">
+<span class="sig-name descname"><span class="pre">cut</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nclusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Tree.cut" title="Permalink to this definition"></a></dt>
+<dd><p>Create clusters by cutting the hierarchical clustering tree.</p>
+<p>Divide the elements in a hierarchical clustering result mytree
+into clusters, and return an array with the number of the cluster
+to which each element was assigned.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>nclusters: The desired number of clusters.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Cluster.kcluster">
+<span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">kcluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nclusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.kcluster" title="Permalink to this definition"></a></dt>
+<dd><p>Perform k-means clustering.</p>
+<p>This function performs k-means clustering on the values in data, and
+returns the cluster assignments, the within-cluster sum of distances
+of the optimal k-means clustering solution, and the number of times
+the optimal solution was found.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>data: nrows x ncolumns array containing the data values.</p></li>
+<li><p>nclusters: number of clusters (the ‘k’ in k-means).</p></li>
+<li><p>mask: nrows x ncolumns array of integers, showing which data
+are missing. If mask[i,j]==0, then data[i,j] is missing.</p></li>
+<li><p>weight: the weights to be used when calculating distances</p></li>
+<li><p>transpose:
+- if False: rows are clustered;
+- if True: columns are clustered.</p></li>
+<li><p>npass: number of times the k-means clustering algorithm is
+performed, each time with a different (random) initial
+condition.</p></li>
+<li><p>method: specifies how the center of a cluster is found:
+- method == ‘a’: arithmetic mean;
+- method == ‘m’: median.</p></li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance;
+- dist == ‘b’: City Block distance;
+- dist == ‘c’: Pearson correlation;
+- dist == ‘a’: absolute value of the correlation;
+- dist == ‘u’: uncentered correlation;
+- dist == ‘x’: absolute uncentered correlation;
+- dist == ‘s’: Spearman’s rank correlation;
+- dist == ‘k’: Kendall’s tau.</p></li>
+<li><p>initialid: the initial clustering from which the algorithm
+should start.
+If initialid is None, the routine carries out npass
+repetitions of the EM algorithm, each time starting from a
+different random initial clustering. If initialid is given,
+the routine carries out the EM algorithm only once, starting
+from the given initial clustering and without randomizing the
+order in which items are assigned to clusters (i.e., using
+the same order as in the data matrix). In that case, the
+k-means algorithm is fully deterministic.</p></li>
+</ul>
+</dd>
+<dt>Return values:</dt><dd><ul class="simple">
+<li><p>clusterid: array containing the index of the cluster to which each
+item was assigned in the best k-means clustering solution that was
+found in the npass runs;</p></li>
+<li><p>error: the within-cluster sum of distances for the returned k-means
+clustering solution;</p></li>
+<li><p>nfound: the number of times this solution was found.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Cluster.kmedoids">
+<span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">kmedoids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nclusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.kmedoids" title="Permalink to this definition"></a></dt>
+<dd><p>Perform k-medoids clustering.</p>
+<p>This function performs k-medoids clustering, and returns the cluster
+assignments, the within-cluster sum of distances of the optimal
+k-medoids clustering solution, and the number of times the optimal
+solution was found.</p>
+<dl>
+<dt>Keyword arguments:</dt><dd><ul>
+<li><p>distance: The distance matrix between the items. There are three
+ways in which you can pass a distance matrix:
+1. a 2D NumPy array (in which only the left-lower part of the array
+will be accessed);
+2. a 1D NumPy array containing the distances consecutively;
+3. a list of rows containing the lower-triangular part of
+the distance matrix.</p>
+<p>Examples are:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># option 1:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">],</span>
+<span class="gp">... </span>                  <span class="p">[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">],</span>
+<span class="gp">... </span>                  <span class="p">[</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># option 2:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># option 3:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span><span class="p">([]),</span>
+<span class="gp">... </span>            <span class="n">array</span><span class="p">([</span><span class="mf">1.1</span><span class="p">]),</span>
+<span class="gp">... </span>            <span class="n">array</span><span class="p">([</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])]</span>
+</pre></div>
+</div>
+<p>These three correspond to the same distance matrix.</p>
+</li>
+<li><p>nclusters: number of clusters (the ‘k’ in k-medoids)</p></li>
+<li><p>npass: the number of times the k-medoids clustering algorithm
+is performed, each time with a different (random) initial
+condition.</p></li>
+<li><p>initialid: the initial clustering from which the algorithm should start.
+If initialid is not given, the routine carries out npass
+repetitions of the EM algorithm, each time starting from a
+different random initial clustering. If initialid is given,
+the routine carries out the EM algorithm only once, starting
+from the initial clustering specified by initialid and
+without randomizing the order in which items are assigned to
+clusters (i.e., using the same order as in the data matrix).
+In that case, the k-medoids algorithm is fully deterministic.</p></li>
+</ul>
+</dd>
+<dt>Return values:</dt><dd><ul class="simple">
+<li><p>clusterid: array containing the index of the cluster to which each
+item was assigned in the best k-medoids clustering solution that was
+found in the npass runs; note that the index of a cluster is the index
+of the item that is the medoid of the cluster;</p></li>
+<li><p>error: the within-cluster sum of distances for the returned k-medoids
+clustering solution;</p></li>
+<li><p>nfound: the number of times this solution was found.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Cluster.treecluster">
+<span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">treecluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'m'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distancematrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.treecluster" title="Permalink to this definition"></a></dt>
+<dd><p>Perform hierarchical clustering, and return a Tree object.</p>
+<p>This function implements the pairwise single, complete, centroid, and
+average linkage hierarchical clustering methods.</p>
+<dl>
+<dt>Keyword arguments:</dt><dd><ul>
+<li><p>data: nrows x ncolumns array containing the data values.</p></li>
+<li><p>mask: nrows x ncolumns array of integers, showing which data are
+missing. If mask[i][j]==0, then data[i][j] is missing.</p></li>
+<li><p>weight: the weights to be used when calculating distances.</p></li>
+<li><p>transpose:
+- if False, rows are clustered;
+- if True, columns are clustered.</p></li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+<li><p>method: specifies which linkage method is used:
+- method == ‘s’: Single pairwise linkage
+- method == ‘m’: Complete (maximum) pairwise linkage (default)
+- method == ‘c’: Centroid linkage
+- method == ‘a’: Average pairwise linkage</p></li>
+<li><p>distancematrix:  The distance matrix between the items. There are
+three ways in which you can pass a distance matrix:
+1. a 2D NumPy array (in which only the left-lower part of the array
+will be accessed);
+2. a 1D NumPy array containing the distances consecutively;
+3. a list of rows containing the lower-triangular part of
+the distance matrix.</p>
+<p>Examples are:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># option 1:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">],</span>
+<span class="gp">... </span>                  <span class="p">[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">],</span>
+<span class="gp">... </span>                  <span class="p">[</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># option 2:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># option 3:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span><span class="p">([]),</span>
+<span class="gp">... </span>            <span class="n">array</span><span class="p">([</span><span class="mf">1.1</span><span class="p">]),</span>
+<span class="gp">... </span>            <span class="n">array</span><span class="p">([</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])]</span>
+</pre></div>
+</div>
+<p>These three correspond to the same distance matrix.</p>
+<p>PLEASE NOTE:
+As the treecluster routine may shuffle the values in the
+distance matrix as part of the clustering algorithm, be sure
+to save this array in a different variable before calling
+treecluster if you need it later.</p>
+</li>
+</ul>
+</dd>
+</dl>
+<p>Either data or distancematrix should be None. If distancematrix is None,
+the hierarchical clustering solution is calculated from the values stored
+in the argument data. If data is None, the hierarchical clustering solution
+is instead calculated from the distance matrix. Pairwise centroid-linkage
+clustering can be performed only from the data values and not from the
+distance matrix. Pairwise single-, maximum-, and average-linkage clustering
+can be calculated from the data values or from the distance matrix.</p>
+<p>Return value:
+treecluster returns a Tree object describing the hierarchical clustering
+result. See the description of the Tree class for more information.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Cluster.somcluster">
+<span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">somcluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nxgrid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nygrid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inittau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">niter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'e'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.somcluster" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a Self-Organizing Map.</p>
+<p>This function implements a Self-Organizing Map on a rectangular grid.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>data: nrows x ncolumns array containing the data values;</p></li>
+<li><p>mask: nrows x ncolumns array of integers, showing which data are
+missing. If mask[i][j]==0, then data[i][j] is missing.</p></li>
+<li><p>weight: the weights to be used when calculating distances</p></li>
+<li><p>transpose:
+- if False: rows are clustered;
+- if True: columns are clustered.</p></li>
+<li><p>nxgrid: the horizontal dimension of the rectangular SOM map</p></li>
+<li><p>nygrid: the vertical dimension of the rectangular SOM map</p></li>
+<li><p>inittau: the initial value of tau (the neighborbood function)</p></li>
+<li><p>niter: the number of iterations</p></li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+</ul>
+</dd>
+</dl>
+<p>Return values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>clusterid: array with two columns, with the number of rows equal to
+the items that are being clustered. Each row in the array contains
+the x and y coordinates of the cell in the rectangular SOM grid to
+which the item was assigned.</p></li>
+<li><p>celldata:  an array with dimensions [nxgrid, nygrid, number of columns]
+if rows are being clustered, or [nxgrid, nygrid, number of rows) if
+columns are being clustered.
+Each element [ix, iy] of this array is a 1D vector containing the
+data values for the centroid of the cluster in the SOM grid cell
+with coordinates [ix, iy].</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Cluster.clusterdistance">
+<span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">clusterdistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.clusterdistance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate and return the distance between two clusters.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>data: nrows x ncolumns array containing the data values.</p></li>
+<li><p>mask: nrows x ncolumns array of integers, showing which data are
+missing. If mask[i, j]==0, then data[i, j] is missing.</p></li>
+<li><p>weight: the weights to be used when calculating distances</p></li>
+<li><p>index1: 1D array identifying which items belong to the
+first cluster. If the cluster contains only one item, then
+index1 can also be written as a single integer.</p></li>
+<li><p>index2: 1D array identifying which items belong to the
+second cluster. If the cluster contains only one item, then
+index2 can also be written as a single integer.</p></li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+<li><p>method: specifies how the distance between two clusters is defined:
+- method == ‘a’: the distance between the arithmetic means
+of the two clusters
+- method == ‘m’: the distance between the medians of the two clusters
+- method == ‘s’: the smallest pairwise distance between members
+of the two clusters
+- method == ‘x’: the largest pairwise distance between members
+of the two clusters
+- method == ‘v’: average of the pairwise distances between members
+of the two clusters</p></li>
+<li><p>transpose:
+- if False: clusters of rows are considered;
+- if True: clusters of columns are considered.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Cluster.clustercentroids">
+<span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">clustercentroids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clusterid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.clustercentroids" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate and return the centroid of each cluster.</p>
+<p>The clustercentroids routine calculates the cluster centroids, given to
+which cluster each item belongs. The centroid is defined as either
+the mean or the median over all items for each dimension.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>data: nrows x ncolumns array containing the data values.</p></li>
+<li><p>mask: nrows x ncolumns array of integers, showing which data are
+missing. If mask[i, j]==0, then data[i, j] is missing.</p></li>
+<li><p>clusterid: array containing the cluster number for each item.
+The cluster number should be non-negative.</p></li>
+<li><p>method: specifies whether the centroid is calculated from the
+arithmetic mean (method == ‘a’, default) or the median (method == ‘m’)
+over each dimension.</p></li>
+<li><dl class="simple">
+<dt>transpose: if False, each row contains the data for one item;</dt><dd><p>if True, each column contains the data for one item.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Return values:</dt><dd><ul class="simple">
+<li><p>cdata: 2D array containing the cluster centroids.
+If transpose is False, then the dimensions of cdata are
+nclusters x ncolumns.
+If transpose is True, then the dimensions of cdata are
+nrows x nclusters.</p></li>
+<li><p>cmask: 2D array of integers describing which items in cdata,
+if any, are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Cluster.distancematrix">
+<span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">distancematrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'e'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.distancematrix" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate and return a distance matrix from the data.</p>
+<p>This function returns the distance matrix calculated from the data.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>data: nrows x ncolumns array containing the data values.</p></li>
+<li><p>mask: nrows x ncolumns array of integers, showing which data are
+missing. If mask[i, j]==0, then data[i, j] is missing.</p></li>
+<li><p>weight: the weights to be used when calculating distances.</p></li>
+<li><dl class="simple">
+<dt>transpose: if False: the distances between rows are calculated;</dt><dd><p>if True:  the distances between columns are calculated.</p>
+</dd>
+</dl>
+</li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+</ul>
+</dd>
+</dl>
+<p>Return value:
+The distance matrix is returned as a list of 1D arrays containing the
+distance matrix calculated from the data. The number of columns in eac
+row is equal to the row number. Hence, the first row has zero length.
+For example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">distancematrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distances</span> <span class="o">=</span> <span class="n">distancematrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distances</span>
+<span class="go">[array([], dtype=float64), array([16.]), array([64., 16.]), array([ 1.,  9., 49.])]</span>
+</pre></div>
+</div>
+<p>which can be rewritten as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">distances</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">),</span>
+             <span class="n">array</span><span class="p">([</span> <span class="mf">16.</span><span class="p">]),</span>
+             <span class="n">array</span><span class="p">([</span> <span class="mf">64.</span><span class="p">,</span>  <span class="mf">16.</span><span class="p">]),</span>
+             <span class="n">array</span><span class="p">([</span>  <span class="mf">1.</span><span class="p">,</span>   <span class="mf">9.</span><span class="p">,</span>  <span class="mf">49.</span><span class="p">])]</span>
+</pre></div>
+</div>
+<p>This corresponds to the distance matrix:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">16.</span><span class="p">,</span> <span class="mf">64.</span><span class="p">,</span>  <span class="mf">1.</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">16.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span> <span class="mf">16.</span><span class="p">,</span>  <span class="mf">9.</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">64.</span><span class="p">,</span> <span class="mf">16.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span> <span class="mf">49.</span><span class="p">]</span>
+<span class="p">[</span> <span class="mf">1.</span><span class="p">,</span>  <span class="mf">9.</span><span class="p">,</span> <span class="mf">49.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Cluster.pca">
+<span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">pca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.pca" title="Permalink to this definition"></a></dt>
+<dd><p>Perform principal component analysis.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>data: nrows x ncolumns array containing the data values.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Return value:
+This function returns an array containing the mean of each column, the
+principal components as an nmin x ncolumns array, as well as the
+coordinates (an nrows x nmin array) of the data along the principal
+components, and the associated eigenvalues. The principal components, the
+coordinates, and the eigenvalues are sorted by the magnitude of the
+eigenvalue, with the largest eigenvalues appearing first. Here, nmin is
+the smaller of nrows and ncolumns.
+Adding the column means to the dot product of the coordinates and the
+principal components recreates the data matrix:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">dot</span><span class="p">,</span> <span class="n">amax</span><span class="p">,</span> <span class="n">amin</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">pca</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span> <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="p">[</span> <span class="mf">1.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="p">[</span> <span class="mf">7.</span><span class="p">,</span>  <span class="mf">3.</span><span class="p">,</span>  <span class="mf">0.</span><span class="p">],</span>
+<span class="gp">... </span>                <span class="p">[</span> <span class="mf">4.</span><span class="p">,</span>  <span class="mf">2.</span><span class="p">,</span>  <span class="mf">6.</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">columnmean</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">pc</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">pca</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span> <span class="o">-</span> <span class="p">(</span><span class="n">columnmean</span> <span class="o">+</span> <span class="n">dot</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">pc</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">amax</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-12</span> <span class="ow">and</span> <span class="n">amin</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mf">1e-12</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Cluster.Record">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">Record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Store gene expression data.</p>
+<p>A Record stores the gene expression data and related information contained
+in a data file following the file format defined for Michael Eisen’s
+Cluster/TreeView program.</p>
+<dl class="simple">
+<dt>Attributes:</dt><dd><ul class="simple">
+<li><p>data: a matrix containing the gene expression data</p></li>
+<li><p>mask: a matrix containing only 1’s and 0’s, denoting which values
+are present (1) or missing (0). If all items of mask are
+one (no missing data), then mask is set to None.</p></li>
+<li><p>geneid: a list containing a unique identifier for each gene
+(e.g., ORF name)</p></li>
+<li><p>genename: a list containing an additional description for each gene
+(e.g., gene name)</p></li>
+<li><p>gweight: the weight to be used for each gene when calculating the
+distance</p></li>
+<li><p>gorder: an array of real numbers indicating the preferred order of the
+genes in the output file</p></li>
+<li><p>expid: a list containing a unique identifier for each sample.</p></li>
+<li><p>eweight: the weight to be used for each sample when calculating the
+distance</p></li>
+<li><p>eorder: an array of real numbers indication the preferred order of the
+samples in the output file</p></li>
+<li><p>uniqid: the string that was used instead of UNIQID in the input file.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Cluster.Record.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Read gene expression data from the file handle and return a Record.</p>
+<p>The file should be in the format defined for Michael Eisen’s
+Cluster/TreeView program.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Cluster.Record.treecluster">
+<span class="sig-name descname"><span class="pre">treecluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'m'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'e'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.treecluster" title="Permalink to this definition"></a></dt>
+<dd><p>Apply hierarchical clustering and return a Tree object.</p>
+<p>The pairwise single, complete, centroid, and average linkage
+hierarchical clustering methods are available.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>transpose: if False: rows are clustered;</dt><dd><p>if True: columns are clustered.</p>
+</dd>
+</dl>
+</li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+<li><p>method: specifies which linkage method is used:
+- method == ‘s’: Single pairwise linkage
+- method == ‘m’: Complete (maximum) pairwise linkage (default)
+- method == ‘c’: Centroid linkage
+- method == ‘a’: Average pairwise linkage</p></li>
+</ul>
+</dd>
+</dl>
+<p>See the description of the Tree class for more information about
+the Tree object returned by this method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Cluster.Record.kcluster">
+<span class="sig-name descname"><span class="pre">kcluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nclusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npass</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.kcluster" title="Permalink to this definition"></a></dt>
+<dd><p>Apply k-means or k-median clustering.</p>
+<p>This method returns a tuple (clusterid, error, nfound).</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>nclusters: number of clusters (the ‘k’ in k-means)</p></li>
+<li><dl class="simple">
+<dt>transpose: if False, genes (rows) are clustered;</dt><dd><p>if True, samples (columns) are clustered.</p>
+</dd>
+</dl>
+</li>
+<li><p>npass: number of times the k-means clustering algorithm is
+performed, each time with a different (random) initial condition.</p></li>
+<li><p>method: specifies how the center of a cluster is found:
+- method == ‘a’: arithmetic mean
+- method == ‘m’: median</p></li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+<li><p>initialid: the initial clustering from which the algorithm should
+start. If initialid is None, the routine carries out npass
+repetitions of the EM algorithm, each time starting from a different
+random initial clustering. If initialid is given, the routine
+carries out the EM algorithm only once, starting from the given
+initial clustering and without randomizing the order in which items
+are assigned to clusters (i.e., using the same order as in the data
+matrix). In that case, the k-means algorithm is fully deterministic.</p></li>
+</ul>
+</dd>
+<dt>Return values:</dt><dd><ul class="simple">
+<li><p>clusterid: array containing the number of the cluster to which each
+gene/sample was assigned in the best k-means clustering
+solution that was found in the npass runs;</p></li>
+<li><p>error: the within-cluster sum of distances for the returned
+k-means clustering solution;</p></li>
+<li><p>nfound: the number of times this solution was found.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Cluster.Record.somcluster">
+<span class="sig-name descname"><span class="pre">somcluster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nxgrid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nygrid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inittau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">niter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'e'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.somcluster" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a self-organizing map on a rectangular grid.</p>
+<p>The somcluster method returns a tuple (clusterid, celldata).</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>transpose: if False, genes (rows) are clustered;</dt><dd><p>if True,  samples (columns) are clustered.</p>
+</dd>
+</dl>
+</li>
+<li><p>nxgrid: the horizontal dimension of the rectangular SOM map</p></li>
+<li><p>nygrid: the vertical dimension of the rectangular SOM map</p></li>
+<li><p>inittau: the initial value of tau (the neighborbood function)</p></li>
+<li><p>niter: the number of iterations</p></li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+</ul>
+</dd>
+<dt>Return values:</dt><dd><ul class="simple">
+<li><p>clusterid: array with two columns, while the number of rows is equal
+to the number of genes or the number of samples depending on
+whether genes or samples are being clustered. Each row in
+the array contains the x and y coordinates of the cell in the
+rectangular SOM grid to which the gene or samples was assigned.</p></li>
+<li><p>celldata: an array with dimensions (nxgrid, nygrid, number of
+samples) if genes are being clustered, or (nxgrid, nygrid,
+number of genes) if samples are being clustered. Each item
+[ix, iy] of this array is a 1D vector containing the gene
+expression data for the centroid of the cluster in the SOM grid
+cell with coordinates [ix, iy].</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Cluster.Record.clustercentroids">
+<span class="sig-name descname"><span class="pre">clustercentroids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">clusterid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.clustercentroids" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the cluster centroids and return a tuple (cdata, cmask).</p>
+<p>The centroid is defined as either the mean or the median over all
+items for each dimension.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>data: nrows x ncolumns array containing the expression data</p></li>
+<li><p>mask: nrows x ncolumns array of integers, showing which data
+are missing. If mask[i, j]==0, then data[i, j] is missing.</p></li>
+<li><dl class="simple">
+<dt>transpose: if False, gene (row) clusters are considered;</dt><dd><p>if True, sample (column) clusters are considered.</p>
+</dd>
+</dl>
+</li>
+<li><p>clusterid: array containing the cluster number for each gene or
+sample. The cluster number should be non-negative.</p></li>
+<li><p>method: specifies how the centroid is calculated:
+- method == ‘a’: arithmetic mean over each dimension. (default)
+- method == ‘m’: median over each dimension.</p></li>
+</ul>
+</dd>
+<dt>Return values:</dt><dd><ul class="simple">
+<li><p>cdata: 2D array containing the cluster centroids. If transpose
+is False, then the dimensions of cdata are nclusters x ncolumns.
+If transpose is True, then the dimensions of cdata are nrows x
+nclusters.</p></li>
+<li><p>cmask: 2D array of integers describing which items in cdata,
+if any, are missing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Cluster.Record.clusterdistance">
+<span class="sig-name descname"><span class="pre">clusterdistance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'a'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.clusterdistance" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the distance between two clusters.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>index1: 1D array identifying which genes/samples belong to the
+first cluster. If the cluster contains only one gene, then
+index1 can also be written as a single integer.</p></li>
+<li><p>index2: 1D array identifying which genes/samples belong to the
+second cluster. If the cluster contains only one gene, then
+index2 can also be written as a single integer.</p></li>
+<li><dl class="simple">
+<dt>transpose: if False, genes (rows) are clustered;</dt><dd><p>if True, samples (columns) are clustered.</p>
+</dd>
+</dl>
+</li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+<li><p>method: specifies how the distance between two clusters is defined:
+- method == ‘a’: the distance between the arithmetic means
+of the two clusters
+- method == ‘m’: the distance between the medians of the
+two clusters
+- method == ‘s’: the smallest pairwise distance between members
+of the two clusters
+- method == ‘x’: the largest pairwise distance between members
+of the two clusters
+- method == ‘v’: average of the pairwise distances between members
+of the two clusters</p></li>
+<li><dl class="simple">
+<dt>transpose: if False: clusters of rows are considered;</dt><dd><p>if True: clusters of columns are considered.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Cluster.Record.distancematrix">
+<span class="sig-name descname"><span class="pre">distancematrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'e'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.distancematrix" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the distance matrix and return it as a list of arrays.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>transpose:</dt><dd><p>if False: calculate the distances between genes (rows);
+if True: calculate the distances between samples (columns).</p>
+</dd>
+</dl>
+</li>
+<li><p>dist: specifies the distance function to be used:
+- dist == ‘e’: Euclidean distance
+- dist == ‘b’: City Block distance
+- dist == ‘c’: Pearson correlation
+- dist == ‘a’: absolute value of the correlation
+- dist == ‘u’: uncentered correlation
+- dist == ‘x’: absolute uncentered correlation
+- dist == ‘s’: Spearman’s rank correlation
+- dist == ‘k’: Kendall’s tau</p></li>
+</ul>
+</dd>
+</dl>
+<p>Return value:</p>
+<p>The distance matrix is returned as a list of 1D arrays containing the
+distance matrix between the gene expression data. The number of columns
+in each row is equal to the row number. Hence, the first row has zero
+length. An example of the return value is:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>matrix = [[],</dt><dd><p>array([1.]),
+array([7., 3.]),
+array([4., 2., 6.])]</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>This corresponds to the distance matrix:</p>
+<blockquote>
+<div><p>[0., 1., 7., 4.]
+[1., 0., 3., 2.]
+[7., 3., 0., 6.]
+[4., 2., 6., 0.]</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Cluster.Record.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">jobname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geneclusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expclusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.Record.save" title="Permalink to this definition"></a></dt>
+<dd><p>Save the clustering results.</p>
+<p>The saved files follow the convention for the Java TreeView program,
+which can therefore be used to view the clustering result.</p>
+<dl class="simple">
+<dt>Keyword arguments:</dt><dd><ul class="simple">
+<li><p>jobname: The base name of the files to be saved. The filenames
+are jobname.cdt, jobname.gtr, and jobname.atr for hierarchical
+clustering, and jobname-K*.cdt, jobname-K*.kgg, jobname-K*.kag
+for k-means clustering results.</p></li>
+<li><p>geneclusters: For hierarchical clustering results, geneclusters
+is a Tree object as returned by the treecluster method. For k-means
+clustering results, geneclusters is a vector containing ngenes
+integers, describing to which cluster a given gene belongs. This
+vector can be calculated by kcluster.</p></li>
+<li><p>expclusters: For hierarchical clustering results, expclusters
+is a Tree object as returned by the treecluster method. For k-means
+clustering results, expclusters is a vector containing nexps
+integers, describing to which cluster a given sample belongs. This
+vector can be calculated by kcluster.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Cluster.read">
+<span class="sig-prename descclassname"><span class="pre">Bio.Cluster.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Cluster.read" title="Permalink to this definition"></a></dt>
+<dd><p>Read gene expression data from the file handle and return a Record.</p>
+<p>The file should be in the file format defined for Michael Eisen’s
+Cluster/TreeView program.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Bio.CAPS.html" class="btn btn-neutral float-left" title="Bio.CAPS package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.Compass.html" class="btn btn-neutral float-right" title="Bio.Compass package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.82
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
