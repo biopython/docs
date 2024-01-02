@@ -136,13 +136,482 @@
 <li class="toctree-l1"><a class="reference internal" href="Bio.Blast.Applications.html">Bio.Blast.Applications module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Bio.Blast.NCBIWWW.html">Bio.Blast.NCBIWWW module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Bio.Blast.NCBIXML.html">Bio.Blast.NCBIXML module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Bio.Blast.Record.html">Bio.Blast.Record module</a></li>
 </ul>
 </div>
 </section>
 <section id="module-Bio.Blast">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Bio.Blast" title="Permalink to this headline"></a></h2>
-<p>Code for dealing with BLAST programs and output.</p>
+<p>Code to parse and store BLAST XML output, and to invoke the NCBI BLAST web server.</p>
+<p>This module provides code to parse and store BLAST XML output, following its
+definition in the associated BLAST XML DTD file:
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.dtd">https://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.dtd</a></p>
+<p>This module also provides code to invoke the BLAST web server provided by NCBI.
+<a class="reference external" href="https://blast.ncbi.nlm.nih.gov/">https://blast.ncbi.nlm.nih.gov/</a></p>
+<p>Variables:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>email        Set the Blast email parameter (default is None).</p></li>
+<li><p>tool         Set the Blast tool parameter (default is <code class="docutils literal notranslate"><span class="pre">biopython</span></code>).</p></li>
+</ul>
+</div></blockquote>
+<dl class="py exception">
+<dt class="sig sig-object py" id="Bio.Blast.NotXMLError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.</span></span><span class="sig-name descname"><span class="pre">NotXMLError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NotXMLError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>Failed to parse file as XML.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NotXMLError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NotXMLError.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NotXMLError.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NotXMLError.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a string summary of the exception.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="Bio.Blast.CorruptedXMLError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.</span></span><span class="sig-name descname"><span class="pre">CorruptedXMLError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.CorruptedXMLError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+<p>Corrupted XML.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.CorruptedXMLError.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.CorruptedXMLError.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.CorruptedXMLError.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.CorruptedXMLError.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a string summary of the exception.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.Record">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.</span></span><span class="sig-name descname"><span class="pre">Record</span></span><a class="headerlink" href="#Bio.Blast.Record" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
+<p>Stores the BLAST results for a single query.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object is a list of <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> objects,
+each corresponding to one hit for the query in the BLAST output.</p>
+<dl class="simple">
+<dt>The <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object may have the following attributes:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>query:   A <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object which may contain some or all of the</dt><dd><dl class="simple">
+<dt>following information:</dt><dd><ul>
+<li><p>query.id:          SeqId of query;</p></li>
+<li><p>query.description: Definition line of query;</p></li>
+<li><p>len(query.seq):    Length of the query sequence.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>stat:    A dictionary with summary statistics of the BLAST run. It may</dt><dd><dl class="simple">
+<dt>contain the following keys:</dt><dd><ul>
+<li><p>‘db-num’:    number of sequences in BLAST db (integer);</p></li>
+<li><p>‘db-len’:    length of BLAST db (integer);</p></li>
+<li><p>‘hsp-len’:   effective HSP length (integer);</p></li>
+<li><p>‘eff-space’: effective search space (float);</p></li>
+<li><p>‘kappa’:     Karlin-Altschul parameter K (float);</p></li>
+<li><p>‘lambda’:    Karlin-Altschul parameter Lambda (float);</p></li>
+<li><p>‘entropy’:   Karlin-Altschul parameter H (float).</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><p>message: Some (error?) information.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Each <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> object has a <code class="docutils literal notranslate"><span class="pre">target</span></code> attribute containing
+the following information:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>target.id:          seqId of subject;</p></li>
+<li><p>target.description: definition line of subject;</p></li>
+<li><p>target.name:        accession of subject;</p></li>
+<li><p>len(target.seq):    sequence length of subject.</p></li>
+</ul>
+</div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> class inherits from a list storing
+<code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> objects.  The <code class="docutils literal notranslate"><span class="pre">target</span></code> and <code class="docutils literal notranslate"><span class="pre">query</span></code> attributes
+of a <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> object point to a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object
+representing the target and query, respectively.  For translated BLAST
+searches, The <code class="docutils literal notranslate"><span class="pre">features</span></code> attribute of the target or query may contain a
+<code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> of type CDS that stores the amino acid sequence region.  The
+<code class="docutils literal notranslate"><span class="pre">qualifiers</span></code> attribute of such a feature is a dictionary with  a single
+key ‘coded_by’; the corresponding value specifies the nucleotide sequence
+region, in a GenBank-style string with 1-based coordinates, that encodes
+the amino acid sequence.</p>
+<p>Each <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> object has the following additional attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>score:       score of HSP;</p></li>
+<li><dl class="simple">
+<dt>annotations: a dictionary that may contain the following keys:</dt><dd><ul>
+<li><p>‘bit score’: score (in bits) of HSP (float);</p></li>
+<li><p>‘evalue’:    e-value of HSP (float);</p></li>
+<li><p>‘identity’:  number of identities in HSP (integer);</p></li>
+<li><p>‘positive’:  number of positives in HSP (integer);</p></li>
+<li><p>‘gaps’:      number of gaps in HSP (integer);</p></li>
+<li><p>‘midline’:   formating middle line.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Blast/xml_2212L_blastx_001.xml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">query</span>
+<span class="go">SeqRecord(seq=Seq(None, length=556), id=&#39;gi|1347369|gb|G25137.1|G25137&#39;, name=&#39;&lt;unknown name&gt;&#39;, description=&#39;human STS EST48004, sequence tagged site&#39;, dbxrefs=[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">stat</span>
+<span class="go">{&#39;db-num&#39;: 2934173, &#39;db-len&#39;: 1011751523, &#39;hsp-len&#39;: 0, &#39;eff-space&#39;: 0.0, &#39;kappa&#39;: 0.041, &#39;lambda&#39;: 0.267, &#39;entropy&#39;: 0.14}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">78</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Align.Alignments&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">target</span>
+<span class="go">SeqRecord(seq=Seq(None, length=319), id=&#39;gi|12654095|gb|AAH00859.1|&#39;, name=&#39;AAH00859&#39;, description=&#39;Unknown (protein for IMAGE:3459481) [Homo sapiens]&#39;, dbxrefs=[])</span>
+</pre></div>
+</div>
+<p>Most alignments consist of only 1 or a few Alignment objects:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Align.Alignment&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">score</span>
+<span class="go">630.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">annotations</span>
+<span class="go">{&#39;bit score&#39;: 247.284, &#39;evalue&#39;: 1.69599e-64, &#39;identity&#39;: 122, &#39;positive&#39;: 123, &#39;gaps&#39;: 0, &#39;midline&#39;: &#39;DLQLLIKAVNLFPAGTNSRWEVIANYMNIHSSSGVKRTAKDVIGKAKSLQKLDPHQKDDINKKAFDKFKKEHGVVPQADNATPSERF GPYTDFTP TTE QKL EQAL TYPVNT ERW  IA AVPGR K+&#39;}</span>
+</pre></div>
+</div>
+<p>Target and query information are stored in the respective attributes of the
+alignment:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">target</span>
+<span class="go">SeqRecord(seq=Seq({155: &#39;DLQLLIKAVNLFPAGTNSRWEVIANYMNIHSSSGVKRTAKDVIGKAKSLQKLDP...TKK&#39;}, length=319), id=&#39;gi|12654095|gb|AAH00859.1|&#39;, name=&#39;AAH00859&#39;, description=&#39;Unknown (protein for IMAGE:3459481) [Homo sapiens]&#39;, dbxrefs=[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">query</span>
+<span class="go">SeqRecord(seq=Seq(&#39;DLQLLIKAVNLFPAGTNSRWEVIANYMNIHSSSGVKRTAKDVIGKAKSLQKLDP...XKE&#39;), id=&#39;gi|1347369|gb|G25137.1|G25137&#39;, name=&#39;&lt;unknown name&gt;&#39;, description=&#39;human STS EST48004, sequence tagged site&#39;, dbxrefs=[])</span>
+</pre></div>
+</div>
+<p>This was a BLASTX run, so the query sequence was translated:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">alignment</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span>
+<span class="go">SeqFeature(SimpleLocation(ExactPosition(0), ExactPosition(133)), type=&#39;CDS&#39;, qualifiers=...)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span><span class="o">.</span><span class="n">qualifiers</span>
+<span class="go">{&#39;coded_by&#39;: &#39;gi|1347369|gb|G25137.1|G25137:1..399&#39;}</span>
+</pre></div>
+</div>
+<p>i.e., nucleotides 0:399 (in zero-based coordinates) encode the amino acids
+of the query in the alignment.</p>
+<p>For an alignment against the reverse strand, the location in the qualifier
+is shown as in this example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">[</span><span class="mi">72</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">qualifiers</span>
+<span class="go">{&#39;coded_by&#39;: &#39;complement(gi|1347369|gb|G25137.1|G25137:345..530)&#39;}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Record.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Record.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the Record object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.Records">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.</span></span><span class="sig-name descname"><span class="pre">Records</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Records" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores the BLAST results of a single BLAST run.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code> object is an iterator. Iterating over it returns
+returns <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> objects, each of which corresponds to one
+BLAST query.</p>
+<p>Common attributes of a <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code> object are</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>source:     The input data from which the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code> object</dt><dd><p>was constructed.</p>
+</dd>
+</dl>
+</li>
+<li><p>program:    The specific BLAST program that was used (e.g., ‘blastn’).</p></li>
+<li><p>version:    The version of the BLAST program (e.g., ‘BLASTN 2.2.27+’).</p></li>
+<li><p>reference:  The literature reference to the BLAST publication.</p></li>
+<li><dl class="simple">
+<dt>db:         The BLAST database against which the query was run</dt><dd><p>(e.g., ‘nr’).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>query:      A <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object which may contain some or all of the</dt><dd><dl class="simple">
+<dt>following information:</dt><dd><ul>
+<li><p>query.id:          SeqId of the query;</p></li>
+<li><p>query.description: Definition line of the query;</p></li>
+<li><dl class="simple">
+<dt>query.seq:         The query sequence. The query sequence.</dt><dd><p>The query sequence.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>param:      A dictionary with the parameters used for the BLAST run.</dt><dd><dl class="simple">
+<dt>You may find the following keys in this dictionary:</dt><dd><ul>
+<li><dl class="simple">
+<dt>‘matrix’:       the scoring matrix used in the BLAST run</dt><dd><p>(e.g., ‘BLOSUM62’) (string);</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘expect’:       threshold on the expected number of chance</dt><dd><p>matches (float);</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>‘include’:      e-value threshold for inclusion in</dt><dd><p>multipass model in psiblast (float);</p>
+</dd>
+</dl>
+</li>
+<li><p>‘sc-match’:     score for matching nucleotides (integer);</p></li>
+<li><dl class="simple">
+<dt>‘sc-mismatch’:  score for mismatched nucleotides</dt><dd><p>(integer);</p>
+</dd>
+</dl>
+</li>
+<li><p>‘gap-open’:     gap opening cost (integer);</p></li>
+<li><p>‘gap-extend’:   gap extension cost (integer);</p></li>
+<li><dl class="simple">
+<dt>‘filter’:       filtering options applied in the BLAST</dt><dd><p>run (string);</p>
+</dd>
+</dl>
+</li>
+<li><p>‘pattern’:      PHI-BLAST pattern (string);</p></li>
+<li><p>‘entrez-query’: Limit of request to Entrez query (string).</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>mbstat:     A dictionary with Mega BLAST search statistics.  As this</dt><dd><p>information is stored near the end of the XML file, this
+attribute can only be accessed after the file has been read
+completely (by iterating over the records until a
+<code class="docutils literal notranslate"><span class="pre">StopIteration</span></code> is issued. This dictionary can contain the
+same keys as the dictionary stored under the <code class="docutils literal notranslate"><span class="pre">stat</span></code>
+attribute of a <code class="docutils literal notranslate"><span class="pre">Record</span></code> object.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;Blast/xml_2218_blastp_002.xml&quot;</span>
+</pre></div>
+</div>
+<p>In a script, you would use a <code class="docutils literal notranslate"><span class="pre">with</span></code> block, as in</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="k">as</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">records</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Blast/xml_2218_blastp_002.xml</span>
+</pre></div>
+</div>
+<p>to ensure that the file is closed at the end of the block.
+Here, we will simply do</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Blast/xml_2218_blastp_002.xml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>so we can see the output of each command right away.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Blast.Records&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">source</span>
+<span class="go">&#39;Blast/xml_2218_blastp_002.xml&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">program</span>
+<span class="go">&#39;blastp&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">version</span>
+<span class="go">&#39;BLASTP 2.2.18+&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">reference</span>
+<span class="go">&#39;Altschul, Stephen F., Thomas L. Madden, Alejandro A. Schäffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), &quot;Gapped BLAST and PSI-BLAST: a new generation of protein database search programs&quot;, Nucleic Acids Res. 25:3389-3402.&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">db</span>
+<span class="go">&#39;gpipe/9606/Previous/protein&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">param</span>
+<span class="go">{&#39;matrix&#39;: &#39;BLOSUM62&#39;, &#39;expect&#39;: 0.01, &#39;gap-open&#39;: 11, &#39;gap-extend&#39;: 1, &#39;filter&#39;: &#39;m L; R -d repeat/repeat_9606;&#39;}</span>
+</pre></div>
+</div>
+<p>Iterating over the records returns Bio.Blast.Record objects:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Blast.Record&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;gi|585505|sp|Q08386|MOPB_RHOCA&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Blast.Record&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;gi|129628|sp|P07175.1|PARA_AGRTU&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>  
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">StopIteration</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Records.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Records.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the Records object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Records.__enter__">
+<span class="sig-name descname"><span class="pre">__enter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Records.__enter__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Records.__exit__">
+<span class="sig-name descname"><span class="pre">__exit__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exc_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exc_traceback</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Records.__exit__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Records.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Records.__iter__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Records.__next__">
+<span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Records.__next__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Blast.parse">
+<span class="sig-prename descclassname"><span class="pre">Bio.Blast.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Parse an XML file containing BLAST output and return a Bio.Blast.Records object.</p>
+<p>This returns an iterator object; iterating over it returns Bio.Blast.Record
+objects one by one.</p>
+<p>The source can be a file stream or the path to an XML file containing the
+BLAST output. If a file stream, source  must be in binary mode. This allows
+the parser to detect the encoding from the XML file,and to use it to convert
+any text in the XML to the correct Unicode string. The qblast function in
+Bio.Blast returns a file stream in binary mode. For files, please use mode
+“rb” when opening the file, as in</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Blast/wnts.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Query_1 gi|195230749:301-1383 Homo sapiens wingless-type MMTV integration site family member 2 (WNT2), transcript variant 1, mRNA</span>
+<span class="go">Query_2 gi|325053704:108-1166 Homo sapiens wingless-type MMTV integration site family, member 3A (WNT3A), mRNA</span>
+<span class="go">Query_3 gi|156630997:105-1160 Homo sapiens wingless-type MMTV integration site family, member 4 (WNT4), mRNA</span>
+<span class="go">Query_4 gi|371502086:108-1205 Homo sapiens wingless-type MMTV integration site family, member 5A (WNT5A), transcript variant 2, mRNA</span>
+<span class="go">Query_5 gi|53729353:216-1313 Homo sapiens wingless-type MMTV integration site family, member 6 (WNT6), mRNA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Blast.read">
+<span class="sig-prename descclassname"><span class="pre">Bio.Blast.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.read" title="Permalink to this definition"></a></dt>
+<dd><p>Parse an XML file containing BLAST output for a single query and return it.</p>
+<p>Internally, this function uses Bio.Blast.parse to obtain an iterator over
+BLAST records.  The function then reads one record from the iterator,
+ensures that there are no further records, and returns the record it found
+as a Bio.Blast.Record object. An exception is raised if no records are
+found, or more than one record is found.</p>
+<p>The source can be a file stream or the path to an XML file containing the
+BLAST output. If a file stream, source  must be in binary mode. This allows
+the parser to detect the encoding from the XML file,and to use it to convert
+any text in the XML to the correct Unicode string. The qblast function in
+Bio.Blast returns a file stream in binary mode. For files, please use mode
+“rb” when opening the file, as in</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Blast/xml_2900_blastn_001.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;G26684.1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;human STS STS_D11570, sequence tagged site&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Use the Bio.Blast.parse function if you want to read a file containing
+BLAST output for more than one query.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Blast.qblast">
+<span class="sig-prename descclassname"><span class="pre">Bio.Blast.</span></span><span class="sig-name descname"><span class="pre">qblast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">program</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url_base</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NCBI_BLAST_URL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">composition_based_statistics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">db_genetic_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entrez_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'(none)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expect</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gapcosts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">genetic_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hitlist_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lcase_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nucl_penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nucl_reward</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_advanced</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perc_ident</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi_pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_believe_defline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_from</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">searchsp_eff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ungapped_alignment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">short_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alignment_view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descriptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entrez_links_new_window</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expect_low</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expect_high</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_entrez_query</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_object</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'XML'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncbi_gi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_overview</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">megablast</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blast'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.qblast" title="Permalink to this definition"></a></dt>
+<dd><p>BLAST search using NCBI’s QBLAST server or a cloud service provider.</p>
+<p>Supports all parameters of the old qblast API for Put and Get.</p>
+<p>Please note that NCBI uses the new Common URL API for BLAST searches
+on the internet (<a class="reference external" href="http://ncbi.github.io/blast-cloud/dev/api.html">http://ncbi.github.io/blast-cloud/dev/api.html</a>). Thus,
+some of the parameters used by this function are not (or are no longer)
+officially supported by NCBI. Although they are still functioning, this
+may change in the future.</p>
+<p>The Common URL API (<a class="reference external" href="http://ncbi.github.io/blast-cloud/dev/api.html">http://ncbi.github.io/blast-cloud/dev/api.html</a>) allows
+doing BLAST searches on cloud servers. To use this feature, please set
+<code class="docutils literal notranslate"><span class="pre">url_base='http://host.my.cloud.service.provider.com/cgi-bin/blast.cgi'</span></code>
+and <code class="docutils literal notranslate"><span class="pre">format_object='Alignment'</span></code>. For more details, please see
+<a class="reference external" href="https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&amp;DOC_TYPE=CloudBlast">https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&amp;DOC_TYPE=CloudBlast</a></p>
+<p>Some useful parameters:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>program        blastn, blastp, blastx, tblastn, or tblastx (lower case)</p></li>
+<li><p>database       Which database to search against (e.g. “nr”).</p></li>
+<li><p>sequence       The sequence to search.</p></li>
+<li><p>ncbi_gi        TRUE/FALSE whether to give ‘gi’ identifier.</p></li>
+<li><p>descriptions   Number of descriptions to show.  Def 500.</p></li>
+<li><p>alignments     Number of alignments to show.  Def 500.</p></li>
+<li><p>expect         An expect value cutoff.  Def 10.0.</p></li>
+<li><p>matrix_name    Specify an alt. matrix (PAM30, PAM70, BLOSUM80, BLOSUM45).</p></li>
+<li><p>filter         “none” turns off filtering.  Default no filtering</p></li>
+<li><dl class="simple">
+<dt>format_type    “XML” (default), “HTML”, “Text”, “XML2”, “JSON2”,</dt><dd><p>or “Tabular”.</p>
+</dd>
+</dl>
+</li>
+<li><p>entrez_query   Entrez query to limit Blast search</p></li>
+<li><p>hitlist_size   Number of hits to return. Default 50</p></li>
+<li><p>megablast      TRUE/FALSE whether to use MEga BLAST algorithm (blastn only)</p></li>
+<li><dl class="simple">
+<dt>short_query    TRUE/FALSE whether to adjust the search parameters for a</dt><dd><p>short query sequence. Note that this will override
+manually set parameters like word size and e value. Turns
+off when sequence length is &gt; 30 residues. Default: None.</p>
+</dd>
+</dl>
+</li>
+<li><p>service        plain, psi, phi, rpsblast, megablast (lower case)</p></li>
+</ul>
+</div></blockquote>
+<p>This function does no checking of the validity of the parameters
+and passes the values to the server as is.  More help is available at:
+<a class="reference external" href="https://ncbi.github.io/blast-cloud/dev/api.html">https://ncbi.github.io/blast-cloud/dev/api.html</a></p>
+</dd></dl>
+
 </section>
 </section>
 

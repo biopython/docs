@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Bio.Blast.Record module" href="Bio.Blast.Record.html" />
+    <link rel="next" title="Bio.CAPS package" href="Bio.CAPS.html" />
     <link rel="prev" title="Bio.Blast.NCBIWWW module" href="Bio.Blast.NCBIWWW.html" /> 
 </head>
 
@@ -121,7 +121,7 @@
       </li>
   </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
         <a href="Bio.Blast.NCBIWWW.html" class="btn btn-neutral float-left" title="Bio.Blast.NCBIWWW module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Bio.Blast.Record.html" class="btn btn-neutral float-right" title="Bio.Blast.Record module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Bio.CAPS.html" class="btn btn-neutral float-right" title="Bio.CAPS package" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
   </div>
   <hr/>
 </div>
@@ -131,13 +131,353 @@
   <section id="module-Bio.Blast.NCBIXML">
 <span id="bio-blast-ncbixml-module"></span><h1>Bio.Blast.NCBIXML module<a class="headerlink" href="#module-Bio.Blast.NCBIXML" title="Permalink to this headline"></a></h1>
 <p>Code to work with the BLAST XML output.</p>
-<p>The BLAST XML DTD file is on the NCBI FTP site at:
-<a class="reference external" href="ftp://ftp.ncbi.nlm.nih.gov/blast/documents/xml/NCBI_BlastOutput.dtd">ftp://ftp.ncbi.nlm.nih.gov/blast/documents/xml/NCBI_BlastOutput.dtd</a></p>
+<p>The BLAST XML DTD file is available on the NCBI site at:
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.dtd">https://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.dtd</a></p>
+<p>Record classes to hold BLAST output are:</p>
+<p>Classes:
+Blast              Holds all the information from a blast search.
+PSIBlast           Holds all the information from a psi-blast search.</p>
+<p>Header             Holds information from the header.
+Description        Holds information about one hit description.
+Alignment          Holds information about one alignment hit.
+HSP                Holds information about one HSP.
+MultipleAlignment  Holds information about a multiple alignment.
+DatabaseReport     Holds information from the database report.
+Parameters         Holds information from the parameters.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.fmt_">
+<span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">fmt_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format_spec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'&lt;unknown&gt;'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.fmt_" title="Permalink to this definition"></a></dt>
+<dd><p>Ensure the given value formats to a string correctly.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Header">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">Header</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.Header" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Saves information from a blast header.</p>
+<p>Members:
+application         The name of the BLAST flavor that generated this data.
+version             Version of blast used.
+date                Date this data was generated.
+reference           Reference for blast.</p>
+<p>query               Name of query sequence.
+query_letters       Number of letters in the query sequence.  (int)</p>
+<p>database            Name of the database.
+database_sequences  Number of sequences in the database.  (int)
+database_letters    Number of letters in the database.  (int)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Header.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.Header.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Description">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">Description</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.Description" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores information about one hit in the descriptions section.</p>
+<p>Members:
+title           Title of the hit.
+score           Number of bits.  (int)
+bits            Bit score. (float)
+e               E value.  (float)
+num_alignments  Number of alignments for the same subject.  (int)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Description.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.Description.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Description.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.Description.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return the description as a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.DescriptionExt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">DescriptionExt</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.DescriptionExt" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.Blast.NCBIXML.Description" title="Bio.Blast.NCBIXML.Description"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML.Description</span></code></a></p>
+<p>Extended description record for BLASTXML version 2.</p>
+<p>Members:
+items           List of DescriptionExtItem</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.DescriptionExt.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.DescriptionExt.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.DescriptionExt.append_item">
+<span class="sig-name descname"><span class="pre">append_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.DescriptionExt.append_item" title="Permalink to this definition"></a></dt>
+<dd><p>Add a description extended record.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.DescriptionExtItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">DescriptionExtItem</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.DescriptionExtItem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores information about one record in hit description for BLASTXML version 2.</p>
+<p>Members:
+id              Database identifier
+title           Title of the hit.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.DescriptionExtItem.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.DescriptionExtItem.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.DescriptionExtItem.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.DescriptionExtItem.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return the description identifier and title as a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Alignment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">Alignment</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.Alignment" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores information about one hit in the alignments section.</p>
+<p>Members:
+title      Name.
+hit_id     Hit identifier. (str)
+hit_def    Hit definition. (str)
+length     Length.  (int)
+hsps       A list of HSP objects.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Alignment.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.Alignment.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Alignment.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.Alignment.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return the BLAST alignment as a formatted string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.HSP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">HSP</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.HSP" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Stores information about one hsp in an alignment hit.</p>
+<dl class="simple">
+<dt>Members:</dt><dd><ul class="simple">
+<li><p>score           BLAST score of hit.  (float)</p></li>
+<li><p>bits            Number of bits for that score.  (float)</p></li>
+<li><p>expect          Expect value.  (float)</p></li>
+<li><p>num_alignments  Number of alignments for same subject.  (int)</p></li>
+<li><p>identities      Number of identities (int) if using the XML parser.
+Tuple of number of identities/total aligned (int, int)
+if using the (obsolete) plain text parser.</p></li>
+<li><p>positives       Number of positives (int) if using the XML parser.
+Tuple of number of positives/total aligned (int, int)
+if using the (obsolete) plain text parser.</p></li>
+<li><p>gaps            Number of gaps (int) if using the XML parser.
+Tuple of number of gaps/total aligned (int, int) if
+using the (obsolete) plain text parser.</p></li>
+<li><p>align_length    Length of the alignment. (int)</p></li>
+<li><p>strand          Tuple of (query, target) strand.</p></li>
+<li><p>frame           Tuple of 1 or 2 frame shifts, depending on the flavor.</p></li>
+<li><p>query           The query sequence.</p></li>
+<li><p>query_start     The start residue for the query sequence.  (1-based)</p></li>
+<li><p>query_end       The end residue for the query sequence.  (1-based)</p></li>
+<li><p>match           The match sequence.</p></li>
+<li><p>sbjct           The sbjct sequence.</p></li>
+<li><p>sbjct_start     The start residue for the sbjct sequence.  (1-based)</p></li>
+<li><p>sbjct_end       The end residue for the sbjct sequence.  (1-based)</p></li>
+</ul>
+</dd>
+</dl>
+<p>Not all flavors of BLAST return values for every attribute:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>          <span class="n">score</span>     <span class="n">expect</span>     <span class="n">identities</span>   <span class="n">positives</span>    <span class="n">strand</span>  <span class="n">frame</span>
+<span class="n">BLASTP</span>     <span class="n">X</span>          <span class="n">X</span>            <span class="n">X</span>            <span class="n">X</span>
+<span class="n">BLASTN</span>     <span class="n">X</span>          <span class="n">X</span>            <span class="n">X</span>            <span class="n">X</span>          <span class="n">X</span>
+<span class="n">BLASTX</span>     <span class="n">X</span>          <span class="n">X</span>            <span class="n">X</span>            <span class="n">X</span>                  <span class="n">X</span>
+<span class="n">TBLASTN</span>    <span class="n">X</span>          <span class="n">X</span>            <span class="n">X</span>            <span class="n">X</span>                  <span class="n">X</span>
+<span class="n">TBLASTX</span>    <span class="n">X</span>          <span class="n">X</span>            <span class="n">X</span>            <span class="n">X</span>                 <span class="n">X</span><span class="o">/</span><span class="n">X</span>
+</pre></div>
+</div>
+<p>Note: for BLASTX, the query sequence is shown as a protein sequence,
+but the numbering is based on the nucleotides.  Thus, the numbering
+is 3x larger than the number of amino acid residues.  A similar effect
+can be seen for the sbjct sequence in TBLASTN, and for both sequences
+in TBLASTX.</p>
+<p>Also, for negative frames, the sequence numbering starts from
+query_start and counts down.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.HSP.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.HSP.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.HSP.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.HSP.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return the BLAST HSP as a formatted string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.MultipleAlignment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">MultipleAlignment</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.MultipleAlignment" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds information about a multiple alignment.</p>
+<p>Members:
+alignment  A list of tuples (name, start residue, sequence, end residue).</p>
+<p>The start residue is 1-based.  It may be blank, if that sequence is
+not aligned in the multiple alignment.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.MultipleAlignment.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.MultipleAlignment.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.MultipleAlignment.to_generic">
+<span class="sig-name descname"><span class="pre">to_generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.MultipleAlignment.to_generic" title="Permalink to this definition"></a></dt>
+<dd><p>Retrieve generic alignment object for the given alignment.</p>
+<p>Instead of the tuples, this returns a MultipleSeqAlignment object
+from Bio.Align, through which you can manipulate and query
+the object.</p>
+<p>Thanks to James Casbon for the code.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Round">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">Round</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.Round" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds information from a PSI-BLAST round.</p>
+<p>Members:
+number       Round number.  (int)
+reused_seqs  Sequences in model, found again.  List of Description objects.
+new_seqs     Sequences not found, or below threshold.  List of Description.
+alignments          A list of Alignment objects.
+multiple_alignment  A MultipleAlignment object.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Round.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.Round.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.DatabaseReport">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">DatabaseReport</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.DatabaseReport" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds information about a database report.</p>
+<p>Members:
+database_name              List of database names.  (can have multiple dbs)
+num_letters_in_database    Number of letters in the database.  (int)
+num_sequences_in_database  List of number of sequences in the database.
+posted_date                List of the dates the databases were posted.
+ka_params                  A tuple of (lambda, k, h) values.  (floats)
+gapped                     # XXX this isn’t set right!
+ka_params_gap              A tuple of (lambda, k, h) values.  (floats)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.DatabaseReport.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.DatabaseReport.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Parameters">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">Parameters</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.Parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Holds information about the parameters.</p>
+<p>Members:
+matrix              Name of the matrix.
+gap_penalties       Tuple of (open, extend) penalties.  (floats)
+sc_match            Match score for nucleotide-nucleotide comparison
+sc_mismatch         Mismatch penalty for nucleotide-nucleotide comparison
+num_hits            Number of hits to the database.  (int)
+num_sequences       Number of sequences.  (int)
+num_good_extends    Number of extensions.  (int)
+num_seqs_better_e   Number of sequences better than e-value.  (int)
+hsps_no_gap         Number of HSP’s better, without gapping.  (int)
+hsps_prelim_gapped  Number of HSP’s gapped in prelim test.  (int)
+hsps_prelim_gapped_attemped  Number of HSP’s attempted in prelim.  (int)
+hsps_gapped         Total number of HSP’s gapped.  (int)
+query_length        Length of the query.  (int)
+query_id            Identifier of the query sequence. (str)
+database_length     Number of letters in the database.  (int)
+effective_hsp_length         Effective HSP length.  (int)
+effective_query_length       Effective length of query.  (int)
+effective_database_length    Effective length of database.  (int)
+effective_search_space       Effective search space.  (int)
+effective_search_space_used  Effective search space used.  (int)
+frameshift          Frameshift window.  Tuple of (int, float)
+threshold           Threshold.  (int)
+window_size         Window size.  (int)
+dropoff_1st_pass    Tuple of (score, bits).  (int, float)
+gap_x_dropoff       Tuple of (score, bits).  (int, float)
+gap_x_dropoff_final Tuple of (score, bits).  (int, float)
+gap_trigger         Tuple of (score, bits).  (int, float)
+blast_cutoff        Tuple of (score, bits).  (int, float)</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Parameters.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.Parameters.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Blast">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">Blast</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.Blast" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.Blast.NCBIXML.Header" title="Bio.Blast.NCBIXML.Header"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML.Header</span></code></a>, <a class="reference internal" href="#Bio.Blast.NCBIXML.DatabaseReport" title="Bio.Blast.NCBIXML.DatabaseReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML.DatabaseReport</span></code></a>, <a class="reference internal" href="#Bio.Blast.NCBIXML.Parameters" title="Bio.Blast.NCBIXML.Parameters"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML.Parameters</span></code></a></p>
+<p>Saves the results from a blast search.</p>
+<p>Members:
+descriptions        A list of Description objects.
+alignments          A list of Alignment objects.
+multiple_alignment  A MultipleAlignment object.
++ members inherited from base classes</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.Blast.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.Blast.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.PSIBlast">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">PSIBlast</span></span><a class="headerlink" href="#Bio.Blast.NCBIXML.PSIBlast" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Bio.Blast.NCBIXML.Header" title="Bio.Blast.NCBIXML.Header"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML.Header</span></code></a>, <a class="reference internal" href="#Bio.Blast.NCBIXML.DatabaseReport" title="Bio.Blast.NCBIXML.DatabaseReport"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML.DatabaseReport</span></code></a>, <a class="reference internal" href="#Bio.Blast.NCBIXML.Parameters" title="Bio.Blast.NCBIXML.Parameters"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML.Parameters</span></code></a></p>
+<p>Saves the results from a blastpgp search.</p>
+<p>Members:
+rounds       A list of Round objects.
+converged    Whether the search converged.
++ members inherited from base classes</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.NCBIXML.PSIBlast.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.PSIBlast.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the class.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.Blast.NCBIXML.BlastParser">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.NCBIXML.</span></span><span class="sig-name descname"><span class="pre">BlastParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">debug</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.NCBIXML.BlastParser" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML._XMLparser</span></code></p>
-<p>Parse XML BLAST data into a Record.Blast object.</p>
+<p>Parse XML BLAST data into a Blast object.</p>
 <p>Parses XML output from BLAST (direct use discouraged).
 This (now) returns a list of Blast records.
 Historically it returned a single Blast record.
@@ -228,7 +568,7 @@ which strictly speaking wasn’t valid XML).</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Bio.Blast.NCBIWWW.html" class="btn btn-neutral float-left" title="Bio.Blast.NCBIWWW module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Bio.Blast.Record.html" class="btn btn-neutral float-right" title="Bio.Blast.Record module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Bio.CAPS.html" class="btn btn-neutral float-right" title="Bio.CAPS package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
