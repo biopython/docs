@@ -193,6 +193,53 @@ original position in the file.</p>
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentIterator.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentIterator.__getitem__" title="Permalink to this definition"></a></dt>
+<dd><p>Return the alignments as an Alignments object (which inherits from list).</p>
+<p>Only an index of the form [:] (i.e., a full slice) is supported.
+The file stream is returned to its zero position, and the file header
+is read and stored in an Alignments object. Next, we iterate over the
+alignments and store them in the Alignments object.  The iterator
+is then returned to its original position in the file, and the
+Alignments object is returned. The Alignments object contains the exact
+same information as the Alignment iterator self, but stores the
+alignments in a list instead of as an iterator, allowing indexing.</p>
+<p>Typical usage is</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Blat/dna_rna.psl&quot;</span><span class="p">,</span> <span class="s2">&quot;psl&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">metadata</span>
+<span class="go">{&#39;psLayout version&#39;: &#39;3&#39;}</span>
+</pre></div>
+</div>
+<p>As <cite>alignments</cite> is an iterator and not a list, we cannot retrieve an
+alignment by its index:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>  
+<span class="gt">Traceback (most recent call last):</span>
+<span class="w">  </span><span class="c">...</span>
+<span class="gr">KeyError</span>: <span class="n">&#39;only [:] (a full slice) can be used as the index&#39;</span>
+</pre></div>
+</div>
+<p>So we use the iterator to create a list-like Alignments object:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[:]</span>
+</pre></div>
+</div>
+<p>While <cite>alignments</cite> is a list-like object, it has the same <cite>metadata</cite>
+attribute representing the information stored in the file header:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">metadata</span>
+<span class="go">{&#39;psLayout version&#39;: &#39;3&#39;}</span>
+</pre></div>
+</div>
+<p>Now we can index individual alignments:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">id</span>
+<span class="go">(&#39;chr3&#39;, &#39;NR_111921.1&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.interfaces.AlignmentIterator.rewind">
 <span class="sig-name descname"><span class="pre">rewind</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.interfaces.AlignmentIterator.rewind" title="Permalink to this definition"></a></dt>
 <dd><p>Rewind the iterator to let it loop over the alignments from the beginning.</p>
