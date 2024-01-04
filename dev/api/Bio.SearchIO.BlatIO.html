@@ -153,29 +153,31 @@ version 3. It should be able to parse psLayout version 4 without problems.</p>
 <p>BlatIO supports parsing, indexing, and writing for both PSL and PSLX output
 formats, with or without header. To parse, index, or write PSLX files, use the
 ‘pslx’ keyword argument and set it to True.</p>
-<blockquote>
-<div><p># blat-psl defaults to PSL files
-&gt;&gt;&gt; from Bio import SearchIO
-&gt;&gt;&gt; psl = ‘Blat/psl_34_004.psl’
-&gt;&gt;&gt; qresult = SearchIO.read(psl, ‘blat-psl’)
-&gt;&gt;&gt; qresult
-QueryResult(id=’hg19_dna’, 10 hits)</p>
-<p># set the pslx flag to parse PSLX files
-&gt;&gt;&gt; pslx = ‘Blat/pslx_34_004.pslx’
-&gt;&gt;&gt; qresult = SearchIO.read(pslx, ‘blat-psl’, pslx=True)
-&gt;&gt;&gt; qresult
-QueryResult(id=’hg19_dna’, 10 hits)</p>
-</div></blockquote>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># blat-psl defaults to PSL files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">psl</span> <span class="o">=</span> <span class="s1">&#39;Blat/psl_34_004.psl&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">psl</span><span class="p">,</span> <span class="s1">&#39;blat-psl&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span>
+<span class="go">QueryResult(id=&#39;hg19_dna&#39;, 10 hits)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># set the pslx flag to parse PSLX files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pslx</span> <span class="o">=</span> <span class="s1">&#39;Blat/pslx_34_004.pslx&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">pslx</span><span class="p">,</span> <span class="s1">&#39;blat-psl&#39;</span><span class="p">,</span> <span class="n">pslx</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span>
+<span class="go">QueryResult(id=&#39;hg19_dna&#39;, 10 hits)</span>
+</pre></div>
+</div>
 <p>For parsing and indexing, you do not need to specify whether the file has a
 header or not. For writing, if you want to write a header, you can set the
 ‘header’ keyword argument to True. This will write a ‘psLayout version 3’ header
 to your output file.</p>
-<blockquote>
-<div><p>from Bio import SearchIO
-qresult = SearchIO.read(psl, ‘blat-psl’)
-SearchIO.write(qresult, ‘header.psl’, header=True)
-&lt;stdout&gt; (1, 10, 19, 23)</p>
-</div></blockquote>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">psl</span><span class="p">,</span> <span class="s1">&#39;blat-psl&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SearchIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">qresult</span><span class="p">,</span> <span class="s1">&#39;header.psl&#39;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">&lt;stdout&gt; (1, 10, 19, 23)</span>
+</pre></div>
+</div>
 <p>Note that the number of HSPFragments written may exceed the number of HSP
 objects. This is because in PSL files, it is possible to have single matches
 consisting of noncontiguous sequence fragments. This is where the HSPFragment
