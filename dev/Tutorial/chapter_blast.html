@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLAST (new) &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="BLAST and other sequence search tools" href="chapter_searchio.html" />
+    <link rel="prev" title="Pairwise alignments using pairwise2" href="chapter_pairwise2.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">BLAST (new)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-blast-over-the-internet">Running BLAST over the Internet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#blast-arguments">BLAST arguments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#saving-blast-results">Saving BLAST results</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#obtaining-blast-output-in-other-formats">Obtaining BLAST output in other formats</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-blast-locally">Running BLAST locally</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#standalone-ncbi-blast">Standalone NCBI BLAST+</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#other-versions-of-blast">Other versions of BLAST</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parsing-blast-output">Parsing BLAST output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-blast-records-and-record-classes">The BLAST Records and Record classes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-blast-records-class">The BLAST Records class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-blast-record-class">The BLAST Record class</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#dealing-with-psi-blast">Dealing with PSI-BLAST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dealing-with-rps-blast">Dealing with RPS-BLAST</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#blast-old">BLAST (old)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Running BLAST over the Internet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Running BLAST locally</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction-1">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#standalone-ncbi-blast-1">Standalone NCBI BLAST+</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">Other versions of BLAST</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">Parsing BLAST output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">The BLAST record class</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dealing-with-psi-blast-1">Dealing with PSI-BLAST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dealing-with-rps-blast-1">Dealing with RPS-BLAST</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">BLAST (new)</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_blast.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_pairwise2.html" class="btn btn-neutral float-left" title="Pairwise alignments using pairwise2" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_searchio.html" class="btn btn-neutral float-right" title="BLAST and other sequence search tools" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="blast-new">
+<span id="chapter-blast"></span><h1>BLAST (new)<a class="headerlink" href="#blast-new" title="Permalink to this headline"></a></h1>
+<p>Hey, everybody loves BLAST right? I mean, geez, how can it get any
+easier to do comparisons between one of your sequences and every other
+sequence in the known world? But, of course, this section isn’t about
+how cool BLAST is, since we already know that. It is about the problem
+with BLAST – it can be really difficult to deal with the volume of data
+generated by large runs, and to automate BLAST runs in general.</p>
+<p>Fortunately, the Biopython folks know this only too well, so they’ve
+developed lots of tools for dealing with BLAST and making things much
+easier. This section details how to use these tools and do useful things
+with them.</p>
+<p>Dealing with BLAST can be split up into two steps, both of which can be
+done from within Biopython. Firstly, running BLAST for your query
+sequence(s), and getting some output. Secondly, parsing the BLAST output
+in Python for further analysis.</p>
+<p>Your first introduction to running BLAST was probably via the <a class="reference external" href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">NCBI
+BLAST web page</a>. In fact,
+there are lots of ways you can run BLAST, which can be categorized in
+several ways. The most important distinction is running BLAST locally
+(on your own machine), and running BLAST remotely (on another machine,
+typically the NCBI servers). We’re going to start this chapter by
+invoking the NCBI online BLAST service from within a Python script.</p>
+<section id="running-blast-over-the-internet">
+<span id="sec-running-www-blast"></span><h2>Running BLAST over the Internet<a class="headerlink" href="#running-blast-over-the-internet" title="Permalink to this headline"></a></h2>
+<p>We use the function <code class="docutils literal notranslate"><span class="pre">qblast</span></code> in the <code class="docutils literal notranslate"><span class="pre">Bio.Blast</span></code> module to call the
+online version of BLAST.</p>
+<p>The <a class="reference external" href="https://blast.ncbi.nlm.nih.gov/doc/blast-help/developerinfo.html#developerinfo">NCBI
+guidelines</a>
+state:</p>
+<ol class="arabic simple">
+<li><p>Do not contact the server more often than once every 10 seconds.</p></li>
+<li><p>Do not poll for any single RID more often than once a minute.</p></li>
+<li><p>Use the URL parameter email and tool, so that the NCBI can contact
+you if there is a problem.</p></li>
+<li><p>Run scripts weekends or between 9 pm and 5 am Eastern time on
+weekdays if more than 50 searches will be submitted.</p></li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">Blast.qblast</span></code> follows the first two points automatically. To fulfill
+the third point, set the <code class="docutils literal notranslate"><span class="pre">Blast.email</span></code> variable (the <code class="docutils literal notranslate"><span class="pre">Blast.tool</span></code>
+variable is already set to <code class="docutils literal notranslate"><span class="pre">&quot;biopython&quot;</span></code> by default):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Blast</span><span class="o">.</span><span class="n">tool</span>
+<span class="go">&#39;biopython&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Blast</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;A.N.Other@example.com&quot;</span>
+</pre></div>
+</div>
+<section id="blast-arguments">
+<span id="subsec-blast-arguments"></span><h3>BLAST arguments<a class="headerlink" href="#blast-arguments" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">qblast</span></code> function has three non-optional arguments:</p>
+<ul class="simple">
+<li><p>The first argument is the BLAST program to use for the search, as a
+lower case string. The programs and their options are described at
+the <a class="reference external" href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">NCBI BLAST web
+page</a>. Currently
+<code class="docutils literal notranslate"><span class="pre">qblast</span></code> only works with blastn, blastp, blastx, tblast and
+tblastx.</p></li>
+<li><p>The second argument specifies the databases to search against. Again,
+the options for this are available on <a class="reference external" href="https://blast.ncbi.nlm.nih.gov/doc/blast-help/">NCBI’s BLAST Help
+pages</a>.</p></li>
+<li><p>The third argument is a string containing your query sequence. This
+can either be the sequence itself, the sequence in fasta format, or
+an identifier like a GI number.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">qblast</span></code> function also takes a number of other option arguments,
+which are basically analogous to the different parameters you can set on
+the BLAST web page. We’ll just highlight a few of them here:</p>
+<ul class="simple">
+<li><p>The argument <code class="docutils literal notranslate"><span class="pre">url_base</span></code> sets the base URL for running BLAST over
+the internet. By default it connects to the NCBI, but one can use
+this to connect to an instance of NCBI BLAST running in the cloud.
+Please refer to the documentation for the <code class="docutils literal notranslate"><span class="pre">qblast</span></code> function for
+further details.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">qblast</span></code> function can return the BLAST results in various
+formats, which you can choose with the optional <code class="docutils literal notranslate"><span class="pre">format_type</span></code>
+keyword: <code class="docutils literal notranslate"><span class="pre">&quot;XML&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;HTML&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Text&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;XML2&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;JSON2&quot;</span></code>,
+or <code class="docutils literal notranslate"><span class="pre">&quot;Tabular&quot;</span></code>. The default is <code class="docutils literal notranslate"><span class="pre">&quot;XML&quot;</span></code>, as that is the format
+expected by the parser, described in
+section <a class="reference internal" href="#sec-parsing-blast"><span class="std std-ref">Parsing BLAST output</span></a> below.</p></li>
+<li><p>The argument <code class="docutils literal notranslate"><span class="pre">expect</span></code> sets the expectation or e-value threshold.</p></li>
+</ul>
+<p>For more about the optional BLAST arguments, we refer you to the NCBI’s
+own documentation, or that built into Biopython:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">Blast</span><span class="o">.</span><span class="n">qblast</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the default settings on the NCBI BLAST website are not quite
+the same as the defaults on QBLAST. If you get different results, you’ll
+need to check the parameters (e.g., the expectation value threshold and
+the gap values).</p>
+<p>For example, if you have a nucleotide sequence you want to search
+against the nucleotide database (nt) using BLASTN, and you know the GI
+number of your query sequence, you can use:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="s2">&quot;8332116&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternatively, if we have our query sequence already in a FASTA
+formatted file, we just need to open the file and read in this record as
+a string, and use that as the query argument:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fasta_string</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;m_cold.fasta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="n">fasta_string</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We could also have read in the FASTA file as a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> and then
+supplied just the sequence itself:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;m_cold.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Supplying just the sequence means that BLAST will assign an identifier
+for your sequence automatically. You might prefer to call <code class="docutils literal notranslate"><span class="pre">format</span></code> on
+the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object to make a FASTA string (which will include the
+existing identifier):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This approach makes more sense if you have your sequence(s) in a
+non-FASTA file format which you can extract using <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> (see
+Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>).</p>
+</section>
+<section id="saving-blast-results">
+<span id="subsec-saving-blast-results"></span><h3>Saving BLAST results<a class="headerlink" href="#saving-blast-results" title="Permalink to this headline"></a></h3>
+<p>Whatever arguments you give the <code class="docutils literal notranslate"><span class="pre">qblast()</span></code> function, you should get
+back your results as a stream of <code class="docutils literal notranslate"><span class="pre">bytes</span></code> data (by default in XML
+format). The next step would be to parse the XML output into Python
+objects representing the search results
+(Section <a class="reference internal" href="#sec-parsing-blast"><span class="std std-ref">Parsing BLAST output</span></a>), but you might want to save a
+local copy of the output file first. I find this especially useful when
+debugging my code that extracts info from the BLAST results (because
+re-running the online search is slow and wastes the NCBI computer time).</p>
+<p>We need to be a bit careful since we can use <code class="docutils literal notranslate"><span class="pre">result_stream.read()</span></code> to
+read the BLAST output only once – calling <code class="docutils literal notranslate"><span class="pre">result_stream.read()</span></code> again
+returns an empty <code class="docutils literal notranslate"><span class="pre">bytes</span></code> object.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;my_blast.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_stream</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">out_stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result_stream</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>After doing this, the results are in the file <code class="docutils literal notranslate"><span class="pre">my_blast.xml</span></code> and
+<code class="docutils literal notranslate"><span class="pre">result_stream</span></code> has had all its data extracted (so we closed it).
+However, the <code class="docutils literal notranslate"><span class="pre">parse</span></code> function of the BLAST parser (described
+in <a class="reference internal" href="#sec-parsing-blast"><span class="std std-ref">Parsing BLAST output</span></a>) takes a file-like object, so we can
+just open the saved file for input as <code class="docutils literal notranslate"><span class="pre">bytes</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;my_blast.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that we’ve got the BLAST results back into a data stream again, we
+are ready to do something with them, so this leads us right into the
+parsing section (see Section <a class="reference internal" href="#sec-parsing-blast"><span class="std std-ref">Parsing BLAST output</span></a> below). You
+may want to jump ahead to that now ….</p>
+</section>
+<section id="obtaining-blast-output-in-other-formats">
+<span id="subsec-blast-other-formats"></span><h3>Obtaining BLAST output in other formats<a class="headerlink" href="#obtaining-blast-output-in-other-formats" title="Permalink to this headline"></a></h3>
+<p>By using the <code class="docutils literal notranslate"><span class="pre">format_type</span></code> argument when calling <code class="docutils literal notranslate"><span class="pre">qblast</span></code>, you can
+obtain BLAST output in formats other than XML. Below is an example of
+reading BLAST output in JSON format. Using <code class="docutils literal notranslate"><span class="pre">format_type=&quot;JSON2&quot;</span></code>, the
+data provided by <code class="docutils literal notranslate"><span class="pre">Blast.qblast</span></code> will be in zipped JSON format:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;m_cold.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span> <span class="n">format_type</span><span class="o">=</span><span class="s2">&quot;JSON2&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">result_stream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+<span class="go">b&#39;PK\x03\x04&#39;</span>
+</pre></div>
+</div>
+<p>which is the ZIP file magic number.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;myzipfile.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_stream</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">out_stream</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">13813</span>
+</pre></div>
+</div>
+<p>Note that we read and write the data as <code class="docutils literal notranslate"><span class="pre">bytes</span></code>. Now open the ZIP file
+we created:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myzipfile</span> <span class="o">=</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="s2">&quot;myzipfile.zip&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myzipfile</span><span class="o">.</span><span class="n">namelist</span><span class="p">()</span>
+<span class="go">[&#39;N5KN7UMJ013.json&#39;, &#39;N5KN7UMJ013_1.json&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">myzipfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;N5KN7UMJ013.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>These data are <code class="docutils literal notranslate"><span class="pre">bytes</span></code>, so we need to decode them to get a string
+object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">    &quot;BlastJSON&quot;: [</span>
+<span class="go">        {&quot;File&quot;: &quot;N5KN7UMJ013_1.json&quot; }</span>
+<span class="go">    ]</span>
+<span class="go">}</span>
+</pre></div>
+</div>
+<p>Now open the second file contained in the ZIP file to get the BLAST
+results in JSON format:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">myzipfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;N5KN7UMJ013_1.json&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">145707</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">{</span>
+<span class="go">  &quot;BlastOutput2&quot;: {</span>
+<span class="go">    &quot;report&quot;: {</span>
+<span class="go">      &quot;program&quot;: &quot;blastn&quot;,</span>
+<span class="go">      &quot;version&quot;: &quot;BLASTN 2.14.1+&quot;,</span>
+<span class="go">      &quot;reference&quot;: &quot;Stephen F. Altschul, Thomas L. Madden, Alejandro A. ...</span>
+<span class="go">      &quot;search_target&quot;: {</span>
+<span class="go">        &quot;db&quot;: &quot;nt&quot;</span>
+<span class="go">      },</span>
+<span class="go">      &quot;params&quot;: {</span>
+<span class="go">        &quot;expect&quot;: 10,</span>
+<span class="go">        &quot;sc_match&quot;: 2,</span>
+<span class="go">        &quot;sc_mismatch&quot;: -3,</span>
+<span class="go">        &quot;gap_open&quot;: 5,</span>
+<span class="go">        &quot;gap_extend&quot;: 2,</span>
+<span class="go">        &quot;filter&quot;: &quot;L;m;&quot;</span>
+<span class="go">      },</span>
+<span class="go">      &quot;results&quot;: {</span>
+<span class="go">        &quot;search&quot;: {</span>
+<span class="go">          &quot;query_id&quot;: &quot;Query_69183&quot;,</span>
+<span class="go">          &quot;query_len&quot;: 1111,</span>
+<span class="go">          &quot;query_masking&quot;: [</span>
+<span class="go">            {</span>
+<span class="go">              &quot;from&quot;: 797,</span>
+<span class="go">              &quot;to&quot;: 1110</span>
+<span class="go">            }</span>
+<span class="go">          ],</span>
+<span class="go">          &quot;hits&quot;: [</span>
+<span class="go">            {</span>
+<span class="go">              &quot;num&quot;: 1,</span>
+<span class="go">              &quot;description&quot;: [</span>
+<span class="go">                {</span>
+<span class="go">                  &quot;id&quot;: &quot;gi|1219041180|ref|XM_021875076.1|&quot;,</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>We can use the JSON parser in Python’s standard library to convert the
+JSON data into a regular Python dictionary:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="go">{&#39;BlastOutput2&#39;: {&#39;report&#39;: {&#39;program&#39;: &#39;blastn&#39;, &#39;version&#39;: &#39;BLASTN 2.14.1+&#39;,</span>
+<span class="go"> &#39;reference&#39;: &#39;Stephen F. Altschul, Thomas L. Madden, Alejandro A. Sch&amp;auml;ffer,</span>
+<span class="go"> Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997),</span>
+<span class="go"> &quot;Gapped BLAST and PSI-BLAST: a new generation of protein database search programs&quot;,</span>
+<span class="go"> Nucleic Acids Res. 25:3389-3402.&#39;,</span>
+<span class="go"> &#39;search_target&#39;: {&#39;db&#39;: &#39;nt&#39;}, &#39;params&#39;: {&#39;expect&#39;: 10, &#39;sc_match&#39;: 2,</span>
+<span class="go"> &#39;sc_mismatch&#39;: -3, &#39;gap_open&#39;: 5, &#39;gap_extend&#39;: 2, &#39;filter&#39;: &#39;L;m;&#39;},</span>
+<span class="go"> &#39;results&#39;: {&#39;search&#39;: {&#39;query_id&#39;: &#39;Query_128889&#39;, &#39;query_len&#39;: 1111,</span>
+<span class="go"> &#39;query_masking&#39;: [{&#39;from&#39;: 797, &#39;to&#39;: 1110}], &#39;hits&#39;: [{&#39;num&#39;: 1,</span>
+<span class="go"> &#39;description&#39;: [{&#39;id&#39;: &#39;gi|1219041180|ref|XM_021875076.1|&#39;, &#39;accession&#39;:</span>
+<span class="go"> &#39;XM_021875076&#39;, &#39;title&#39;:</span>
+<span class="go"> &#39;PREDICTED: Chenopodium quinoa cold-regulated 413 plasma membrane protein 2-like (LOC110697660), mRNA&#39;,</span>
+<span class="go"> &#39;taxid&#39;: 63459, &#39;sciname&#39;: &#39;Chenopodium quinoa&#39;}], &#39;len&#39;: 1173, &#39;hsps&#39;:</span>
+<span class="go"> [{&#39;num&#39;: 1, &#39;bit_score&#39;: 435.898, &#39;score&#39;: 482, &#39;evalue&#39;: 9.02832e-117,</span>
+<span class="go"> &#39;identity&#39;: 473, &#39;query_from&#39;</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-blast-locally">
+<span id="sec-running-local-blast"></span><h2>Running BLAST locally<a class="headerlink" href="#running-blast-locally" title="Permalink to this headline"></a></h2>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h3>
+<p>Running BLAST locally (as opposed to over the internet, see
+Section <a class="reference internal" href="#sec-running-www-blast"><span class="std std-ref">Running BLAST over the Internet</span></a>) has at least major two
+advantages:</p>
+<ul class="simple">
+<li><p>Local BLAST may be faster than BLAST over the internet;</p></li>
+<li><p>Local BLAST allows you to make your own database to search for
+sequences against.</p></li>
+</ul>
+<p>Dealing with proprietary or unpublished sequence data can be another
+reason to run BLAST locally. You may not be allowed to redistribute the
+sequences, so submitting them to the NCBI as a BLAST query would not be
+an option.</p>
+<p>Unfortunately, there are some major drawbacks too – installing all the
+bits and getting it setup right takes some effort:</p>
+<ul class="simple">
+<li><p>Local BLAST requires command line tools to be installed.</p></li>
+<li><p>Local BLAST requires (large) BLAST databases to be setup (and
+potentially kept up to date).</p></li>
+</ul>
+</section>
+<section id="standalone-ncbi-blast">
+<h3>Standalone NCBI BLAST+<a class="headerlink" href="#standalone-ncbi-blast" title="Permalink to this headline"></a></h3>
+<p>The “new” <a class="reference external" href="https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&amp;PAGE_TYPE=BlastDocs&amp;DOC_TYPE=Download">NCBI
+BLAST+</a>
+suite was released in 2009. This replaces the old NCBI “legacy” BLAST
+package (see <a class="reference internal" href="#subsec-other-blast-versions"><span class="std std-ref">Other versions of BLAST</span></a>).</p>
+<p>This section will show briefly how to use these tools from within
+Python. If you have already read or tried the alignment tool examples in
+Section <a class="reference internal" href="chapter_msa.html#sec-alignment-tools"><span class="std std-ref">Alignment Tools</span></a> this should all
+seem quite straightforward. First, we construct a command line string
+(as you would type in at the command line prompt if running standalone
+BLAST by hand). Then we can execute this command from within Python.</p>
+<p>For example, taking a FASTA file of gene nucleotide sequences, you might
+want to run a BLASTX (translation) search against the non-redundant (NR)
+protein database. Assuming you (or your systems administrator) has
+downloaded and installed the NR database, you might run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>blastx<span class="w"> </span>-query<span class="w"> </span>opuntia.fasta<span class="w"> </span>-db<span class="w"> </span>nr<span class="w"> </span>-out<span class="w"> </span>opuntia.xml<span class="w"> </span>-evalue<span class="w"> </span><span class="m">0</span>.001<span class="w"> </span>-outfmt<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
+<p>This should run BLASTX against the NR database, using an expectation
+cut-off value of <span class="math notranslate nohighlight">\(0.001\)</span> and produce XML output to the specified
+file (which we can then parse). On my computer this takes about six
+minutes - a good reason to save the output to a file so you can repeat
+any analysis as needed.</p>
+<p>From within python we can use the <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module to build the
+command line string, and run it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;blastx -query opuntia.fasta -db nr -out opuntia.xml&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">+=</span> <span class="s2">&quot; -evalue 0.001 -outfmt 5&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example there shouldn’t be any output from BLASTX to the
+terminal. You may want to check the output file <code class="docutils literal notranslate"><span class="pre">opuntia.xml</span></code> has been
+created.</p>
+<p>As you may recall from earlier examples in the tutorial, the
+<code class="docutils literal notranslate"><span class="pre">opuntia.fasta</span></code> contains seven sequences, so the BLAST XML output
+should contain multiple results. Therefore use <code class="docutils literal notranslate"><span class="pre">Bio.Blast.parse()</span></code> to
+parse it as described below in Section <a class="reference internal" href="#sec-parsing-blast"><span class="std std-ref">Parsing BLAST output</span></a>.</p>
+</section>
+<section id="other-versions-of-blast">
+<span id="subsec-other-blast-versions"></span><h3>Other versions of BLAST<a class="headerlink" href="#other-versions-of-blast" title="Permalink to this headline"></a></h3>
+<p>NCBI BLAST+ (written in C++) was first released in 2009 as a replacement
+for the original NCBI “legacy” BLAST (written in C) which is no longer
+being updated. You may also come across <a class="reference external" href="http://blast.wustl.edu/">Washington University
+BLAST</a> (WU-BLAST), and its successor,
+<a class="reference external" href="https://blast.advbiocomp.com">Advanced Biocomputing BLAST</a>
+(AB-BLAST, released in 2009, not free/open source). These packages
+include the command line tools <code class="docutils literal notranslate"><span class="pre">wu-blastall</span></code> and <code class="docutils literal notranslate"><span class="pre">ab-blastall</span></code>,
+which mimicked <code class="docutils literal notranslate"><span class="pre">blastall</span></code> from the NCBI “legacy” BLAST suite.
+Biopython does not currently provide wrappers for calling these tools,
+but should be able to parse any NCBI compatible output from them.</p>
+</section>
+</section>
+<section id="parsing-blast-output">
+<span id="sec-parsing-blast"></span><h2>Parsing BLAST output<a class="headerlink" href="#parsing-blast-output" title="Permalink to this headline"></a></h2>
+<p>As mentioned above, BLAST can generate output in various formats, such
+as XML, HTML, and plain text. Originally, Biopython had parsers for
+BLAST plain text and HTML output, as these were the only output formats
+offered at the time. Unfortunately, the BLAST output in these formats
+kept changing, each time breaking the Biopython parsers. Our HTML BLAST
+parser has been removed, while the deprecated plain text BLAST parser is
+now only available via <code class="docutils literal notranslate"><span class="pre">Bio.SearchIO</span></code>. Use it at your own risk, it may
+or may not work, depending on which BLAST version you’re using.</p>
+<p>As keeping up with changes in BLAST became a hopeless endeavor,
+especially with users running different BLAST versions, we now recommend
+to parse the output in XML format, which can be generated by recent
+versions of BLAST. Not only is the XML output more stable than the plain
+text and HTML output, it is also much easier to parse automatically,
+making Biopython a whole lot more stable.</p>
+<p>You can get BLAST output in XML format in various ways. For the parser,
+it doesn’t matter how the output was generated, as long as it is in the
+XML format.</p>
+<ul class="simple">
+<li><p>You can use Biopython to run BLAST over the internet, as described in
+section <a class="reference internal" href="#sec-running-www-blast"><span class="std std-ref">Running BLAST over the Internet</span></a>.</p></li>
+<li><p>You can use Biopython to run BLAST locally, as described in
+section <a class="reference internal" href="#sec-running-local-blast"><span class="std std-ref">Running BLAST locally</span></a>.</p></li>
+<li><p>You can do the BLAST search yourself on the NCBI site through your
+web browser, and then save the results. You need to choose XML as the
+format in which to receive the results, and save the final BLAST page
+you get (you know, the one with all of the interesting results!) to a
+file.</p></li>
+<li><p>You can also run BLAST locally without using Biopython, and save the
+output in a file. Again, you need to choose XML as the format in
+which to receive the results.</p></li>
+</ul>
+<p>The important point is that you do not have to use Biopython scripts to
+fetch the data in order to be able to parse it. Doing things in one of
+these ways, you then need to get a file-like object to the results. In
+Python, a file-like object or handle is just a nice general way of
+describing input to any info source so that the info can be retrieved
+using <code class="docutils literal notranslate"><span class="pre">read()</span></code> and <code class="docutils literal notranslate"><span class="pre">readline()</span></code> functions (see
+Section <a class="reference internal" href="chapter_appendix.html#sec-appendix-handles"><span class="std std-ref">What the heck is a handle?</span></a>).</p>
+<p>If you followed the code above for interacting with BLAST through a
+script, then you already have <code class="docutils literal notranslate"><span class="pre">result_stream</span></code>, the file-like object to
+the BLAST results. For example, using a GI number to do an online
+search:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="s2">&quot;8332116&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If instead you ran BLAST some other way, and have the BLAST output (in
+XML format) in the file <code class="docutils literal notranslate"><span class="pre">my_blast.xml</span></code>, all you need to do is to open
+the file for reading (as <code class="docutils literal notranslate"><span class="pre">bytes</span></code>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result_stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;my_blast.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that we’ve got a data stream, we are ready to parse the output. The
+code to parse it is really quite small. If you expect a single BLAST
+result (i.e., you used a single query):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">result_stream</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or, if you have lots of results (i.e., multiple query sequences):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">result_stream</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Just like <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> and <code class="docutils literal notranslate"><span class="pre">Bio.Align</span></code> (see
+Chapters <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>
+and <a class="reference internal" href="chapter_align.html#chapter-align"><span class="std std-ref">Sequence alignments</span></a>), we have a pair of input
+functions, <code class="docutils literal notranslate"><span class="pre">read</span></code> and <code class="docutils literal notranslate"><span class="pre">parse</span></code>, where <code class="docutils literal notranslate"><span class="pre">read</span></code> is for when you have
+exactly one object, and <code class="docutils literal notranslate"><span class="pre">parse</span></code> is an iterator for when you can have
+lots of objects – but instead of getting <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> or <code class="docutils literal notranslate"><span class="pre">Alignment</span></code>
+objects, we get BLAST record objects.</p>
+<p>To be able to handle the situation where the BLAST file may be huge,
+containing thousands of results, <code class="docutils literal notranslate"><span class="pre">Blast.parse()</span></code> returns an iterator.
+In plain English, an iterator allows you to step through the BLAST
+output, retrieving BLAST records one by one for each BLAST search
+result:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">result_stream</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+<span class="go"># ... do something with blast_record</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+<span class="go"># ... do something with blast_record</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+<span class="go"># ... do something with blast_record</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">StopIteration</span>
+<span class="x"># No further records</span>
+</pre></div>
+</div>
+<p>Or, you can use a <code class="docutils literal notranslate"><span class="pre">for</span></code>-loop:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">blast_record</span> <span class="ow">in</span> <span class="n">blast_records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">pass</span>  <span class="c1"># Do something with blast_record</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>Note though that you can step through the BLAST records only once.
+Usually, from each BLAST record you would save the information that you
+are interested in. If you want to save all returned BLAST records, you
+can convert the iterator into a list:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now you can access each BLAST record in the list with an index as usual.
+If your BLAST file is huge though, you may run into memory problems
+trying to save them all in a list.</p>
+<p>Instead of opening the file yourself, you can just provide the file
+name:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;my_blast_xml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">blast_records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">blast_record</span> <span class="ow">in</span> <span class="n">blast_records</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">pass</span>  <span class="c1"># Do something with blast_record</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>In this case, Biopython opens the file for you, and closes it as soon as
+the file is not needed any more (while it is possible to simply use
+<code class="docutils literal notranslate"><span class="pre">blast_records</span> <span class="pre">=</span> <span class="pre">Blast.parse(&quot;my_blast_xml&quot;)</span></code>, it has the disadvantage
+that the file may stay open longer than strictly necessary, thereby
+wasting resources).</p>
+<p>Usually, you’ll be running one BLAST search at a time. Then, all you
+need to do is to pick up the first (and only) BLAST record in
+<code class="docutils literal notranslate"><span class="pre">blast_records</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">result_stream</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or more elegantly:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">result_stream</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or, equivalently,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;my_blast_xml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(here, you don’t need to use a <code class="docutils literal notranslate"><span class="pre">with</span></code> block as <code class="docutils literal notranslate"><span class="pre">Blast.read</span></code> will
+read the whole file and close it immediately afterwards).</p>
+<p>I guess by now you’re wondering what is in a BLAST record.</p>
+</section>
+<section id="the-blast-records-and-record-classes">
+<h2>The BLAST Records and Record classes<a class="headerlink" href="#the-blast-records-and-record-classes" title="Permalink to this headline"></a></h2>
+<section id="the-blast-records-class">
+<span id="subsec-blast-records"></span><h3>The BLAST Records class<a class="headerlink" href="#the-blast-records-class" title="Permalink to this headline"></a></h3>
+<p>A single BLAST output file can contain output from multiple BLAST
+queries. In Biopython, the information in a BLAST output file is stored
+in an <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code> object. This is an iterator returning one
+<code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object (see subsection
+<a class="reference internal" href="#subsec-blast-record"><span class="std std-ref">The BLAST Record class</span></a>) for each query. The
+<code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code> object has the following attributes describing the
+BLAST run:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">source</span></code>: The input data from which the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code>
+object was constructed (this could be a file name or path, or a
+file-like object).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">program</span></code>: The specific BLAST program that was used (e.g.,
+’blastn’).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">version</span></code>: The version of the BLAST program (e.g., ’BLASTN
+2.2.27+’).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reference</span></code>: The literature reference to the BLAST publication.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">db</span></code>: The BLAST database against which the query was run (e.g.,
+’nr’).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">query</span></code>: A <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object which may contain some or all of
+the following information:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">query.id</span></code>: SeqId of the query;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">query.description</span></code>: Definition line of the query;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">query.seq</span></code>: The query sequence.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">param</span></code>: A dictionary with the parameters used for the BLAST run.
+You may find the following keys in this dictionary:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'matrix'</span></code>: the scoring matrix used in the BLAST run (e.g.,
+’BLOSUM62’) (string);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'expect'</span></code>: threshold on the expected number of chance matches
+(float);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'include'</span></code>: e-value threshold for inclusion in multipass model
+in psiblast (float);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'sc-match'</span></code>: score for matching nucleotides (integer);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'sc-mismatch'</span></code>: score for mismatched nucleotides (integer;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'gap-open'</span></code>: gap opening cost (integer);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'gap-extend'</span></code>: gap extension cost (integer);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'filter'</span></code>: filtering options applied in the BLAST run (string);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'pattern'</span></code>: PHI-BLAST pattern (string);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'entrez-query'</span></code>: Limit of request to Entrez query (string).</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mbstat</span></code>: A dictionary with Mega BLAST search statistics. See the
+description of the <code class="docutils literal notranslate"><span class="pre">Record.stat</span></code> attribute below (in subsection
+<a class="reference internal" href="#subsec-blast-record"><span class="std std-ref">The BLAST Record class</span></a>) for a description of the items in
+this dictionary. Only older versions of Mega BLAST store this
+information. As it is stored near the end of the BLAST output file,
+this attribute can only be accessed after the file has been read
+completely (by iterating over the records until a <code class="docutils literal notranslate"><span class="pre">StopIteration</span></code>
+is issued).</p></li>
+</ul>
+<p>For our example, we find:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">source</span>
+<span class="go">&lt;_io.BufferedReader name=&#39;my_blast.xml&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">program</span>
+<span class="go">&#39;blastn&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">version</span>
+<span class="go">&#39;BLASTN 2.2.27+&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">reference</span>
+<span class="go">&#39;Stephen F. Altschul, Thomas L. Madden, Alejandro A. Sch&amp;auml;ffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), &quot;Gapped BLAST and PSI-BLAST: a new generation of protein database search programs&quot;, Nucleic Acids Res. 25:3389-3402.&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">db</span>
+<span class="go">&#39;refseq_rna&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">param</span>
+<span class="go">{&#39;expect&#39;: 10.0, &#39;sc-match&#39;: 2, &#39;sc-mismatch&#39;: -3, &#39;gap-open&#39;: 5, &#39;gap-extend&#39;: 2, &#39;filter&#39;: &#39;L;m;&#39;}</span>
+</pre></div>
+</div>
+</section>
+<section id="the-blast-record-class">
+<span id="subsec-blast-record"></span><h3>The BLAST Record class<a class="headerlink" href="#the-blast-record-class" title="Permalink to this headline"></a></h3>
+<p>A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object stores the information provided by BLAST
+for a single query. The <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> class inherits from
+<code class="docutils literal notranslate"><span class="pre">list</span></code>, and is essentially a list of <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> objects
+(see <a class="reference internal" href="chapter_align.html#sec-alignments"><span class="std std-ref">The Alignments class</span></a>). A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code>
+object has the following two attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">query</span></code>: A <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object which may contain some or all of
+the following information:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">query.id</span></code>: SeqId of the query;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">query.description</span></code>: Definition line of the query;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">query.seq</span></code>: The query sequence.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stat</span></code>: A dictionary with statistical data of the BLAST hit. You
+may find the following keys in this dictionary:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'db-num'</span></code>: number of sequences in BLAST db (integer);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'db-len'</span></code>: length of BLAST db (integer);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'hsp-len'</span></code>: effective HSP (High Scoring Pair) length (integer);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'eff-space'</span></code>: effective search space (float);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'kappa'</span></code>: Karlin-Altschul parameter K (float);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'lambda'</span></code>: Karlin-Altschul parameter Lambda (float);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'entropy'</span></code>: Karlin-Altschul parameter H (float)</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">message</span></code>: Some (error?) information.</p></li>
+</ul>
+<p>Continuing with our example,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="o">.</span><span class="n">query</span>
+<span class="go">SeqRecord(seq=Seq(None, length=61), id=&#39;42291&#39;, name=&#39;&lt;unknown name&gt;&#39;, description=&#39;mystery_seq&#39;, dbxrefs=[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="o">.</span><span class="n">stat</span>
+<span class="go">{&#39;db-num&#39;: 3056429, &#39;db-len&#39;: 673143725, &#39;hsp-len&#39;: 0, &#39;eff-space&#39;: 0.0, &#39;kappa&#39;: 0.41, &#39;lambda&#39;: 0.625, &#39;entropy&#39;: 0.78}</span>
+</pre></div>
+</div>
+<p>Each <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> object in the <code class="docutils literal notranslate"><span class="pre">blast_record</span></code> list
+represents one BLAST hit of the query against a target:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">blast_record</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">&lt;class &#39;Bio.Align.Alignments&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">target</span>
+<span class="go">SeqRecord(seq=Seq(None, length=61), id=&#39;gi|262205317|ref|NR_030195.1|&#39;, name=&#39;NR_030195&#39;, description=&#39;Homo sapiens microRNA 520b (MIR520B), microRNA&#39;, dbxrefs=[])</span>
+</pre></div>
+</div>
+<p>Each hit is represented by a <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> (plural) object,
+as the target and the query can align to each other in multiple but
+distinct regions. However, typically a hit consists of only one or a few
+alignments, especially for alignments of highly homologous sequences.
+Each alignment is represented by a <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> (singular)
+object (see Section <a class="reference internal" href="chapter_align.html#sec-alignmentobject"><span class="std std-ref">Alignment objects</span></a>).</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">blast_record</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">blast_record</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Align.Alignment&#39;&gt;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">alignment</span></code> object has attributes pointing to the target and query
+sequences, as well as a <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> attribute describing the
+sequence alignment.</p>
+<p>For translated BLAST searches, the <code class="docutils literal notranslate"><span class="pre">features</span></code> attribute of the target
+or query may contain a <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> of type CDS that stores the amino
+acid sequence region. The <code class="docutils literal notranslate"><span class="pre">qualifiers</span></code> attribute of such a feature is
+a dictionary with a single key <code class="docutils literal notranslate"><span class="pre">'coded_by'</span></code>; the corresponding value
+specifies the nucleotide sequence region, in a GenBank-style string with
+1-based coordinates, that encodes the amino acid sequence.</p>
+<p>Each <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> object has the following additional attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">score</span></code>: score of the High Scoring Pair (HSP);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">annotations</span></code>: a dictionary that may contain the following keys:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">'bit</span> <span class="pre">score'</span></code>: score (in bits) of HSP (float);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'evalue'</span></code>: e-value of HSP (float);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'identity</span></code>’: number of identities in HSP (integer);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'positive'</span></code>: number of positives in HSP (integer);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'gaps'</span></code>: number of gaps in HSP (integer);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'midline'</span></code>: formatting middle line.</p></li>
+</ul>
+</li>
+</ul>
+<p>The usual <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> methods (see Section
+<a class="reference internal" href="chapter_align.html#sec-alignmentobject"><span class="std std-ref">Alignment objects</span></a>) can therefore be
+applied to <code class="docutils literal notranslate"><span class="pre">alignment</span></code>. For example, we can print the alignment:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">target</span>
+<span class="go">SeqRecord(seq=Seq(&#39;CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCCTTT...GGG&#39;), id=&#39;gi|262205317|ref|NR_030195.1|&#39;, name=&#39;NR_030195&#39;, description=&#39;Homo sapiens microRNA 520b (MIR520B), microRNA&#39;, dbxrefs=[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">query</span>
+<span class="go">SeqRecord(seq=Seq(&#39;CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCCTTT...GGG&#39;), id=&#39;42291&#39;, name=&#39;&lt;unknown name&gt;&#39;, description=&#39;mystery_seq&#39;, dbxrefs=[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">gi|262205         0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCCTTTTAGAGG</span>
+<span class="go">                  0 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||</span>
+<span class="go">42291             0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCCTTTTAGAGG</span>
+
+<span class="go">gi|262205        60 G 61</span>
+<span class="go">                 60 | 61</span>
+<span class="go">42291            60 G 61</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>
+<span class="go">array([[ 0, 61],</span>
+<span class="go">       [ 0, 61]])</span>
+</pre></div>
+</div>
+<p>Let’s just print out some summary info about all hits in our blast
+report greater than a particular threshold. The following code does
+this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">E_VALUE_THRESH</span> <span class="o">=</span> <span class="mf">0.04</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignments</span> <span class="ow">in</span> <span class="n">blast_record</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">alignment</span><span class="o">.</span><span class="n">evalue</span> <span class="o">&lt;</span> <span class="n">E_VALUE_THRESH</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;****Alignment****&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sequence:&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;length:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">target</span><span class="p">))</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;score:&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;e value:&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;evalue&quot;</span><span class="p">])</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">50</span><span class="p">])</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>This will print out summary reports like the following:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>****Alignment****
+sequence: gi|262205317|ref|NR_030195.1| Homo sapiens microRNA 520b (MIR520B), microRNA
+length: 61
+score: 122.0
+gi|262205         0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTC 50
+                  0 |||||||||||||||||||||||||||||||||||||||||||||||||| 50
+42291             0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTC 50
+
+****Alignment****
+sequence: gi|301171311|ref|NR_035856.1| Pan troglodytes microRNA mir-520b (MIR520B), microRNA
+length: 60
+score: 120.0
+gi|301171         0 CCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCC 50
+                  0 |||||||||||||||||||||||||||||||||||||||||||||||||| 50
+42291             1 CCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCC 51
+
+****Alignment****
+sequence: gi|270133242|ref|NR_032573.1| Macaca mulatta microRNA mir-519a (MIR519A), microRNA
+length: 85
+score: 112.0
+gi|270133        12 CCCTCTAGAGGGAAGCGCTTTCTGTGGTCTGAAAGAAAAGAAAGTGCTTC 62
+                  0 |||||||.|||||||||||||||||.|||||||||||||||||||||||| 50
+42291             0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTC 50
+
+...
+</pre></div>
+</div>
+</section>
+</section>
+<section id="dealing-with-psi-blast">
+<h2>Dealing with PSI-BLAST<a class="headerlink" href="#dealing-with-psi-blast" title="Permalink to this headline"></a></h2>
+<p>You can run the standalone version of PSI-BLAST (<code class="docutils literal notranslate"><span class="pre">psiblast</span></code>) directly
+from the command line or using python’s <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module.</p>
+<p>At the time of writing, the NCBI do not appear to support tools running
+a PSI-BLAST search via the internet.</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">Bio.Blast</span></code> parser can read the XML output from current
+versions of PSI-BLAST, but information like which sequences in each
+iteration is new or reused isn’t present in the XML file.</p>
+</section>
+<section id="dealing-with-rps-blast">
+<h2>Dealing with RPS-BLAST<a class="headerlink" href="#dealing-with-rps-blast" title="Permalink to this headline"></a></h2>
+<p>You can run the standalone version of RPS-BLAST (<code class="docutils literal notranslate"><span class="pre">rpsblast</span></code>) directly
+from the command line or using python’s <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module.</p>
+<p>At the time of writing, the NCBI do not appear to support tools running
+an RPS-BLAST search via the internet.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">Bio.Blast</span></code> parser to read the XML output from current
+versions of RPS-BLAST.</p>
+</section>
+</section>
+<section id="blast-old">
+<span id="chapter-blast-old"></span><h1>BLAST (old)<a class="headerlink" href="#blast-old" title="Permalink to this headline"></a></h1>
+<p>Hey, everybody loves BLAST right? I mean, geez, how can it get any
+easier to do comparisons between one of your sequences and every other
+sequence in the known world? But, of course, this section isn’t about
+how cool BLAST is, since we already know that. It is about the problem
+with BLAST – it can be really difficult to deal with the volume of data
+generated by large runs, and to automate BLAST runs in general.</p>
+<p>Fortunately, the Biopython folks know this only too well, so they’ve
+developed lots of tools for dealing with BLAST and making things much
+easier. This section details how to use these tools and do useful things
+with them.</p>
+<p>Dealing with BLAST can be split up into two steps, both of which can be
+done from within Biopython. Firstly, running BLAST for your query
+sequence(s), and getting some output. Secondly, parsing the BLAST output
+in Python for further analysis.</p>
+<p>Your first introduction to running BLAST was probably via the NCBI
+web-service. In fact, there are lots of ways you can run BLAST, which
+can be categorized in several ways. The most important distinction is
+running BLAST locally (on your own machine), and running BLAST remotely
+(on another machine, typically the NCBI servers). We’re going to start
+this chapter by invoking the NCBI online BLAST service from within a
+Python script.</p>
+<p><em>NOTE</em>: The following Chapter <a class="reference internal" href="chapter_searchio.html#chapter-searchio"><span class="std std-ref">BLAST and other sequence search tools</span></a>
+describes <code class="docutils literal notranslate"><span class="pre">Bio.SearchIO</span></code>. We intend this to ultimately replace the
+older <code class="docutils literal notranslate"><span class="pre">Bio.Blast</span></code> module, as it provides a more general framework
+handling other related sequence searching tools as well. However, for
+now you can use either that or the older <code class="docutils literal notranslate"><span class="pre">Bio.Blast</span></code> module for
+dealing with NCBI BLAST.</p>
+<section id="id1">
+<h2>Running BLAST over the Internet<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<p>We use the function <code class="docutils literal notranslate"><span class="pre">qblast()</span></code> in the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.NCBIWWW</span></code> module to
+call the online version of BLAST. This has three non-optional arguments:</p>
+<ul class="simple">
+<li><p>The first argument is the blast program to use for the search, as a
+lower case string. The options and descriptions of the programs are
+available at <a class="reference external" href="https://blast.ncbi.nlm.nih.gov/Blast.cgi">https://blast.ncbi.nlm.nih.gov/Blast.cgi</a>. Currently
+<code class="docutils literal notranslate"><span class="pre">qblast</span></code> only works with blastn, blastp, blastx, tblast and
+tblastx.</p></li>
+<li><p>The second argument specifies the databases to search against. Again,
+the options for this are available on the NCBI Guide to BLAST
+<a class="reference external" href="https://blast.ncbi.nlm.nih.gov/doc/blast-help/">https://blast.ncbi.nlm.nih.gov/doc/blast-help/</a>.</p></li>
+<li><p>The third argument is a string containing your query sequence. This
+can either be the sequence itself, the sequence in fasta format, or
+an identifier like a GI number.</p></li>
+</ul>
+<p>The NCBI guidelines, from
+<a class="reference external" href="https://blast.ncbi.nlm.nih.gov/doc/blast-help/developerinfo.html#developerinfo">https://blast.ncbi.nlm.nih.gov/doc/blast-help/developerinfo.html#developerinfo</a>
+state:</p>
+<ol class="arabic simple">
+<li><p>Do not contact the server more often than once every 10 seconds.</p></li>
+<li><p>Do not poll for any single RID more often than once a minute.</p></li>
+<li><p>Use the URL parameter email and tool, so that the NCBI can contact
+you if there is a problem.</p></li>
+<li><p>Run scripts weekends or between 9 pm and 5 am Eastern time on
+weekdays if more than 50 searches will be submitted.</p></li>
+</ol>
+<p>To fulfill the third point, one can set the <code class="docutils literal notranslate"><span class="pre">NCBIWWW.email</span></code> variable.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIWWW</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">NCBIWWW</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;A.N.Other@example.com&quot;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">qblast</span></code> function also takes a number of other option arguments,
+which are basically analogous to the different parameters you can set on
+the BLAST web page. We’ll just highlight a few of them here:</p>
+<ul class="simple">
+<li><p>The argument <code class="docutils literal notranslate"><span class="pre">url_base</span></code> sets the base URL for running BLAST over
+the internet. By default it connects to the NCBI, but one can use
+this to connect to an instance of NCBI BLAST running in the cloud.
+Please refer to the documentation for the <code class="docutils literal notranslate"><span class="pre">qblast</span></code> function for
+further details.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">qblast</span></code> function can return the BLAST results in various
+formats, which you can choose with the optional <code class="docutils literal notranslate"><span class="pre">format_type</span></code>
+keyword: <code class="docutils literal notranslate"><span class="pre">&quot;HTML&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;Text&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ASN.1&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;XML&quot;</span></code>. The
+default is <code class="docutils literal notranslate"><span class="pre">&quot;XML&quot;</span></code>, as that is the format expected by the parser,
+described in section <a class="reference internal" href="#sec-parsing-blast"><span class="std std-ref">Parsing BLAST output</span></a> below.</p></li>
+<li><p>The argument <code class="docutils literal notranslate"><span class="pre">expect</span></code> sets the expectation or e-value threshold.</p></li>
+</ul>
+<p>For more about the optional BLAST arguments, we refer you to the NCBI’s
+own documentation, or that built into Biopython:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIWWW</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">NCBIWWW</span><span class="o">.</span><span class="n">qblast</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the default settings on the NCBI BLAST website are not quite
+the same as the defaults on QBLAST. If you get different results, you’ll
+need to check the parameters (e.g., the expectation value threshold and
+the gap values).</p>
+<p>For example, if you have a nucleotide sequence you want to search
+against the nucleotide database (nt) using BLASTN, and you know the GI
+number of your query sequence, you can use:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIWWW</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_handle</span> <span class="o">=</span> <span class="n">NCBIWWW</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="s2">&quot;8332116&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternatively, if we have our query sequence already in a FASTA
+formatted file, we just need to open the file and read in this record as
+a string, and use that as the query argument:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIWWW</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fasta_string</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;m_cold.fasta&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_handle</span> <span class="o">=</span> <span class="n">NCBIWWW</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="n">fasta_string</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We could also have read in the FASTA file as a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> and then
+supplied just the sequence itself:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIWWW</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;m_cold.fasta&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_handle</span> <span class="o">=</span> <span class="n">NCBIWWW</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Supplying just the sequence means that BLAST will assign an identifier
+for your sequence automatically. You might prefer to use the
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object’s format method to make a FASTA string (which will
+include the existing identifier):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIWWW</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;m_cold.fasta&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_handle</span> <span class="o">=</span> <span class="n">NCBIWWW</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This approach makes more sense if you have your sequence(s) in a
+non-FASTA file format which you can extract using <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> (see
+Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>).</p>
+<p>Whatever arguments you give the <code class="docutils literal notranslate"><span class="pre">qblast()</span></code> function, you should get
+back your results in a handle object (by default in XML format). The
+next step would be to parse the XML output into Python objects
+representing the search results (Section <a class="reference internal" href="#sec-parsing-blast"><span class="std std-ref">Parsing BLAST output</span></a>),
+but you might want to save a local copy of the output file first. I find
+this especially useful when debugging my code that extracts info from
+the BLAST results (because re-running the online search is slow and
+wastes the NCBI computer time).</p>
+<p>We need to be a bit careful since we can use <code class="docutils literal notranslate"><span class="pre">result_handle.read()</span></code> to
+read the BLAST output only once – calling <code class="docutils literal notranslate"><span class="pre">result_handle.read()</span></code> again
+returns an empty string.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;my_blast.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">out_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">result_handle</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>After doing this, the results are in the file <code class="docutils literal notranslate"><span class="pre">my_blast.xml</span></code> and the
+original handle has had all its data extracted (so we closed it).
+However, the <code class="docutils literal notranslate"><span class="pre">parse</span></code> function of the BLAST parser (described
+in <a class="reference internal" href="#sec-parsing-blast"><span class="std std-ref">Parsing BLAST output</span></a>) takes a file-handle-like object, so we
+can just open the saved file for input:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;my_blast.xml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that we’ve got the BLAST results back into a handle again, we are
+ready to do something with them, so this leads us right into the parsing
+section (see Section <a class="reference internal" href="#sec-parsing-blast"><span class="std std-ref">Parsing BLAST output</span></a> below). You may want
+to jump ahead to that now ….</p>
+</section>
+<section id="id2">
+<h2>Running BLAST locally<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<section id="introduction-1">
+<span id="id3"></span><h3>Introduction<a class="headerlink" href="#introduction-1" title="Permalink to this headline"></a></h3>
+<p>Running BLAST locally (as opposed to over the internet, see
+Section <a class="reference internal" href="#sec-running-www-blast"><span class="std std-ref">Running BLAST over the Internet</span></a>) has at least major two
+advantages:</p>
+<ul class="simple">
+<li><p>Local BLAST may be faster than BLAST over the internet;</p></li>
+<li><p>Local BLAST allows you to make your own database to search for
+sequences against.</p></li>
+</ul>
+<p>Dealing with proprietary or unpublished sequence data can be another
+reason to run BLAST locally. You may not be allowed to redistribute the
+sequences, so submitting them to the NCBI as a BLAST query would not be
+an option.</p>
+<p>Unfortunately, there are some major drawbacks too – installing all the
+bits and getting it setup right takes some effort:</p>
+<ul class="simple">
+<li><p>Local BLAST requires command line tools to be installed.</p></li>
+<li><p>Local BLAST requires (large) BLAST databases to be setup (and
+potentially kept up to date).</p></li>
+</ul>
+<p>To further confuse matters there are several different BLAST packages
+available, and there are also other tools which can produce imitation
+BLAST output files, such as BLAT.</p>
+</section>
+<section id="standalone-ncbi-blast-1">
+<span id="id4"></span><h3>Standalone NCBI BLAST+<a class="headerlink" href="#standalone-ncbi-blast-1" title="Permalink to this headline"></a></h3>
+<p>The “new” <a class="reference external" href="https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&amp;PAGE_TYPE=BlastDocs&amp;DOC_TYPE=Download">NCBI
+BLAST+</a>
+suite was released in 2009. This replaces the old NCBI “legacy” BLAST
+package (see below).</p>
+<p>This section will show briefly how to use these tools from within
+Python. If you have already read or tried the alignment tool examples in
+Section <a class="reference internal" href="chapter_msa.html#sec-alignment-tools"><span class="std std-ref">Alignment Tools</span></a> this should all
+seem quite straightforward. First, we construct a command line string
+(as you would type in at the command line prompt if running standalone
+BLAST by hand). Then we can execute this command from within Python.</p>
+<p>For example, taking a FASTA file of gene nucleotide sequences, you might
+want to run a BLASTX (translation) search against the non-redundant (NR)
+protein database. Assuming you (or your systems administrator) has
+downloaded and installed the NR database, you might run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>blastx<span class="w"> </span>-query<span class="w"> </span>opuntia.fasta<span class="w"> </span>-db<span class="w"> </span>nr<span class="w"> </span>-out<span class="w"> </span>opuntia.xml<span class="w"> </span>-evalue<span class="w"> </span><span class="m">0</span>.001<span class="w"> </span>-outfmt<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
+<p>This should run BLASTX against the NR database, using an expectation
+cut-off value of <span class="math notranslate nohighlight">\(0.001\)</span> and produce XML output to the specified
+file (which we can then parse). On my computer this takes about six
+minutes - a good reason to save the output to a file so you can repeat
+any analysis as needed.</p>
+<p>From within python we can use the <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module to build the
+command line string, and run it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;blastx -query opuntia.fasta -db nr -out opuntia.xml&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">+=</span> <span class="s2">&quot; -evalue 0.001 -outfmt 5&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example there shouldn’t be any output from BLASTX to the
+terminal. You may want to check the output file <code class="docutils literal notranslate"><span class="pre">opuntia.xml</span></code> has been
+created.</p>
+<p>As you may recall from earlier examples in the tutorial, the
+<code class="docutils literal notranslate"><span class="pre">opuntia.fasta</span></code> contains seven sequences, so the BLAST XML output
+should contain multiple results. Therefore use
+<code class="docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML.parse()</span></code> to parse it as described below in
+Section <a class="reference internal" href="#sec-parsing-blast"><span class="std std-ref">Parsing BLAST output</span></a>.</p>
+</section>
+<section id="id5">
+<h3>Other versions of BLAST<a class="headerlink" href="#id5" title="Permalink to this headline"></a></h3>
+<p>NCBI BLAST+ (written in C++) was first released in 2009 as a replacement
+for the original NCBI “legacy” BLAST (written in C) which is no longer
+being updated. There were a lot of changes – the old version had a
+single core command line tool <code class="docutils literal notranslate"><span class="pre">blastall</span></code> which covered multiple
+different BLAST search types (which are now separate commands in
+BLAST+), and all the command line options were renamed. Biopython’s
+wrappers for the NCBI “legacy” BLAST tools have been deprecated and will
+be removed in a future release. To try to avoid confusion, we do not
+cover calling these old tools from Biopython in this tutorial.</p>
+<p>You may also come across <a class="reference external" href="http://blast.wustl.edu/">Washington University
+BLAST</a> (WU-BLAST), and its successor,
+<a class="reference external" href="https://blast.advbiocomp.com">Advanced Biocomputing BLAST</a>
+(AB-BLAST, released in 2009, not free/open source). These packages
+include the command line tools <code class="docutils literal notranslate"><span class="pre">wu-blastall</span></code> and <code class="docutils literal notranslate"><span class="pre">ab-blastall</span></code>,
+which mimicked <code class="docutils literal notranslate"><span class="pre">blastall</span></code> from the NCBI “legacy” BLAST suite.
+Biopython does not currently provide wrappers for calling these tools,
+but should be able to parse any NCBI compatible output from them.</p>
+</section>
+</section>
+<section id="id6">
+<h2>Parsing BLAST output<a class="headerlink" href="#id6" title="Permalink to this headline"></a></h2>
+<p>As mentioned above, BLAST can generate output in various formats, such
+as XML, HTML, and plain text. Originally, Biopython had parsers for
+BLAST plain text and HTML output, as these were the only output formats
+offered at the time. Unfortunately, the BLAST output in these formats
+kept changing, each time breaking the Biopython parsers. Our HTML BLAST
+parser has been removed, while the deprecated plain text BLAST parser is
+now only available via <code class="docutils literal notranslate"><span class="pre">Bio.SearchIO</span></code>. Use it at your own risk, it may
+or may not work, depending on which BLAST version you’re using.</p>
+<p>As keeping up with changes in BLAST became a hopeless endeavor,
+especially with users running different BLAST versions, we now recommend
+to parse the output in XML format, which can be generated by recent
+versions of BLAST. Not only is the XML output more stable than the plain
+text and HTML output, it is also much easier to parse automatically,
+making Biopython a whole lot more stable.</p>
+<p>You can get BLAST output in XML format in various ways. For the parser,
+it doesn’t matter how the output was generated, as long as it is in the
+XML format.</p>
+<ul class="simple">
+<li><p>You can use Biopython to run BLAST over the internet, as described in
+section <a class="reference internal" href="#sec-running-www-blast"><span class="std std-ref">Running BLAST over the Internet</span></a>.</p></li>
+<li><p>You can use Biopython to run BLAST locally, as described in
+section <a class="reference internal" href="#sec-running-local-blast"><span class="std std-ref">Running BLAST locally</span></a>.</p></li>
+<li><p>You can do the BLAST search yourself on the NCBI site through your
+web browser, and then save the results. You need to choose XML as the
+format in which to receive the results, and save the final BLAST page
+you get (you know, the one with all of the interesting results!) to a
+file.</p></li>
+<li><p>You can also run BLAST locally without using Biopython, and save the
+output in a file. Again, you need to choose XML as the format in
+which to receive the results.</p></li>
+</ul>
+<p>The important point is that you do not have to use Biopython scripts to
+fetch the data in order to be able to parse it. Doing things in one of
+these ways, you then need to get a handle to the results. In Python, a
+handle is just a nice general way of describing input to any info source
+so that the info can be retrieved using <code class="docutils literal notranslate"><span class="pre">read()</span></code> and <code class="docutils literal notranslate"><span class="pre">readline()</span></code>
+functions (see
+Section <a class="reference internal" href="chapter_appendix.html#sec-appendix-handles"><span class="std std-ref">What the heck is a handle?</span></a>).</p>
+<p>If you followed the code above for interacting with BLAST through a
+script, then you already have <code class="docutils literal notranslate"><span class="pre">result_handle</span></code>, the handle to the BLAST
+results. For example, using a GI number to do an online search:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIWWW</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_handle</span> <span class="o">=</span> <span class="n">NCBIWWW</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="s2">&quot;8332116&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If instead you ran BLAST some other way, and have the BLAST output (in
+XML format) in the file <code class="docutils literal notranslate"><span class="pre">my_blast.xml</span></code>, all you need to do is to open
+the file for reading:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">result_handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;my_blast.xml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now that we’ve got a handle, we are ready to parse the output. The code
+to parse it is really quite small. If you expect a single BLAST result
+(i.e., you used a single query):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIXML</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="n">NCBIXML</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">result_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or, if you have lots of results (i.e., multiple query sequences):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIXML</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="n">NCBIXML</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">result_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Just like <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> and <code class="docutils literal notranslate"><span class="pre">Bio.Align</span></code> (see
+Chapters <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>
+and <a class="reference internal" href="chapter_align.html#chapter-align"><span class="std std-ref">Sequence alignments</span></a>), we have a pair of input
+functions, <code class="docutils literal notranslate"><span class="pre">read</span></code> and <code class="docutils literal notranslate"><span class="pre">parse</span></code>, where <code class="docutils literal notranslate"><span class="pre">read</span></code> is for when you have
+exactly one object, and <code class="docutils literal notranslate"><span class="pre">parse</span></code> is an iterator for when you can have
+lots of objects – but instead of getting <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> or
+<code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> objects, we get BLAST record objects.</p>
+<p>To be able to handle the situation where the BLAST file may be huge,
+containing thousands of results, <code class="docutils literal notranslate"><span class="pre">NCBIXML.parse()</span></code> returns an
+iterator. In plain English, an iterator allows you to step through the
+BLAST output, retrieving BLAST records one by one for each BLAST search
+result:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIXML</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="n">NCBIXML</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">result_handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+<span class="go"># ... do something with blast_record</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+<span class="go"># ... do something with blast_record</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+<span class="go"># ... do something with blast_record</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">StopIteration</span>
+<span class="x"># No further records</span>
+</pre></div>
+</div>
+<p>Or, you can use a <code class="docutils literal notranslate"><span class="pre">for</span></code>-loop:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">blast_record</span> <span class="ow">in</span> <span class="n">blast_records</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">pass</span>  <span class="c1"># Do something with blast_record</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>Note though that you can step through the BLAST records only once.
+Usually, from each BLAST record you would save the information that you
+are interested in. If you want to save all returned BLAST records, you
+can convert the iterator into a list:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now you can access each BLAST record in the list with an index as usual.
+If your BLAST file is huge though, you may run into memory problems
+trying to save them all in a list.</p>
+<p>Usually, you’ll be running one BLAST search at a time. Then, all you
+need to do is to pick up the first (and only) BLAST record in
+<code class="docutils literal notranslate"><span class="pre">blast_records</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIXML</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="n">NCBIXML</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">result_handle</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or more elegantly:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Blast</span> <span class="kn">import</span> <span class="n">NCBIXML</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="n">NCBIXML</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">result_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>I guess by now you’re wondering what is in a BLAST record.</p>
+</section>
+<section id="id7">
+<h2>The BLAST record class<a class="headerlink" href="#id7" title="Permalink to this headline"></a></h2>
+<p>A BLAST Record contains everything you might ever want to extract from
+the BLAST output. Right now we’ll just show an example of how to get
+some info out of the BLAST report, but if you want something in
+particular that is not described here, look at the info on the record
+class in detail, and take a gander into the code or automatically
+generated documentation – the docstrings have lots of good info about
+what is stored in each piece of information.</p>
+<p>To continue with our example, let’s just print out some summary info
+about all hits in our blast report greater than a particular threshold.
+The following code does this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">E_VALUE_THRESH</span> <span class="o">=</span> <span class="mf">0.04</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">blast_record</span><span class="o">.</span><span class="n">alignments</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">hsp</span> <span class="ow">in</span> <span class="n">alignment</span><span class="o">.</span><span class="n">hsps</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">hsp</span><span class="o">.</span><span class="n">expect</span> <span class="o">&lt;</span> <span class="n">E_VALUE_THRESH</span><span class="p">:</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;****Alignment****&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sequence:&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;length:&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;e value:&quot;</span><span class="p">,</span> <span class="n">hsp</span><span class="o">.</span><span class="n">expect</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">hsp</span><span class="o">.</span><span class="n">query</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">75</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">hsp</span><span class="o">.</span><span class="n">match</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">75</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+<span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">hsp</span><span class="o">.</span><span class="n">sbjct</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">75</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>This will print out summary reports like the following:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>****Alignment****
+sequence: &gt;gb|AF283004.1|AF283004 Arabidopsis thaliana cold acclimation protein WCOR413-like protein
+alpha form mRNA, complete cds
+length: 783
+e value: 0.034
+tacttgttgatattggatcgaacaaactggagaaccaacatgctcacgtcacttttagtcccttacatattcctc...
+||||||||| | ||||||||||| || ||||  || || |||||||| |||||| |  | |||||||| ||| ||...
+tacttgttggtgttggatcgaaccaattggaagacgaatatgctcacatcacttctcattccttacatcttcttc...
+</pre></div>
+</div>
+<p>Basically, you can do anything you want to with the info in the BLAST
+report once you have parsed it. This will, of course, depend on what you
+want to use it for, but hopefully this helps you get started on doing
+what you need to do!</p>
+<p>An important consideration for extracting information from a BLAST
+report is the type of objects that the information is stored in. In
+Biopython, the parsers return <code class="docutils literal notranslate"><span class="pre">Record</span></code> objects, either <code class="docutils literal notranslate"><span class="pre">Blast</span></code> or
+<code class="docutils literal notranslate"><span class="pre">PSIBlast</span></code> depending on what you are parsing. These objects are
+defined in <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> and are quite complete.</p>
+<p>Figures <a class="reference internal" href="#fig-blastrecord"><span class="std std-ref">Class diagram for the Blast Record class representing a BLAST report.</span></a> and <a class="reference internal" href="#fig-psiblastrecord"><span class="std std-ref">Class diagram for the PSIBlast Record class.</span></a> and
+are my attempts at UML class diagrams for the <code class="docutils literal notranslate"><span class="pre">Blast</span></code> and <code class="docutils literal notranslate"><span class="pre">PSIBlast</span></code>
+record classes. The PSIBlast record object is similar, but has support
+for the rounds that are used in the iteration steps of PSIBlast.</p>
+<figure class="align-default" id="fig-blastrecord">
+<a class="reference internal image-reference" href="../_images/BlastRecord.png"><img alt="Class diagram for the Blast Record class representing a report" src="../_images/BlastRecord.png" style="width: 80.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Class diagram for the Blast Record class representing a BLAST report.</span><a class="headerlink" href="#fig-blastrecord" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="fig-psiblastrecord">
+<a class="reference internal image-reference" href="../_images/PSIBlastRecord.png"><img alt="Class diagram for the PSIBlast Record class." src="../_images/PSIBlastRecord.png" style="width: 80.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Class diagram for the PSIBlast Record class.</span><a class="headerlink" href="#fig-psiblastrecord" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>If you are good at UML and see mistakes/improvements that can be made,
+please let me know.</p>
+</section>
+<section id="dealing-with-psi-blast-1">
+<span id="id8"></span><h2>Dealing with PSI-BLAST<a class="headerlink" href="#dealing-with-psi-blast-1" title="Permalink to this headline"></a></h2>
+<p>You can run the standalone version of PSI-BLAST (the legacy NCBI command
+line tool <code class="docutils literal notranslate"><span class="pre">blastpgp</span></code>, or its replacement <code class="docutils literal notranslate"><span class="pre">psiblast</span></code>) directly from
+the command line or using python’s <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module.</p>
+<p>At the time of writing, the NCBI do not appear to support tools running
+a PSI-BLAST search via the internet.</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML</span></code> parser can read the XML output from
+current versions of PSI-BLAST, but information like which sequences in
+each iteration is new or reused isn’t present in the XML file.</p>
+</section>
+<section id="dealing-with-rps-blast-1">
+<span id="id9"></span><h2>Dealing with RPS-BLAST<a class="headerlink" href="#dealing-with-rps-blast-1" title="Permalink to this headline"></a></h2>
+<p>You can run the standalone version of RPS-BLAST (either the legacy NCBI
+command line tool <code class="docutils literal notranslate"><span class="pre">rpsblast</span></code>, or its replacement with the same name)
+directly from the command line or using python’s <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module.</p>
+<p>At the time of writing, the NCBI do not appear to support tools running
+an RPS-BLAST search via the internet.</p>
+<p>You can use the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.NCBIXML</span></code> parser to read the XML output from
+current versions of RPS-BLAST.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_pairwise2.html" class="btn btn-neutral float-left" title="Pairwise alignments using pairwise2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_searchio.html" class="btn btn-neutral float-right" title="BLAST and other sequence search tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

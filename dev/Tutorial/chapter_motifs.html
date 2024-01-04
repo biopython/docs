@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sequence motif analysis using Bio.motifs &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cluster analysis" href="chapter_cluster.html" />
+    <link rel="prev" title="Phylogenetics with Bio.Phylo" href="chapter_phylo.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sequence motif analysis using Bio.motifs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#motif-objects">Motif objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-a-motif-from-instances">Creating a motif from instances</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#obtaining-a-consensus-sequence">Obtaining a consensus sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reverse-complementing-a-motif">Reverse-complementing a motif</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#slicing-a-motif">Slicing a motif</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#relative-entropy">Relative entropy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creating-a-sequence-logo">Creating a sequence logo</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-motifs">Reading motifs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#jaspar">JASPAR</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#meme">MEME</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transfac">TRANSFAC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-motifs">Writing motifs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#position-weight-matrices">Position-Weight Matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#position-specific-scoring-matrices">Position-Specific Scoring Matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#searching-for-instances">Searching for instances</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#searching-for-exact-matches">Searching for exact matches</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searching-for-matches-using-the-pssm-score">Searching for matches using the PSSM score</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#selecting-a-score-threshold">Selecting a score threshold</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#each-motif-object-has-an-associated-position-specific-scoring-matrix">Each motif object has an associated Position-Specific Scoring Matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comparing-motifs">Comparing motifs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#de-novo-motif-finding"><em>De novo</em> motif finding</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sec-meme">MEME</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#useful-links">Useful links</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">Sequence motif analysis using Bio.motifs</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_motifs.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_phylo.html" class="btn btn-neutral float-left" title="Phylogenetics with Bio.Phylo" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_cluster.html" class="btn btn-neutral float-right" title="Cluster analysis" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sequence-motif-analysis-using-bio-motifs">
+<span id="chapter-motifs"></span><h1>Sequence motif analysis using Bio.motifs<a class="headerlink" href="#sequence-motif-analysis-using-bio-motifs" title="Permalink to this headline"></a></h1>
+<p>This chapter gives an overview of the functionality of the
+<code class="docutils literal notranslate"><span class="pre">Bio.motifs</span></code> package included in Biopython. It is intended for people
+who are involved in the analysis of sequence motifs, so I’ll assume that
+you are familiar with basic notions of motif analysis. In case something
+is unclear, please look at Section <a class="reference internal" href="#sec-links"><span class="std std-ref">Useful links</span></a> for some
+relevant links.</p>
+<p>Most of this chapter describes the new <code class="docutils literal notranslate"><span class="pre">Bio.motifs</span></code> package included
+in Biopython 1.61 onwards, which is replacing the older <code class="docutils literal notranslate"><span class="pre">Bio.Motif</span></code>
+package introduced with Biopython 1.50, which was in turn based on two
+older former Biopython modules, <code class="docutils literal notranslate"><span class="pre">Bio.AlignAce</span></code> and <code class="docutils literal notranslate"><span class="pre">Bio.MEME</span></code>. It
+provides most of their functionality with a unified motif object
+implementation.</p>
+<p>Speaking of other libraries, if you are reading this you might be
+interested in <a class="reference external" href="http://fraenkel-nsf.csbi.mit.edu/TAMO/">TAMO</a>, another
+python library designed to deal with sequence motifs. It supports more
+<em>de-novo</em> motif finders, but it is not a part of Biopython and has some
+restrictions on commercial use.</p>
+<section id="motif-objects">
+<span id="sec-motif-object"></span><h2>Motif objects<a class="headerlink" href="#motif-objects" title="Permalink to this headline"></a></h2>
+<p>Since we are interested in motif analysis, we need to take a look at
+<code class="docutils literal notranslate"><span class="pre">Motif</span></code> objects in the first place. For that we need to import the
+Bio.motifs library:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">motifs</span>
+</pre></div>
+</div>
+<p>and we can start creating our first motif objects. We can either create
+a <code class="docutils literal notranslate"><span class="pre">Motif</span></code> object from a list of instances of the motif, or we can
+obtain a <code class="docutils literal notranslate"><span class="pre">Motif</span></code> object by parsing a file from a motif database or
+motif finding software.</p>
+<section id="creating-a-motif-from-instances">
+<span id="subsec-creating-motif"></span><h3>Creating a motif from instances<a class="headerlink" href="#creating-a-motif-from-instances" title="Permalink to this headline"></a></h3>
+<p>Suppose we have these instances of a DNA motif:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">instances</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TACAA&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TACGC&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TACAC&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TACCC&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AACCC&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AATGC&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AATGC&quot;</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">]</span>
+</pre></div>
+</div>
+<p>then we can create a Motif object as follows:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The instances from which this motif was created is stored in the
+<code class="docutils literal notranslate"><span class="pre">.alignment</span></code> property:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">)</span>
+<span class="go">[Seq(&#39;TACAA&#39;), Seq(&#39;TACGC&#39;), Seq(&#39;TACAC&#39;), Seq(&#39;TACCC&#39;), Seq(&#39;AACCC&#39;), Seq(&#39;AATGC&#39;), Seq(&#39;AATGC&#39;)]</span>
+</pre></div>
+</div>
+<p>Printing the Motif object shows the instances from which it was
+constructed:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="go">TACAA</span>
+<span class="go">TACGC</span>
+<span class="go">TACAC</span>
+<span class="go">TACCC</span>
+<span class="go">AACCC</span>
+<span class="go">AATGC</span>
+<span class="go">AATGC</span>
+</pre></div>
+</div>
+<p>The length of the motif is defined as the sequence length, which should
+be the same for all instances:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<p>The Motif object has an attribute <code class="docutils literal notranslate"><span class="pre">.counts</span></code> containing the counts of
+each nucleotide at each position. Printing this counts matrix shows it
+in an easily readable format:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4</span>
+<span class="go">A:   3.00   7.00   0.00   2.00   1.00</span>
+<span class="go">C:   0.00   0.00   5.00   2.00   6.00</span>
+<span class="go">G:   0.00   0.00   0.00   3.00   0.00</span>
+<span class="go">T:   4.00   0.00   2.00   0.00   0.00</span>
+</pre></div>
+</div>
+<p>You can access these counts as a dictionary:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span>
+<span class="go">[3.0, 7.0, 0.0, 2.0, 1.0]</span>
+</pre></div>
+</div>
+<p>but you can also think of it as a 2D array with the nucleotide as the
+first dimension and the position as the second dimension:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="go">4.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="go">2.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="go">0.0</span>
+</pre></div>
+</div>
+<p>You can also directly access columns of the counts matrix</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="go">{&#39;A&#39;: 2.0, &#39;C&#39;: 2.0, &#39;T&#39;: 0.0, &#39;G&#39;: 3.0}</span>
+</pre></div>
+</div>
+<p>Instead of the nucleotide itself, you can also use the index of the
+nucleotide in the alphabet of the motif:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">alphabet</span>
+<span class="go">&#39;ACGT&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="p">:]</span>
+<span class="go">(3.0, 7.0, 0.0, 2.0, 1.0)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+<span class="go">(3.0, 7.0, 0.0, 2.0, 1.0)</span>
+</pre></div>
+</div>
+</section>
+<section id="obtaining-a-consensus-sequence">
+<span id="sec-motif-consensus"></span><h3>Obtaining a consensus sequence<a class="headerlink" href="#obtaining-a-consensus-sequence" title="Permalink to this headline"></a></h3>
+<p>The consensus sequence of a motif is defined as the sequence of letters
+along the positions of the motif for which the largest value in the
+corresponding columns of the <code class="docutils literal notranslate"><span class="pre">.counts</span></code> matrix is obtained:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">consensus</span>
+<span class="go">Seq(&#39;TACGC&#39;)</span>
+</pre></div>
+</div>
+<p>Conversely, the anticonsensus sequence corresponds to the smallest
+values in the columns of the <code class="docutils literal notranslate"><span class="pre">.counts</span></code> matrix:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">anticonsensus</span>
+<span class="go">Seq(&#39;CCATG&#39;)</span>
+</pre></div>
+</div>
+<p>Note that there is some ambiguity in the definition of the consensus and
+anticonsensus sequence if in some columns multiple nucleotides have the
+maximum or minimum count.</p>
+<p>For DNA sequences, you can also ask for a degenerate consensus sequence,
+in which ambiguous nucleotides are used for positions where there are
+multiple nucleotides with high counts:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">degenerate_consensus</span>
+<span class="go">Seq(&#39;WACVC&#39;)</span>
+</pre></div>
+</div>
+<p>Here, W and R follow the IUPAC nucleotide ambiguity codes: W is either A
+or T, and V is A, C, or G <a class="reference internal" href="chapter_bibliography.html#cornish1985" id="id1"><span>[Cornish1985]</span></a>. The
+degenerate consensus sequence is constructed following the rules
+specified by Cavener <a class="reference internal" href="chapter_bibliography.html#cavener1987" id="id2"><span>[Cavener1987]</span></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">motif.counts.calculate_consensus</span></code> method lets you specify in
+detail how the consensus sequence should be calculated. This method
+largely follows the conventions of the EMBOSS program <code class="docutils literal notranslate"><span class="pre">cons</span></code>, and
+takes the following arguments:</p>
+<dl class="simple">
+<dt>substitution_matrix</dt><dd><p>The scoring matrix used when comparing sequences. By default, it is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, in which case we simply count the frequency of each letter.
+Instead of the default value, you can use the substitution matrices
+available in <code class="docutils literal notranslate"><span class="pre">Bio.Align.substitution\_matrices</span></code>. Common choices are
+BLOSUM62 (also known as EBLOSUM62) for protein, and NUC.4.4 (also
+known as EDNAFULL) for nucleotides. NOTE: Currently, this method has
+not yet been implemented for values other than the default value
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt>plurality</dt><dd><p>Threshold value for the number of positive matches, divided by the
+total count in a column, required to reach consensus. If
+<code class="docutils literal notranslate"><span class="pre">substitution_matrix</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then this argument must also be
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, and is ignored; a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is raised otherwise. If
+<code class="docutils literal notranslate"><span class="pre">substitution_matrix</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, then the default value of
+the plurality is 0.5.</p>
+</dd>
+<dt>identity</dt><dd><p>Number of identities, divided by the total count in a column,
+required to define a consensus value. If the number of identities is
+less than identity multiplied by the total count in a column, then
+the undefined character (<code class="docutils literal notranslate"><span class="pre">N</span></code> for nucleotides and <code class="docutils literal notranslate"><span class="pre">X</span></code> for amino
+acid sequences) is used in the consensus sequence. If <code class="docutils literal notranslate"><span class="pre">identity</span></code> is
+1.0, then only columns of identical letters contribute to the
+consensus. Default value is zero.</p>
+</dd>
+<dt>setcase</dt><dd><p>threshold for the positive matches, divided by the total count in a
+column, above which the consensus is is upper-case and below which
+the consensus is in lower-case. By default, this is equal to 0.5.</p>
+</dd>
+</dl>
+<p>This is an example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">calculate_consensus</span><span class="p">(</span><span class="n">identity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">setcase</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="go">&#39;tACNC&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="reverse-complementing-a-motif">
+<h3>Reverse-complementing a motif<a class="headerlink" href="#reverse-complementing-a-motif" title="Permalink to this headline"></a></h3>
+<p>We can get the reverse complement of a motif by calling the
+<code class="docutils literal notranslate"><span class="pre">reverse_complement</span></code> method on it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">consensus</span>
+<span class="go">Seq(&#39;GCGTA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">degenerate_consensus</span>
+<span class="go">Seq(&#39;GBGTW&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="go">TTGTA</span>
+<span class="go">GCGTA</span>
+<span class="go">GTGTA</span>
+<span class="go">GGGTA</span>
+<span class="go">GGGTT</span>
+<span class="go">GCATT</span>
+<span class="go">GCATT</span>
+</pre></div>
+</div>
+<p>The reverse complement is only defined for DNA motifs.</p>
+</section>
+<section id="slicing-a-motif">
+<h3>Slicing a motif<a class="headerlink" href="#slicing-a-motif" title="Permalink to this headline"></a></h3>
+<p>You can slice the motif to obtain a new <code class="docutils literal notranslate"><span class="pre">Motif</span></code> object for the
+selected positions:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m_sub</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m_sub</span><span class="p">)</span>
+<span class="go">CA</span>
+<span class="go">CG</span>
+<span class="go">CA</span>
+<span class="go">CC</span>
+<span class="go">CC</span>
+<span class="go">TG</span>
+<span class="go">TG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m_sub</span><span class="o">.</span><span class="n">consensus</span>
+<span class="go">Seq(&#39;CG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m_sub</span><span class="o">.</span><span class="n">degenerate_consensus</span>
+<span class="go">Seq(&#39;CV&#39;)</span>
+</pre></div>
+</div>
+</section>
+<section id="relative-entropy">
+<span id="subsec-relative-entropy"></span><h3>Relative entropy<a class="headerlink" href="#relative-entropy" title="Permalink to this headline"></a></h3>
+<p>The relative entropy (or Kullback-Leibler distance) <span class="math notranslate nohighlight">\(H_j\)</span> of
+column <span class="math notranslate nohighlight">\(j\)</span> of the motif is defined as in
+<a class="reference internal" href="chapter_bibliography.html#schneider1986" id="id3"><span>[Schneider1986]</span></a> <a class="reference internal" href="chapter_bibliography.html#durbin1998" id="id4"><span>[Durbin1998]</span></a>:</p>
+<div class="math notranslate nohighlight">
+\[H_{j} = \sum_{i=1}^{M} p_{ij} \log\left(\frac{p_{ij}}{b_{i}}\right)\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(M\)</span> – The number of letters in the alphabet (given by
+<code class="docutils literal notranslate"><span class="pre">len(m.alphabet)</span></code>);</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_{ij}\)</span> – The observed frequency of letter <span class="math notranslate nohighlight">\(i\)</span>,
+normalized, in the <span class="math notranslate nohighlight">\(j\)</span>-th column (see below);</p></li>
+<li><p><span class="math notranslate nohighlight">\(b_{i}\)</span> – The background probability of letter <span class="math notranslate nohighlight">\(i\)</span> (given
+by <code class="docutils literal notranslate"><span class="pre">m.background[i]</span></code>).</p></li>
+</ul>
+<p>The observed frequency <span class="math notranslate nohighlight">\(p_{ij}\)</span> is computed as follows:</p>
+<div class="math notranslate nohighlight">
+\[p_{ij} = \frac{c_{ij} + k_i}{C_{j} + k}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(c_{ij}\)</span> – the number of times letter <span class="math notranslate nohighlight">\(i\)</span> appears in
+column <span class="math notranslate nohighlight">\(j\)</span> of the alignment (given by <code class="docutils literal notranslate"><span class="pre">m.counts[i,</span> <span class="pre">j]</span></code>);</p></li>
+<li><p><span class="math notranslate nohighlight">\(C_{j}\)</span> – The total number of letters in column <span class="math notranslate nohighlight">\(j\)</span>:
+<span class="math notranslate nohighlight">\(C_{j} = \sum_{i=1}^{M} c_{ij}\)</span> (given by
+<code class="docutils literal notranslate"><span class="pre">sum(m.counts[:,</span> <span class="pre">j])</span></code>).</p></li>
+<li><p><span class="math notranslate nohighlight">\(k_i\)</span> – the pseudocount of letter <span class="math notranslate nohighlight">\(i\)</span> (given by
+<code class="docutils literal notranslate"><span class="pre">m.pseudocounts[i]</span></code>).</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span> – the total pseudocount: <span class="math notranslate nohighlight">\(k = \sum_{i=1}^{M} k_i\)</span>
+(given by <code class="docutils literal notranslate"><span class="pre">sum(m.pseudocounts.values())</span></code>).</p></li>
+</ul>
+<p>With these definitions, both <span class="math notranslate nohighlight">\(p_{ij}\)</span> and <span class="math notranslate nohighlight">\(b_{i}\)</span> are
+normalized to 1:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{M} p_{ij} = 1\]</div>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{M} b_i = 1\]</div>
+<p>The relative entropy is the same as the information content if the
+background distribution is uniform.</p>
+<p>The relative entropy for each column of motif <code class="docutils literal notranslate"><span class="pre">m</span></code> can be obtained
+using the <code class="docutils literal notranslate"><span class="pre">relative_entropy</span></code> property:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">relative_entropy</span>
+<span class="go">array([1.01477186, 2.        , 1.13687943, 0.44334329, 1.40832722])</span>
+</pre></div>
+</div>
+<p>These values are calculated using the base-2 logarithm, and are
+therefore in units of bits. The second column (which consists of <code class="docutils literal notranslate"><span class="pre">A</span></code>
+nucleotides only) has the highest relative entropy; the fourth column
+(which consists of <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">C</span></code>, or <code class="docutils literal notranslate"><span class="pre">G</span></code> nucleotides) has the lowest
+relative entropy). The relative entropy of the motif can be calculated
+by summing over the columns:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">sum</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">relative_entropy</span><span class="p">)</span>  
+<span class="go">6.003321...</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-a-sequence-logo">
+<h3>Creating a sequence logo<a class="headerlink" href="#creating-a-sequence-logo" title="Permalink to this headline"></a></h3>
+<p>If we have internet access, we can create a
+<a class="reference external" href="https://weblogo.berkeley.edu">weblogo</a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">weblogo</span><span class="p">(</span><span class="s2">&quot;mymotif.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We should get our logo saved as a PNG in the specified file.</p>
+</section>
+</section>
+<section id="reading-motifs">
+<span id="sec-io"></span><h2>Reading motifs<a class="headerlink" href="#reading-motifs" title="Permalink to this headline"></a></h2>
+<p>Creating motifs from instances by hand is a bit boring, so it’s useful
+to have some I/O functions for reading and writing motifs. There are not
+any really well established standards for storing motifs, but there are
+a couple of formats that are more used than others.</p>
+<section id="jaspar">
+<h3>JASPAR<a class="headerlink" href="#jaspar" title="Permalink to this headline"></a></h3>
+<p>One of the most popular motif databases is
+<a class="reference external" href="http://jaspar.genereg.net">JASPAR</a>. In addition to the motif
+sequence information, the JASPAR database stores a lot of
+meta-information for each motif. The module <code class="docutils literal notranslate"><span class="pre">Bio.motifs</span></code> contains a
+specialized class <code class="docutils literal notranslate"><span class="pre">jaspar.Motif</span></code> in which this meta-information is
+represented as attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">matrix_id</span></code> - the unique JASPAR motif ID, e.g. ’MA0004.1’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> - the name of the TF, e.g. ’Arnt’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">collection</span></code> - the JASPAR collection to which the motif belongs,
+e.g. ’CORE’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tf_class</span></code> - the structural class of this TF, e.g. ’Zipper-Type’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tf_family</span></code> - the family to which this TF belongs, e.g.
+’Helix-Loop-Helix’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">species</span></code> - the species to which this TF belongs, may have multiple
+values, these are specified as taxonomy IDs, e.g. 10090</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tax_group</span></code> - the taxonomic supergroup to which this motif belongs,
+e.g. ’vertebrates’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">acc</span></code> - the accession number of the TF protein, e.g. ’P53762’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data_type</span></code> - the type of data used to construct this motif, e.g.
+’SELEX’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">medline</span></code> - the Pubmed ID of literature supporting this motif, may
+be multiple values, e.g. 7592839</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pazar_id</span></code> - external reference to the TF in the PAZAR database,
+e.g. ’TF0000003’</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">comment</span></code> - free form text containing notes about the construction
+of the motif</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">jaspar.Motif</span></code> class inherits from the generic <code class="docutils literal notranslate"><span class="pre">Motif</span></code> class and
+therefore provides all the facilities of any of the motif formats —
+reading motifs, writing motifs, scanning sequences for motif instances
+etc.</p>
+<p>JASPAR stores motifs in several different ways including three different
+flat file formats and as an SQL database. All of these formats
+facilitate the construction of a counts matrix. However, the amount of
+meta information described above that is available varies with the
+format.</p>
+<section id="the-jaspar-sites-format">
+<h4>The JASPAR <code class="docutils literal notranslate"><span class="pre">sites</span></code> format<a class="headerlink" href="#the-jaspar-sites-format" title="Permalink to this headline"></a></h4>
+<p>The first of the three flat file formats contains a list of instances.
+As an example, these are the beginning and ending lines of the JASPAR
+<code class="docutils literal notranslate"><span class="pre">Arnt.sites</span></code> file showing known binding sites of the mouse
+helix-loop-helix transcription factor Arnt.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;MA0004 ARNT 1
+CACGTGatgtcctc
+&gt;MA0004 ARNT 2
+CACGTGggaggtac
+&gt;MA0004 ARNT 3
+CACGTGccgcgcgc
+...
+&gt;MA0004 ARNT 18
+AACGTGacagccctcc
+&gt;MA0004 ARNT 19
+AACGTGcacatcgtcc
+&gt;MA0004 ARNT 20
+aggaatCGCGTGc
+</pre></div>
+</div>
+<p>The parts of the sequence in capital letters are the motif instances
+that were found to align to each other.</p>
+<p>We can create a <code class="docutils literal notranslate"><span class="pre">Motif</span></code> object from these instances as follows:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">motifs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Arnt.sites&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">arnt</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;sites&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>The instances from which this motif was created is stored in the
+<code class="docutils literal notranslate"><span class="pre">.alignment</span></code> property:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arnt</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">[Seq(&#39;CACGTG&#39;), Seq(&#39;CACGTG&#39;), Seq(&#39;CACGTG&#39;)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">sequence</span> <span class="ow">in</span> <span class="n">arnt</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">CACGTG</span>
+<span class="go">AACGTG</span>
+<span class="go">AACGTG</span>
+<span class="go">AACGTG</span>
+<span class="go">AACGTG</span>
+<span class="go">CGCGTG</span>
+</pre></div>
+</div>
+<p>The counts matrix of this motif is automatically calculated from the
+instances:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arnt</span><span class="o">.</span><span class="n">counts</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5</span>
+<span class="go">A:   4.00  19.00   0.00   0.00   0.00   0.00</span>
+<span class="go">C:  16.00   0.00  20.00   0.00   0.00   0.00</span>
+<span class="go">G:   0.00   1.00   0.00  20.00   0.00  20.00</span>
+<span class="go">T:   0.00   0.00   0.00   0.00  20.00   0.00</span>
+</pre></div>
+</div>
+<p>This format does not store any meta information.</p>
+</section>
+<section id="the-jaspar-pfm-format">
+<h4>The JASPAR <code class="docutils literal notranslate"><span class="pre">pfm</span></code> format<a class="headerlink" href="#the-jaspar-pfm-format" title="Permalink to this headline"></a></h4>
+<p>JASPAR also makes motifs available directly as a count matrix, without
+the instances from which it was created. This <code class="docutils literal notranslate"><span class="pre">pfm</span></code> format only stores
+the counts matrix for a single motif. For example, this is the JASPAR
+file <code class="docutils literal notranslate"><span class="pre">SRF.pfm</span></code> containing the counts matrix for the human SRF
+transcription factor:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> 2 9 0 1 32 3 46 1 43 15 2 2
+ 1 33 45 45 1 1 0 0 0 1 0 1
+39 2 1 0 0 0 0 0 0 0 44 43
+ 4 2 0 0 13 42 0 45 3 30 0 0
+</pre></div>
+</div>
+<p>We can create a motif for this count matrix as follows:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SRF.pfm&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">srf</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;pfm&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">srf</span><span class="o">.</span><span class="n">counts</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5      6      7      8      9     10     11</span>
+<span class="go">A:   2.00   9.00   0.00   1.00  32.00   3.00  46.00   1.00  43.00  15.00   2.00   2.00</span>
+<span class="go">C:   1.00  33.00  45.00  45.00   1.00   1.00   0.00   0.00   0.00   1.00   0.00   1.00</span>
+<span class="go">G:  39.00   2.00   1.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00  44.00  43.00</span>
+<span class="go">T:   4.00   2.00   0.00   0.00  13.00  42.00   0.00  45.00   3.00  30.00   0.00   0.00</span>
+</pre></div>
+</div>
+<p>As this motif was created from the counts matrix directly, it has no
+instances associated with it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">srf</span><span class="o">.</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">None</span>
+</pre></div>
+</div>
+<p>We can now ask for the consensus sequence of these two motifs:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arnt</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">consensus</span><span class="p">)</span>
+<span class="go">CACGTG</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">srf</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">consensus</span><span class="p">)</span>
+<span class="go">GCCCATATATGG</span>
+</pre></div>
+</div>
+<p>As with the instances file, no meta information is stored in this
+format.</p>
+</section>
+<section id="the-jaspar-format-jaspar">
+<h4>The JASPAR format <code class="docutils literal notranslate"><span class="pre">jaspar</span></code><a class="headerlink" href="#the-jaspar-format-jaspar" title="Permalink to this headline"></a></h4>
+<p>The <code class="docutils literal notranslate"><span class="pre">jaspar</span></code> file format allows multiple motifs to be specified in a
+single file. In this format each of the motif records consist of a
+header line followed by four lines defining the counts matrix. The
+header line begins with a <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> character (similar to the Fasta file
+format) and is followed by the unique JASPAR matrix ID and the TF name.
+The following example shows a <code class="docutils literal notranslate"><span class="pre">jaspar</span></code> formatted file containing the
+three motifs Arnt, RUNX1 and MEF2A:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;MA0004.1 Arnt
+A  [ 4 19  0  0  0  0 ]
+C  [16  0 20  0  0  0 ]
+G  [ 0  1  0 20  0 20 ]
+T  [ 0  0  0  0 20  0 ]
+&gt;MA0002.1 RUNX1
+A  [10 12  4  1  2  2  0  0  0  8 13 ]
+C  [ 2  2  7  1  0  8  0  0  1  2  2 ]
+G  [ 3  1  1  0 23  0 26 26  0  0  4 ]
+T  [11 11 14 24  1 16  0  0 25 16  7 ]
+&gt;MA0052.1 MEF2A
+A  [ 1  0 57  2  9  6 37  2 56  6 ]
+C  [50  0  1  1  0  0  0  0  0  0 ]
+G  [ 0  0  0  0  0  0  0  0  2 50 ]
+T  [ 7 58  0 55 49 52 21 56  0  2 ]
+</pre></div>
+</div>
+<p>The motifs are read as follows:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fh</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;jaspar_motifs.txt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">motifs</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span> <span class="s2">&quot;jaspar&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">TF name  Arnt</span>
+<span class="go">Matrix ID   MA0004.1</span>
+<span class="go">Matrix:</span>
+<span class="go">        0      1      2      3      4      5</span>
+<span class="go">A:   4.00  19.00   0.00   0.00   0.00   0.00</span>
+<span class="go">C:  16.00   0.00  20.00   0.00   0.00   0.00</span>
+<span class="go">G:   0.00   1.00   0.00  20.00   0.00  20.00</span>
+<span class="go">T:   0.00   0.00   0.00   0.00  20.00   0.00</span>
+
+
+
+<span class="go">TF name  RUNX1</span>
+<span class="go">Matrix ID   MA0002.1</span>
+<span class="go">Matrix:</span>
+<span class="go">        0      1      2      3      4      5      6      7      8      9     10</span>
+<span class="go">A:  10.00  12.00   4.00   1.00   2.00   2.00   0.00   0.00   0.00   8.00  13.00</span>
+<span class="go">C:   2.00   2.00   7.00   1.00   0.00   8.00   0.00   0.00   1.00   2.00   2.00</span>
+<span class="go">G:   3.00   1.00   1.00   0.00  23.00   0.00  26.00  26.00   0.00   0.00   4.00</span>
+<span class="go">T:  11.00  11.00  14.00  24.00   1.00  16.00   0.00   0.00  25.00  16.00   7.00</span>
+
+
+
+<span class="go">TF name  MEF2A</span>
+<span class="go">Matrix ID   MA0052.1</span>
+<span class="go">Matrix:</span>
+<span class="go">        0      1      2      3      4      5      6      7      8      9</span>
+<span class="go">A:   1.00   0.00  57.00   2.00   9.00   6.00  37.00   2.00  56.00   6.00</span>
+<span class="go">C:  50.00   0.00   1.00   1.00   0.00   0.00   0.00   0.00   0.00   0.00</span>
+<span class="go">G:   0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   2.00  50.00</span>
+<span class="go">T:   7.00  58.00   0.00  55.00  49.00  52.00  21.00  56.00   0.00   2.00</span>
+</pre></div>
+</div>
+<p>Note that printing a JASPAR motif yields both the counts data and the
+available meta-information.</p>
+</section>
+<section id="accessing-the-jaspar-database">
+<h4>Accessing the JASPAR database<a class="headerlink" href="#accessing-the-jaspar-database" title="Permalink to this headline"></a></h4>
+<p>In addition to parsing these flat file formats, we can also retrieve
+motifs from a JASPAR SQL database. Unlike the flat file formats, a
+JASPAR database allows storing of all possible meta information defined
+in the JASPAR <code class="docutils literal notranslate"><span class="pre">Motif</span></code> class. It is beyond the scope of this document
+to describe how to set up a JASPAR database (please see the main
+<a class="reference external" href="http://jaspar.genereg.net">JASPAR</a> website). Motifs are read from a
+JASPAR database using the <code class="docutils literal notranslate"><span class="pre">Bio.motifs.jaspar.db</span></code> module. First connect
+to the JASPAR database using the JASPAR5 class which models the the
+latest JASPAR schema:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.motifs.jaspar.db</span> <span class="kn">import</span> <span class="n">JASPAR5</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">JASPAR_DB_HOST</span> <span class="o">=</span> <span class="s2">&quot;yourhostname&quot;</span>  <span class="c1"># fill in these values</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">JASPAR_DB_NAME</span> <span class="o">=</span> <span class="s2">&quot;yourdatabase&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">JASPAR_DB_USER</span> <span class="o">=</span> <span class="s2">&quot;yourusername&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">JASPAR_DB_PASS</span> <span class="o">=</span> <span class="s2">&quot;yourpassword&quot;</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">jdb</span> <span class="o">=</span> <span class="n">JASPAR5</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">host</span><span class="o">=</span><span class="n">JASPAR_DB_HOST</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">name</span><span class="o">=</span><span class="n">JASPAR_DB_NAME</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">user</span><span class="o">=</span><span class="n">JASPAR_DB_USER</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">password</span><span class="o">=</span><span class="n">JASPAR_DB_PASS</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we can fetch a single motif by its unique JASPAR ID with the
+<code class="docutils literal notranslate"><span class="pre">fetch_motif_by_id</span></code> method. Note that a JASPAR ID consists of a base
+ID and a version number separated by a decimal point, e.g. ’MA0004.1’.
+The <code class="docutils literal notranslate"><span class="pre">fetch_motif_by_id</span></code> method allows you to use either the fully
+specified ID or just the base ID. If only the base ID is provided, the
+latest version of the motif is returned.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">arnt</span> <span class="o">=</span> <span class="n">jdb</span><span class="o">.</span><span class="n">fetch_motif_by_id</span><span class="p">(</span><span class="s2">&quot;MA0004&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Printing the motif reveals that the JASPAR SQL database stores much more
+meta-information than the flat files:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">arnt</span><span class="p">)</span>
+<span class="go">TF name Arnt</span>
+<span class="go">Matrix ID   MA0004.1</span>
+<span class="go">Collection  CORE</span>
+<span class="go">TF class    Zipper-Type</span>
+<span class="go">TF family   Helix-Loop-Helix</span>
+<span class="go">Species 10090</span>
+<span class="go">Taxonomic group vertebrates</span>
+<span class="go">Accession   [&#39;P53762&#39;]</span>
+<span class="go">Data type used  SELEX</span>
+<span class="go">Medline 7592839</span>
+<span class="go">PAZAR ID    TF0000003</span>
+<span class="go">Comments    -</span>
+<span class="go">Matrix:</span>
+<span class="go">    0      1      2      3      4      5</span>
+<span class="go">A:   4.00  19.00   0.00   0.00   0.00   0.00</span>
+<span class="go">C:  16.00   0.00  20.00   0.00   0.00   0.00</span>
+<span class="go">G:   0.00   1.00   0.00  20.00   0.00  20.00</span>
+<span class="go">T:   0.00   0.00   0.00   0.00  20.00   0.00</span>
+</pre></div>
+</div>
+<p>We can also fetch motifs by name. The name must be an exact match
+(partial matches or database wildcards are not currently supported).
+Note that as the name is not guaranteed to be unique, the
+<code class="docutils literal notranslate"><span class="pre">fetch_motifs_by_name</span></code> method actually returns a list.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motifs</span> <span class="o">=</span> <span class="n">jdb</span><span class="o">.</span><span class="n">fetch_motifs_by_name</span><span class="p">(</span><span class="s2">&quot;Arnt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motifs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">TF name Arnt</span>
+<span class="go">Matrix ID   MA0004.1</span>
+<span class="go">Collection  CORE</span>
+<span class="go">TF class    Zipper-Type</span>
+<span class="go">TF family   Helix-Loop-Helix</span>
+<span class="go">Species 10090</span>
+<span class="go">Taxonomic group vertebrates</span>
+<span class="go">Accession   [&#39;P53762&#39;]</span>
+<span class="go">Data type used  SELEX</span>
+<span class="go">Medline 7592839</span>
+<span class="go">PAZAR ID    TF0000003</span>
+<span class="go">Comments    -</span>
+<span class="go">Matrix:</span>
+<span class="go">    0      1      2      3      4      5</span>
+<span class="go">A:   4.00  19.00   0.00   0.00   0.00   0.00</span>
+<span class="go">C:  16.00   0.00  20.00   0.00   0.00   0.00</span>
+<span class="go">G:   0.00   1.00   0.00  20.00   0.00  20.00</span>
+<span class="go">T:   0.00   0.00   0.00   0.00  20.00   0.00</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">fetch_motifs</span></code> method allows you to fetch motifs which match a
+specified set of criteria. These criteria include any of the above
+described meta information as well as certain matrix properties such as
+the minimum information content (<code class="docutils literal notranslate"><span class="pre">min_ic</span></code> in the example below), the
+minimum length of the matrix or the minimum number of sites used to
+construct the matrix. Only motifs which pass ALL the specified criteria
+are returned. Note that selection criteria which correspond to meta
+information which allow for multiple values may be specified as either a
+single value or a list of values, e.g. <code class="docutils literal notranslate"><span class="pre">tax_group</span></code> and <code class="docutils literal notranslate"><span class="pre">tf_family</span></code>
+in the example below.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motifs</span> <span class="o">=</span> <span class="n">jdb</span><span class="o">.</span><span class="n">fetch_motifs</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">collection</span><span class="o">=</span><span class="s2">&quot;CORE&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">tax_group</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;vertebrates&quot;</span><span class="p">,</span> <span class="s2">&quot;insects&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">tf_class</span><span class="o">=</span><span class="s2">&quot;Winged Helix-Turn-Helix&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">tf_family</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Forkhead&quot;</span><span class="p">,</span> <span class="s2">&quot;Ets&quot;</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">min_ic</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">motif</span> <span class="ow">in</span> <span class="n">motifs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">pass</span>  <span class="c1"># do something with the motif</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+</section>
+<section id="compatibility-with-perl-tfbs-modules">
+<h4>Compatibility with Perl TFBS modules<a class="headerlink" href="#compatibility-with-perl-tfbs-modules" title="Permalink to this headline"></a></h4>
+<p>An important thing to note is that the JASPAR <code class="docutils literal notranslate"><span class="pre">Motif</span></code> class was
+designed to be compatible with the popular <a class="reference external" href="http://tfbs.genereg.net/">Perl TFBS
+modules</a>. Therefore some specifics about
+the choice of defaults for background and pseudocounts as well as how
+information content is computed and sequences searched for instances is
+based on this compatibility criteria. These choices are noted in the
+specific subsections below.</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><strong>Choice of background:</strong></div>
+<div class="line">The Perl <code class="docutils literal notranslate"><span class="pre">TFBS</span></code> modules appear to allow a choice of custom
+background probabilities (although the documentation states that
+uniform background is assumed). However the default is to use a
+uniform background. Therefore it is recommended that you use a
+uniform background for computing the position-specific scoring
+matrix (PSSM). This is the default when using the Biopython
+<code class="docutils literal notranslate"><span class="pre">motifs</span></code> module.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><strong>Choice of pseudocounts:</strong></div>
+<div class="line">By default, the Perl <code class="docutils literal notranslate"><span class="pre">TFBS</span></code> modules use a pseudocount equal to
+<span class="math notranslate nohighlight">\(\sqrt{N} * \textrm{bg}[\textrm{nucleotide}]\)</span>, where
+<span class="math notranslate nohighlight">\(N\)</span> represents the total number of sequences used to
+construct the matrix. To apply this same pseudocount formula, set
+the motif <code class="docutils literal notranslate"><span class="pre">pseudocounts</span></code> attribute using the
+<code class="docutils literal notranslate"><span class="pre">jaspar.calculate\_pseudcounts()</span></code> function:</div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">pseudocounts</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">jaspar</span><span class="o">.</span><span class="n">calculate_pseudocounts</span><span class="p">(</span><span class="n">motif</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that it is possible for the counts matrix to have an unequal
+number of sequences making up the columns. The pseudocount
+computation uses the average number of sequences making up the
+matrix. However, when <code class="docutils literal notranslate"><span class="pre">normalize</span></code> is called on the counts matrix,
+each count value in a column is divided by the total number of
+sequences making up that specific column, not by the average number
+of sequences. This differs from the Perl <code class="docutils literal notranslate"><span class="pre">TFBS</span></code> modules because the
+normalization is not done as a separate step and so the average
+number of sequences is used throughout the computation of the pssm.
+Therefore, for matrices with unequal column counts, the PSSM computed
+by the <code class="docutils literal notranslate"><span class="pre">motifs</span></code> module will differ somewhat from the pssm computed
+by the Perl <code class="docutils literal notranslate"><span class="pre">TFBS</span></code> modules.</p>
+</li>
+<li><div class="line-block">
+<div class="line"><strong>Computation of matrix information content:</strong></div>
+<div class="line">The information content (IC) or specificity of a matrix is computed
+using the <code class="docutils literal notranslate"><span class="pre">mean</span></code> method of the <code class="docutils literal notranslate"><span class="pre">PositionSpecificScoringMatrix</span></code>
+class. However of note, in the Perl <code class="docutils literal notranslate"><span class="pre">TFBS</span></code> modules the default
+behavior is to compute the IC without first applying pseudocounts,
+even though by default the PSSMs are computed using pseudocounts as
+described above.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><strong>Searching for instances:</strong></div>
+<div class="line">Searching for instances with the Perl <code class="docutils literal notranslate"><span class="pre">TFBS</span></code> motifs was usually
+performed using a relative score threshold, i.e. a score in the
+range 0 to 1. In order to compute the absolute PSSM score
+corresponding to a relative score one can use the equation:</div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">abs_score</span> <span class="o">=</span> <span class="p">(</span><span class="n">pssm</span><span class="o">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">pssm</span><span class="o">.</span><span class="n">min</span><span class="p">)</span> <span class="o">*</span> <span class="n">rel_score</span> <span class="o">+</span> <span class="n">pssm</span><span class="o">.</span><span class="n">min</span>
+</pre></div>
+</div>
+<p>To convert the absolute score of an instance back to a relative
+score, one can use the equation:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rel_score</span> <span class="o">=</span> <span class="p">(</span><span class="n">abs_score</span> <span class="o">-</span> <span class="n">pssm</span><span class="o">.</span><span class="n">min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">pssm</span><span class="o">.</span><span class="n">max</span> <span class="o">-</span> <span class="n">pssm</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For example, using the Arnt motif before, let’s search a sequence
+with a relative score threshold of 0.8.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">test_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TAAGCGTGCACGCGCAACACGTGCATTA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">arnt</span><span class="o">.</span><span class="n">pseudocounts</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">jaspar</span><span class="o">.</span><span class="n">calculate_pseudocounts</span><span class="p">(</span><span class="n">arnt</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pssm</span> <span class="o">=</span> <span class="n">arnt</span><span class="o">.</span><span class="n">pssm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">max_score</span> <span class="o">=</span> <span class="n">pssm</span><span class="o">.</span><span class="n">max</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">min_score</span> <span class="o">=</span> <span class="n">pssm</span><span class="o">.</span><span class="n">min</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">abs_score_threshold</span> <span class="o">=</span> <span class="p">(</span><span class="n">max_score</span> <span class="o">-</span> <span class="n">min_score</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.8</span> <span class="o">+</span> <span class="n">min_score</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">pssm</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">test_seq</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">abs_score_threshold</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">rel_score</span> <span class="o">=</span> <span class="p">(</span><span class="n">score</span> <span class="o">-</span> <span class="n">min_score</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_score</span> <span class="o">-</span> <span class="n">min_score</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Position </span><span class="si">{</span><span class="n">pos</span><span class="si">}</span><span class="s2">: score = </span><span class="si">{</span><span class="n">score</span><span class="si">:</span><span class="s2">5.3f</span><span class="si">}</span><span class="s2">, rel. score = </span><span class="si">{</span><span class="n">rel_score</span><span class="si">:</span><span class="s2">5.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Position 2: score = 5.362, rel. score = 0.801</span>
+<span class="go">Position 8: score = 6.112, rel. score = 0.831</span>
+<span class="go">Position -20: score = 7.103, rel. score = 0.870</span>
+<span class="go">Position 17: score = 10.351, rel. score = 1.000</span>
+<span class="go">Position -11: score = 10.351, rel. score = 1.000</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="meme">
+<h3>MEME<a class="headerlink" href="#meme" title="Permalink to this headline"></a></h3>
+<p>MEME <a class="reference internal" href="chapter_bibliography.html#bailey1994" id="id5"><span>[Bailey1994]</span></a> is a tool for discovering motifs in
+a group of related DNA or protein sequences. It takes as input a group
+of DNA or protein sequences and outputs as many motifs as requested.
+Therefore, in contrast to JASPAR files, MEME output files typically
+contain multiple motifs. This is an example.</p>
+<p>At the top of an output file generated by MEME shows some background
+information about the MEME and the version of MEME used:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 3.0 (Release date: 2004/08/18 09:07:01)
+...
+</pre></div>
+</div>
+<p>Further down, the input set of training sequences is recapitulated:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= INO_up800.s
+ALPHABET= ACGT
+Sequence name            Weight Length  Sequence name            Weight Length
+-------------            ------ ------  -------------            ------ ------
+CHO1                     1.0000    800  CHO2                     1.0000    800
+FAS1                     1.0000    800  FAS2                     1.0000    800
+ACC1                     1.0000    800  INO1                     1.0000    800
+OPI3                     1.0000    800
+********************************************************************************
+</pre></div>
+</div>
+<p>and the exact command line that was used:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
+
+command: meme -mod oops -dna -revcomp -nmotifs 2 -bfile yeast.nc.6.freq INO_up800.s
+...
+</pre></div>
+</div>
+<p>Next is detailed information on each motif that was found:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>********************************************************************************
+MOTIF  1        width =   12   sites =   7   llr = 95   E-value = 2.0e-001
+********************************************************************************
+--------------------------------------------------------------------------------
+        Motif 1 Description
+--------------------------------------------------------------------------------
+Simplified        A  :::9:a::::3:
+pos.-specific     C  ::a:9:11691a
+probability       G  ::::1::94:4:
+matrix            T  aa:1::9::11:
+</pre></div>
+</div>
+<p>To parse this file (stored as <code class="docutils literal notranslate"><span class="pre">meme.dna.oops.txt</span></code>), use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;meme.INO_up800.classic.oops.xml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">record</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;meme&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">motifs.parse</span></code> command reads the complete file directly, so you
+can close the file after calling <code class="docutils literal notranslate"><span class="pre">motifs.parse</span></code>. The header
+information is stored in attributes:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">version</span>
+<span class="go">&#39;5.0.1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">datafile</span>
+<span class="go">&#39;common/INO_up800.s&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">command</span>
+<span class="go">&#39;meme common/INO_up800.s -oc results/meme10 -mod oops -dna -revcomp -bfile common/yeast.nc.6.freq -nmotifs 2 -objfun classic -minw 8 -nostatus &#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">alphabet</span>
+<span class="go">&#39;ACGT&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">sequences</span>
+<span class="go">[&#39;sequence_0&#39;, &#39;sequence_1&#39;, &#39;sequence_2&#39;, &#39;sequence_3&#39;, &#39;sequence_4&#39;, &#39;sequence_5&#39;, &#39;sequence_6&#39;]</span>
+</pre></div>
+</div>
+<p>The record is an object of the <code class="docutils literal notranslate"><span class="pre">Bio.motifs.meme.Record</span></code> class. The
+class inherits from list, and you can think of <code class="docutils literal notranslate"><span class="pre">record</span></code> as a list of
+Motif objects:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">consensus</span><span class="p">)</span>
+<span class="go">GCGGCATGTGAAA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">degenerate_consensus</span><span class="p">)</span>
+<span class="go">GSKGCATGTGAAA</span>
+</pre></div>
+</div>
+<p>In addition to these generic motif attributes, each motif also stores
+its specific information as calculated by MEME. For example,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">num_occurrences</span>
+<span class="go">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">length</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">evalue</span> <span class="o">=</span> <span class="n">motif</span><span class="o">.</span><span class="n">evalue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%3.1g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">evalue</span><span class="p">)</span>
+<span class="go">0.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;GSKGCATGTGAAA&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;motif_1&#39;</span>
+</pre></div>
+</div>
+<p>In addition to using an index into the record, as we did above, you can
+also find it by its name:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;GSKGCATGTGAAA&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Each motif has an attribute <code class="docutils literal notranslate"><span class="pre">.alignment</span></code> with the sequence alignment
+in which the motif was found, providing some information on each of the
+sequences:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">Instance(&#39;GCGGCATGTGAAA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">motif_name</span>
+<span class="go">&#39;GSKGCATGTGAAA&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sequence_name</span>
+<span class="go">&#39;INO1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sequence_id</span>
+<span class="go">&#39;sequence_5&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">start</span>
+<span class="go">620</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strand</span>
+<span class="go">&#39;+&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">length</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pvalue</span> <span class="o">=</span> <span class="n">motif</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pvalue</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%5.3g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pvalue</span><span class="p">)</span>
+<span class="go">1.21e-08</span>
+</pre></div>
+</div>
+<section id="mast">
+<h4>MAST<a class="headerlink" href="#mast" title="Permalink to this headline"></a></h4>
+</section>
+</section>
+<section id="transfac">
+<h3>TRANSFAC<a class="headerlink" href="#transfac" title="Permalink to this headline"></a></h3>
+<p>TRANSFAC is a manually curated database of transcription factors,
+together with their genomic binding sites and DNA binding profiles
+<a class="reference internal" href="chapter_bibliography.html#matys2003" id="id6"><span>[Matys2003]</span></a>. While the file format used in the
+TRANSFAC database is nowadays also used by others, we will refer to it
+as the TRANSFAC file format.</p>
+<p>A minimal file in the TRANSFAC format looks as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID  motif1
+P0      A      C      G      T
+01      1      2      2      0      S
+02      2      1      2      0      R
+03      3      0      1      1      A
+04      0      5      0      0      C
+05      5      0      0      0      A
+06      0      0      4      1      G
+07      0      1      4      0      G
+08      0      0      0      5      T
+09      0      0      5      0      G
+10      0      1      2      2      K
+11      0      2      0      3      Y
+12      1      0      3      1      G
+//
+</pre></div>
+</div>
+<p>This file shows the frequency matrix of motif <code class="docutils literal notranslate"><span class="pre">motif1</span></code> of 12
+nucleotides. In general, one file in the TRANSFAC format can contain
+multiple motifs. For example, this is the contents of the example
+TRANSFAC file <code class="docutils literal notranslate"><span class="pre">transfac.dat</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>VV  EXAMPLE January 15, 2013
+XX
+//
+ID  motif1
+P0      A      C      G      T
+01      1      2      2      0      S
+02      2      1      2      0      R
+03      3      0      1      1      A
+...
+11      0      2      0      3      Y
+12      1      0      3      1      G
+//
+ID  motif2
+P0      A      C      G      T
+01      2      1      2      0      R
+02      1      2      2      0      S
+...
+09      0      0      0      5      T
+10      0      2      0      3      Y
+//
+</pre></div>
+</div>
+<p>To parse a TRANSFAC file, use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;transfac.dat&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">record</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;TRANSFAC&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>If any discrepancies between the file contents and the TRANSFAC file
+format are detected, a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> is raised. Note that you may
+encounter files that do not follow the TRANSFAC format strictly. For
+example, the number of spaces between columns may be different, or a tab
+may be used instead of spaces. Use <code class="docutils literal notranslate"><span class="pre">strict=False</span></code> to enable parsing
+such files without raising a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;TRANSFAC&quot;</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When parsing a non-compliant file, we recommend to check the record
+returned by <code class="docutils literal notranslate"><span class="pre">motif.parse</span></code> to ensure that it is consistent with the
+file contents.</p>
+<p>The overall version number, if available, is stored as
+<code class="docutils literal notranslate"><span class="pre">record.version</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">version</span>
+<span class="go">&#39;EXAMPLE January 15, 2013&#39;</span>
+</pre></div>
+</div>
+<p>Each motif in <code class="docutils literal notranslate"><span class="pre">record</span></code> is in instance of the
+<code class="docutils literal notranslate"><span class="pre">Bio.motifs.transfac.Motif</span></code> class, which inherits both from the
+<code class="docutils literal notranslate"><span class="pre">Bio.motifs.Motif</span></code> class and from a Python dictionary. The dictionary
+uses the two-letter keys to store any additional information about the
+motif:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">degenerate_consensus</span>  <span class="c1"># Using the Bio.motifs.Motif property</span>
+<span class="go">Seq(&#39;SRACAGGTGKYG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">]</span>  <span class="c1"># Using motif as a dictionary</span>
+<span class="go">&#39;motif1&#39;</span>
+</pre></div>
+</div>
+<p>TRANSFAC files are typically much more elaborate than this example,
+containing lots of additional information about the motif. Table
+<a class="reference internal" href="#table-transfaccodes"><span class="std std-ref">Fields commonly found in TRANSFAC files</span></a> lists the two-letter field codes that are
+commonly found in TRANSFAC files:</p>
+<table class="docutils align-default" id="table-transfaccodes">
+<caption><span class="caption-number">Table 5 </span><span class="caption-text">Fields commonly found in TRANSFAC files</span><a class="headerlink" href="#table-transfaccodes" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 89%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">AC</span></code></p></td>
+<td><p>Accession number</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">AS</span></code></p></td>
+<td><p>Accession numbers, secondary</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">BA</span></code></p></td>
+<td><p>Statistical basis</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BF</span></code></p></td>
+<td><p>Binding factors</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">BS</span></code></p></td>
+<td><p>Factor binding sites underlying the matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">CC</span></code></p></td>
+<td><p>Comments</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">CO</span></code></p></td>
+<td><p>Copyright notice</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DE</span></code></p></td>
+<td><p>Short factor description</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DR</span></code></p></td>
+<td><p>External databases</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DT</span></code></p></td>
+<td><p>Date created/updated</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">HC</span></code></p></td>
+<td><p>Subfamilies</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">HP</span></code></p></td>
+<td><p>Superfamilies</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ID</span></code></p></td>
+<td><p>Identifier</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NA</span></code></p></td>
+<td><p>Name of the binding factor</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">OC</span></code></p></td>
+<td><p>Taxonomic classification</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">OS</span></code></p></td>
+<td><p>Species/Taxon</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">OV</span></code></p></td>
+<td><p>Older version</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PV</span></code></p></td>
+<td><p>Preferred version</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TY</span></code></p></td>
+<td><p>Type</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">XX</span></code></p></td>
+<td><p>Empty line; these are not stored in the Record.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Each motif also has an attribute <code class="docutils literal notranslate"><span class="pre">.references</span></code> containing the
+references associated with the motif, using these two-letter keys:</p>
+<div class="center docutils container">
+<table class="docutils align-default" id="id8">
+<caption><span class="caption-number">Table 6 </span><span class="caption-text">Fields used to store references in TRANSFAC files</span><a class="headerlink" href="#id8" title="Permalink to this table"></a></caption>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 74%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RN</span></code></p></td>
+<td><p>Reference number</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RA</span></code></p></td>
+<td><p>Reference authors</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RL</span></code></p></td>
+<td><p>Reference data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RT</span></code></p></td>
+<td><p>Reference title</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">RX</span></code></p></td>
+<td><p>PubMed ID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Printing the motifs writes them out in their native TRANSFAC format:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">VV  EXAMPLE January 15, 2013</span>
+<span class="go">XX</span>
+<span class="go">//</span>
+<span class="go">ID  motif1</span>
+<span class="go">XX</span>
+<span class="go">P0      A      C      G      T</span>
+<span class="go">01      1      2      2      0      S</span>
+<span class="go">02      2      1      2      0      R</span>
+<span class="go">03      3      0      1      1      A</span>
+<span class="go">04      0      5      0      0      C</span>
+<span class="go">05      5      0      0      0      A</span>
+<span class="go">06      0      0      4      1      G</span>
+<span class="go">07      0      1      4      0      G</span>
+<span class="go">08      0      0      0      5      T</span>
+<span class="go">09      0      0      5      0      G</span>
+<span class="go">10      0      1      2      2      K</span>
+<span class="go">11      0      2      0      3      Y</span>
+<span class="go">12      1      0      3      1      G</span>
+<span class="go">XX</span>
+<span class="go">//</span>
+<span class="go">ID  motif2</span>
+<span class="go">XX</span>
+<span class="go">P0      A      C      G      T</span>
+<span class="go">01      2      1      2      0      R</span>
+<span class="go">02      1      2      2      0      S</span>
+<span class="go">03      0      5      0      0      C</span>
+<span class="go">04      3      0      1      1      A</span>
+<span class="go">05      0      0      4      1      G</span>
+<span class="go">06      5      0      0      0      A</span>
+<span class="go">07      0      1      4      0      G</span>
+<span class="go">08      0      0      5      0      G</span>
+<span class="go">09      0      0      0      5      T</span>
+<span class="go">10      0      2      0      3      Y</span>
+<span class="go">XX</span>
+<span class="go">//</span>
+</pre></div>
+</div>
+<p>You can export the motifs in the TRANSFAC format by capturing this
+output in a string and saving it in a file:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;mytransfacfile.dat&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">out_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="writing-motifs">
+<h2>Writing motifs<a class="headerlink" href="#writing-motifs" title="Permalink to this headline"></a></h2>
+<p>Speaking of exporting, let’s look at export functions in general. We can
+use the <code class="docutils literal notranslate"><span class="pre">format</span></code> built-in function to write the motif in the simple
+JASPAR <code class="docutils literal notranslate"><span class="pre">pfm</span></code> format:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">arnt</span><span class="p">,</span> <span class="s2">&quot;pfm&quot;</span><span class="p">))</span>
+<span class="go">  4.00  19.00   0.00   0.00   0.00   0.00</span>
+<span class="go"> 16.00   0.00  20.00   0.00   0.00   0.00</span>
+<span class="go">  0.00   1.00   0.00  20.00   0.00  20.00</span>
+<span class="go">  0.00   0.00   0.00   0.00  20.00   0.00</span>
+</pre></div>
+</div>
+<p>Similarly, we can use <code class="docutils literal notranslate"><span class="pre">format</span></code> to write the motif in the JASPAR
+<code class="docutils literal notranslate"><span class="pre">jaspar</span></code> format:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">arnt</span><span class="p">,</span> <span class="s2">&quot;jaspar&quot;</span><span class="p">))</span>
+<span class="go">&gt;MA0004.1  Arnt</span>
+<span class="go">A [  4.00  19.00   0.00   0.00   0.00   0.00]</span>
+<span class="go">C [ 16.00   0.00  20.00   0.00   0.00   0.00]</span>
+<span class="go">G [  0.00   1.00   0.00  20.00   0.00  20.00]</span>
+<span class="go">T [  0.00   0.00   0.00   0.00  20.00   0.00]</span>
+</pre></div>
+</div>
+<p>To write the motif in a TRANSFAC-like matrix format, use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s2">&quot;transfac&quot;</span><span class="p">))</span>
+<span class="go">P0      A      C      G      T</span>
+<span class="go">01      3      0      0      4      W</span>
+<span class="go">02      7      0      0      0      A</span>
+<span class="go">03      0      5      0      2      C</span>
+<span class="go">04      2      2      3      0      V</span>
+<span class="go">05      1      6      0      0      C</span>
+<span class="go">XX</span>
+<span class="go">//</span>
+</pre></div>
+</div>
+<p>To write out multiple motifs, you can use <code class="docutils literal notranslate"><span class="pre">motifs.write</span></code>. This
+function can be used regardless of whether the motifs originated from a
+TRANSFAC file. For example,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">two_motifs</span> <span class="o">=</span> <span class="p">[</span><span class="n">arnt</span><span class="p">,</span> <span class="n">srf</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motifs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">two_motifs</span><span class="p">,</span> <span class="s2">&quot;transfac&quot;</span><span class="p">))</span>
+<span class="go">P0      A      C      G      T</span>
+<span class="go">01      4     16      0      0      C</span>
+<span class="go">02     19      0      1      0      A</span>
+<span class="go">03      0     20      0      0      C</span>
+<span class="go">04      0      0     20      0      G</span>
+<span class="go">05      0      0      0     20      T</span>
+<span class="go">06      0      0     20      0      G</span>
+<span class="go">XX</span>
+<span class="go">//</span>
+<span class="go">P0      A      C      G      T</span>
+<span class="go">01      2      1     39      4      G</span>
+<span class="go">02      9     33      2      2      C</span>
+<span class="go">03      0     45      1      0      C</span>
+<span class="go">04      1     45      0      0      C</span>
+<span class="go">05     32      1      0     13      A</span>
+<span class="go">06      3      1      0     42      T</span>
+<span class="go">07     46      0      0      0      A</span>
+<span class="go">08      1      0      0     45      T</span>
+<span class="go">09     43      0      0      3      A</span>
+<span class="go">10     15      1      0     30      W</span>
+<span class="go">11      2      0     44      0      G</span>
+<span class="go">12      2      1     43      0      G</span>
+<span class="go">XX</span>
+<span class="go">//</span>
+</pre></div>
+</div>
+<p>Or, to write multiple motifs in the <code class="docutils literal notranslate"><span class="pre">jaspar</span></code> format:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">two_motifs</span> <span class="o">=</span> <span class="p">[</span><span class="n">arnt</span><span class="p">,</span> <span class="n">mef2a</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motifs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">two_motifs</span><span class="p">,</span> <span class="s2">&quot;jaspar&quot;</span><span class="p">))</span>
+<span class="go">&gt;MA0004.1  Arnt</span>
+<span class="go">A [  4.00  19.00   0.00   0.00   0.00   0.00]</span>
+<span class="go">C [ 16.00   0.00  20.00   0.00   0.00   0.00]</span>
+<span class="go">G [  0.00   1.00   0.00  20.00   0.00  20.00]</span>
+<span class="go">T [  0.00   0.00   0.00   0.00  20.00   0.00]</span>
+<span class="go">&gt;MA0052.1  MEF2A</span>
+<span class="go">A [  1.00   0.00  57.00   2.00   9.00   6.00  37.00   2.00  56.00   6.00]</span>
+<span class="go">C [ 50.00   0.00   1.00   1.00   0.00   0.00   0.00   0.00   0.00   0.00]</span>
+<span class="go">G [  0.00   0.00   0.00   0.00   0.00   0.00   0.00   0.00   2.00  50.00]</span>
+<span class="go">T [  7.00  58.00   0.00  55.00  49.00  52.00  21.00  56.00   0.00   2.00]</span>
+</pre></div>
+</div>
+</section>
+<section id="position-weight-matrices">
+<h2>Position-Weight Matrices<a class="headerlink" href="#position-weight-matrices" title="Permalink to this headline"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">.counts</span></code> attribute of a Motif object shows how often each
+nucleotide appeared at each position along the alignment. We can
+normalize this matrix by dividing by the number of instances in the
+alignment, resulting in the probability of each nucleotide at each
+position along the alignment. We refer to these probabilities as the
+position-weight matrix. However, beware that in the literature this term
+may also be used to refer to the position-specific scoring matrix, which
+we discuss below.</p>
+<p>Usually, pseudocounts are added to each position before normalizing.
+This avoids overfitting of the position-weight matrix to the limited
+number of motif instances in the alignment, and can also prevent
+probabilities from becoming zero. To add a fixed pseudocount to all
+nucleotides at all positions, specify a number for the <code class="docutils literal notranslate"><span class="pre">pseudocounts</span></code>
+argument:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pwm</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">pseudocounts</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pwm</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4</span>
+<span class="go">A:   0.39   0.83   0.06   0.28   0.17</span>
+<span class="go">C:   0.06   0.06   0.61   0.28   0.72</span>
+<span class="go">G:   0.06   0.06   0.06   0.39   0.06</span>
+<span class="go">T:   0.50   0.06   0.28   0.06   0.06</span>
+</pre></div>
+</div>
+<p>Alternatively, <code class="docutils literal notranslate"><span class="pre">pseudocounts</span></code> can be a dictionary specifying the
+pseudocounts for each nucleotide. For example, as the GC content of the
+human genome is about 40%, you may want to choose the pseudocounts
+accordingly:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pwm</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">pseudocounts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pwm</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4</span>
+<span class="go">A:   0.40   0.84   0.07   0.29   0.18</span>
+<span class="go">C:   0.04   0.04   0.60   0.27   0.71</span>
+<span class="go">G:   0.04   0.04   0.04   0.38   0.04</span>
+<span class="go">T:   0.51   0.07   0.29   0.07   0.07</span>
+</pre></div>
+</div>
+<p>The position-weight matrix has its own methods to calculate the
+consensus, anticonsensus, and degenerate consensus sequences:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pwm</span><span class="o">.</span><span class="n">consensus</span>
+<span class="go">Seq(&#39;TACGC&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pwm</span><span class="o">.</span><span class="n">anticonsensus</span>
+<span class="go">Seq(&#39;CCGTG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pwm</span><span class="o">.</span><span class="n">degenerate_consensus</span>
+<span class="go">Seq(&#39;WACNC&#39;)</span>
+</pre></div>
+</div>
+<p>Note that due to the pseudocounts, the degenerate consensus sequence
+calculated from the position-weight matrix is slightly different from
+the degenerate consensus sequence calculated from the instances in the
+motif:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span><span class="o">.</span><span class="n">degenerate_consensus</span>
+<span class="go">Seq(&#39;WACVC&#39;)</span>
+</pre></div>
+</div>
+<p>The reverse complement of the position-weight matrix can be calculated
+directly from the <code class="docutils literal notranslate"><span class="pre">pwm</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rpwm</span> <span class="o">=</span> <span class="n">pwm</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rpwm</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4</span>
+<span class="go">A:   0.07   0.07   0.29   0.07   0.51</span>
+<span class="go">C:   0.04   0.38   0.04   0.04   0.04</span>
+<span class="go">G:   0.71   0.27   0.60   0.04   0.04</span>
+<span class="go">T:   0.18   0.29   0.07   0.84   0.40</span>
+</pre></div>
+</div>
+</section>
+<section id="position-specific-scoring-matrices">
+<h2>Position-Specific Scoring Matrices<a class="headerlink" href="#position-specific-scoring-matrices" title="Permalink to this headline"></a></h2>
+<p>Using the background distribution and PWM with pseudo-counts added, it’s
+easy to compute the log-odds ratios, telling us what are the log odds of
+a particular symbol to be coming from a motif against the background. We
+can use the <code class="docutils literal notranslate"><span class="pre">.log_odds()</span></code> method on the position-weight matrix:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pssm</span> <span class="o">=</span> <span class="n">pwm</span><span class="o">.</span><span class="n">log_odds</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pssm</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4</span>
+<span class="go">A:   0.68   1.76  -1.91   0.21  -0.49</span>
+<span class="go">C:  -2.49  -2.49   1.26   0.09   1.51</span>
+<span class="go">G:  -2.49  -2.49  -2.49   0.60  -2.49</span>
+<span class="go">T:   1.03  -1.91   0.21  -1.91  -1.91</span>
+</pre></div>
+</div>
+<p>Here we can see positive values for symbols more frequent in the motif
+than in the background and negative for symbols more frequent in the
+background. <span class="math notranslate nohighlight">\(0.0\)</span> means that it’s equally likely to see a symbol
+in the background and in the motif.</p>
+<p>This assumes that A, C, G, and T are equally likely in the background.
+To calculate the position-specific scoring matrix against a background
+with unequal probabilities for A, C, G, T, use the <code class="docutils literal notranslate"><span class="pre">background</span></code>
+argument. For example, against a background with a 40% GC content, use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">background</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pssm</span> <span class="o">=</span> <span class="n">pwm</span><span class="o">.</span><span class="n">log_odds</span><span class="p">(</span><span class="n">background</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pssm</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4</span>
+<span class="go">A:   0.42   1.49  -2.17  -0.05  -0.75</span>
+<span class="go">C:  -2.17  -2.17   1.58   0.42   1.83</span>
+<span class="go">G:  -2.17  -2.17  -2.17   0.92  -2.17</span>
+<span class="go">T:   0.77  -2.17  -0.05  -2.17  -2.17</span>
+</pre></div>
+</div>
+<p>The maximum and minimum score obtainable from the PSSM are stored in the
+<code class="docutils literal notranslate"><span class="pre">.max</span></code> and <code class="docutils literal notranslate"><span class="pre">.min</span></code> properties:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%4.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pssm</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+<span class="go">6.59</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%4.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">pssm</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
+<span class="go">-10.85</span>
+</pre></div>
+</div>
+<p>The mean and standard deviation of the PSSM scores with respect to a
+specific background are calculated by the <code class="docutils literal notranslate"><span class="pre">.mean</span></code> and <code class="docutils literal notranslate"><span class="pre">.std</span></code>
+methods.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mean</span> <span class="o">=</span> <span class="n">pssm</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">background</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">std</span> <span class="o">=</span> <span class="n">pssm</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">background</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mean = </span><span class="si">%0.2f</span><span class="s2">, standard deviation = </span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">))</span>
+<span class="go">mean = 3.21, standard deviation = 2.59</span>
+</pre></div>
+</div>
+<p>A uniform background is used if <code class="docutils literal notranslate"><span class="pre">background</span></code> is not specified. The
+mean is equal to the Kullback-Leibler divergence or relative entropy
+described in Section <a class="reference internal" href="#subsec-relative-entropy"><span class="std std-ref">Relative entropy</span></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">.reverse_complement</span></code>, <code class="docutils literal notranslate"><span class="pre">.consensus</span></code>, <code class="docutils literal notranslate"><span class="pre">.anticonsensus</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">.degenerate_consensus</span></code> methods can be applied directly to PSSM
+objects.</p>
+</section>
+<section id="searching-for-instances">
+<span id="sec-search"></span><h2>Searching for instances<a class="headerlink" href="#searching-for-instances" title="Permalink to this headline"></a></h2>
+<p>The most frequent use for a motif is to find its instances in some
+sequence. For the sake of this section, we will use an artificial
+sequence like this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">test_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TACACTGCATTACAACCCAAGCATTA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">test_seq</span><span class="p">)</span>
+<span class="go">26</span>
+</pre></div>
+</div>
+<section id="searching-for-exact-matches">
+<h3>Searching for exact matches<a class="headerlink" href="#searching-for-exact-matches" title="Permalink to this headline"></a></h3>
+<p>The simplest way to find instances, is to look for exact matches of the
+true instances of the motif:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">test_seq</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">alignment</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">seq</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">0 TACAC</span>
+<span class="go">10 TACAA</span>
+<span class="go">13 AACCC</span>
+</pre></div>
+</div>
+<p>We can do the same with the reverse complement (to find instances on the
+complementary strand):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">pos</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">test_seq</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">alignment</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="n">seq</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">6 GCATT</span>
+<span class="go">20 GCATT</span>
+</pre></div>
+</div>
+</section>
+<section id="searching-for-matches-using-the-pssm-score">
+<h3>Searching for matches using the PSSM score<a class="headerlink" href="#searching-for-matches-using-the-pssm-score" title="Permalink to this headline"></a></h3>
+<p>It’s just as easy to look for positions, giving rise to high log-odds
+scores against our motif:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">position</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">pssm</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">test_seq</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">3.0</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Position </span><span class="si">%d</span><span class="s2">: score = </span><span class="si">%5.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">Position 0: score = 5.622</span>
+<span class="go">Position -20: score = 4.601</span>
+<span class="go">Position 10: score = 3.037</span>
+<span class="go">Position 13: score = 5.738</span>
+<span class="go">Position -6: score = 4.601</span>
+</pre></div>
+</div>
+<p>The negative positions refer to instances of the motif found on the
+reverse strand of the test sequence, and follow the Python convention on
+negative indices. Therefore, the instance of the motif at <code class="docutils literal notranslate"><span class="pre">pos</span></code> is
+located at <code class="docutils literal notranslate"><span class="pre">test_seq[pos:pos+len(m)]</span></code> both for positive and for
+negative values of <code class="docutils literal notranslate"><span class="pre">pos</span></code>.</p>
+<p>You may notice the threshold parameter, here set arbitrarily to
+<span class="math notranslate nohighlight">\(3.0\)</span>. This is in <span class="math notranslate nohighlight">\(log_2\)</span>, so we are now looking only for
+words, which are eight times more likely to occur under the motif model
+than in the background. The default threshold is <span class="math notranslate nohighlight">\(0.0\)</span>, which
+selects everything that looks more like the motif than the background.</p>
+<p>You can also calculate the scores at all positions along the sequence:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pssm</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">test_seq</span><span class="p">)</span>
+<span class="go">array([  5.62230396,  -5.6796999 ,  -3.43177247,   0.93827754,</span>
+<span class="go">        -6.84962511,  -2.04066086, -10.84962463,  -3.65614533,</span>
+<span class="go">        -0.03370807,  -3.91102552,   3.03734159,  -2.14918518,</span>
+<span class="go">        -0.6016975 ,   5.7381525 ,  -0.50977498,  -3.56422281,</span>
+<span class="go">        -8.73414803,  -0.09919716,  -0.6016975 ,  -2.39429784,</span>
+<span class="go">       -10.84962463,  -3.65614533], dtype=float32)</span>
+</pre></div>
+</div>
+<p>In general, this is the fastest way to calculate PSSM scores. The scores
+returned by <code class="docutils literal notranslate"><span class="pre">pssm.calculate</span></code> are for the forward strand only. To
+obtain the scores on the reverse strand, you can take the reverse
+complement of the PSSM:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rpssm</span> <span class="o">=</span> <span class="n">pssm</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rpssm</span><span class="o">.</span><span class="n">calculate</span><span class="p">(</span><span class="n">test_seq</span><span class="p">)</span>
+<span class="go">array([ -9.43458748,  -3.06172252,  -7.18665981,  -7.76216221,</span>
+<span class="go">        -2.04066086,  -4.26466274,   4.60124254,  -4.2480607 ,</span>
+<span class="go">        -8.73414803,  -2.26503372,  -6.49598789,  -5.64668512,</span>
+<span class="go">        -8.73414803, -10.84962463,  -4.82356262,  -4.82356262,</span>
+<span class="go">        -5.64668512,  -8.73414803,  -4.15613794,  -5.6796999 ,</span>
+<span class="go">         4.60124254,  -4.2480607 ], dtype=float32)</span>
+</pre></div>
+</div>
+</section>
+<section id="selecting-a-score-threshold">
+<h3>Selecting a score threshold<a class="headerlink" href="#selecting-a-score-threshold" title="Permalink to this headline"></a></h3>
+<p>If you want to use a less arbitrary way of selecting thresholds, you can
+explore the distribution of PSSM scores. Since the space for a score
+distribution grows exponentially with motif length, we are using an
+approximation with a given precision to keep computation cost
+manageable:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">distribution</span> <span class="o">=</span> <span class="n">pssm</span><span class="o">.</span><span class="n">distribution</span><span class="p">(</span><span class="n">background</span><span class="o">=</span><span class="n">background</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">10</span><span class="o">**</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">distribution</span></code> object can be used to determine a number of
+different thresholds. We can specify the requested false-positive rate
+(probability of “finding” a motif instance in background generated
+sequence):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">threshold</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">threshold_fpr</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%5.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">threshold</span><span class="p">)</span>
+<span class="go">4.009</span>
+</pre></div>
+</div>
+<p>or the false-negative rate (probability of “not finding” an instance
+generated from the motif):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">threshold</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">threshold_fnr</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%5.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">threshold</span><span class="p">)</span>
+<span class="go">-0.510</span>
+</pre></div>
+</div>
+<p>or a threshold (approximately) satisfying some relation between the
+false-positive rate and the false-negative rate
+(<span class="math notranslate nohighlight">\(\frac{\textrm{fnr}}{\textrm{fpr}}\simeq t\)</span>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">threshold</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">threshold_balanced</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%5.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">threshold</span><span class="p">)</span>
+<span class="go">6.241</span>
+</pre></div>
+</div>
+<p>or a threshold satisfying (roughly) the equality between the
+<span class="math notranslate nohighlight">\(-log\)</span> of the false-positive rate and the information content (as
+used in patser software by Hertz and Stormo):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">threshold</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">threshold_patser</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%5.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">threshold</span><span class="p">)</span>
+<span class="go">0.346</span>
+</pre></div>
+</div>
+<p>For example, in case of our motif, you can get the threshold giving you
+exactly the same results (for this sequence) as searching for instances
+with balanced threshold with rate of <span class="math notranslate nohighlight">\(1000\)</span>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">threshold</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">threshold_fpr</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%5.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">threshold</span><span class="p">)</span>
+<span class="go">4.009</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">position</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">pssm</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">test_seq</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="n">threshold</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Position </span><span class="si">%d</span><span class="s2">: score = </span><span class="si">%5.3f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">Position 0: score = 5.622</span>
+<span class="go">Position -20: score = 4.601</span>
+<span class="go">Position 13: score = 5.738</span>
+<span class="go">Position -6: score = 4.601</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="each-motif-object-has-an-associated-position-specific-scoring-matrix">
+<h2>Each motif object has an associated Position-Specific Scoring Matrix<a class="headerlink" href="#each-motif-object-has-an-associated-position-specific-scoring-matrix" title="Permalink to this headline"></a></h2>
+<p>To facilitate searching for potential TFBSs using PSSMs, both the
+position-weight matrix and the position-specific scoring matrix are
+associated with each motif. Using the Arnt motif as an example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">motifs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Arnt.sites&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">motif</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;sites&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">counts</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5</span>
+<span class="go">A:   4.00  19.00   0.00   0.00   0.00   0.00</span>
+<span class="go">C:  16.00   0.00  20.00   0.00   0.00   0.00</span>
+<span class="go">G:   0.00   1.00   0.00  20.00   0.00  20.00</span>
+<span class="go">T:   0.00   0.00   0.00   0.00  20.00   0.00</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">pwm</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5</span>
+<span class="go">A:   0.20   0.95   0.00   0.00   0.00   0.00</span>
+<span class="go">C:   0.80   0.00   1.00   0.00   0.00   0.00</span>
+<span class="go">G:   0.00   0.05   0.00   1.00   0.00   1.00</span>
+<span class="go">T:   0.00   0.00   0.00   0.00   1.00   0.00</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">pssm</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5</span>
+<span class="go">A:  -0.32   1.93   -inf   -inf   -inf   -inf</span>
+<span class="go">C:   1.68   -inf   2.00   -inf   -inf   -inf</span>
+<span class="go">G:   -inf  -2.32   -inf   2.00   -inf   2.00</span>
+<span class="go">T:   -inf   -inf   -inf   -inf   2.00   -inf</span>
+</pre></div>
+</div>
+<p>The negative infinities appear here because the corresponding entry in
+the frequency matrix is 0, and we are using zero pseudocounts by
+default:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;ACGT&quot;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%4.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">motif</span><span class="o">.</span><span class="n">pseudocounts</span><span class="p">[</span><span class="n">letter</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="go">A: 0.00</span>
+<span class="go">C: 0.00</span>
+<span class="go">G: 0.00</span>
+<span class="go">T: 0.00</span>
+</pre></div>
+</div>
+<p>If you change the <code class="docutils literal notranslate"><span class="pre">.pseudocounts</span></code> attribute, the position-frequency
+matrix and the position-specific scoring matrix are recalculated
+automatically:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">pseudocounts</span> <span class="o">=</span> <span class="mf">3.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;ACGT&quot;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%4.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">motif</span><span class="o">.</span><span class="n">pseudocounts</span><span class="p">[</span><span class="n">letter</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="go">A: 3.00</span>
+<span class="go">C: 3.00</span>
+<span class="go">G: 3.00</span>
+<span class="go">T: 3.00</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">pwm</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5</span>
+<span class="go">A:   0.22   0.69   0.09   0.09   0.09   0.09</span>
+<span class="go">C:   0.59   0.09   0.72   0.09   0.09   0.09</span>
+<span class="go">G:   0.09   0.12   0.09   0.72   0.09   0.72</span>
+<span class="go">T:   0.09   0.09   0.09   0.09   0.72   0.09</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">pssm</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5</span>
+<span class="go">A:  -0.19   1.46  -1.42  -1.42  -1.42  -1.42</span>
+<span class="go">C:   1.25  -1.42   1.52  -1.42  -1.42  -1.42</span>
+<span class="go">G:  -1.42  -1.00  -1.42   1.52  -1.42   1.52</span>
+<span class="go">T:  -1.42  -1.42  -1.42  -1.42   1.52  -1.42</span>
+</pre></div>
+</div>
+<p>You can also set the <code class="docutils literal notranslate"><span class="pre">.pseudocounts</span></code> to a dictionary over the four
+nucleotides if you want to use different pseudocounts for them. Setting
+<code class="docutils literal notranslate"><span class="pre">motif.pseudocounts</span></code> to <code class="docutils literal notranslate"><span class="pre">None</span></code> resets it to its default value of
+zero.</p>
+<p>The position-specific scoring matrix depends on the background
+distribution, which is uniform by default:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;ACGT&quot;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%4.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">motif</span><span class="o">.</span><span class="n">background</span><span class="p">[</span><span class="n">letter</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="go">A: 0.25</span>
+<span class="go">C: 0.25</span>
+<span class="go">G: 0.25</span>
+<span class="go">T: 0.25</span>
+</pre></div>
+</div>
+<p>Again, if you modify the background distribution, the position-specific
+scoring matrix is recalculated:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">pssm</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5</span>
+<span class="go">A:   0.13   1.78  -1.09  -1.09  -1.09  -1.09</span>
+<span class="go">C:   0.98  -1.68   1.26  -1.68  -1.68  -1.68</span>
+<span class="go">G:  -1.68  -1.26  -1.68   1.26  -1.68   1.26</span>
+<span class="go">T:  -1.09  -1.09  -1.09  -1.09   1.85  -1.09</span>
+</pre></div>
+</div>
+<p>Setting <code class="docutils literal notranslate"><span class="pre">motif.background</span></code> to <code class="docutils literal notranslate"><span class="pre">None</span></code> resets it to a uniform
+distribution:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;ACGT&quot;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%4.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">motif</span><span class="o">.</span><span class="n">background</span><span class="p">[</span><span class="n">letter</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="go">A: 0.25</span>
+<span class="go">C: 0.25</span>
+<span class="go">G: 0.25</span>
+<span class="go">T: 0.25</span>
+</pre></div>
+</div>
+<p>If you set <code class="docutils literal notranslate"><span class="pre">motif.background</span></code> equal to a single value, it will be
+interpreted as the GC content:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="mf">0.8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;ACGT&quot;</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">: </span><span class="si">%4.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">letter</span><span class="p">,</span> <span class="n">motif</span><span class="o">.</span><span class="n">background</span><span class="p">[</span><span class="n">letter</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="go">A: 0.10</span>
+<span class="go">C: 0.40</span>
+<span class="go">G: 0.40</span>
+<span class="go">T: 0.10</span>
+</pre></div>
+</div>
+<p>Note that you can now calculate the mean of the PSSM scores over the
+background against which it was computed:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">motif</span><span class="o">.</span><span class="n">pssm</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">background</span><span class="p">))</span>
+<span class="go">4.703928</span>
+</pre></div>
+</div>
+<p>as well as its standard deviation:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">motif</span><span class="o">.</span><span class="n">pssm</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">motif</span><span class="o">.</span><span class="n">background</span><span class="p">))</span>
+<span class="go">3.290900</span>
+</pre></div>
+</div>
+<p>and its distribution:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">distribution</span> <span class="o">=</span> <span class="n">motif</span><span class="o">.</span><span class="n">pssm</span><span class="o">.</span><span class="n">distribution</span><span class="p">(</span><span class="n">background</span><span class="o">=</span><span class="n">motif</span><span class="o">.</span><span class="n">background</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">threshold</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">threshold_fpr</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">threshold</span><span class="p">)</span>
+<span class="go">3.854375</span>
+</pre></div>
+</div>
+<p>Note that the position-weight matrix and the position-specific scoring
+matrix are recalculated each time you call <code class="docutils literal notranslate"><span class="pre">motif.pwm</span></code> or
+<code class="docutils literal notranslate"><span class="pre">motif.pssm</span></code>, respectively. If speed is an issue and you want to use
+the PWM or PSSM repeatedly, you can save them as a variable, as in</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pssm</span> <span class="o">=</span> <span class="n">motif</span><span class="o">.</span><span class="n">pssm</span>
+</pre></div>
+</div>
+</section>
+<section id="comparing-motifs">
+<span id="sec-comp"></span><h2>Comparing motifs<a class="headerlink" href="#comparing-motifs" title="Permalink to this headline"></a></h2>
+<p>Once we have more than one motif, we might want to compare them.</p>
+<p>Before we start comparing motifs, I should point out that motif
+boundaries are usually quite arbitrary. This means we often need to
+compare motifs of different lengths, so comparison needs to involve some
+kind of alignment. This means we have to take into account two things:</p>
+<ul class="simple">
+<li><p>alignment of motifs</p></li>
+<li><p>some function to compare aligned motifs</p></li>
+</ul>
+<p>To align the motifs, we use ungapped alignment of PSSMs and substitute
+zeros for any missing columns at the beginning and end of the matrices.
+This means that effectively we are using the background distribution for
+columns missing from the PSSM. The distance function then returns the
+minimal distance between motifs, as well as the corresponding offset in
+their alignment.</p>
+<p>To give an example, let us first load another motif, which is similar to
+our test motif <code class="docutils literal notranslate"><span class="pre">m</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;REB1.pfm&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">m_reb1</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;pfm&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m_reb1</span><span class="o">.</span><span class="n">consensus</span>
+<span class="go">Seq(&#39;GTTACCCGG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m_reb1</span><span class="o">.</span><span class="n">counts</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5      6      7      8</span>
+<span class="go">A:  30.00   0.00   0.00 100.00   0.00   0.00   0.00   0.00  15.00</span>
+<span class="go">C:  10.00   0.00   0.00   0.00 100.00 100.00 100.00   0.00  15.00</span>
+<span class="go">G:  50.00   0.00   0.00   0.00   0.00   0.00   0.00  60.00  55.00</span>
+<span class="go">T:  10.00 100.00 100.00   0.00   0.00   0.00   0.00  40.00  15.00</span>
+</pre></div>
+</div>
+<p>To make the motifs comparable, we choose the same values for the
+pseudocounts and the background distribution as our motif <code class="docutils literal notranslate"><span class="pre">m</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m_reb1</span><span class="o">.</span><span class="n">pseudocounts</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="mf">0.6</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m_reb1</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pssm_reb1</span> <span class="o">=</span> <span class="n">m_reb1</span><span class="o">.</span><span class="n">pssm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pssm_reb1</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5      6      7      8</span>
+<span class="go">A:   0.00  -5.67  -5.67   1.72  -5.67  -5.67  -5.67  -5.67  -0.97</span>
+<span class="go">C:  -0.97  -5.67  -5.67  -5.67   2.30   2.30   2.30  -5.67  -0.41</span>
+<span class="go">G:   1.30  -5.67  -5.67  -5.67  -5.67  -5.67  -5.67   1.57   1.44</span>
+<span class="go">T:  -1.53   1.72   1.72  -5.67  -5.67  -5.67  -5.67   0.41  -0.97</span>
+</pre></div>
+</div>
+<p>We’ll compare these motifs using the Pearson correlation. Since we want
+it to resemble a distance measure, we actually take <span class="math notranslate nohighlight">\(1-r\)</span>, where
+<span class="math notranslate nohighlight">\(r\)</span> is the Pearson correlation coefficient (PCC):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">pssm</span><span class="o">.</span><span class="n">dist_pearson</span><span class="p">(</span><span class="n">pssm_reb1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;distance = </span><span class="si">%5.3g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">distance</span><span class="p">)</span>
+<span class="go">distance = 0.239</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+<span class="go">-2</span>
+</pre></div>
+</div>
+<p>This means that the best PCC between motif <code class="docutils literal notranslate"><span class="pre">m</span></code> and <code class="docutils literal notranslate"><span class="pre">m_reb1</span></code> is
+obtained with the following alignment:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>m:      bbTACGCbb
+m_reb1: GTTACCCGG
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">b</span></code> stands for background distribution. The PCC itself is
+roughly <span class="math notranslate nohighlight">\(1-0.239=0.761\)</span>.</p>
+</section>
+<section id="de-novo-motif-finding">
+<span id="sec-find"></span><h2><em>De novo</em> motif finding<a class="headerlink" href="#de-novo-motif-finding" title="Permalink to this headline"></a></h2>
+<p>Currently, Biopython has only limited support for <em>de novo</em> motif
+finding. Namely, we support running <code class="docutils literal notranslate"><span class="pre">xxmotif</span></code> and also parsing of
+MEME. Since the number of motif finding tools is growing rapidly,
+contributions of new parsers are welcome.</p>
+<section id="sec-meme">
+<span id="id7"></span><h3>MEME<a class="headerlink" href="#sec-meme" title="Permalink to this headline"></a></h3>
+<p>Let’s assume, you have run MEME on sequences of your choice with your
+favorite parameters and saved the output in the file <code class="docutils literal notranslate"><span class="pre">meme.out</span></code>. You
+can retrieve the motifs reported by MEME by running the following piece
+of code:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">motifs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;meme.psp_test.classic.zoops.xml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">motifsM</span> <span class="o">=</span> <span class="n">motifs</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;meme&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motifsM</span>
+<span class="go">[&lt;Bio.motifs.meme.Motif object at 0xc356b0&gt;]</span>
+</pre></div>
+</div>
+<p>Besides the most wanted list of motifs, the result object contains more
+useful information, accessible through properties with self-explanatory
+names:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.alphabet</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.datafile</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.sequences</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.version</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.command</span></code></p></li>
+</ul>
+<p>The motifs returned by the MEME Parser can be treated exactly like
+regular Motif objects (with instances), they also provide some extra
+functionality, by adding additional information about the instances.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motifsM</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">consensus</span>
+<span class="go">Seq(&#39;GCTTATGTAA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motifsM</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sequence_name</span>
+<span class="go">&#39;iYFL005W&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motifsM</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">sequence_id</span>
+<span class="go">&#39;sequence_15&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motifsM</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">start</span>
+<span class="go">480</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motifsM</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strand</span>
+<span class="go">&#39;+&#39;</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motifsM</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">alignment</span><span class="o">.</span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pvalue</span>
+<span class="go">1.97e-06</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="useful-links">
+<span id="sec-links"></span><h2>Useful links<a class="headerlink" href="#useful-links" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Sequence_motif">Sequence motif</a> in
+wikipedia</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Position_weight_matrix">PWM</a> in
+wikipedia</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Consensus_sequence">Consensus
+sequence</a> in
+wikipedia</p></li>
+<li><p><a class="reference external" href="http://bio.cs.washington.edu/assessment/">Comparison of different motif finding
+programs</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_phylo.html" class="btn btn-neutral float-left" title="Phylogenetics with Bio.Phylo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_cluster.html" class="btn btn-neutral float-right" title="Cluster analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

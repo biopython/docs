@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sequence annotation objects &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sequence Input/Output" href="chapter_seqio.html" />
+    <link rel="prev" title="Sequence objects" href="chapter_seq_objects.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sequence annotation objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-seqrecord-object">The SeqRecord object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-seqrecord">Creating a SeqRecord</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#seqrecord-objects-from-scratch">SeqRecord objects from scratch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#seqrecord-objects-from-fasta-files">SeqRecord objects from FASTA files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#seqrecord-objects-from-genbank-files">SeqRecord objects from GenBank files</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#feature-location-and-position-objects">Feature, location and position objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#seqfeature-objects">SeqFeature objects</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#positions-and-locations">Positions and locations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sequence-described-by-a-feature-or-location">Sequence described by a feature or location</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#comparison">Comparison</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#references">References</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-format-method">The format method</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#slicing-a-seqrecord">Slicing a SeqRecord</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adding-seqrecord-objects">Adding SeqRecord objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reverse-complementing-seqrecord-objects">Reverse-complementing SeqRecord objects</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">Sequence annotation objects</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_seq_annot.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_seq_objects.html" class="btn btn-neutral float-left" title="Sequence objects" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_seqio.html" class="btn btn-neutral float-right" title="Sequence Input/Output" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sequence-annotation-objects">
+<span id="chapter-seq-annot"></span><h1>Sequence annotation objects<a class="headerlink" href="#sequence-annotation-objects" title="Permalink to this headline"></a></h1>
+<p>Chapter <a class="reference internal" href="chapter_seq_objects.html#chapter-seq-objects"><span class="std std-ref">Sequence objects</span></a> introduced the
+sequence classes. Immediately “above” the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> class is the Sequence
+Record or <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> class, defined in the <code class="docutils literal notranslate"><span class="pre">Bio.SeqRecord</span></code> module.
+This class allows higher level features such as identifiers and features
+(as <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> objects) to be associated with the sequence, and is
+used throughout the sequence input/output interface <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code>
+described fully in Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>.</p>
+<p>If you are only going to be working with simple data like FASTA files,
+you can probably skip this chapter for now. If on the other hand you are
+going to be using richly annotated sequence data, say from GenBank or
+EMBL files, this information is quite important.</p>
+<p>While this chapter should cover most things to do with the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>
+and <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> objects in this chapter, you may also want to read
+the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> wiki page (<a class="reference external" href="http://biopython.org/wiki/SeqRecord">http://biopython.org/wiki/SeqRecord</a>), and
+the built in documentation (also online –
+<a class="reference external" href="http://biopython.org/docs/bpversion/api/Bio.SeqRecord.html">SeqRecord</a>
+and
+<a class="reference external" href="http://biopython.org/docs/bpversion/api/Bio.SeqFeature.html">SeqFeature</a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">SeqRecord</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="the-seqrecord-object">
+<span id="sec-seqrecord"></span><h2>The SeqRecord object<a class="headerlink" href="#the-seqrecord-object" title="Permalink to this headline"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> (Sequence Record) class is defined in the
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqRecord</span></code> module. This class allows higher level features such
+as identifiers and features to be associated with a sequence (see
+Chapter <a class="reference internal" href="chapter_seq_objects.html#chapter-seq-objects"><span class="std std-ref">Sequence objects</span></a>), and is the
+basic data type for the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> sequence input/output interface
+(see Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> class itself is quite simple, and offers the following
+information as attributes:</p>
+<dl class="simple">
+<dt>.seq</dt><dd><p>– The sequence itself, typically a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object.</p>
+</dd>
+<dt>.id</dt><dd><p>– The primary ID used to identify the sequence – a string. In most
+cases this is something like an accession number.</p>
+</dd>
+<dt>.name</dt><dd><p>– A “common” name/id for the sequence – a string. In some cases this
+will be the same as the accession number, but it could also be a
+clone name. I think of this as being analogous to the LOCUS id in a
+GenBank record.</p>
+</dd>
+<dt>.description</dt><dd><p>– A human readable description or expressive name for the sequence –
+a string.</p>
+</dd>
+<dt>.letter_annotations</dt><dd><p>– Holds per-letter-annotations using a (restricted) dictionary of
+additional information about the letters in the sequence. The keys
+are the name of the information, and the information is contained in
+the value as a Python sequence (i.e. a list, tuple or string) with
+the same length as the sequence itself. This is often used for
+quality scores (e.g.
+Section <a class="reference internal" href="chapter_cookbook.html#sec-fastq-filtering-example"><span class="std std-ref">Simple quality filtering for FASTQ files</span></a>)
+or secondary structure information (e.g. from Stockholm/PFAM
+alignment files).</p>
+</dd>
+<dt>.annotations</dt><dd><p>– A dictionary of additional information about the sequence. The keys
+are the name of the information, and the information is contained in
+the value. This allows the addition of more “unstructured”
+information to the sequence.</p>
+</dd>
+<dt>.features</dt><dd><p>– A list of <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> objects with more structured information
+about the features on a sequence (e.g. position of genes on a genome,
+or domains on a protein sequence). The structure of sequence features
+is described below in Section <a class="reference internal" href="#sec-seq-features"><span class="std std-ref">Feature, location and position objects</span></a>.</p>
+</dd>
+<dt>.dbxrefs</dt><dd><ul class="simple">
+<li><p>A list of database cross-references as strings.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="creating-a-seqrecord">
+<h2>Creating a SeqRecord<a class="headerlink" href="#creating-a-seqrecord" title="Permalink to this headline"></a></h2>
+<p>Using a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object is not very complicated, since all of the
+information is presented as attributes of the class. Usually you won’t
+create a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> “by hand”, but instead use <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> to read
+in a sequence file for you (see
+Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a> and the examples below).
+However, creating <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> can be quite simple.</p>
+<section id="seqrecord-objects-from-scratch">
+<h3>SeqRecord objects from scratch<a class="headerlink" href="#seqrecord-objects-from-scratch" title="Permalink to this headline"></a></h3>
+<p>To create a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> at a minimum you just need a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">simple_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GATC&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">simple_seq_r</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">simple_seq</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Additionally, you can also pass the id, name and description to the
+initialization function, but if not they will be set as strings
+indicating they are unknown, and can be modified subsequently:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;&lt;unknown id&gt;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s2">&quot;AC12345&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Made up sequence I wish I could write a paper about&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="go">Made up sequence I wish I could write a paper about</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">seq</span>
+<span class="go">Seq(&#39;GATC&#39;)</span>
+</pre></div>
+</div>
+<p>Including an identifier is very important if you want to output your
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> to a file. You would normally include this when creating
+the object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">simple_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GATC&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">simple_seq_r</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">simple_seq</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;AC12345&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As mentioned above, the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> has an dictionary attribute
+<code class="docutils literal notranslate"><span class="pre">annotations</span></code>. This is used for any miscellaneous annotations that
+doesn’t fit under one of the other more specific attributes. Adding
+annotations is easy, and just involves dealing directly with the
+annotation dictionary:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;evidence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;None. I just made it up.&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">annotations</span><span class="p">)</span>
+<span class="go">{&#39;evidence&#39;: &#39;None. I just made it up.&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;evidence&quot;</span><span class="p">])</span>
+<span class="go">None. I just made it up.</span>
+</pre></div>
+</div>
+<p>Working with per-letter-annotations is similar, <code class="docutils literal notranslate"><span class="pre">letter_annotations</span></code>
+is a dictionary like attribute which will let you assign any Python
+sequence (i.e. a string, list or tuple) which has the same length as the
+sequence:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">30</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">)</span>
+<span class="go">{&#39;phred_quality&#39;: [40, 40, 38, 30]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">simple_seq_r</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
+<span class="go">[40, 40, 38, 30]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">dbxrefs</span></code> and <code class="docutils literal notranslate"><span class="pre">features</span></code> attributes are just Python lists, and
+should be used to store strings and <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> objects (discussed
+later in this chapter) respectively.</p>
+</section>
+<section id="seqrecord-objects-from-fasta-files">
+<h3>SeqRecord objects from FASTA files<a class="headerlink" href="#seqrecord-objects-from-fasta-files" title="Permalink to this headline"></a></h3>
+<p>This example uses a fairly large FASTA file containing the whole
+sequence for <em>Yersinia pestis biovar Microtus</em> str. 91001 plasmid pPCP1,
+originally downloaded from the NCBI. This file is included with the
+Biopython unit tests under the GenBank folder, or online
+<code class="docutils literal notranslate"><span class="pre">`NC_005816.fna</span></code> &lt;<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.fna">https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.fna</a>&gt;`__
+from our website.</p>
+<p>The file starts like this - and you can check there is only one record
+present (i.e. only one line starting with a greater than symbol):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;gi|45478711|ref|NC_005816.1| Yersinia pestis biovar Microtus ... pPCP1, complete sequence
+TGTAACGAACGGTGCAATAGTGATCCACACCCAACGCCTGAAATCAGATCCAGGGGGTAATCTGCTCTCC
+...
+</pre></div>
+</div>
+<p>Back in Chapter <a class="reference internal" href="chapter_quick_start.html#chapter-quick-start"><span class="std std-ref">Quick Start – What can you do with Biopython?</span></a> you
+will have seen the function <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse(...)</span></code> used to loop over
+all the records in a file as <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects. The <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code>
+module has a sister function for use on files which contain just one
+record which we’ll use here (see
+Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a> for details):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.fna&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span>
+<span class="go">SeqRecord(seq=Seq(&#39;TGTAACGAACGGTGCAATAGTGATCCACACCCAACGCCTGAAATCAGATCCAGG...CTG&#39;), id=&#39;gi|45478711|ref|NC_005816.1|&#39;, name=&#39;gi|45478711|ref|NC_005816.1|&#39;, description=&#39;gi|45478711|ref|NC_005816.1| Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, complete sequence&#39;, dbxrefs=[])</span>
+</pre></div>
+</div>
+<p>Now, let’s have a look at the key attributes of this <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>
+individually – starting with the <code class="docutils literal notranslate"><span class="pre">seq</span></code> attribute which gives you a
+<code class="docutils literal notranslate"><span class="pre">Seq</span></code> object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">seq</span>
+<span class="go">Seq(&#39;TGTAACGAACGGTGCAATAGTGATCCACACCCAACGCCTGAAATCAGATCCAGG...CTG&#39;)</span>
+</pre></div>
+</div>
+<p>Next, the identifiers and description:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;gi|45478711|ref|NC_005816.1|&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;gi|45478711|ref|NC_005816.1|&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;gi|45478711|ref|NC_005816.1| Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, complete sequence&#39;</span>
+</pre></div>
+</div>
+<p>As you can see above, the first word of the FASTA record’s title line
+(after removing the greater than symbol) is used for both the <code class="docutils literal notranslate"><span class="pre">id</span></code> and
+<code class="docutils literal notranslate"><span class="pre">name</span></code> attributes. The whole title line (after removing the greater
+than symbol) is used for the record description. This is deliberate,
+partly for backwards compatibility reasons, but it also makes sense if
+you have a FASTA file like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1
+TGTAACGAACGGTGCAATAGTGATCCACACCCAACGCCTGAAATCAGATCCAGGGGGTAATCTGCTCTCC
+...
+</pre></div>
+</div>
+<p>Note that none of the other annotation attributes get populated when
+reading a FASTA file:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span>
+<span class="go">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">annotations</span>
+<span class="go">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span>
+<span class="go">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">features</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+<p>In this case our example FASTA file was from the NCBI, and they have a
+fairly well defined set of conventions for formatting their FASTA lines.
+This means it would be possible to parse this information and extract
+the GI number and accession for example. However, FASTA files from other
+sources vary, so this isn’t possible in general.</p>
+</section>
+<section id="seqrecord-objects-from-genbank-files">
+<h3>SeqRecord objects from GenBank files<a class="headerlink" href="#seqrecord-objects-from-genbank-files" title="Permalink to this headline"></a></h3>
+<p>As in the previous example, we’re going to look at the whole sequence
+for <em>Yersinia pestis biovar Microtus</em> str. 91001 plasmid pPCP1,
+originally downloaded from the NCBI, but this time as a GenBank file.
+Again, this file is included with the Biopython unit tests under the
+GenBank folder, or online
+<code class="docutils literal notranslate"><span class="pre">`NC_005816.gb</span></code> &lt;<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.gb">https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.gb</a>&gt;`__
+from our website.</p>
+<p>This file contains a single record (i.e. only one LOCUS line) and
+starts:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>LOCUS       NC_005816               9609 bp    DNA     circular BCT 21-JUL-2008
+DEFINITION  Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, complete
+            sequence.
+ACCESSION   NC_005816
+VERSION     NC_005816.1  GI:45478711
+PROJECT     GenomeProject:10638
+...
+</pre></div>
+</div>
+<p>Again, we’ll use <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> to read this file in, and the code is
+almost identical to that for used above for the FASTA file (see
+Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a> for details):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span>
+<span class="go">SeqRecord(seq=Seq(&#39;TGTAACGAACGGTGCAATAGTGATCCACACCCAACGCCTGAAATCAGATCCAGG...CTG&#39;), id=&#39;NC_005816.1&#39;, name=&#39;NC_005816&#39;, description=&#39;Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, complete sequence&#39;, dbxrefs=[&#39;Project:58037&#39;])</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">seq</span>
+<span class="go">Seq(&#39;TGTAACGAACGGTGCAATAGTGATCCACACCCAACGCCTGAAATCAGATCCAGG...CTG&#39;)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> comes from the LOCUS line, while the <code class="docutils literal notranslate"><span class="pre">id</span></code> includes the
+version suffix. The description comes from the DEFINITION line:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;NC_005816.1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;NC_005816&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, complete sequence&#39;</span>
+</pre></div>
+</div>
+<p>GenBank files don’t have any per-letter annotations:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span>
+<span class="go">{}</span>
+</pre></div>
+</div>
+<p>Most of the annotations information gets recorded in the <code class="docutils literal notranslate"><span class="pre">annotations</span></code>
+dictionary, for example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">)</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span>
+<span class="go">&#39;Yersinia pestis biovar Microtus str. 91001&#39;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">dbxrefs</span></code> list gets populated from any PROJECT or DBLINK lines:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span>
+<span class="go">[&#39;Project:58037&#39;]</span>
+</pre></div>
+</div>
+<p>Finally, and perhaps most interestingly, all the entries in the features
+table (e.g. the genes or CDS features) get recorded as <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code>
+objects in the <code class="docutils literal notranslate"><span class="pre">features</span></code> list.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="go">41</span>
+</pre></div>
+</div>
+<p>We’ll talk about <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> objects next, in
+Section <a class="reference internal" href="#sec-seq-features"><span class="std std-ref">Feature, location and position objects</span></a>.</p>
+</section>
+</section>
+<section id="feature-location-and-position-objects">
+<span id="sec-seq-features"></span><h2>Feature, location and position objects<a class="headerlink" href="#feature-location-and-position-objects" title="Permalink to this headline"></a></h2>
+<section id="seqfeature-objects">
+<h3>SeqFeature objects<a class="headerlink" href="#seqfeature-objects" title="Permalink to this headline"></a></h3>
+<p>Sequence features are an essential part of describing a sequence. Once
+you get beyond the sequence itself, you need some way to organize and
+easily get at the more “abstract” information that is known about the
+sequence. While it is probably impossible to develop a general sequence
+feature class that will cover everything, the Biopython <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code>
+class attempts to encapsulate as much of the information about the
+sequence as possible. The design is heavily based on the GenBank/EMBL
+feature tables, so if you understand how they look, you’ll probably have
+an easier time grasping the structure of the Biopython classes.</p>
+<p>The key idea about each <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> object is to describe a region on
+a parent sequence, typically a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object. That region is
+described with a location object, typically a range between two
+positions (see Section <a class="reference internal" href="#sec-locations"><span class="std std-ref">Positions and locations</span></a> below).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> class has a number of attributes, so first we’ll list
+them and their general features, and then later in the chapter work
+through examples to show how this applies to a real life example. The
+attributes of a SeqFeature are:</p>
+<dl>
+<dt>.type</dt><dd><p>– This is a textual description of the type of feature (for instance,
+this will be something like ‘CDS’ or ‘gene’).</p>
+</dd>
+<dt>.location</dt><dd><p>– The location of the <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> on the sequence that you are
+dealing with, see Section <a class="reference internal" href="#sec-locations"><span class="std std-ref">Positions and locations</span></a> below. The
+<code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> delegates much of its functionality to the location
+object, and includes a number of shortcut attributes for properties
+of the location:</p>
+<dl class="simple">
+<dt>.ref</dt><dd><p>– shorthand for <code class="docutils literal notranslate"><span class="pre">.location.ref</span></code> – any (different) reference
+sequence the location is referring to. Usually just None.</p>
+</dd>
+<dt>.ref_db</dt><dd><p>– shorthand for <code class="docutils literal notranslate"><span class="pre">.location.ref_db</span></code> – specifies the database any
+identifier in <code class="docutils literal notranslate"><span class="pre">.ref</span></code> refers to. Usually just None.</p>
+</dd>
+<dt>.strand</dt><dd><p>– shorthand for <code class="docutils literal notranslate"><span class="pre">.location.strand</span></code> – the strand on the sequence
+that the feature is located on. For double stranded nucleotide
+sequence this may either be <span class="math notranslate nohighlight">\(1\)</span> for the top strand,
+<span class="math notranslate nohighlight">\(-1\)</span> for the bottom strand, <span class="math notranslate nohighlight">\(0\)</span> if the strand is
+important but is unknown, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if it doesn’t matter. This
+is None for proteins, or single stranded sequences.</p>
+</dd>
+</dl>
+</dd>
+<dt>.qualifiers</dt><dd><p>– This is a Python dictionary of additional information about the
+feature. The key is some kind of terse one-word description of what
+the information contained in the value is about, and the value is the
+actual information. For example, a common key for a qualifier might
+be “evidence” and the value might be “computational
+(non-experimental).” This is just a way to let the person who is
+looking at the feature know that it has not be experimentally
+(i. e. in a wet lab) confirmed. Note that other the value will be a
+list of strings (even when there is only one string). This is a
+reflection of the feature tables in GenBank/EMBL files.</p>
+</dd>
+<dt>.sub_features</dt><dd><p>– This used to be used to represent features with complicated
+locations like ‘joins’ in GenBank/EMBL files. This has been
+deprecated with the introduction of the <code class="docutils literal notranslate"><span class="pre">CompoundLocation</span></code> object,
+and should now be ignored.</p>
+</dd>
+</dl>
+</section>
+<section id="positions-and-locations">
+<span id="sec-locations"></span><h3>Positions and locations<a class="headerlink" href="#positions-and-locations" title="Permalink to this headline"></a></h3>
+<p>The key idea about each <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> object is to describe a region on
+a parent sequence, for which we use a location object, typically
+describing a range between two positions. Two try to clarify the
+terminology we’re using:</p>
+<dl class="simple">
+<dt>position</dt><dd><p>– This refers to a single position on a sequence, which may be fuzzy
+or not. For instance, 5, 20, <code class="docutils literal notranslate"><span class="pre">&lt;100</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;200</span></code> are all positions.</p>
+</dd>
+<dt>location</dt><dd><p>– A location is region of sequence bounded by some positions. For
+instance 5..20 (i. e. 5 to 20) is a location.</p>
+</dd>
+</dl>
+<p>I just mention this because sometimes I get confused between the two.</p>
+<section id="simplelocation-object">
+<h4>SimpleLocation object<a class="headerlink" href="#simplelocation-object" title="Permalink to this headline"></a></h4>
+<p>Unless you work with eukaryotic genes, most <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> locations are
+extremely simple - you just need start and end coordinates and a strand.
+That’s essentially all the basic <code class="docutils literal notranslate"><span class="pre">SimpleLocation</span></code> object does.</p>
+<p>In practice of course, things can be more complicated. First of all we
+have to handle compound locations made up of several regions. Secondly,
+the positions themselves may be fuzzy (inexact).</p>
+</section>
+<section id="compoundlocation-object">
+<h4>CompoundLocation object<a class="headerlink" href="#compoundlocation-object" title="Permalink to this headline"></a></h4>
+<p>Biopython 1.62 introduced the <code class="docutils literal notranslate"><span class="pre">CompoundLocation</span></code> as part of a
+restructuring of how complex locations made up of multiple regions are
+represented. The main usage is for handling ‘join’ locations in
+EMBL/GenBank files.</p>
+</section>
+<section id="fuzzy-positions">
+<h4>Fuzzy Positions<a class="headerlink" href="#fuzzy-positions" title="Permalink to this headline"></a></h4>
+<p>So far we’ve only used simple positions. One complication in dealing
+with feature locations comes in the positions themselves. In biology
+many times things aren’t entirely certain (as much as us wet lab
+biologists try to make them certain!). For instance, you might do a
+dinucleotide priming experiment and discover that the start of mRNA
+transcript starts at one of two sites. This is very useful information,
+but the complication comes in how to represent this as a position. To
+help us deal with this, we have the concept of fuzzy positions.
+Basically there are several types of fuzzy positions, so we have five
+classes do deal with them:</p>
+<dl class="simple">
+<dt>ExactPosition</dt><dd><p>– As its name suggests, this class represents a position which is
+specified as exact along the sequence. This is represented as just a
+number, and you can get the position by looking at the <code class="docutils literal notranslate"><span class="pre">position</span></code>
+attribute of the object.</p>
+</dd>
+<dt>BeforePosition</dt><dd><p>– This class represents a fuzzy position that occurs prior to some
+specified site. In GenBank/EMBL notation, this is represented as
+something like <code class="docutils literal notranslate"><span class="pre">`&lt;13'</span></code>, signifying that the real position
+is located somewhere less than 13. To get the specified upper
+boundary, look at the <code class="docutils literal notranslate"><span class="pre">position</span></code> attribute of the object.</p>
+</dd>
+<dt>AfterPosition</dt><dd><p>– Contrary to <code class="docutils literal notranslate"><span class="pre">BeforePosition</span></code>, this class represents a position
+that occurs after some specified site. This is represented in GenBank
+as <code class="docutils literal notranslate"><span class="pre">`&gt;13'</span></code>, and like <code class="docutils literal notranslate"><span class="pre">BeforePosition</span></code>, you get the
+boundary number by looking at the <code class="docutils literal notranslate"><span class="pre">position</span></code> attribute of the
+object.</p>
+</dd>
+<dt>WithinPosition</dt><dd><p>– Occasionally used for GenBank/EMBL locations, this class models a
+position which occurs somewhere between two specified nucleotides. In
+GenBank/EMBL notation, this would be represented as ‘(1.5)’, to
+represent that the position is somewhere within the range 1 to 5.</p>
+</dd>
+<dt>OneOfPosition</dt><dd><p>– Occasionally used for GenBank/EMBL locations, this class deals with
+a position where several possible values exist, for instance you
+could use this if the start codon was unclear and there where two
+candidates for the start of the gene. Alternatively, that might be
+handled explicitly as two related gene features.</p>
+</dd>
+<dt>UnknownPosition</dt><dd><p>– This class deals with a position of unknown location. This is not
+used in GenBank/EMBL, but corresponds to the ‘?’ feature coordinate
+used in UniProt.</p>
+</dd>
+</dl>
+<p>Here’s an example where we create a location with fuzzy end points:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqFeature</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">start_pos</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="o">.</span><span class="n">AfterPosition</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">end_pos</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="o">.</span><span class="n">BetweenPosition</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_location</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="o">.</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="n">start_pos</span><span class="p">,</span> <span class="n">end_pos</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the details of some of the fuzzy-locations changed in
+Biopython 1.59, in particular for BetweenPosition and WithinPosition you
+must now make it explicit which integer position should be used for
+slicing etc. For a start position this is generally the lower (left)
+value, while for an end position this would generally be the higher
+(right) value.</p>
+<p>If you print out a <code class="docutils literal notranslate"><span class="pre">SimpleLocation</span></code> object, you can get a nice
+representation of the information:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_location</span><span class="p">)</span>
+<span class="go">[&gt;5:(8^9)]</span>
+</pre></div>
+</div>
+<p>We can access the fuzzy start and end positions using the start and end
+attributes of the location:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_location</span><span class="o">.</span><span class="n">start</span>
+<span class="go">AfterPosition(5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_location</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+<span class="go">&gt;5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_location</span><span class="o">.</span><span class="n">end</span>
+<span class="go">BetweenPosition(9, left=8, right=9)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_location</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+<span class="go">(8^9)</span>
+</pre></div>
+</div>
+<p>If you don’t want to deal with fuzzy positions and just want numbers,
+they are actually subclasses of integers so should work like integers:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">my_location</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">my_location</span><span class="o">.</span><span class="n">end</span><span class="p">)</span>
+<span class="go">9</span>
+</pre></div>
+</div>
+<p>Similarly, to make it easy to create a position without worrying about
+fuzzy positions, you can just pass in numbers to the <code class="docutils literal notranslate"><span class="pre">FeaturePosition</span></code>
+constructors, and you’ll get back out <code class="docutils literal notranslate"><span class="pre">ExactPosition</span></code> objects:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">exact_location</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="o">.</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">exact_location</span><span class="p">)</span>
+<span class="go">[5:9]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exact_location</span><span class="o">.</span><span class="n">start</span>
+<span class="go">ExactPosition(5)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">exact_location</span><span class="o">.</span><span class="n">start</span><span class="p">)</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<p>That is most of the nitty gritty about dealing with fuzzy positions in
+Biopython. It has been designed so that dealing with fuzziness is not
+that much more complicated than dealing with exact positions, and
+hopefully you find that true!</p>
+</section>
+<section id="location-testing">
+<h4>Location testing<a class="headerlink" href="#location-testing" title="Permalink to this headline"></a></h4>
+<p>You can use the Python keyword <code class="docutils literal notranslate"><span class="pre">in</span></code> with a <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> or location
+object to see if the base/residue for a parent coordinate is within the
+feature/location or not.</p>
+<p>For example, suppose you have a SNP of interest and you want to know
+which features this SNP is within, and lets suppose this SNP is at index
+4350 (Python counting!). Here is a simple brute force solution where we
+just check all the features one by one in a loop:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_snp</span> <span class="o">=</span> <span class="mi">4350</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">my_snp</span> <span class="ow">in</span> <span class="n">feature</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">feature</span><span class="o">.</span><span class="n">qualifiers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;db_xref&quot;</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">source [&#39;taxon:229193&#39;]</span>
+<span class="go">gene [&#39;GeneID:2767712&#39;]</span>
+<span class="go">CDS [&#39;GI:45478716&#39;, &#39;GeneID:2767712&#39;]</span>
+</pre></div>
+</div>
+<p>Note that gene and CDS features from GenBank or EMBL files defined with
+joins are the union of the exons – they do not cover any introns.</p>
+</section>
+</section>
+<section id="sequence-described-by-a-feature-or-location">
+<h3>Sequence described by a feature or location<a class="headerlink" href="#sequence-described-by-a-feature-or-location" title="Permalink to this headline"></a></h3>
+<p>A <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> or location object doesn’t directly contain a sequence,
+instead the location (see Section <a class="reference internal" href="#sec-locations"><span class="std std-ref">Positions and locations</span></a>) describes
+how to get this from the parent sequence. For example consider a (short)
+gene sequence with location 5:18 on the reverse strand, which in
+GenBank/EMBL notation using 1-based counting would be
+<code class="docutils literal notranslate"><span class="pre">complement(6..18)</span></code>, like this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">SimpleLocation</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACCGAGACGGCAAAGGCTAGCATAGGTATGAGACTTCCTTCCTGCCAGTGCTGAGGAACTGGGAGCCTAC&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="n">strand</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;gene&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You could take the parent sequence, slice it to extract 5:18, and then
+take the reverse complement. The feature location’s start and end are
+integer-like so this works:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">feature_seq</span> <span class="o">=</span> <span class="n">seq</span><span class="p">[</span><span class="n">feature</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">start</span> <span class="p">:</span> <span class="n">feature</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">feature_seq</span><span class="p">)</span>
+<span class="go">AGCCTTTGCCGTC</span>
+</pre></div>
+</div>
+<p>This is a simple example so this isn’t too bad – however once you have
+to deal with compound features (joins) this is rather messy. Instead,
+the <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> object has an <code class="docutils literal notranslate"><span class="pre">extract</span></code> method to take care of all
+this (and since Biopython 1.78 can handle trans-splicing by supplying a
+dictionary of referenced sequences):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">feature_seq</span> <span class="o">=</span> <span class="n">feature</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">feature_seq</span><span class="p">)</span>
+<span class="go">AGCCTTTGCCGTC</span>
+</pre></div>
+</div>
+<p>The length of a <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> or location matches that of the region of
+sequence it describes.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_seq</span><span class="p">))</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">feature</span><span class="p">))</span>
+<span class="go">13</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">location</span><span class="p">))</span>
+<span class="go">13</span>
+</pre></div>
+</div>
+<p>For <code class="docutils literal notranslate"><span class="pre">SimpleLocation</span></code> objects the length is just the difference between
+the start and end positions. However, for a <code class="docutils literal notranslate"><span class="pre">CompoundLocation</span></code> the
+length is the sum of the constituent regions.</p>
+</section>
+</section>
+<section id="comparison">
+<h2>Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects can be very complex, but here’s a simple
+example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record1</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record2</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>What happens when you try to compare these “identical” records?</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record1</span> <span class="o">==</span> <span class="n">record2</span>
+</pre></div>
+</div>
+<p>Perhaps surprisingly older versions of Biopython would use Python’s
+default object comparison for the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>, meaning
+<code class="docutils literal notranslate"><span class="pre">record1</span> <span class="pre">==</span> <span class="pre">record2</span></code> would only return <code class="docutils literal notranslate"><span class="pre">True</span></code> if these variables
+pointed at the same object in memory. In this example,
+<code class="docutils literal notranslate"><span class="pre">record1</span> <span class="pre">==</span> <span class="pre">record2</span></code> would have returned <code class="docutils literal notranslate"><span class="pre">False</span></code> here!</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record1</span> <span class="o">==</span> <span class="n">record2</span>  <span class="c1"># on old versions of Biopython!</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>As of Biopython 1.67, <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> comparison like
+<code class="docutils literal notranslate"><span class="pre">record1</span> <span class="pre">==</span> <span class="pre">record2</span></code> will instead raise an explicit error to avoid
+people being caught out by this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record1</span> <span class="o">==</span> <span class="n">record2</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">NotImplementedError</span>: <span class="n">SeqRecord comparison is deliberately not implemented. Explicitly compare the attributes of interest.</span>
+</pre></div>
+</div>
+<p>Instead you should check the attributes you are interested in, for
+example the identifier and the sequence:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record1</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">record2</span><span class="o">.</span><span class="n">id</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record1</span><span class="o">.</span><span class="n">seq</span> <span class="o">==</span> <span class="n">record2</span><span class="o">.</span><span class="n">seq</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Beware that comparing complex objects quickly gets complicated (see also
+Section <a class="reference internal" href="chapter_seq_objects.html#sec-seq-comparison"><span class="std std-ref">Comparing Seq objects</span></a>).</p>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline"></a></h2>
+<p>Another common annotation related to a sequence is a reference to a
+journal or other published work dealing with the sequence. We have a
+fairly simple way of representing a Reference in Biopython – we have a
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqFeature.Reference</span></code> class that stores the relevant information
+about a reference as attributes of an object.</p>
+<p>The attributes include things that you would expect to see in a
+reference like <code class="docutils literal notranslate"><span class="pre">journal</span></code>, <code class="docutils literal notranslate"><span class="pre">title</span></code> and <code class="docutils literal notranslate"><span class="pre">authors</span></code>. Additionally, it
+also can hold the <code class="docutils literal notranslate"><span class="pre">medline_id</span></code> and <code class="docutils literal notranslate"><span class="pre">pubmed_id</span></code> and a <code class="docutils literal notranslate"><span class="pre">comment</span></code>
+about the reference. These are all accessed simply as attributes of the
+object.</p>
+<p>A reference also has a <code class="docutils literal notranslate"><span class="pre">location</span></code> object so that it can specify a
+particular location on the sequence that the reference refers to. For
+instance, you might have a journal that is dealing with a particular
+gene located on a BAC, and want to specify that it only refers to this
+position exactly. The <code class="docutils literal notranslate"><span class="pre">location</span></code> is a potentially fuzzy location, as
+described in section <a class="reference internal" href="#sec-locations"><span class="std std-ref">Positions and locations</span></a>.</p>
+<p>Any reference objects are stored as a list in the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object’s
+<code class="docutils literal notranslate"><span class="pre">annotations</span></code> dictionary under the key “references”. That’s all there
+is too it. References are meant to be easy to deal with, and hopefully
+general enough to cover lots of usage cases.</p>
+</section>
+<section id="the-format-method">
+<span id="sec-seqrecord-format"></span><h2>The format method<a class="headerlink" href="#the-format-method" title="Permalink to this headline"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">format()</span></code> method of the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> class gives a string
+containing your record formatted using one of the output file formats
+supported by <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code>, such as FASTA:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span>
+<span class="gp">... </span>        <span class="s2">&quot;MMYQQGCFAGGTVLRLAKDLAENNRGARVLVVCSEITAVTFRGPSETHLDSMVGQALFGD&quot;</span>
+<span class="gp">... </span>        <span class="s2">&quot;GAGAVIVGSDPDLSVERPLYELVWTGATLLPDSEGAIDGHLREVGLTFHLLKDVPGLISK&quot;</span>
+<span class="gp">... </span>        <span class="s2">&quot;NIEKSLKEAFTPLGISDWNSTFWIAHPGGPAILDQVEAKLGLKEEKMRATREVLSEYGNM&quot;</span>
+<span class="gp">... </span>        <span class="s2">&quot;SSAC&quot;</span>
+<span class="gp">... </span>    <span class="p">),</span>
+<span class="gp">... </span>    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;gi|14150838|gb|AAK54648.1|AF376133_1&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;chalcone synthase [Cucumis sativus]&quot;</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>which should give:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="go">&gt;gi|14150838|gb|AAK54648.1|AF376133_1 chalcone synthase [Cucumis sativus]</span>
+<span class="go">MMYQQGCFAGGTVLRLAKDLAENNRGARVLVVCSEITAVTFRGPSETHLDSMVGQALFGD</span>
+<span class="go">GAGAVIVGSDPDLSVERPLYELVWTGATLLPDSEGAIDGHLREVGLTFHLLKDVPGLISK</span>
+<span class="go">NIEKSLKEAFTPLGISDWNSTFWIAHPGGPAILDQVEAKLGLKEEKMRATREVLSEYGNM</span>
+<span class="go">SSAC</span>
+</pre></div>
+</div>
+<p>This <code class="docutils literal notranslate"><span class="pre">format</span></code> method takes a single mandatory argument, a lower case
+string which is supported by <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> as an output format (see
+Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>). However, some of the file
+formats <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> can write to <em>require</em> more than one record
+(typically the case for multiple sequence alignment formats), and thus
+won’t work via this <code class="docutils literal notranslate"><span class="pre">format()</span></code> method. See also
+Section <a class="reference internal" href="chapter_seqio.html#sec-bio-seqio-and-stringio"><span class="std std-ref">Getting your SeqRecord objects as formatted strings</span></a>.</p>
+</section>
+<section id="slicing-a-seqrecord">
+<span id="sec-seqrecord-slicing"></span><h2>Slicing a SeqRecord<a class="headerlink" href="#slicing-a-seqrecord" title="Permalink to this headline"></a></h2>
+<p>You can slice a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>, to give you a new <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> covering
+just part of the sequence. What is important here is that any per-letter
+annotations are also sliced, and any features which fall completely
+within the new sequence are preserved (with their locations adjusted).</p>
+<p>For example, taking the same GenBank file used earlier:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span>
+<span class="go">SeqRecord(seq=Seq(&#39;TGTAACGAACGGTGCAATAGTGATCCACACCCAACGCCTGAAATCAGATCCAGG...CTG&#39;), id=&#39;NC_005816.1&#39;, name=&#39;NC_005816&#39;, description=&#39;Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, complete sequence&#39;, dbxrefs=[&#39;Project:58037&#39;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">9609</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="go">41</span>
+</pre></div>
+</div>
+<p>For this example we’re going to focus in on the <code class="docutils literal notranslate"><span class="pre">pim</span></code> gene,
+<code class="docutils literal notranslate"><span class="pre">YP_pPCP05</span></code>. If you have a look at the GenBank file directly you’ll
+find this gene/CDS has location string <code class="docutils literal notranslate"><span class="pre">4343..4780</span></code>, or in Python
+counting <code class="docutils literal notranslate"><span class="pre">4342:4780</span></code>. From looking at the file you can work out that
+these are the twelfth and thirteenth entries in the file, so in Python
+zero-based counting they are entries <span class="math notranslate nohighlight">\(11\)</span> and <span class="math notranslate nohighlight">\(12\)</span> in the
+<code class="docutils literal notranslate"><span class="pre">features</span></code> list:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">20</span><span class="p">])</span>
+<span class="go">type: gene</span>
+<span class="go">location: [4342:4780](+)</span>
+<span class="go">qualifiers:</span>
+<span class="go">    Key: db_xref, Value: [&#39;GeneID:2767712&#39;]</span>
+<span class="go">    Key: gene, Value: [&#39;pim&#39;]</span>
+<span class="go">    Key: locus_tag, Value: [&#39;YP_pPCP05&#39;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">21</span><span class="p">])</span>
+<span class="go">type: CDS</span>
+<span class="go">location: [4342:4780](+)</span>
+<span class="go">qualifiers:</span>
+<span class="go">    Key: codon_start, Value: [&#39;1&#39;]</span>
+<span class="go">    Key: db_xref, Value: [&#39;GI:45478716&#39;, &#39;GeneID:2767712&#39;]</span>
+<span class="go">    Key: gene, Value: [&#39;pim&#39;]</span>
+<span class="go">    Key: locus_tag, Value: [&#39;YP_pPCP05&#39;]</span>
+<span class="go">    Key: note, Value: [&#39;similar to many previously sequenced pesticin immunity protein entries of Yersinia pestis plasmid pPCP, e.g. gi| 16082683|,ref|NP_395230.1| (NC_003132) , gi|1200166|emb|CAA90861.1| (Z54145 ) , gi|1488655| emb|CAA63439.1| (X92856) , gi|2996219|gb|AAC62543.1| (AF053945) , and gi|5763814|emb|CAB531 67.1| (AL109969)&#39;]</span>
+<span class="go">    Key: product, Value: [&#39;pesticin immunity protein&#39;]</span>
+<span class="go">    Key: protein_id, Value: [&#39;NP_995571.1&#39;]</span>
+<span class="go">    Key: transl_table, Value: [&#39;11&#39;]</span>
+<span class="go">    Key: translation, Value: [&#39;MGGGMISKLFCLALIFLSSSGLAEKNTYTAKDILQNLELNTFGNSLSHGIYGKQTTFKQTEFTNIKSNTKKHIALINKDNSWMISLKILGIKRDEYTVCFEDFSLIRPPTYVAIHPLLIKKVKSGNFIVVKEIKKSIPGCTVYYH&#39;]</span>
+</pre></div>
+</div>
+<p>Let’s slice this parent record from 4300 to 4800 (enough to include the
+<code class="docutils literal notranslate"><span class="pre">pim</span></code> gene/CDS), and see how many features we get:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">4300</span><span class="p">:</span><span class="mi">4800</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span>
+<span class="go">SeqRecord(seq=Seq(&#39;ATAAATAGATTATTCCAAATAATTTATTTATGTAAGAACAGGATGGGAGGGGGA...TTA&#39;), id=&#39;NC_005816.1&#39;, name=&#39;NC_005816&#39;, description=&#39;Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, complete sequence&#39;, dbxrefs=[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">sub_record</span><span class="p">)</span>
+<span class="go">500</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">sub_record</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>Our sub-record just has two features, the gene and CDS entries for
+<code class="docutils literal notranslate"><span class="pre">YP_pPCP05</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub_record</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">type: gene</span>
+<span class="go">location: [42:480](+)</span>
+<span class="go">qualifiers:</span>
+<span class="go">    Key: db_xref, Value: [&#39;GeneID:2767712&#39;]</span>
+<span class="go">    Key: gene, Value: [&#39;pim&#39;]</span>
+<span class="go">    Key: locus_tag, Value: [&#39;YP_pPCP05&#39;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub_record</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">type: CDS</span>
+<span class="go">location: [42:480](+)</span>
+<span class="go">qualifiers:</span>
+<span class="go">    Key: codon_start, Value: [&#39;1&#39;]</span>
+<span class="go">    Key: db_xref, Value: [&#39;GI:45478716&#39;, &#39;GeneID:2767712&#39;]</span>
+<span class="go">    Key: gene, Value: [&#39;pim&#39;]</span>
+<span class="go">    Key: locus_tag, Value: [&#39;YP_pPCP05&#39;]</span>
+<span class="go">    Key: note, Value: [&#39;similar to many previously sequenced pesticin immunity protein entries of Yersinia pestis plasmid pPCP, e.g. gi| 16082683|,ref|NP_395230.1| (NC_003132) , gi|1200166|emb|CAA90861.1| (Z54145 ) , gi|1488655| emb|CAA63439.1| (X92856) , gi|2996219|gb|AAC62543.1| (AF053945) , and gi|5763814|emb|CAB531 67.1| (AL109969)&#39;]</span>
+<span class="go">    Key: product, Value: [&#39;pesticin immunity protein&#39;]</span>
+<span class="go">    Key: protein_id, Value: [&#39;NP_995571.1&#39;]</span>
+<span class="go">    Key: transl_table, Value: [&#39;11&#39;]</span>
+<span class="go">    Key: translation, Value: [&#39;MGGGMISKLFCLALIFLSSSGLAEKNTYTAKDILQNLELNTFGNSLSHGIYGKQTTFKQTEFTNIKSNTKKHIALINKDNSWMISLKILGIKRDEYTVCFEDFSLIRPPTYVAIHPLLIKKVKSGNFIVVKEIKKSIPGCTVYYH&#39;]</span>
+</pre></div>
+</div>
+<p>Notice that their locations have been adjusted to reflect the new parent
+sequence!</p>
+<p>While Biopython has done something sensible and hopefully intuitive with
+the features (and any per-letter annotation), for the other annotation
+it is impossible to know if this still applies to the sub-sequence or
+not. To avoid guessing, with the exception of the molecule type, the
+<code class="docutils literal notranslate"><span class="pre">.annotations</span></code> and <code class="docutils literal notranslate"><span class="pre">.dbxrefs</span></code> are omitted from the sub-record, and
+it is up to you to transfer any relevant information as appropriate.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span><span class="o">.</span><span class="n">annotations</span>
+<span class="go">{&#39;molecule_type&#39;: &#39;DNA&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span><span class="o">.</span><span class="n">dbxrefs</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+<p>You may wish to preserve other entries like the organism? Beware of
+copying the entire annotations dictionary as in this case your partial
+sequence is no longer circular DNA - it is now linear:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;topology&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
+</pre></div>
+</div>
+<p>The same point could be made about the record <code class="docutils literal notranslate"><span class="pre">id</span></code>, <code class="docutils literal notranslate"><span class="pre">name</span></code> and
+<code class="docutils literal notranslate"><span class="pre">description</span></code>, but for practicality these are preserved:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;NC_005816.1&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;NC_005816&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, complete sequence&#39;</span>
+</pre></div>
+</div>
+<p>This illustrates the problem nicely though, our new sub-record is <em>not</em>
+the complete sequence of the plasmid, so the description is wrong! Let’s
+fix this and then view the sub-record as a reduced GenBank file using
+the <code class="docutils literal notranslate"><span class="pre">format</span></code> method described above in
+Section <a class="reference internal" href="#sec-seqrecord-format"><span class="std std-ref">The format method</span></a>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sub_record</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, partial&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sub_record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;genbank&quot;</span><span class="p">)[:</span><span class="mi">200</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>
+<span class="go">LOCUS       NC_005816                500 bp    DNA     linear   UNK 01-JAN-1980</span>
+<span class="go">DEFINITION  Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, partial.</span>
+<span class="go">ACCESSION   NC_005816</span>
+<span class="go">VERSION     NC_0058...</span>
+</pre></div>
+</div>
+<p>See
+Sections <a class="reference internal" href="chapter_cookbook.html#sec-fastq-slicing-off-primer"><span class="std std-ref">Trimming off primer sequences</span></a>
+and <a class="reference internal" href="chapter_cookbook.html#sec-fastq-slicing-off-adaptor"><span class="std std-ref">Trimming off adaptor sequences</span></a>
+for some FASTQ examples where the per-letter annotations (the read
+quality scores) are also sliced.</p>
+</section>
+<section id="adding-seqrecord-objects">
+<span id="sec-seqrecord-addition"></span><h2>Adding SeqRecord objects<a class="headerlink" href="#adding-seqrecord-objects" title="Permalink to this headline"></a></h2>
+<p>You can add <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects together, giving a new <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>.
+What is important here is that any common per-letter annotations are
+also added, all the features are preserved (with their locations
+adjusted), and any other common annotation is also kept (like the id,
+name and description).</p>
+<p>For an example with per-letter annotation, we’ll use the first record in
+a FASTQ file. Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a> will explain
+the <code class="docutils literal notranslate"><span class="pre">SeqIO</span></code> functions:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">25</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">CCCTTCTTGTCTTCAGCGTTTCTCC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
+<span class="go">[26, 26, 18, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 22, 26, 26, 26, 26, 26, 26, 26, 23, 23]</span>
+</pre></div>
+</div>
+<p>Let’s suppose this was Roche 454 data, and that from other information
+you think the <code class="docutils literal notranslate"><span class="pre">TTT</span></code> should be only <code class="docutils literal notranslate"><span class="pre">TT</span></code>. We can make a new edited
+record by first slicing the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> before and after the “extra”
+third <code class="docutils literal notranslate"><span class="pre">T</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">left</span> <span class="o">=</span> <span class="n">record</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">CCCTTCTTGTCTTCAGCGTT</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
+<span class="go">[26, 26, 18, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 22, 26, 26, 26, 26]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">right</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">21</span><span class="p">:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">CTCC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
+<span class="go">[26, 26, 23, 23]</span>
+</pre></div>
+</div>
+<p>Now add the two parts together:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">edited</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="n">right</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">edited</span><span class="p">)</span>
+<span class="go">24</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">edited</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="go">CCCTTCTTGTCTTCAGCGTTCTCC</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">edited</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
+<span class="go">[26, 26, 18, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 22, 26, 26, 26, 26, 26, 26, 23, 23]</span>
+</pre></div>
+</div>
+<p>Easy and intuitive? We hope so! You can make this shorter with just:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">edited</span> <span class="o">=</span> <span class="n">record</span><span class="p">[:</span><span class="mi">20</span><span class="p">]</span> <span class="o">+</span> <span class="n">record</span><span class="p">[</span><span class="mi">21</span><span class="p">:]</span>
+</pre></div>
+</div>
+<p>Now, for an example with features, we’ll use a GenBank file. Suppose you
+have a circular genome:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span>
+<span class="go">SeqRecord(seq=Seq(&#39;TGTAACGAACGGTGCAATAGTGATCCACACCCAACGCCTGAAATCAGATCCAGG...CTG&#39;), id=&#39;NC_005816.1&#39;, name=&#39;NC_005816&#39;, description=&#39;Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, complete sequence&#39;, dbxrefs=[&#39;Project:58037&#39;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="go">9609</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="go">41</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span>
+<span class="go">[&#39;Project:58037&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">dict_keys([&#39;molecule_type&#39;, &#39;topology&#39;, &#39;data_file_division&#39;, &#39;date&#39;, &#39;accessions&#39;, &#39;sequence_version&#39;, &#39;gi&#39;, &#39;keywords&#39;, &#39;source&#39;, &#39;organism&#39;, &#39;taxonomy&#39;, &#39;references&#39;, &#39;comment&#39;])</span>
+</pre></div>
+</div>
+<p>You can shift the origin like this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">shifted</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">2000</span><span class="p">:]</span> <span class="o">+</span> <span class="n">record</span><span class="p">[:</span><span class="mi">2000</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shifted</span>
+<span class="go">SeqRecord(seq=Seq(&#39;GATACGCAGTCATATTTTTTACACAATTCTCTAATCCCGACAAGGTCGTAGGTC...GGA&#39;), id=&#39;NC_005816.1&#39;, name=&#39;NC_005816&#39;, description=&#39;Yersinia pestis biovar Microtus str. 91001 plasmid pPCP1, complete sequence&#39;, dbxrefs=[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">shifted</span><span class="p">)</span>
+<span class="go">9609</span>
+</pre></div>
+</div>
+<p>Note that this isn’t perfect in that some annotation like the database
+cross references, all the annotations except molecule type, and one of
+the features (the source feature) have been lost:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">shifted</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="go">40</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shifted</span><span class="o">.</span><span class="n">dbxrefs</span>
+<span class="go">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shifted</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">dict_keys([&#39;molecule_type&#39;])</span>
+</pre></div>
+</div>
+<p>This is because the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> slicing step is cautious in what
+annotation it preserves (erroneously propagating annotation can cause
+major problems). If you want to keep the database cross references or
+the annotations dictionary, this must be done explicitly:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">shifted</span><span class="o">.</span><span class="n">dbxrefs</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">[:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shifted</span><span class="o">.</span><span class="n">annotations</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shifted</span><span class="o">.</span><span class="n">dbxrefs</span>
+<span class="go">[&#39;Project:58037&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">shifted</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">dict_keys([&#39;molecule_type&#39;, &#39;topology&#39;, &#39;data_file_division&#39;, &#39;date&#39;, &#39;accessions&#39;, &#39;sequence_version&#39;, &#39;gi&#39;, &#39;keywords&#39;, &#39;source&#39;, &#39;organism&#39;, &#39;taxonomy&#39;, &#39;references&#39;, &#39;comment&#39;])</span>
+</pre></div>
+</div>
+<p>Also note that in an example like this, you should probably change the
+record identifiers since the NCBI references refer to the <em>original</em>
+unmodified sequence.</p>
+</section>
+<section id="reverse-complementing-seqrecord-objects">
+<span id="sec-seqrecord-reverse-complement"></span><h2>Reverse-complementing SeqRecord objects<a class="headerlink" href="#reverse-complementing-seqrecord-objects" title="Permalink to this headline"></a></h2>
+<p>One of the new features in Biopython 1.57 was the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object’s
+<code class="docutils literal notranslate"><span class="pre">reverse_complement</span></code> method. This tries to balance easy of use with
+worries about what to do with the annotation in the reverse complemented
+record.</p>
+<p>For the sequence, this uses the Seq object’s reverse complement method.
+Any features are transferred with the location and strand recalculated.
+Likewise any per-letter-annotation is also copied but reversed (which
+makes sense for typical examples like quality scores). However, transfer
+of most annotation is problematical.</p>
+<p>For instance, if the record ID was an accession, that accession should
+not really apply to the reverse complemented sequence, and transferring
+the identifier by default could easily cause subtle data corruption in
+downstream analysis. Therefore by default, the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>’s id,
+name, description, annotations and database cross references are all
+<em>not</em> transferred by default.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object’s <code class="docutils literal notranslate"><span class="pre">reverse_complement</span></code> method takes a number
+of optional arguments corresponding to properties of the record. Setting
+these arguments to <code class="docutils literal notranslate"><span class="pre">True</span></code> means copy the old values, while <code class="docutils literal notranslate"><span class="pre">False</span></code>
+means drop the old values and use the default value. You can
+alternatively provide the new desired value instead.</p>
+<p>Consider this example record:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">features</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">annotations</span><span class="p">))</span>
+<span class="go">NC_005816.1 9609 41 1 13</span>
+</pre></div>
+</div>
+<p>Here we take the reverse complement and specify a new identifier – but
+notice how most of the annotation is dropped (but not the features):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rc</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;TESTING&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">rc</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rc</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">rc</span><span class="o">.</span><span class="n">features</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">rc</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">rc</span><span class="o">.</span><span class="n">annotations</span><span class="p">))</span>
+<span class="go">TESTING 9609 41 0 0</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_seq_objects.html" class="btn btn-neutral float-left" title="Sequence objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_seqio.html" class="btn btn-neutral float-right" title="Sequence Input/Output" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

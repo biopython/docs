@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multiple Sequence Alignment objects &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Pairwise alignments using pairwise2" href="chapter_pairwise2.html" />
+    <link rel="prev" title="Pairwise sequence alignment" href="chapter_pairwise.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Multiple Sequence Alignment objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parsing-or-reading-sequence-alignments">Parsing or Reading Sequence Alignments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#single-alignments">Single Alignments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiple-alignments">Multiple Alignments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ambiguous-alignments">Ambiguous Alignments</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-alignments">Writing Alignments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#converting-between-sequence-alignment-file-formats">Converting between sequence alignment file formats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-your-alignment-objects-as-formatted-strings">Getting your alignment objects as formatted strings</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#manipulating-alignments">Manipulating Alignments</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#slicing-alignments">Slicing alignments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alignments-as-arrays">Alignments as arrays</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#counting-substitutions">Counting substitutions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calculating-summary-information">Calculating summary information</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calculating-a-quick-consensus-sequence">Calculating a quick consensus sequence</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#position-specific-score-matrices">Position Specific Score Matrices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#information-content">Information Content</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#getting-a-new-style-alignment-object">Getting a new-style Alignment object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calculating-a-substitution-matrix-from-a-multiple-sequence-alignment">Calculating a substitution matrix from a multiple sequence alignment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#alignment-tools">Alignment Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#clustalw">ClustalW</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#muscle">MUSCLE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#emboss-needle-and-water">EMBOSS needle and water</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">Multiple Sequence Alignment objects</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_msa.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_pairwise.html" class="btn btn-neutral float-left" title="Pairwise sequence alignment" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_pairwise2.html" class="btn btn-neutral float-right" title="Pairwise alignments using pairwise2" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="multiple-sequence-alignment-objects">
+<span id="chapter-msa"></span><h1>Multiple Sequence Alignment objects<a class="headerlink" href="#multiple-sequence-alignment-objects" title="Permalink to this headline"></a></h1>
+<p>This chapter describes the older <code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> class and the
+parsers in <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> that parse the output of sequence alignment
+software, generating <code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> objects. By Multiple
+Sequence Alignments we mean a collection of multiple sequences which
+have been aligned together – usually with the insertion of gap
+characters, and addition of leading or trailing gaps – such that all the
+sequence strings are the same length. Such an alignment can be regarded
+as a matrix of letters, where each row is held as a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object
+internally.</p>
+<p>We will introduce the <code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> object which holds this
+kind of data, and the <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> module for reading and writing
+them as various file formats (following the design of the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code>
+module from the previous chapter). Note that both <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> can read and write sequence alignment files. The
+appropriate choice will depend largely on what you want to do with the
+data.</p>
+<p>The final part of this chapter is about using common multiple sequence
+alignment tools like ClustalW and MUSCLE from Python, and parsing the
+results with Biopython.</p>
+<section id="parsing-or-reading-sequence-alignments">
+<h2>Parsing or Reading Sequence Alignments<a class="headerlink" href="#parsing-or-reading-sequence-alignments" title="Permalink to this headline"></a></h2>
+<p>We have two functions for reading in sequence alignments,
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.read()</span></code> and <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.parse()</span></code> which following the
+convention introduced in <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> are for files containing one or
+multiple alignments respectively.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.parse()</span></code> will return an <em>iterator</em> which gives
+<code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> objects. Iterators are typically used in a for
+loop. Examples of situations where you will have multiple different
+alignments include resampled alignments from the PHYLIP tool
+<code class="docutils literal notranslate"><span class="pre">seqboot</span></code>, or multiple pairwise alignments from the EMBOSS tools
+<code class="docutils literal notranslate"><span class="pre">water</span></code> or <code class="docutils literal notranslate"><span class="pre">needle</span></code>, or Bill Pearson’s FASTA tools.</p>
+<p>However, in many situations you will be dealing with files which contain
+only a single alignment. In this case, you should use the
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.read()</span></code> function which returns a single
+<code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> object.</p>
+<p>Both functions expect two mandatory arguments:</p>
+<ol class="arabic simple">
+<li><p>The first argument is a <em>handle</em> to read the data from, typically an
+open file (see
+Section <a class="reference internal" href="chapter_appendix.html#sec-appendix-handles"><span class="std std-ref">What the heck is a handle?</span></a>), or a
+filename.</p></li>
+<li><p>The second argument is a lower case string specifying the alignment
+format. As in <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> we don’t try and guess the file format
+for you! See <a class="reference external" href="http://biopython.org/wiki/AlignIO">http://biopython.org/wiki/AlignIO</a> for a full listing of
+supported formats.</p></li>
+</ol>
+<p>There is also an optional <code class="docutils literal notranslate"><span class="pre">seq_count</span></code> argument which is discussed in
+Section <a class="reference internal" href="#sec-alignio-count-argument"><span class="std std-ref">Ambiguous Alignments</span></a> below for dealing with
+ambiguous file formats which may contain more than one alignment.</p>
+<section id="single-alignments">
+<h3>Single Alignments<a class="headerlink" href="#single-alignments" title="Permalink to this headline"></a></h3>
+<p>As an example, consider the following annotation rich protein alignment
+in the PFAM or Stockholm file format:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span># STOCKHOLM 1.0
+#=GS COATB_BPIKE/30-81  AC P03620.1
+#=GS COATB_BPIKE/30-81  DR PDB; 1ifl ; 1-52;
+#=GS Q9T0Q8_BPIKE/1-52  AC Q9T0Q8.1
+#=GS COATB_BPI22/32-83  AC P15416.1
+#=GS COATB_BPM13/24-72  AC P69541.1
+#=GS COATB_BPM13/24-72  DR PDB; 2cpb ; 1-49;
+#=GS COATB_BPM13/24-72  DR PDB; 2cps ; 1-49;
+#=GS COATB_BPZJ2/1-49   AC P03618.1
+#=GS Q9T0Q9_BPFD/1-49   AC Q9T0Q9.1
+#=GS Q9T0Q9_BPFD/1-49   DR PDB; 1nh4 A; 1-49;
+#=GS COATB_BPIF1/22-73  AC P03619.2
+#=GS COATB_BPIF1/22-73  DR PDB; 1ifk ; 1-50;
+COATB_BPIKE/30-81             AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA
+#=GR COATB_BPIKE/30-81  SS    -HHHHHHHHHHHHHH--HHHHHHHH--HHHHHHHHHHHHHHHHHHHHH----
+Q9T0Q8_BPIKE/1-52             AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA
+COATB_BPI22/32-83             DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA
+COATB_BPM13/24-72             AEGDDP...AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA
+#=GR COATB_BPM13/24-72  SS    ---S-T...CHCHHHHCCCCTCCCTTCHHHHHHHHHHHHHHHHHHHHCTT--
+COATB_BPZJ2/1-49              AEGDDP...AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA
+Q9T0Q9_BPFD/1-49              AEGDDP...AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA
+#=GR Q9T0Q9_BPFD/1-49   SS    ------...-HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH--
+COATB_BPIF1/22-73             FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA
+#=GR COATB_BPIF1/22-73  SS    XX-HHHH--HHHHHH--HHHHHHH--HHHHHHHHHHHHHHHHHHHHHHH---
+#=GC SS_cons                  XHHHHHHHHHHHHHHHCHHHHHHHHCHHHHHHHHHHHHHHHHHHHHHHHC--
+#=GC seq_cons                 AEssss...AptAhDSLpspAT-hIu.sWshVsslVsAsluIKLFKKFsSKA
+//
+</pre></div>
+</div>
+<p>This is the seed alignment for the Phage_Coat_Gp8 (PF05371) PFAM entry,
+downloaded from a now out of date release of PFAM from
+<a class="reference external" href="https://pfam.xfam.org/">https://pfam.xfam.org/</a>. We can load this file as follows (assuming it
+has been saved to disk as “PF05371_seed.sth” in the current working
+directory):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This code will print out a summary of the alignment:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">Alignment with 7 rows and 52 columns</span>
+<span class="go">AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRL...SKA COATB_BPIKE/30-81</span>
+<span class="go">AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKL...SRA Q9T0Q8_BPIKE/1-52</span>
+<span class="go">DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRL...SKA COATB_BPI22/32-83</span>
+<span class="go">AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPM13/24-72</span>
+<span class="go">AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPZJ2/1-49</span>
+<span class="go">AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA Q9T0Q9_BPFD/1-49</span>
+<span class="go">FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKL...SRA COATB_BPIF1/22-73</span>
+</pre></div>
+</div>
+<p>You’ll notice in the above output the sequences have been truncated. We
+could instead write our own code to format this as we please by
+iterating over the rows as <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alignment length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">alignment</span><span class="o">.</span><span class="n">get_alignment_length</span><span class="p">())</span>
+<span class="go">Alignment length 52</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">alignment</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> - </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA - COATB_BPIKE/30-81</span>
+<span class="go">AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA - Q9T0Q8_BPIKE/1-52</span>
+<span class="go">DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA - COATB_BPI22/32-83</span>
+<span class="go">AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA - COATB_BPM13/24-72</span>
+<span class="go">AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA - COATB_BPZJ2/1-49</span>
+<span class="go">AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA - Q9T0Q9_BPFD/1-49</span>
+<span class="go">FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA - COATB_BPIF1/22-73</span>
+</pre></div>
+</div>
+<p>You could also call Python’s built-in <code class="docutils literal notranslate"><span class="pre">format</span></code> function on the
+alignment object to show it in a particular file format – see
+Section <a class="reference internal" href="#sec-alignment-format"><span class="std std-ref">Getting your alignment objects as formatted strings</span></a> for details.</p>
+<p>Did you notice in the raw file above that several of the sequences
+include database cross-references to the PDB and the associated known
+secondary structure? Try this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">alignment</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">COATB_BPIKE/30-81 [&#39;PDB; 1ifl ; 1-52;&#39;]</span>
+<span class="go">COATB_BPM13/24-72 [&#39;PDB; 2cpb ; 1-49;&#39;, &#39;PDB; 2cps ; 1-49;&#39;]</span>
+<span class="go">Q9T0Q9_BPFD/1-49 [&#39;PDB; 1nh4 A; 1-49;&#39;]</span>
+<span class="go">COATB_BPIF1/22-73 [&#39;PDB; 1ifk ; 1-50;&#39;]</span>
+</pre></div>
+</div>
+<p>To have a look at all the sequence annotation, try this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">alignment</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>PFAM provide a nice web interface at <a class="reference external" href="http://pfam.xfam.org/family/PF05371">http://pfam.xfam.org/family/PF05371</a>
+which will actually let you download this alignment in several other
+formats. This is what the file looks like in the FASTA file format:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;COATB_BPIKE/30-81
+AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA
+&gt;Q9T0Q8_BPIKE/1-52
+AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA
+&gt;COATB_BPI22/32-83
+DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA
+&gt;COATB_BPM13/24-72
+AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA
+&gt;COATB_BPZJ2/1-49
+AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA
+&gt;Q9T0Q9_BPFD/1-49
+AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA
+&gt;COATB_BPIF1/22-73
+FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA
+</pre></div>
+</div>
+<p>Note the website should have an option about showing gaps as periods
+(dots) or dashes, we’ve shown dashes above. Assuming you download and
+save this as file “PF05371_seed.faa” then you can load it with almost
+exactly the same code:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>All that has changed in this code is the filename and the format string.
+You’ll get the same output as before, the sequences and record
+identifiers are the same. However, as you should expect, if you check
+each <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> there is no annotation nor database cross-references
+because these are not included in the FASTA file format.</p>
+<p>Note that rather than using the Sanger website, you could have used
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> to convert the original Stockholm format file into a
+FASTA file yourself (see below).</p>
+<p>With any supported file format, you can load an alignment in exactly the
+same way just by changing the format string. For example, use “phylip”
+for PHYLIP files, “nexus” for NEXUS files or “emboss” for the alignments
+output by the EMBOSS tools. There is a full listing on the wiki page
+(<a class="reference external" href="http://biopython.org/wiki/AlignIO">http://biopython.org/wiki/AlignIO</a>) and in the built-in documentation
+(also
+<a class="reference external" href="http://biopython.org/docs/bpversion/api/Bio.AlignIO.html">online</a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">AlignIO</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="multiple-alignments">
+<h3>Multiple Alignments<a class="headerlink" href="#multiple-alignments" title="Permalink to this headline"></a></h3>
+<p>The previous section focused on reading files containing a single
+alignment. In general however, files can contain more than one
+alignment, and to read these files we must use the
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.parse()</span></code> function.</p>
+<p>Suppose you have a small alignment in PHYLIP format:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    5    6
+Alpha     AACAAC
+Beta      AACCCC
+Gamma     ACCAAC
+Delta     CCACCA
+Epsilon   CCAAAC
+</pre></div>
+</div>
+<p>If you wanted to bootstrap a phylogenetic tree using the PHYLIP tools,
+one of the steps would be to create a set of many resampled alignments
+using the tool <code class="docutils literal notranslate"><span class="pre">bootseq</span></code>. This would give output something like this,
+which has been abbreviated for conciseness:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>    5     6
+Alpha     AAACCA
+Beta      AAACCC
+Gamma     ACCCCA
+Delta     CCCAAC
+Epsilon   CCCAAA
+    5     6
+Alpha     AAACAA
+Beta      AAACCC
+Gamma     ACCCAA
+Delta     CCCACC
+Epsilon   CCCAAA
+    5     6
+Alpha     AAAAAC
+Beta      AAACCC
+Gamma     AACAAC
+Delta     CCCCCA
+Epsilon   CCCAAC
+...
+    5     6
+Alpha     AAAACC
+Beta      ACCCCC
+Gamma     AAAACC
+Delta     CCCCAA
+Epsilon   CAAACC
+</pre></div>
+</div>
+<p>If you wanted to read this in using <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> you could use:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;resampled.phy&quot;</span><span class="p">,</span> <span class="s2">&quot;phylip&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">()</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>This would give the following output, again abbreviated for display:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Alignment with 5 rows and 6 columns
+AAACCA Alpha
+AAACCC Beta
+ACCCCA Gamma
+CCCAAC Delta
+CCCAAA Epsilon
+
+Alignment with 5 rows and 6 columns
+AAACAA Alpha
+AAACCC Beta
+ACCCAA Gamma
+CCCACC Delta
+CCCAAA Epsilon
+
+Alignment with 5 rows and 6 columns
+AAAAAC Alpha
+AAACCC Beta
+AACAAC Gamma
+CCCCCA Delta
+CCCAAC Epsilon
+
+...
+
+Alignment with 5 rows and 6 columns
+AAAACC Alpha
+ACCCCC Beta
+AAAACC Gamma
+CCCCAA Delta
+CAAACC Epsilon
+</pre></div>
+</div>
+<p>As with the function <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code>, using
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.parse()</span></code> returns an iterator. If you want to keep all the
+alignments in memory at once, which will allow you to access them in any
+order, then turn the iterator into a list:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">AlignIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;resampled.phy&quot;</span><span class="p">,</span> <span class="s2">&quot;phylip&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">last_align</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_align</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="ambiguous-alignments">
+<span id="sec-alignio-count-argument"></span><h3>Ambiguous Alignments<a class="headerlink" href="#ambiguous-alignments" title="Permalink to this headline"></a></h3>
+<p>Many alignment file formats can explicitly store more than one
+alignment, and the division between each alignment is clear. However,
+when a general sequence file format has been used there is no such block
+structure. The most common such situation is when alignments have been
+saved in the FASTA file format. For example consider the following:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;Alpha
+ACTACGACTAGCTCAG--G
+&gt;Beta
+ACTACCGCTAGCTCAGAAG
+&gt;Gamma
+ACTACGGCTAGCACAGAAG
+&gt;Alpha
+ACTACGACTAGCTCAGG--
+&gt;Beta
+ACTACCGCTAGCTCAGAAG
+&gt;Gamma
+ACTACGGCTAGCACAGAAG
+</pre></div>
+</div>
+<p>This could be a single alignment containing six sequences (with repeated
+identifiers). Or, judging from the identifiers, this is probably two
+different alignments each with three sequences, which happen to all have
+the same length.</p>
+<p>What about this next example?</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;Alpha
+ACTACGACTAGCTCAG--G
+&gt;Beta
+ACTACCGCTAGCTCAGAAG
+&gt;Alpha
+ACTACGACTAGCTCAGG--
+&gt;Gamma
+ACTACGGCTAGCACAGAAG
+&gt;Alpha
+ACTACGACTAGCTCAGG--
+&gt;Delta
+ACTACGGCTAGCACAGAAG
+</pre></div>
+</div>
+<p>Again, this could be a single alignment with six sequences. However this
+time based on the identifiers we might guess this is three pairwise
+alignments which by chance have all got the same lengths.</p>
+<p>This final example is similar:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;Alpha
+ACTACGACTAGCTCAG--G
+&gt;XXX
+ACTACCGCTAGCTCAGAAG
+&gt;Alpha
+ACTACGACTAGCTCAGG
+&gt;YYY
+ACTACGGCAAGCACAGG
+&gt;Alpha
+--ACTACGAC--TAGCTCAGG
+&gt;ZZZ
+GGACTACGACAATAGCTCAGG
+</pre></div>
+</div>
+<p>In this third example, because of the differing lengths, this cannot be
+treated as a single alignment containing all six records. However, it
+could be three pairwise alignments.</p>
+<p>Clearly trying to store more than one alignment in a FASTA file is not
+ideal. However, if you are forced to deal with these as input files
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> can cope with the most common situation where all the
+alignments have the same number of records. One example of this is a
+collection of pairwise alignments, which can be produced by the EMBOSS
+tools <code class="docutils literal notranslate"><span class="pre">needle</span></code> and <code class="docutils literal notranslate"><span class="pre">water</span></code> – although in this situation,
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> should be able to understand their native output using
+“emboss” as the format string.</p>
+<p>To interpret these FASTA examples as several separate alignments, we can
+use <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.parse()</span></code> with the optional <code class="docutils literal notranslate"><span class="pre">seq_count</span></code> argument
+which specifies how many sequences are expected in each alignment (in
+these examples, 3, 2 and 2 respectively). For example, using the third
+example as the input data:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">,</span> <span class="n">seq_count</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Alignment length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">alignment</span><span class="o">.</span><span class="n">get_alignment_length</span><span class="p">())</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">alignment</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> - </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">()</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>giving:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Alignment length 19
+ACTACGACTAGCTCAG--G - Alpha
+ACTACCGCTAGCTCAGAAG - XXX
+
+Alignment length 17
+ACTACGACTAGCTCAGG - Alpha
+ACTACGGCAAGCACAGG - YYY
+
+Alignment length 21
+--ACTACGAC--TAGCTCAGG - Alpha
+GGACTACGACAATAGCTCAGG - ZZZ
+</pre></div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.read()</span></code> or <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.parse()</span></code> without the
+<code class="docutils literal notranslate"><span class="pre">seq_count</span></code> argument would give a single alignment containing all six
+records for the first two examples. For the third example, an exception
+would be raised because the lengths differ preventing them being turned
+into a single alignment.</p>
+<p>If the file format itself has a block structure allowing <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code>
+to determine the number of sequences in each alignment directly, then
+the <code class="docutils literal notranslate"><span class="pre">seq_count</span></code> argument is not needed. If it is supplied, and doesn’t
+agree with the file contents, an error is raised.</p>
+<p>Note that this optional <code class="docutils literal notranslate"><span class="pre">seq_count</span></code> argument assumes each alignment in
+the file has the same number of sequences. Hypothetically you may come
+across stranger situations, for example a FASTA file containing several
+alignments each with a different number of sequences – although I would
+love to hear of a real world example of this. Assuming you cannot get
+the data in a nicer file format, there is no straight forward way to
+deal with this using <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code>. In this case, you could consider
+reading in the sequences themselves using <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> and batching
+them together to create the alignments as appropriate.</p>
+</section>
+</section>
+<section id="writing-alignments">
+<h2>Writing Alignments<a class="headerlink" href="#writing-alignments" title="Permalink to this headline"></a></h2>
+<p>We’ve talked about using <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.read()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.parse()</span></code> for alignment input (reading files), and now
+we’ll look at <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.write()</span></code> which is for alignment output
+(writing files). This is a function taking three arguments: some
+<code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> objects (or for backwards compatibility the
+obsolete <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> objects), a handle or filename to write to, and a
+sequence format.</p>
+<p>Here is an example, where we start by creating a few
+<code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> objects the hard way (by hand, rather than by
+loading them from a file). Note we create some <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects to
+construct the alignment from.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align1</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACTGCTAGCTAG&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Alpha&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACT-CTAGCTAG&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Beta&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACTGCTAGDTAG&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Gamma&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align2</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GTCAGC-AG&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Delta&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GACAGCTAG&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Epsilon&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GTCAGCTAG&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Zeta&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align3</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACTAGTACAGCTG&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Eta&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACTAGTACAGCT-&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Theta&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;-CTACTACAGGTG&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Iota&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_alignments</span> <span class="o">=</span> <span class="p">[</span><span class="n">align1</span><span class="p">,</span> <span class="n">align2</span><span class="p">,</span> <span class="n">align3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now we have a list of <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> objects, we’ll write them to a
+PHYLIP format file:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AlignIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">my_alignments</span><span class="p">,</span> <span class="s2">&quot;my_example.phy&quot;</span><span class="p">,</span> <span class="s2">&quot;phylip&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And if you open this file in your favorite text editor it should look
+like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> 3 12
+Alpha      ACTGCTAGCT AG
+Beta       ACT-CTAGCT AG
+Gamma      ACTGCTAGDT AG
+ 3 9
+Delta      GTCAGC-AG
+Epislon    GACAGCTAG
+Zeta       GTCAGCTAG
+ 3 13
+Eta        ACTAGTACAG CTG
+Theta      ACTAGTACAG CT-
+Iota       -CTACTACAG GTG
+</pre></div>
+</div>
+<p>Its more common to want to load an existing alignment, and save that,
+perhaps after some simple manipulation like removing certain rows or
+columns.</p>
+<p>Suppose you wanted to know how many alignments the
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.write()</span></code> function wrote to the handle? If your alignments
+were in a list like the example above, you could just use
+<code class="docutils literal notranslate"><span class="pre">len(my_alignments)</span></code>, however you can’t do that when your records come
+from a generator/iterator. Therefore the <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.write()</span></code>
+function returns the number of alignments written to the file.</p>
+<p><em>Note</em> - If you tell the <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.write()</span></code> function to write to a
+file that already exists, the old file will be overwritten without any
+warning.</p>
+<section id="converting-between-sequence-alignment-file-formats">
+<span id="sec-converting-alignments"></span><h3>Converting between sequence alignment file formats<a class="headerlink" href="#converting-between-sequence-alignment-file-formats" title="Permalink to this headline"></a></h3>
+<p>Converting between sequence alignment file formats with <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code>
+works in the same way as converting between sequence file formats with
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code>
+(Section <a class="reference internal" href="chapter_seqio.html#sec-seqio-conversion"><span class="std std-ref">Converting between sequence file formats</span></a>). We load
+generally the alignment(s) using <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.parse()</span></code> and then save
+them using the <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.write()</span></code> – or just use the
+<code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.convert()</span></code> helper function.</p>
+<p>For this example, we’ll load the PFAM/Stockholm format file used earlier
+and save it as a Clustal W format file:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">,</span> <span class="s2">&quot;PF05371_seed.aln&quot;</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converted </span><span class="si">%i</span><span class="s2"> alignments&quot;</span> <span class="o">%</span> <span class="n">count</span><span class="p">)</span>
+<span class="go">Converted 1 alignments</span>
+</pre></div>
+</div>
+<p>Or, using <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.parse()</span></code> and <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.write()</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">alignments</span><span class="p">,</span> <span class="s2">&quot;PF05371_seed.aln&quot;</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converted </span><span class="si">%i</span><span class="s2"> alignments&quot;</span> <span class="o">%</span> <span class="n">count</span><span class="p">)</span>
+<span class="go">Converted 1 alignments</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.write()</span></code> function expects to be given multiple
+alignment objects. In the example above we gave it the alignment
+iterator returned by <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.parse()</span></code>.</p>
+<p>In this case, we know there is only one alignment in the file so we
+could have used <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.read()</span></code> instead, but notice we have to
+pass this alignment to <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.write()</span></code> as a single element list:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AlignIO</span><span class="o">.</span><span class="n">write</span><span class="p">([</span><span class="n">alignment</span><span class="p">],</span> <span class="s2">&quot;PF05371_seed.aln&quot;</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Either way, you should end up with the same new Clustal W format file
+“PF05371_seed.aln” with the following content:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>CLUSTAL X (1.81) multiple sequence alignment
+
+
+COATB_BPIKE/30-81                   AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSS
+Q9T0Q8_BPIKE/1-52                   AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVS
+COATB_BPI22/32-83                   DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSS
+COATB_BPM13/24-72                   AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTS
+COATB_BPZJ2/1-49                    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFAS
+Q9T0Q9_BPFD/1-49                    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTS
+COATB_BPIF1/22-73                   FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVS
+
+COATB_BPIKE/30-81                   KA
+Q9T0Q8_BPIKE/1-52                   RA
+COATB_BPI22/32-83                   KA
+COATB_BPM13/24-72                   KA
+COATB_BPZJ2/1-49                    KA
+Q9T0Q9_BPFD/1-49                    KA
+COATB_BPIF1/22-73                   RA
+</pre></div>
+</div>
+<p>Alternatively, you could make a PHYLIP format file which we’ll name
+“PF05371_seed.phy”:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AlignIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">,</span> <span class="s2">&quot;PF05371_seed.phy&quot;</span><span class="p">,</span> <span class="s2">&quot;phylip&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This time the output looks like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> 7 52
+COATB_BPIK AEPNAATNYA TEAMDSLKTQ AIDLISQTWP VVTTVVVAGL VIRLFKKFSS
+Q9T0Q8_BPI AEPNAATNYA TEAMDSLKTQ AIDLISQTWP VVTTVVVAGL VIKLFKKFVS
+COATB_BPI2 DGTSTATSYA TEAMNSLKTQ ATDLIDQTWP VVTSVAVAGL AIRLFKKFSS
+COATB_BPM1 AEGDDP---A KAAFNSLQAS ATEYIGYAWA MVVVIVGATI GIKLFKKFTS
+COATB_BPZJ AEGDDP---A KAAFDSLQAS ATEYIGYAWA MVVVIVGATI GIKLFKKFAS
+Q9T0Q9_BPF AEGDDP---A KAAFDSLQAS ATEYIGYAWA MVVVIVGATI GIKLFKKFTS
+COATB_BPIF FAADDATSQA KAAFDSLTAQ ATEMSGYAWA LVVLVVGATV GIKLFKKFVS
+
+           KA
+           RA
+           KA
+           KA
+           KA
+           KA
+           RA
+</pre></div>
+</div>
+<p>One of the big handicaps of the original PHYLIP alignment file format is
+that the sequence identifiers are strictly truncated at ten characters.
+In this example, as you can see the resulting names are still unique -
+but they are not very readable. As a result, a more relaxed variant of
+the original PHYLIP format is now quite widely used:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AlignIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">,</span> <span class="s2">&quot;PF05371_seed.phy&quot;</span><span class="p">,</span> <span class="s2">&quot;phylip-relaxed&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This time the output looks like this, using a longer indentation to
+allow all the identifiers to be given in full:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> 7 52
+COATB_BPIKE/30-81  AEPNAATNYA TEAMDSLKTQ AIDLISQTWP VVTTVVVAGL VIRLFKKFSS
+Q9T0Q8_BPIKE/1-52  AEPNAATNYA TEAMDSLKTQ AIDLISQTWP VVTTVVVAGL VIKLFKKFVS
+COATB_BPI22/32-83  DGTSTATSYA TEAMNSLKTQ ATDLIDQTWP VVTSVAVAGL AIRLFKKFSS
+COATB_BPM13/24-72  AEGDDP---A KAAFNSLQAS ATEYIGYAWA MVVVIVGATI GIKLFKKFTS
+COATB_BPZJ2/1-49   AEGDDP---A KAAFDSLQAS ATEYIGYAWA MVVVIVGATI GIKLFKKFAS
+Q9T0Q9_BPFD/1-49   AEGDDP---A KAAFDSLQAS ATEYIGYAWA MVVVIVGATI GIKLFKKFTS
+COATB_BPIF1/22-73  FAADDATSQA KAAFDSLTAQ ATEMSGYAWA LVVLVVGATV GIKLFKKFVS
+
+                   KA
+                   RA
+                   KA
+                   KA
+                   KA
+                   KA
+                   RA
+</pre></div>
+</div>
+<p>If you have to work with the original strict PHYLIP format, then you may
+need to compress the identifiers somehow – or assign your own names or
+numbering system. This following bit of code manipulates the record
+identifiers before saving the output:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">name_mapping</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">alignment</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">name_mapping</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span>
+<span class="gp">... </span>    <span class="n">record</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s2">&quot;seq</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">i</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">name_mapping</span><span class="p">)</span>
+<span class="go">{0: &#39;COATB_BPIKE/30-81&#39;, 1: &#39;Q9T0Q8_BPIKE/1-52&#39;, 2: &#39;COATB_BPI22/32-83&#39;, 3: &#39;COATB_BPM13/24-72&#39;, 4: &#39;COATB_BPZJ2/1-49&#39;, 5: &#39;Q9T0Q9_BPFD/1-49&#39;, 6: &#39;COATB_BPIF1/22-73&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AlignIO</span><span class="o">.</span><span class="n">write</span><span class="p">([</span><span class="n">alignment</span><span class="p">],</span> <span class="s2">&quot;PF05371_seed.phy&quot;</span><span class="p">,</span> <span class="s2">&quot;phylip&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This code used a Python dictionary to record a simple mapping from the
+new sequence system to the original identifier:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="s2">&quot;COATB_BPIKE/30-81&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Q9T0Q8_BPIKE/1-52&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;COATB_BPI22/32-83&quot;</span><span class="p">,</span>
+    <span class="c1"># ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is the new (strict) PHYLIP format output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span> 7 52
+seq0       AEPNAATNYA TEAMDSLKTQ AIDLISQTWP VVTTVVVAGL VIRLFKKFSS
+seq1       AEPNAATNYA TEAMDSLKTQ AIDLISQTWP VVTTVVVAGL VIKLFKKFVS
+seq2       DGTSTATSYA TEAMNSLKTQ ATDLIDQTWP VVTSVAVAGL AIRLFKKFSS
+seq3       AEGDDP---A KAAFNSLQAS ATEYIGYAWA MVVVIVGATI GIKLFKKFTS
+seq4       AEGDDP---A KAAFDSLQAS ATEYIGYAWA MVVVIVGATI GIKLFKKFAS
+seq5       AEGDDP---A KAAFDSLQAS ATEYIGYAWA MVVVIVGATI GIKLFKKFTS
+seq6       FAADDATSQA KAAFDSLTAQ ATEMSGYAWA LVVLVVGATV GIKLFKKFVS
+
+           KA
+           RA
+           KA
+           KA
+           KA
+           KA
+           RA
+</pre></div>
+</div>
+<p>In general, because of the identifier limitation, working with <em>strict</em>
+PHYLIP file formats shouldn’t be your first choice. Using the
+PFAM/Stockholm format on the other hand allows you to record a lot of
+additional annotation too.</p>
+</section>
+<section id="getting-your-alignment-objects-as-formatted-strings">
+<span id="sec-alignment-format"></span><h3>Getting your alignment objects as formatted strings<a class="headerlink" href="#getting-your-alignment-objects-as-formatted-strings" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> interface is based on handles, which means if you
+want to get your alignment(s) into a string in a particular file format
+you need to do a little bit more work (see below). However, you will
+probably prefer to call Python’s built-in <code class="docutils literal notranslate"><span class="pre">format</span></code> function on the
+alignment object. This takes an output format specification as a single
+argument, a lower case string which is supported by <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> as
+an output format. For example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">))</span>
+<span class="go">CLUSTAL X (1.81) multiple sequence alignment</span>
+
+
+<span class="go">COATB_BPIKE/30-81                   AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSS</span>
+<span class="go">Q9T0Q8_BPIKE/1-52                   AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVS</span>
+<span class="go">COATB_BPI22/32-83                   DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSS</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>Without an output format specification, <code class="docutils literal notranslate"><span class="pre">format</span></code> returns the same
+output as <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
+<p>As described in
+Section <a class="reference internal" href="chapter_seq_annot.html#sec-seqrecord-format"><span class="std std-ref">The format method</span></a>, the
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object has a similar method using output formats supported
+by <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code>.</p>
+<p>Internally <code class="docutils literal notranslate"><span class="pre">format</span></code> is calling <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.write()</span></code> with a
+<code class="docutils literal notranslate"><span class="pre">StringIO</span></code> handle. You can do this in your own code if for example you
+are using an older version of Biopython:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">out_handle</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">AlignIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">alignments</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clustal_data</span> <span class="o">=</span> <span class="n">out_handle</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">clustal_data</span><span class="p">)</span>
+<span class="go">CLUSTAL X (1.81) multiple sequence alignment</span>
+
+
+<span class="go">COATB_BPIKE/30-81                   AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSS</span>
+<span class="go">Q9T0Q8_BPIKE/1-52                   AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVS</span>
+<span class="go">COATB_BPI22/32-83                   DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSS</span>
+<span class="go">COATB_BPM13/24-72                   AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTS</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="manipulating-alignments">
+<span id="sec-manipulating-alignments"></span><h2>Manipulating Alignments<a class="headerlink" href="#manipulating-alignments" title="Permalink to this headline"></a></h2>
+<p>Now that we’ve covered loading and saving alignments, we’ll look at what
+else you can do with them.</p>
+<section id="slicing-alignments">
+<h3>Slicing alignments<a class="headerlink" href="#slicing-alignments" title="Permalink to this headline"></a></h3>
+<p>First of all, in some senses the alignment objects act like a Python
+<code class="docutils literal notranslate"><span class="pre">list</span></code> of <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects (the rows). With this model in mind
+hopefully the actions of <code class="docutils literal notranslate"><span class="pre">len()</span></code> (the number of rows) and iteration
+(each row as a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>) make sense:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of rows: </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">alignment</span><span class="p">))</span>
+<span class="go">Number of rows: 7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">alignment</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> - </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA - COATB_BPIKE/30-81</span>
+<span class="go">AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA - Q9T0Q8_BPIKE/1-52</span>
+<span class="go">DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA - COATB_BPI22/32-83</span>
+<span class="go">AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA - COATB_BPM13/24-72</span>
+<span class="go">AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA - COATB_BPZJ2/1-49</span>
+<span class="go">AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA - Q9T0Q9_BPFD/1-49</span>
+<span class="go">FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA - COATB_BPIF1/22-73</span>
+</pre></div>
+</div>
+<p>You can also use the list-like <code class="docutils literal notranslate"><span class="pre">append</span></code> and <code class="docutils literal notranslate"><span class="pre">extend</span></code> methods to add
+more rows to the alignment (as <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects). Keeping the list
+metaphor in mind, simple slicing of the alignment should also make sense
+- it selects some of the rows giving back another alignment object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">Alignment with 7 rows and 52 columns</span>
+<span class="go">AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRL...SKA COATB_BPIKE/30-81</span>
+<span class="go">AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKL...SRA Q9T0Q8_BPIKE/1-52</span>
+<span class="go">DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRL...SKA COATB_BPI22/32-83</span>
+<span class="go">AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPM13/24-72</span>
+<span class="go">AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPZJ2/1-49</span>
+<span class="go">AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA Q9T0Q9_BPFD/1-49</span>
+<span class="go">FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKL...SRA COATB_BPIF1/22-73</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">7</span><span class="p">])</span>
+<span class="go">Alignment with 4 rows and 52 columns</span>
+<span class="go">AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPM13/24-72</span>
+<span class="go">AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPZJ2/1-49</span>
+<span class="go">AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA Q9T0Q9_BPFD/1-49</span>
+<span class="go">FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKL...SRA COATB_BPIF1/22-73</span>
+</pre></div>
+</div>
+<p>What if you wanted to select by column? Those of you who have used the
+NumPy matrix or array objects won’t be surprised at this - you use a
+double index.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="go">T</span>
+</pre></div>
+</div>
+<p>Using two integer indices pulls out a single letter, short hand for
+this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+<span class="go">T</span>
+</pre></div>
+</div>
+<p>You can pull out a single column as a string like this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[:,</span> <span class="mi">6</span><span class="p">])</span>
+<span class="go">TTT---T</span>
+</pre></div>
+</div>
+<p>You can also select a range of columns. For example, to pick out those
+same three rows we extracted earlier, but take just their first six
+columns:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+<span class="go">Alignment with 3 rows and 6 columns</span>
+<span class="go">AEGDDP COATB_BPM13/24-72</span>
+<span class="go">AEGDDP COATB_BPZJ2/1-49</span>
+<span class="go">AEGDDP Q9T0Q9_BPFD/1-49</span>
+</pre></div>
+</div>
+<p>Leaving the first index as <code class="docutils literal notranslate"><span class="pre">:</span></code> means take all the rows:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+<span class="go">Alignment with 7 rows and 6 columns</span>
+<span class="go">AEPNAA COATB_BPIKE/30-81</span>
+<span class="go">AEPNAA Q9T0Q8_BPIKE/1-52</span>
+<span class="go">DGTSTA COATB_BPI22/32-83</span>
+<span class="go">AEGDDP COATB_BPM13/24-72</span>
+<span class="go">AEGDDP COATB_BPZJ2/1-49</span>
+<span class="go">AEGDDP Q9T0Q9_BPFD/1-49</span>
+<span class="go">FAADDA COATB_BPIF1/22-73</span>
+</pre></div>
+</div>
+<p>This brings us to a neat way to remove a section. Notice columns 7, 8
+and 9 which are gaps in three of the seven sequences:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[:,</span> <span class="mi">6</span><span class="p">:</span><span class="mi">9</span><span class="p">])</span>
+<span class="go">Alignment with 7 rows and 3 columns</span>
+<span class="go">TNY COATB_BPIKE/30-81</span>
+<span class="go">TNY Q9T0Q8_BPIKE/1-52</span>
+<span class="go">TSY COATB_BPI22/32-83</span>
+<span class="go">--- COATB_BPM13/24-72</span>
+<span class="go">--- COATB_BPZJ2/1-49</span>
+<span class="go">--- Q9T0Q9_BPFD/1-49</span>
+<span class="go">TSQ COATB_BPIF1/22-73</span>
+</pre></div>
+</div>
+<p>Again, you can slice to get everything after the ninth column:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">:])</span>
+<span class="go">Alignment with 7 rows and 43 columns</span>
+<span class="go">ATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA COATB_BPIKE/30-81</span>
+<span class="go">ATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA Q9T0Q8_BPIKE/1-52</span>
+<span class="go">ATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA COATB_BPI22/32-83</span>
+<span class="go">AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA COATB_BPM13/24-72</span>
+<span class="go">AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA COATB_BPZJ2/1-49</span>
+<span class="go">AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA Q9T0Q9_BPFD/1-49</span>
+<span class="go">AKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA COATB_BPIF1/22-73</span>
+</pre></div>
+</div>
+<p>Now, the interesting thing is that addition of alignment objects works
+by column. This lets you do this as a way to remove a block of columns:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">edited</span> <span class="o">=</span> <span class="n">alignment</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="o">+</span> <span class="n">alignment</span><span class="p">[:,</span> <span class="mi">9</span><span class="p">:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">edited</span><span class="p">)</span>
+<span class="go">Alignment with 7 rows and 49 columns</span>
+<span class="go">AEPNAAATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA COATB_BPIKE/30-81</span>
+<span class="go">AEPNAAATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA Q9T0Q8_BPIKE/1-52</span>
+<span class="go">DGTSTAATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA COATB_BPI22/32-83</span>
+<span class="go">AEGDDPAKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA COATB_BPM13/24-72</span>
+<span class="go">AEGDDPAKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA COATB_BPZJ2/1-49</span>
+<span class="go">AEGDDPAKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA Q9T0Q9_BPFD/1-49</span>
+<span class="go">FAADDAAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA COATB_BPIF1/22-73</span>
+</pre></div>
+</div>
+<p>Another common use of alignment addition would be to combine alignments
+for several different genes into a meta-alignment. Watch out though -
+the identifiers need to match up (see
+Section <a class="reference internal" href="chapter_seq_annot.html#sec-seqrecord-addition"><span class="std std-ref">Adding SeqRecord objects</span></a> for how
+adding <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects works). You may find it helpful to first
+sort the alignment rows alphabetically by id:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">edited</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">edited</span><span class="p">)</span>
+<span class="go">Alignment with 7 rows and 49 columns</span>
+<span class="go">DGTSTAATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA COATB_BPI22/32-83</span>
+<span class="go">FAADDAAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA COATB_BPIF1/22-73</span>
+<span class="go">AEPNAAATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA COATB_BPIKE/30-81</span>
+<span class="go">AEGDDPAKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA COATB_BPM13/24-72</span>
+<span class="go">AEGDDPAKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA COATB_BPZJ2/1-49</span>
+<span class="go">AEPNAAATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA Q9T0Q8_BPIKE/1-52</span>
+<span class="go">AEGDDPAKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA Q9T0Q9_BPFD/1-49</span>
+</pre></div>
+</div>
+<p>Note that you can only add two alignments together if they have the same
+number of rows.</p>
+</section>
+<section id="alignments-as-arrays">
+<h3>Alignments as arrays<a class="headerlink" href="#alignments-as-arrays" title="Permalink to this headline"></a></h3>
+<p>Depending on what you are doing, it can be more useful to turn the
+alignment object into an array of letters – and you can do this with
+NumPy:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PF05371_seed.sth&quot;</span><span class="p">,</span> <span class="s2">&quot;stockholm&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Array shape </span><span class="si">%i</span><span class="s2"> by </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">align_array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="go">Array shape 7 by 52</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align_array</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">10</span><span class="p">]</span>  
+<span class="go">array([[&#39;A&#39;, &#39;E&#39;, &#39;P&#39;, &#39;N&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;, &#39;N&#39;, &#39;Y&#39;, &#39;A&#39;],</span>
+<span class="go">       [&#39;A&#39;, &#39;E&#39;, &#39;P&#39;, &#39;N&#39;, &#39;A&#39;, &#39;A&#39;, &#39;T&#39;, &#39;N&#39;, &#39;Y&#39;, &#39;A&#39;],</span>
+<span class="go">       [&#39;D&#39;, &#39;G&#39;, &#39;T&#39;, &#39;S&#39;, &#39;T&#39;, &#39;A&#39;, &#39;T&#39;, &#39;S&#39;, &#39;Y&#39;, &#39;A&#39;],</span>
+<span class="go">       [&#39;A&#39;, &#39;E&#39;, &#39;G&#39;, &#39;D&#39;, &#39;D&#39;, &#39;P&#39;, &#39;-&#39;, &#39;-&#39;, &#39;-&#39;, &#39;A&#39;],</span>
+<span class="go">       [&#39;A&#39;, &#39;E&#39;, &#39;G&#39;, &#39;D&#39;, &#39;D&#39;, &#39;P&#39;, &#39;-&#39;, &#39;-&#39;, &#39;-&#39;, &#39;A&#39;],</span>
+<span class="go">       [&#39;A&#39;, &#39;E&#39;, &#39;G&#39;, &#39;D&#39;, &#39;D&#39;, &#39;P&#39;, &#39;-&#39;, &#39;-&#39;, &#39;-&#39;, &#39;A&#39;],</span>
+<span class="go">       [&#39;F&#39;, &#39;A&#39;, &#39;A&#39;, &#39;D&#39;, &#39;D&#39;, &#39;A&#39;, &#39;T&#39;, &#39;S&#39;, &#39;Q&#39;, &#39;A&#39;]],...</span>
+</pre></div>
+</div>
+<p>Note that this leaves the original Biopython alignment object and the
+NumPy array in memory as separate objects - editing one will not update
+the other!</p>
+</section>
+<section id="counting-substitutions">
+<h3>Counting substitutions<a class="headerlink" href="#counting-substitutions" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">substitutions</span></code> property of an alignment reports how often letters
+in the alignment are substituted for each other. This is calculated by
+taking all pairs of rows in the alignment, counting the number of times
+two letters are aligned to each other, and summing this over all pairs.
+For example,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">MultipleSeqAlignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msa</span> <span class="o">=</span> <span class="n">MultipleSeqAlignment</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACTCCTA&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;seq1&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAT-CTA&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;seq2&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;CCTACT-&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;seq3&quot;</span><span class="p">),</span>
+<span class="gp">... </span>        <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TCTCCTC&quot;</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;seq4&quot;</span><span class="p">),</span>
+<span class="gp">... </span>    <span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">msa</span><span class="p">)</span>
+<span class="go">Alignment with 4 rows and 7 columns</span>
+<span class="go">ACTCCTA seq1</span>
+<span class="go">AAT-CTA seq2</span>
+<span class="go">CCTACT- seq3</span>
+<span class="go">TCTCCTC seq4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">substitutions</span> <span class="o">=</span> <span class="n">msa</span><span class="o">.</span><span class="n">substitutions</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">substitutions</span><span class="p">)</span>
+<span class="go">    A    C    T</span>
+<span class="go">A 2.0  4.5  1.0</span>
+<span class="go">C 4.5 10.0  0.5</span>
+<span class="go">T 1.0  0.5 12.0</span>
+</pre></div>
+</div>
+<p>As the ordering of pairs is arbitrary, counts are divided equally above
+and below the diagonal. For example, the 9 alignments of <code class="docutils literal notranslate"><span class="pre">A</span></code> to <code class="docutils literal notranslate"><span class="pre">C</span></code>
+are stored as 4.5 at position <code class="docutils literal notranslate"><span class="pre">['A',</span> <span class="pre">'C']</span></code> and 4.5 at position
+<code class="docutils literal notranslate"><span class="pre">['C',</span> <span class="pre">'A']</span></code>. This arrangement helps to make the math easier when
+calculating a substitution matrix from these counts, as described in
+Section <a class="reference internal" href="chapter_pairwise.html#sec-substitution-matrices"><span class="std std-ref">Substitution matrices</span></a>.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">msa.substitutions</span></code> contains entries for the letters
+appearing in the alignment only. You can use the <code class="docutils literal notranslate"><span class="pre">select</span></code> method to
+add entries for missing letters, for example</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">substitutions</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;ATCG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="go">    A    T    C   G</span>
+<span class="go">A 2.0  1.0  4.5 0.0</span>
+<span class="go">T 1.0 12.0  0.5 0.0</span>
+<span class="go">C 4.5  0.5 10.0 0.0</span>
+<span class="go">G 0.0  0.0  0.0 0.0</span>
+</pre></div>
+</div>
+<p>This also allows you to change the order of letters in the alphabet.</p>
+</section>
+<section id="calculating-summary-information">
+<span id="sec-summary-info"></span><h3>Calculating summary information<a class="headerlink" href="#calculating-summary-information" title="Permalink to this headline"></a></h3>
+<p>Once you have an alignment, you are very likely going to want to find
+out information about it. Instead of trying to have all of the functions
+that can generate information about an alignment in the alignment object
+itself, we’ve tried to separate out the functionality into separate
+classes, which act on the alignment.</p>
+<p>Getting ready to calculate summary information about an object is quick
+to do. Let’s say we’ve got an alignment object called <code class="docutils literal notranslate"><span class="pre">alignment</span></code>, for
+example read in using <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO.read(...)</span></code> as described in
+Chapter <a class="reference internal" href="#chapter-msa"><span class="std std-ref">Multiple Sequence Alignment objects</span></a>. All we need to do to get an object that
+will calculate summary information is:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">AlignInfo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">summary_align</span> <span class="o">=</span> <span class="n">AlignInfo</span><span class="o">.</span><span class="n">SummaryInfo</span><span class="p">(</span><span class="n">msa</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">summary_align</span></code> object is very useful, and will do the following
+neat things for you:</p>
+<ol class="arabic simple">
+<li><p>Calculate a quick consensus sequence – see
+section <a class="reference internal" href="#sec-consensus"><span class="std std-ref">Calculating a quick consensus sequence</span></a></p></li>
+<li><p>Get a position specific score matrix for the alignment – see
+section <a class="reference internal" href="#sec-pssm"><span class="std std-ref">Position Specific Score Matrices</span></a></p></li>
+<li><p>Calculate the information content for the alignment – see
+section <a class="reference internal" href="#sec-getting-info-content"><span class="std std-ref">Information Content</span></a></p></li>
+<li><p>Generate information on substitutions in the alignment –
+section <a class="reference internal" href="chapter_pairwise.html#sec-substitution-matrices"><span class="std std-ref">Substitution matrices</span></a>
+details using this to generate a substitution matrix.</p></li>
+</ol>
+</section>
+<section id="calculating-a-quick-consensus-sequence">
+<span id="sec-consensus"></span><h3>Calculating a quick consensus sequence<a class="headerlink" href="#calculating-a-quick-consensus-sequence" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">SummaryInfo</span></code> object, described in
+section <a class="reference internal" href="#sec-summary-info"><span class="std std-ref">Calculating summary information</span></a>, provides functionality to
+calculate a quick consensus of an alignment. Assuming we’ve got a
+<code class="docutils literal notranslate"><span class="pre">SummaryInfo</span></code> object called <code class="docutils literal notranslate"><span class="pre">summary_align</span></code> we can calculate a
+consensus by doing:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">consensus</span> <span class="o">=</span> <span class="n">summary_align</span><span class="o">.</span><span class="n">dumb_consensus</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">consensus</span>
+<span class="go">Seq(&#39;XCTXCTX&#39;)</span>
+</pre></div>
+</div>
+<p>As the name suggests, this is a really simple consensus calculator, and
+will just add up all of the residues at each point in the consensus, and
+if the most common value is higher than some threshold value will add
+the common residue to the consensus. If it doesn’t reach the threshold,
+it adds an ambiguity character to the consensus. The returned consensus
+object is a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object.</p>
+<p>You can adjust how <code class="docutils literal notranslate"><span class="pre">dumb_consensus</span></code> works by passing optional
+parameters:</p>
+<dl class="simple">
+<dt>the threshold</dt><dd><p>This is the threshold specifying how common a particular residue has
+to be at a position before it is added. The default is <span class="math notranslate nohighlight">\(0.7\)</span>
+(meaning <span class="math notranslate nohighlight">\(70\%\)</span>).</p>
+</dd>
+<dt>the ambiguous character</dt><dd><p>This is the ambiguity character to use. The default is ’N’.</p>
+</dd>
+</dl>
+<p>Alternatively, you can convert the multiple sequence alignment object
+<code class="docutils literal notranslate"><span class="pre">msa</span></code> to a new-style <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> object (see section
+<a class="reference internal" href="chapter_align.html#sec-alignmentobject"><span class="std std-ref">Alignment objects</span></a>) by using the
+<code class="docutils literal notranslate"><span class="pre">alignment</span></code> attribute (see section <a class="reference internal" href="#sec-alignment-newstyle"><span class="std std-ref">Getting a new-style Alignment object</span></a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">msa</span><span class="o">.</span><span class="n">alignment</span>
+</pre></div>
+</div>
+<p>You can then create a <code class="docutils literal notranslate"><span class="pre">Motif</span></code> object (see section
+<a class="reference internal" href="chapter_motifs.html#sec-motif-object"><span class="std std-ref">Motif objects</span></a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.motifs</span> <span class="kn">import</span> <span class="n">Motif</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span> <span class="o">=</span> <span class="n">Motif</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and obtain a quick consensus sequence:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">consensus</span>
+<span class="go">Seq(&#39;ACTCCTA&#39;)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">motif.counts.calculate_consensus</span></code> method (see section
+<a class="reference internal" href="chapter_motifs.html#sec-motif-consensus"><span class="std std-ref">Obtaining a consensus sequence</span></a>) lets you specify in
+detail how the consensus sequence should be calculated. For example,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span><span class="o">.</span><span class="n">counts</span><span class="o">.</span><span class="n">calculate_consensus</span><span class="p">(</span><span class="n">identity</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="go">&#39;NCTNCTN&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="position-specific-score-matrices">
+<span id="sec-pssm"></span><h3>Position Specific Score Matrices<a class="headerlink" href="#position-specific-score-matrices" title="Permalink to this headline"></a></h3>
+<p>Position specific score matrices (PSSMs) summarize the alignment
+information in a different way than a consensus, and may be useful for
+different tasks. Basically, a PSSM is a count matrix. For each column in
+the alignment, the number of each alphabet letters is counted and
+totaled. The totals are displayed relative to some representative
+sequence along the left axis. This sequence may be the consensus
+sequence, but can also be any sequence in the alignment.</p>
+<p>For instance for the alignment above:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">msa</span><span class="p">)</span>
+<span class="go">Alignment with 4 rows and 7 columns</span>
+<span class="go">ACTCCTA seq1</span>
+<span class="go">AAT-CTA seq2</span>
+<span class="go">CCTACT- seq3</span>
+<span class="go">TCTCCTC seq4</span>
+</pre></div>
+</div>
+<p>we get a PSSM with the consensus sequence along the side using</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_pssm</span> <span class="o">=</span> <span class="n">summary_align</span><span class="o">.</span><span class="n">pos_specific_score_matrix</span><span class="p">(</span><span class="n">consensus</span><span class="p">,</span> <span class="n">chars_to_ignore</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_pssm</span><span class="p">)</span>
+<span class="go">    A   C   T</span>
+<span class="go">X  2.0 1.0 1.0</span>
+<span class="go">C  1.0 3.0 0.0</span>
+<span class="go">T  0.0 0.0 4.0</span>
+<span class="go">X  1.0 2.0 0.0</span>
+<span class="go">C  0.0 4.0 0.0</span>
+<span class="go">T  0.0 0.0 4.0</span>
+<span class="go">X  2.0 1.0 0.0</span>
+</pre></div>
+</div>
+<p>where we ignore any <code class="docutils literal notranslate"><span class="pre">N</span></code> ambiguity residues when calculating the PSSM.</p>
+<p>Two notes should be made about this:</p>
+<ol class="arabic">
+<li><p>To maintain strictness with the alphabets, you can only include
+characters along the top of the PSSM that are in the alphabet of the
+alignment object. Gaps are not included along the top axis of the
+PSSM.</p></li>
+<li><p>The sequence passed to be displayed along the left side of the axis
+does not need to be the consensus. For instance, if you wanted to
+display the second sequence in the alignment along this axis, you
+would need to do:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">second_seq</span> <span class="o">=</span> <span class="n">msa</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_pssm</span> <span class="o">=</span> <span class="n">summary_align</span><span class="o">.</span><span class="n">pos_specific_score_matrix</span><span class="p">(</span><span class="n">second_seq</span><span class="p">,</span> <span class="n">chars_to_ignore</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_pssm</span><span class="p">)</span>
+<span class="go">    A   C   T</span>
+<span class="go">A  2.0 1.0 1.0</span>
+<span class="go">A  1.0 3.0 0.0</span>
+<span class="go">T  0.0 0.0 4.0</span>
+<span class="go">-  1.0 2.0 0.0</span>
+<span class="go">C  0.0 4.0 0.0</span>
+<span class="go">T  0.0 0.0 4.0</span>
+<span class="go">A  2.0 1.0 0.0</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>The command above returns a <code class="docutils literal notranslate"><span class="pre">PSSM</span></code> object. You can access any element
+of the PSSM by subscripting like
+<code class="docutils literal notranslate"><span class="pre">your_pssm[sequence_number][residue_count_name]</span></code>. For instance, to get
+the counts for the ’A’ residue in the second element of the above PSSM
+you would do:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_pssm</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="s2">&quot;T&quot;</span><span class="p">])</span>
+<span class="go">4.0</span>
+</pre></div>
+</div>
+<p>The structure of the PSSM class hopefully makes it easy both to access
+elements and to pretty print the matrix.</p>
+<p>Alternatively, you can convert the multiple sequence alignment object
+<code class="docutils literal notranslate"><span class="pre">msa</span></code> to a new-style <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> object (see section
+<a class="reference internal" href="chapter_align.html#sec-alignmentobject"><span class="std std-ref">Alignment objects</span></a>) by using the
+<code class="docutils literal notranslate"><span class="pre">alignment</span></code> attribute (see section <a class="reference internal" href="#sec-alignment-newstyle"><span class="std std-ref">Getting a new-style Alignment object</span></a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">msa</span><span class="o">.</span><span class="n">alignment</span>
+</pre></div>
+</div>
+<p>You can then create a <code class="docutils literal notranslate"><span class="pre">Motif</span></code> object (see section
+<a class="reference internal" href="chapter_motifs.html#sec-motif-object"><span class="std std-ref">Motif objects</span></a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.motifs</span> <span class="kn">import</span> <span class="n">Motif</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">motif</span> <span class="o">=</span> <span class="n">Motif</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and obtain the counts of each nucleotide in each position:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span> <span class="o">=</span> <span class="n">motif</span><span class="o">.</span><span class="n">counts</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+<span class="go">        0      1      2      3      4      5      6</span>
+<span class="go">A:   2.00   1.00   0.00   1.00   0.00   0.00   2.00</span>
+<span class="go">C:   1.00   3.00   0.00   2.00   4.00   0.00   1.00</span>
+<span class="go">G:   0.00   0.00   0.00   0.00   0.00   0.00   0.00</span>
+<span class="go">T:   1.00   0.00   4.00   0.00   0.00   4.00   0.00</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">][</span><span class="mi">5</span><span class="p">])</span>
+<span class="go">4.0</span>
+</pre></div>
+</div>
+</section>
+<section id="information-content">
+<span id="sec-getting-info-content"></span><h3>Information Content<a class="headerlink" href="#information-content" title="Permalink to this headline"></a></h3>
+<p>A potentially useful measure of evolutionary conservation is the
+information content of a sequence.</p>
+<p>A useful introduction to information theory targeted towards molecular
+biologists can be found at
+<a class="reference external" href="http://www.lecb.ncifcrf.gov/~toms/paper/primer/">http://www.lecb.ncifcrf.gov/~toms/paper/primer/</a>. For our purposes, we
+will be looking at the information content of a consensus sequence, or a
+portion of a consensus sequence. We calculate information content at a
+particular column in a multiple sequence alignment using the following
+formula:</p>
+<div class="math notranslate nohighlight">
+\[IC_{j} = \sum_{i=1}^{N_{a}} P_{ij} \mathrm{log}\left(\frac{P_{ij}}{Q_{i}}\right)\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(IC_{j}\)</span> – The information content for the <span class="math notranslate nohighlight">\(j\)</span>-th column
+in an alignment.</p></li>
+<li><p><span class="math notranslate nohighlight">\(N_{a}\)</span> – The number of letters in the alphabet.</p></li>
+<li><p><span class="math notranslate nohighlight">\(P_{ij}\)</span> – The frequency of a particular letter <span class="math notranslate nohighlight">\(i\)</span> in
+the <span class="math notranslate nohighlight">\(j\)</span>-th column (i. e. if G occurred 3 out of 6 times in an
+alignment column, this would be 0.5)</p></li>
+<li><p><span class="math notranslate nohighlight">\(Q_{i}\)</span> – The expected frequency of a letter <span class="math notranslate nohighlight">\(i\)</span>. This is
+an optional argument, usage of which is left at the user’s
+discretion. By default, it is automatically assigned to
+<span class="math notranslate nohighlight">\(0.05 = 1/20\)</span> for a protein alphabet, and <span class="math notranslate nohighlight">\(0.25 = 1/4\)</span>
+for a nucleic acid alphabet. This is for getting the information
+content without any assumption of prior distributions. When assuming
+priors, or when using a non-standard alphabet, you should supply the
+values for <span class="math notranslate nohighlight">\(Q_{i}\)</span>.</p></li>
+</ul>
+<p>Well, now that we have an idea what information content is being
+calculated in Biopython, let’s look at how to get it for a particular
+region of the alignment.</p>
+<p>First, we need to use our alignment to get an alignment summary object,
+which we’ll assume is called <code class="docutils literal notranslate"><span class="pre">summary_align</span></code> (see
+section <a class="reference internal" href="#sec-summary-info"><span class="std std-ref">Calculating summary information</span></a>) for instructions on how to get
+this. Once we’ve got this object, calculating the information content
+for a region is as easy as:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">e_freq_table</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info_content</span> <span class="o">=</span> <span class="n">summary_align</span><span class="o">.</span><span class="n">information_content</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">e_freq_table</span><span class="o">=</span><span class="n">e_freq_table</span><span class="p">,</span> <span class="n">chars_to_ignore</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info_content</span>  
+<span class="go">6.3910647...</span>
+</pre></div>
+</div>
+<p>Now, <code class="docutils literal notranslate"><span class="pre">info_content</span></code> will contain the relative information content over
+the region [2:6] in relation to the expected frequencies.</p>
+<p>The value return is calculated using base 2 as the logarithm base in the
+formula above. You can modify this by passing the parameter <code class="docutils literal notranslate"><span class="pre">log_base</span></code>
+as the base you want:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">info_content</span> <span class="o">=</span> <span class="n">summary_align</span><span class="o">.</span><span class="n">information_content</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">e_freq_table</span><span class="o">=</span><span class="n">e_freq_table</span><span class="p">,</span> <span class="n">log_base</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">chars_to_ignore</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info_content</span>  
+<span class="go">1.923902...</span>
+</pre></div>
+</div>
+<p>By default nucleotide or amino acid residues with a frequency of 0 in a
+column are not take into account when the relative information column
+for that column is computed. If this is not the desired result, you can
+use <code class="docutils literal notranslate"><span class="pre">pseudo_count</span></code> instead.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">info_content</span> <span class="o">=</span> <span class="n">summary_align</span><span class="o">.</span><span class="n">information_content</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">e_freq_table</span><span class="o">=</span><span class="n">e_freq_table</span><span class="p">,</span> <span class="n">chars_to_ignore</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">],</span> <span class="n">pseudo_count</span><span class="o">=</span><span class="mi">1</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">info_content</span>  
+<span class="go">4.299651...</span>
+</pre></div>
+</div>
+<p>In this case, the observed frequency <span class="math notranslate nohighlight">\(P_{ij}\)</span> of a particular
+letter <span class="math notranslate nohighlight">\(i\)</span> in the <span class="math notranslate nohighlight">\(j\)</span>-th column is computed as follows:</p>
+<div class="math notranslate nohighlight">
+\[P_{ij} = \frac{n_{ij} + k\times Q_{i}}{N_{j} + k}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(k\)</span> – the pseudo count you pass as argument.</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span> – the pseudo count you pass as argument.</p></li>
+<li><p><span class="math notranslate nohighlight">\(Q_{i}\)</span> – The expected frequency of the letter <span class="math notranslate nohighlight">\(i\)</span> as
+described above.</p></li>
+</ul>
+<p>Well, now you are ready to calculate information content. If you want to
+try applying this to some real life problems, it would probably be best
+to dig into the literature on information content to get an idea of how
+it is used. Hopefully your digging won’t reveal any mistakes made in
+coding this function!</p>
+</section>
+</section>
+<section id="getting-a-new-style-alignment-object">
+<span id="sec-alignment-newstyle"></span><h2>Getting a new-style Alignment object<a class="headerlink" href="#getting-a-new-style-alignment-object" title="Permalink to this headline"></a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">alignment</span></code> property to create a new-style <code class="docutils literal notranslate"><span class="pre">Alignment</span></code>
+object (see section <a class="reference internal" href="chapter_align.html#sec-alignmentobject"><span class="std std-ref">Alignment objects</span></a>)
+from an old-style <code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">msa</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Align.MultipleSeqAlignment&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">msa</span><span class="p">)</span>
+<span class="go">Alignment with 4 rows and 7 columns</span>
+<span class="go">ACTCCTA seq1</span>
+<span class="go">AAT-CTA seq2</span>
+<span class="go">CCTACT- seq3</span>
+<span class="go">TCTCCTC seq4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">msa</span><span class="o">.</span><span class="n">alignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Align.Alignment&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">seq1              0 ACTCCTA 7</span>
+<span class="go">seq2              0 AAT-CTA 6</span>
+<span class="go">seq3              0 CCTACT- 6</span>
+<span class="go">seq4              0 TCTCCTC 7</span>
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">alignment</span></code> property creates and returns a new
+<code class="docutils literal notranslate"><span class="pre">Alignment</span></code> object that is consistent with the information stored in
+the <code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> object at the time the <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> object
+is created. Any changes to the <code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> after calling
+the <code class="docutils literal notranslate"><span class="pre">alignment</span></code> property will not propagate to the <code class="docutils literal notranslate"><span class="pre">Alignment</span></code>
+object. However, you can of course call the <code class="docutils literal notranslate"><span class="pre">alignment</span></code> property again
+to create a new <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> object consistent with the updated
+<code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> object.</p>
+</section>
+<section id="calculating-a-substitution-matrix-from-a-multiple-sequence-alignment">
+<span id="sec-subs-mat-ex"></span><h2>Calculating a substitution matrix from a multiple sequence alignment<a class="headerlink" href="#calculating-a-substitution-matrix-from-a-multiple-sequence-alignment" title="Permalink to this headline"></a></h2>
+<p>You can create your own substitution matrix from an alignment. In this
+example, we’ll first read a protein sequence alignment from the Clustalw
+file <a class="reference external" href="examples/protein.aln">protein.aln</a> (also available online
+<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Tests/Clustalw/protein.aln">here</a>)</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;protein.aln&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msa</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Section <a class="reference internal" href="#sec-alignio-clustal"><span class="std std-ref">ClustalW</span></a> contains more information on
+doing this.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">substitutions</span></code> property of the alignment stores the number of
+times different residues substitute for each other:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_frequencies</span> <span class="o">=</span> <span class="n">msa</span><span class="o">.</span><span class="n">substitutions</span>
+</pre></div>
+</div>
+<p>To make the example more readable, we’ll select only amino acids with
+polar charged side chains:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">observed_frequencies</span> <span class="o">=</span> <span class="n">observed_frequencies</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;DEHKR&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">observed_frequencies</span><span class="p">)</span>
+<span class="go">       D      E      H      K      R</span>
+<span class="go">D 2360.0  255.5    7.5    0.5   25.0</span>
+<span class="go">E  255.5 3305.0   16.5   27.0    2.0</span>
+<span class="go">H    7.5   16.5 1235.0   16.0    8.5</span>
+<span class="go">K    0.5   27.0   16.0 3218.0  116.5</span>
+<span class="go">R   25.0    2.0    8.5  116.5 2079.0</span>
+</pre></div>
+</div>
+<p>Rows and columns for other amino acids were removed from the matrix.</p>
+<p>Next, we normalize the matrix:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">observed_frequencies</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">observed_frequencies</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Summing over rows or columns gives the relative frequency of occurrence
+of each residue:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">residue_frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">observed_frequencies</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">residue_frequencies</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.4f</span><span class="s2">&quot;</span><span class="p">))</span>
+<span class="go">D 0.2015</span>
+<span class="go">E 0.2743</span>
+<span class="go">H 0.0976</span>
+<span class="go">K 0.2569</span>
+<span class="go">R 0.1697</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">residue_frequencies</span><span class="p">)</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<p>The expected frequency of residue pairs is then</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">expected_frequencies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">residue_frequencies</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">],</span> <span class="n">residue_frequencies</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">expected_frequencies</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.4f</span><span class="s2">&quot;</span><span class="p">))</span>
+<span class="go">       D      E      H      K      R</span>
+<span class="go">D 0.0406 0.0553 0.0197 0.0518 0.0342</span>
+<span class="go">E 0.0553 0.0752 0.0268 0.0705 0.0465</span>
+<span class="go">H 0.0197 0.0268 0.0095 0.0251 0.0166</span>
+<span class="go">K 0.0518 0.0705 0.0251 0.0660 0.0436</span>
+<span class="go">R 0.0342 0.0465 0.0166 0.0436 0.0288</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">residue_frequencies[:,</span> <span class="pre">None]</span></code> creates a 2D array consisting of
+a single column with the values of <code class="docutils literal notranslate"><span class="pre">residue_frequencies</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">residue_frequencies[None,</span> <span class="pre">:]</span></code> a 2D array with these values as a
+single row. Taking their dot product (inner product) creates a matrix of
+expected frequencies where each entry consists of two
+<code class="docutils literal notranslate"><span class="pre">residue_frequencies</span></code> values multiplied with each other. For example,
+<code class="docutils literal notranslate"><span class="pre">expected_frequencies['D',</span> <span class="pre">'E']</span></code> is equal to
+<code class="docutils literal notranslate"><span class="pre">residue_frequencies['D']</span> <span class="pre">*</span> <span class="pre">residue_frequencies['E']</span></code>.</p>
+<p>We can now calculate the log-odds matrix by dividing the observed
+frequencies by the expected frequencies and taking the logarithm:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">observed_frequencies</span> <span class="o">/</span> <span class="n">expected_frequencies</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="go">      D    E    H     K    R</span>
+<span class="go">D   2.1 -1.5 -5.1 -10.4 -4.2</span>
+<span class="go">E  -1.5  1.7 -4.4  -5.1 -8.3</span>
+<span class="go">H  -5.1 -4.4  3.3  -4.4 -4.7</span>
+<span class="go">K -10.4 -5.1 -4.4   1.9 -2.3</span>
+<span class="go">R  -4.2 -8.3 -4.7  -2.3  2.5</span>
+</pre></div>
+</div>
+<p>This matrix can be used as the substitution matrix when performing
+alignments. For example,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">PairwiseAligner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">substitution_matrix</span> <span class="o">=</span> <span class="n">m</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">gap_score</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;DEHEK&quot;</span><span class="p">,</span> <span class="s2">&quot;DHHKK&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">target            0 DEHEK 5</span>
+<span class="go">                  0 |.|.| 5</span>
+<span class="go">query             0 DHHKK 5</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">alignments</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+<span class="go">-2.18</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="p">[</span><span class="s2">&quot;H&quot;</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="p">[</span><span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">m</span><span class="p">[</span><span class="s2">&quot;K&quot;</span><span class="p">,</span> <span class="s2">&quot;K&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">score</span><span class="p">)</span>
+<span class="go">-2.18</span>
+</pre></div>
+</div>
+</section>
+<section id="alignment-tools">
+<span id="sec-alignment-tools"></span><h2>Alignment Tools<a class="headerlink" href="#alignment-tools" title="Permalink to this headline"></a></h2>
+<p>There are <em>lots</em> of algorithms out there for aligning sequences, both
+pairwise alignments and multiple sequence alignments. These calculations
+are relatively slow, and you generally wouldn’t want to write such an
+algorithm in Python. For pairwise alignments, you can use Biopython’s
+<code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> (see
+Chapter <a class="reference internal" href="chapter_pairwise.html#chapter-pairwise"><span class="std std-ref">Pairwise sequence alignment</span></a>), which is
+implemented in C and therefore fast. Alternatively, you can run an
+external alignment program by invoking it from Python. Normally you
+would:</p>
+<ol class="arabic simple">
+<li><p>Prepare an input file of your unaligned sequences, typically this
+will be a FASTA file which you might create using <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> (see
+Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>).</p></li>
+<li><p>Run the alignment program by running its command using Python’s
+<code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module.</p></li>
+<li><p>Read the output from the tool, i.e. your aligned sequences, typically
+using <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> (see earlier in this chapter).</p></li>
+</ol>
+<p>Here, we will show a few examples of this workflow.</p>
+<section id="clustalw">
+<span id="sec-alignio-clustal"></span><h3>ClustalW<a class="headerlink" href="#clustalw" title="Permalink to this headline"></a></h3>
+<p>ClustalW is a popular command line tool for multiple sequence alignment
+(there is also a graphical interface called ClustalX). Before trying to
+use ClustalW from within Python, you should first try running the
+ClustalW tool yourself by hand at the command line, to familiarize
+yourself the other options.</p>
+<p>For the most basic usage, all you need is to have a FASTA input file,
+such as
+<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/opuntia.fasta">opuntia.fasta</a>
+(available online or in the Doc/examples subdirectory of the Biopython
+source code). This is a small FASTA file containing seven prickly-pear
+DNA sequences (from the cactus family <em>Opuntia</em>). By default ClustalW
+will generate an alignment and guide tree file with names based on the
+input FASTA file, in this case <code class="docutils literal notranslate"><span class="pre">opuntia.aln</span></code> and <code class="docutils literal notranslate"><span class="pre">opuntia.dnd</span></code>, but
+you can override this or make it explicit:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;clustalw2 -infile=opuntia.fasta&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Notice here we have given the executable name as <code class="docutils literal notranslate"><span class="pre">clustalw2</span></code>,
+indicating we have version two installed, which has a different filename
+to version one (<code class="docutils literal notranslate"><span class="pre">clustalw</span></code>, the default). Fortunately both versions
+support the same set of arguments at the command line (and indeed,
+should be functionally identical).</p>
+<p>You may find that even though you have ClustalW installed, the above
+command doesn’t work – you may get a message about “command not found”
+(especially on Windows). This indicated that the ClustalW executable is
+not on your PATH (an environment variable, a list of directories to be
+searched). You can either update your PATH setting to include the
+location of your copy of ClustalW tools (how you do this will depend on
+your OS), or simply type in the full path of the tool. Remember, in
+Python strings <code class="docutils literal notranslate"><span class="pre">\n</span></code> and <code class="docutils literal notranslate"><span class="pre">\t</span></code> are by default interpreted as a new
+line and a tab – which is why we’re put a letter “r” at the start for a
+raw string that isn’t translated in this way. This is generally good
+practice when specifying a Windows style file name.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clustalw_exe</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;C:\Program Files\new clustal\clustalw2.exe&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">clustalw_exe</span><span class="p">),</span> <span class="s2">&quot;Clustal W executable missing&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">=</span> <span class="n">clustalw_exe</span> <span class="o">+</span> <span class="s2">&quot; -infile=opuntia.fasta&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, at this point it helps to know about how command line tools “work”.
+When you run a tool at the command line, it will often print text output
+directly to screen. This text can be captured or redirected, via two
+“pipes”, called standard output (the normal results) and standard error
+(for error messages and debug messages). There is also standard input,
+which is any text fed into the tool. These names get shortened to stdin,
+stdout and stderr. When the tool finishes, it has a return code (an
+integer), which by convention is zero for success, while a non-zero
+return code indicates that an error has occurred.</p>
+<p>In the example of ClustalW above, when run at the command line all the
+important output is written directly to the output files. Everything
+normally printed to screen while you wait is captured in
+<code class="docutils literal notranslate"><span class="pre">results.stdout</span></code> and <code class="docutils literal notranslate"><span class="pre">results.stderr</span></code>, while the return code is
+stored in <code class="docutils literal notranslate"><span class="pre">results.returncode</span></code>.</p>
+<p>What we care about are the two output files, the alignment and the guide
+tree. We didn’t tell ClustalW what filenames to use, but it defaults to
+picking names based on the input file. In this case the output should be
+in the file <code class="docutils literal notranslate"><span class="pre">opuntia.aln</span></code>. You should be able to work out how to read
+in the alignment using <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> by now:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;opuntia.aln&quot;</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">Alignment with 7 rows and 906 columns</span>
+<span class="go">TATACATTAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273285|gb|AF191659.1|AF191</span>
+<span class="go">TATACATTAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273284|gb|AF191658.1|AF191</span>
+<span class="go">TATACATTAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273287|gb|AF191661.1|AF191</span>
+<span class="go">TATACATAAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273286|gb|AF191660.1|AF191</span>
+<span class="go">TATACATTAAAGGAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273290|gb|AF191664.1|AF191</span>
+<span class="go">TATACATTAAAGGAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273289|gb|AF191663.1|AF191</span>
+<span class="go">TATACATTAAAGGAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273291|gb|AF191665.1|AF191</span>
+</pre></div>
+</div>
+<p>In case you are interested (and this is an aside from the main thrust of
+this chapter), the <code class="docutils literal notranslate"><span class="pre">opuntia.dnd</span></code> file ClustalW creates is just a
+standard Newick tree file, and <code class="docutils literal notranslate"><span class="pre">Bio.Phylo</span></code> can parse these:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Phylo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;opuntia.dnd&quot;</span><span class="p">,</span> <span class="s2">&quot;newick&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">draw_ascii</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="go">                             _______________ gi|6273291|gb|AF191665.1|AF191665</span>
+<span class="go">  __________________________|</span>
+<span class="go"> |                          |   ______ gi|6273290|gb|AF191664.1|AF191664</span>
+<span class="go"> |                          |__|</span>
+<span class="go"> |                             |_____ gi|6273289|gb|AF191663.1|AF191663</span>
+<span class="go"> |</span>
+<span class="go">_|_________________ gi|6273287|gb|AF191661.1|AF191661</span>
+<span class="go"> |</span>
+<span class="go"> |__________ gi|6273286|gb|AF191660.1|AF191660</span>
+<span class="go"> |</span>
+<span class="go"> |    __ gi|6273285|gb|AF191659.1|AF191659</span>
+<span class="go"> |___|</span>
+<span class="go">     | gi|6273284|gb|AF191658.1|AF191658</span>
+</pre></div>
+</div>
+<p>Chapter <a class="reference internal" href="chapter_phylo.html#chapter-phylo"><span class="std std-ref">Phylogenetics with Bio.Phylo</span></a> covers Biopython’s support
+for phylogenetic trees in more depth.</p>
+</section>
+<section id="muscle">
+<h3>MUSCLE<a class="headerlink" href="#muscle" title="Permalink to this headline"></a></h3>
+<p>MUSCLE is a more recent multiple sequence alignment tool than ClustalW.
+As before, we recommend you try using MUSCLE from the command line
+before trying to run it from Python.</p>
+<p>For the most basic usage, all you need is to have a FASTA input file,
+such as
+<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/opuntia.fasta">opuntia.fasta</a>
+(available online or in the Doc/examples subdirectory of the Biopython
+source code). You can then tell MUSCLE to read in this FASTA file, and
+write the alignment to an output file named <code class="docutils literal notranslate"><span class="pre">opuntia.txt</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;muscle -align opuntia.fasta -output opuntia.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>MUSCLE will output the alignment as a FASTA file (using gapped
+sequences). The <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> module is able to read this alignment
+using <code class="docutils literal notranslate"><span class="pre">format=&quot;fasta&quot;</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;opuntia.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">Alignment with 7 rows and 906 columns</span>
+<span class="go">TATACATTAAAGGAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273289|gb|AF191663.1|AF191663</span>
+<span class="go">TATACATTAAAGGAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273291|gb|AF191665.1|AF191665</span>
+<span class="go">TATACATTAAAGGAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273290|gb|AF191664.1|AF191664</span>
+<span class="go">TATACATTAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273287|gb|AF191661.1|AF191661</span>
+<span class="go">TATACATAAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273286|gb|AF191660.1|AF191660</span>
+<span class="go">TATACATTAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273285|gb|AF191659.1|AF191659</span>
+<span class="go">TATACATTAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273284|gb|AF191658.1|AF191658</span>
+</pre></div>
+</div>
+<p>You can also set the other optional parameters; see MUSCLE’s built-in
+help for details.</p>
+</section>
+<section id="emboss-needle-and-water">
+<span id="sec-emboss-needle-water"></span><h3>EMBOSS needle and water<a class="headerlink" href="#emboss-needle-and-water" title="Permalink to this headline"></a></h3>
+<p>The <a class="reference external" href="http://emboss.sourceforge.net/">EMBOSS</a> suite includes the
+<code class="docutils literal notranslate"><span class="pre">water</span></code> and <code class="docutils literal notranslate"><span class="pre">needle</span></code> tools for Smith-Waterman algorithm local
+alignment, and Needleman-Wunsch global alignment. The tools share the
+same style interface, so switching between the two is trivial – we’ll
+just use <code class="docutils literal notranslate"><span class="pre">needle</span></code> here.</p>
+<p>Suppose you want to do a global pairwise alignment between two
+sequences, prepared in FASTA format as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;HBA_HUMAN
+MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHG
+KKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTP
+AVHASLDKFLASVSTVLTSKYR
+</pre></div>
+</div>
+<p>in a file <code class="docutils literal notranslate"><span class="pre">alpha.faa</span></code>, and secondly in a file <code class="docutils literal notranslate"><span class="pre">beta.faa</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;HBB_HUMAN
+MVHLTPEEKSAVTALWGKVNVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPK
+VKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHHFG
+KEFTPPVQAAYQKVVAGVANALAHKYH
+</pre></div>
+</div>
+<p>You can find copies of these example files with the Biopython source
+code under the <code class="docutils literal notranslate"><span class="pre">Doc/examples/</span></code> directory.</p>
+<p>The command to align these two sequences against each other using
+<code class="docutils literal notranslate"><span class="pre">needle</span></code> is as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>needle -outfile=needle.txt -asequence=alpha.faa -bsequence=beta.faa -gapopen=10 -gapextend=0.5
+</pre></div>
+</div>
+<p>Why not try running this by hand at the command prompt? You should see
+it does a pairwise comparison and records the output in the file
+<code class="docutils literal notranslate"><span class="pre">needle.txt</span></code> (in the default EMBOSS alignment file format).</p>
+<p>Even if you have EMBOSS installed, running this command may not work –
+you might get a message about “command not found” (especially on
+Windows). This probably means that the EMBOSS tools are not on your PATH
+environment variable. You can either update your PATH setting, or simply
+use the full path to the tool, for example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>C:\EMBOSS\needle.exe -outfile=needle.txt -asequence=alpha.faa -bsequence=beta.faa -gapopen=10 -gapextend=0.5
+</pre></div>
+</div>
+<p>Next we want to use Python to run this command for us. As explained
+above, for full control, we recommend you use Python’s built-in
+<code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;needle -outfile=needle.txt -asequence=alpha.faa -bsequence=beta.faa -gapopen=10 -gapextend=0.5&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">cmd</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">shell</span><span class="o">=</span><span class="p">(</span><span class="n">sys</span><span class="p">,</span> <span class="n">platform</span> <span class="o">!=</span> <span class="s2">&quot;win32&quot;</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+<span class="go">Needleman-Wunsch global alignment of two sequences</span>
+</pre></div>
+</div>
+<p>Next we can load the output file with <code class="docutils literal notranslate"><span class="pre">Bio.AlignIO</span></code> as discussed
+earlier in this chapter, as the <code class="docutils literal notranslate"><span class="pre">emboss</span></code> format:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">AlignIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;needle.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;emboss&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">Alignment with 2 rows and 149 columns</span>
+<span class="go">MV-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTY...KYR HBA_HUMAN</span>
+<span class="go">MVHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRF...KYH HBB_HUMAN</span>
+</pre></div>
+</div>
+<p>In this example, we told EMBOSS to write the output to a file, but you
+<em>can</em> tell it to write the output to stdout instead (useful if you don’t
+want a temporary output file to get rid of – use <code class="docutils literal notranslate"><span class="pre">outfile=stdout</span></code>
+argument):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;needle -outfile=stdout -asequence=alpha.faa -bsequence=beta.faa -gapopen=10 -gapextend=0.5&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">child</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">cmd</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">shell</span><span class="o">=</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">!=</span> <span class="s2">&quot;win32&quot;</span><span class="p">),</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">align</span> <span class="o">=</span> <span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;emboss&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">align</span><span class="p">)</span>
+<span class="go">Alignment with 2 rows and 149 columns</span>
+<span class="go">MV-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTY...KYR HBA_HUMAN</span>
+<span class="go">MVHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRF...KYH HBB_HUMAN</span>
+</pre></div>
+</div>
+<p>Similarly, it is possible to read <em>one</em> of the inputs from stdin (e.g.
+<code class="docutils literal notranslate"><span class="pre">asequence=&quot;stdin&quot;</span></code>).</p>
+<p>This has only scratched the surface of what you can do with <code class="docutils literal notranslate"><span class="pre">needle</span></code>
+and <code class="docutils literal notranslate"><span class="pre">water</span></code>. One useful trick is that the second file can contain
+multiple sequences (say five), and then EMBOSS will do five pairwise
+alignments.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_pairwise.html" class="btn btn-neutral float-left" title="Pairwise sequence alignment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_pairwise2.html" class="btn btn-neutral float-right" title="Pairwise alignments using pairwise2" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

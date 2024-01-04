@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pairwise alignments using pairwise2 &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="BLAST (new)" href="chapter_blast.html" />
+    <link rel="prev" title="Multiple Sequence Alignment objects" href="chapter_msa.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">Pairwise alignments using pairwise2</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_pairwise2.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_msa.html" class="btn btn-neutral float-left" title="Multiple Sequence Alignment objects" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_blast.html" class="btn btn-neutral float-right" title="BLAST (new)" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pairwise-alignments-using-pairwise2">
+<span id="chapter-pairwise2"></span><h1>Pairwise alignments using pairwise2<a class="headerlink" href="#pairwise-alignments-using-pairwise2" title="Permalink to this headline"></a></h1>
+<p><strong>Please note that Bio.pairwise2 was deprecated in Release 1.80.</strong> As an
+alternative, please consider using <code class="docutils literal notranslate"><span class="pre">Bio.Align.PairwiseAligner</span></code>
+(described in Chapter <a class="reference internal" href="chapter_pairwise.html#chapter-pairwise"><span class="std std-ref">Pairwise sequence alignment</span></a>).</p>
+<p><code class="docutils literal notranslate"><span class="pre">Bio.pairwise2</span></code> contains essentially the same algorithms as <code class="docutils literal notranslate"><span class="pre">water</span></code>
+(local) and <code class="docutils literal notranslate"><span class="pre">needle</span></code> (global) from the
+<a class="reference external" href="http://emboss.sourceforge.net/">EMBOSS</a> suite (see above) and should
+return the same results. The <code class="docutils literal notranslate"><span class="pre">pairwise2</span></code> module has undergone some
+optimization regarding speed and memory consumption recently (Biopython
+versions &gt;1.67) so that for short sequences (global alignments: ~2000
+residues, local alignments ~600 residues) it’s faster (or equally fast)
+to use <code class="docutils literal notranslate"><span class="pre">pairwise2</span></code> than calling EMBOSS’ <code class="docutils literal notranslate"><span class="pre">water</span></code> or <code class="docutils literal notranslate"><span class="pre">needle</span></code> via
+the command line tools.</p>
+<p>Suppose you want to do a global pairwise alignment between the same two
+hemoglobin sequences from above (<code class="docutils literal notranslate"><span class="pre">HBA_HUMAN</span></code>, <code class="docutils literal notranslate"><span class="pre">HBB_HUMAN</span></code>) stored in
+<code class="docutils literal notranslate"><span class="pre">alpha.faa</span></code> and <code class="docutils literal notranslate"><span class="pre">beta.faa</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">pairwise2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;alpha.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;beta.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">pairwise2</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">globalxx</span><span class="p">(</span><span class="n">seq1</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span> <span class="n">seq2</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you see, we call the alignment function with <code class="docutils literal notranslate"><span class="pre">align.globalxx</span></code>. The
+tricky part are the last two letters of the function name (here:
+<code class="docutils literal notranslate"><span class="pre">xx</span></code>), which are used for decoding the scores and penalties for
+matches (and mismatches) and gaps. The first letter decodes the match
+score, e.g. <code class="docutils literal notranslate"><span class="pre">x</span></code> means that a match counts 1 while mismatches have no
+costs. With <code class="docutils literal notranslate"><span class="pre">m</span></code> general values for either matches or mismatches can be
+defined (for more options see <a class="reference external" href="http://biopython.org/docs/1.77/api/Bio.pairwise2.html">Biopython’s
+API</a>). The
+second letter decodes the cost for gaps; <code class="docutils literal notranslate"><span class="pre">x</span></code> means no gap costs at
+all, with <code class="docutils literal notranslate"><span class="pre">s</span></code> different penalties for opening and extending a gap can
+be assigned. So, <code class="docutils literal notranslate"><span class="pre">globalxx</span></code> means that only matches between both
+sequences are counted.</p>
+<p>Our variable <code class="docutils literal notranslate"><span class="pre">alignments</span></code> now contains a list of alignments (at least
+one) which have the same optimal score for the given conditions. In our
+example this are 80 different alignments with the score 72
+(<code class="docutils literal notranslate"><span class="pre">Bio.pairwise2</span></code> will return up to 1000 alignments). Have a look at
+one of these alignments:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">80</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  
+<span class="go">Alignment(seqA=&#39;MV-LSPADKTNV---K-A--A-WGKVGAHAG...YR-&#39;, seqB=&#39;MVHL-----T--PEEKSAVTALWGKV----...Y-H&#39;, score=72.0, start=0, end=217)</span>
+</pre></div>
+</div>
+<p>Each alignment is a named tuple consisting of the two aligned sequences,
+the score, the start and the end positions of the alignment (in global
+alignments the start is always 0 and the end the length of the
+alignment). <code class="docutils literal notranslate"><span class="pre">Bio.pairwise2</span></code> has a function <code class="docutils literal notranslate"><span class="pre">format_alignment</span></code> for a
+nicer printout:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pairwise2</span><span class="o">.</span><span class="n">format_alignment</span><span class="p">(</span><span class="o">*</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>  
+<span class="go">MV-LSPADKTNV---K-A--A-WGKVGAHAG---EY-GA-EALE-RMFLSF----PTTK-TY--F...YR-</span>
+<span class="go">|| |     |     | |  | ||||        |  |  |||  |  |      |    |   |...|</span>
+<span class="go">MVHL-----T--PEEKSAVTALWGKV-----NVDE-VG-GEAL-GR--L--LVVYP---WT-QRF...Y-H</span>
+<span class="go">  Score=72</span>
+</pre></div>
+</div>
+<p>Since Biopython 1.77 the required parameters can be supplied with
+keywords. The last example can now also be written as:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">pairwise2</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">globalxx</span><span class="p">(</span><span class="n">sequenceA</span><span class="o">=</span><span class="n">seq1</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span> <span class="n">sequenceB</span><span class="o">=</span><span class="n">seq2</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Better alignments are usually obtained by penalizing gaps: higher costs
+for opening a gap and lower costs for extending an existing gap. For
+amino acid sequences match scores are usually encoded in matrices like
+<code class="docutils literal notranslate"><span class="pre">PAM</span></code> or <code class="docutils literal notranslate"><span class="pre">BLOSUM</span></code>. Thus, a more meaningful alignment for our example
+can be obtained by using the BLOSUM62 matrix, together with a gap open
+penalty of 10 and a gap extension penalty of 0.5 (using <code class="docutils literal notranslate"><span class="pre">globalds</span></code>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">pairwise2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">substitution_matrices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blosum62</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;BLOSUM62&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;alpha.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;beta.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">pairwise2</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">globalds</span><span class="p">(</span><span class="n">seq1</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span> <span class="n">seq2</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span> <span class="n">blosum62</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pairwise2</span><span class="o">.</span><span class="n">format_alignment</span><span class="p">(</span><span class="o">*</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="go">MV-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTY...KYR</span>
+<span class="go">|| |.|..|..|.|.|||| ......|............|.......||.</span>
+<span class="go">MVHLTPEEKSAVTALWGKV-NVDEVGGEALGRLLVVYPWTQRFF...KYH</span>
+<span class="go">  Score=292.5</span>
+</pre></div>
+</div>
+<p>This alignment has the same score that we obtained earlier with EMBOSS
+needle using the same sequences and the same parameters.</p>
+<p>Local alignments are called similarly with the function
+<code class="docutils literal notranslate"><span class="pre">align.localXX</span></code>, where again XX stands for a two letter code for the
+match and gap functions:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">pairwise2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">substitution_matrices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blosum62</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;BLOSUM62&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">pairwise2</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">localds</span><span class="p">(</span><span class="s2">&quot;LSPADKTNVKAA&quot;</span><span class="p">,</span> <span class="s2">&quot;PEEKSAV&quot;</span><span class="p">,</span> <span class="n">blosum62</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pairwise2</span><span class="o">.</span><span class="n">format_alignment</span><span class="p">(</span><span class="o">*</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="go">3 PADKTNV</span>
+<span class="go">  |..|..|</span>
+<span class="go">1 PEEKSAV</span>
+<span class="go">  Score=16</span>
+</pre></div>
+</div>
+<p>In recent Biopython versions, <code class="docutils literal notranslate"><span class="pre">format_alignment</span></code> will only print the
+aligned part of a local alignment (together with the start positions in
+1-based notation, as shown in the above example). If you are also
+interested in the non- aligned parts of the sequences, use the
+keyword-parameter <code class="docutils literal notranslate"><span class="pre">full_sequences=True</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">pairwise2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">substitution_matrices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blosum62</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;BLOSUM62&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">pairwise2</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">localds</span><span class="p">(</span><span class="s2">&quot;LSPADKTNVKAA&quot;</span><span class="p">,</span> <span class="s2">&quot;PEEKSAV&quot;</span><span class="p">,</span> <span class="n">blosum62</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pairwise2</span><span class="o">.</span><span class="n">format_alignment</span><span class="p">(</span><span class="o">*</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">full_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="go">LSPADKTNVKAA</span>
+<span class="go">  |..|..|</span>
+<span class="go">--PEEKSAV---</span>
+<span class="go">  Score=16</span>
+</pre></div>
+</div>
+<p>Note that local alignments must, as defined by Smith &amp; Waterman, have a
+positive score (&gt;0). Thus, <code class="docutils literal notranslate"><span class="pre">pairwise2</span></code> may return no alignments if no
+score &gt;0 has been obtained. Also, <code class="docutils literal notranslate"><span class="pre">pairwise2</span></code> will not report
+alignments which are the result of the addition of zero-scoring
+extensions on either site. In the next example, the pairs
+serine/aspartic acid (S/D) and lysine/asparagine (K/N) both have a match
+score of 0. As you see, the aligned part has not been extended:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">pairwise2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">substitution_matrices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blosum62</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;BLOSUM62&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">pairwise2</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">localds</span><span class="p">(</span><span class="s2">&quot;LSSPADKTNVKKAA&quot;</span><span class="p">,</span> <span class="s2">&quot;DDPEEKSAVNN&quot;</span><span class="p">,</span> <span class="n">blosum62</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pairwise2</span><span class="o">.</span><span class="n">format_alignment</span><span class="p">(</span><span class="o">*</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="go">4 PADKTNV</span>
+<span class="go">  |..|..|</span>
+<span class="go">3 PEEKSAV</span>
+<span class="go">  Score=16</span>
+</pre></div>
+</div>
+<p>Instead of supplying a complete match/mismatch matrix, the match code
+<code class="docutils literal notranslate"><span class="pre">m</span></code> allows for easy defining general match/mismatch values. The next
+example uses match/mismatch scores of 5/-4 and gap penalties
+(open/extend) of 2/0.5 using <code class="docutils literal notranslate"><span class="pre">localms</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">pairwise2</span><span class="o">.</span><span class="n">align</span><span class="o">.</span><span class="n">localms</span><span class="p">(</span><span class="s2">&quot;AGAACT&quot;</span><span class="p">,</span> <span class="s2">&quot;GAC&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pairwise2</span><span class="o">.</span><span class="n">format_alignment</span><span class="p">(</span><span class="o">*</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="go">2 GAAC</span>
+<span class="go">  | ||</span>
+<span class="go">1 G-AC</span>
+<span class="go">  Score=13</span>
+</pre></div>
+</div>
+<p>One useful keyword argument of the <code class="docutils literal notranslate"><span class="pre">Bio.pairwise2.align</span></code> functions is
+<code class="docutils literal notranslate"><span class="pre">score_only</span></code>. When set to <code class="docutils literal notranslate"><span class="pre">True</span></code> it will only return the score of
+the best alignment(s), but in a significantly shorter time. It will also
+allow the alignment of longer sequences before a memory error is raised.
+Another useful keyword argument is <code class="docutils literal notranslate"><span class="pre">one_alignment_only=True</span></code> which
+will also result in some speed gain.</p>
+<p>Unfortunately, <code class="docutils literal notranslate"><span class="pre">Bio.pairwise2</span></code> does not work with Biopython’s multiple
+sequence alignment objects (yet). However, the module has some
+interesting advanced features: you can define your own match and gap
+functions (interested in testing affine logarithmic gap costs?), gap
+penalties and end gaps penalties can be different for both sequences,
+sequences can be supplied as lists (useful if you have residues that are
+encoded by more than one character), etc. These features are hard (if at
+all) to realize with other alignment tools. For more details see the
+modules documentation in <a class="reference external" href="http://biopython.org/docs/bpversion/api/Bio.pairwise2.html">Biopython’s
+API</a>.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_msa.html" class="btn btn-neutral float-left" title="Multiple Sequence Alignment objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_blast.html" class="btn btn-neutral float-right" title="BLAST (new)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

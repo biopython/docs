@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Biopython testing framework &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Where to go from here – contributing to Biopython" href="chapter_contributing.html" />
+    <link rel="prev" title="Cookbook – Cool things to do with it" href="chapter_cookbook.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">The Biopython testing framework</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-tests">Running the tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-tests-using-tox">Running the tests using Tox</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-tests">Writing tests</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#writing-a-test-using-unittest">Writing a test using <code class="docutils literal notranslate"><span class="pre">unittest</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-doctests">Writing doctests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-doctests-in-the-tutorial">Writing doctests in the Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">The Biopython testing framework</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_testing.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_cookbook.html" class="btn btn-neutral float-left" title="Cookbook – Cool things to do with it" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_contributing.html" class="btn btn-neutral float-right" title="Where to go from here – contributing to Biopython" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="the-biopython-testing-framework">
+<span id="chapter-testing"></span><h1>The Biopython testing framework<a class="headerlink" href="#the-biopython-testing-framework" title="Permalink to this headline"></a></h1>
+<p>Biopython has a regression testing framework (the file <code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code>)
+based on <a class="reference external" href="https://docs.python.org/3/library/unittest.html">unittest</a>,
+the standard unit testing framework for Python. Providing comprehensive
+tests for modules is one of the most important aspects of making sure
+that the Biopython code is as bug-free as possible before going out. It
+also tends to be one of the most undervalued aspects of contributing.
+This chapter is designed to make running the Biopython tests and writing
+good test code as easy as possible. Ideally, every module that goes into
+Biopython should have a test (and should also have documentation!). All
+our developers, and anyone installing Biopython from source, are
+strongly encouraged to run the unit tests.</p>
+<section id="running-the-tests">
+<h2>Running the tests<a class="headerlink" href="#running-the-tests" title="Permalink to this headline"></a></h2>
+<p>When you download the Biopython source code, or check it out from our
+source code repository, you should find a subdirectory call <code class="docutils literal notranslate"><span class="pre">Tests</span></code>.
+This contains the key script <code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code>, lots of individual
+scripts named <code class="docutils literal notranslate"><span class="pre">test_XXX.py</span></code>, and lots of other subdirectories which
+contain input files for the test suite.</p>
+<p>As part of building and installing Biopython you will typically run the
+full test suite at the command line from the Biopython source top level
+directory using the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>setup.py<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+<p>This is actually equivalent to going to the <code class="docutils literal notranslate"><span class="pre">Tests</span></code> subdirectory and
+running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>run_tests.py
+</pre></div>
+</div>
+<p>You’ll often want to run just some of the tests, and this is done like
+this:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>run_tests.py<span class="w"> </span>test_SeqIO.py<span class="w"> </span>test_AlignIO.py
+</pre></div>
+</div>
+<p>When giving the list of tests, the <code class="docutils literal notranslate"><span class="pre">.py</span></code> extension is optional, so you
+can also just type:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>run_tests.py<span class="w"> </span>test_SeqIO<span class="w"> </span>test_AlignIO
+</pre></div>
+</div>
+<p>To run the docstring tests (see section <a class="reference internal" href="#sec-doctest"><span class="std std-ref">Writing doctests</span></a>), you can
+use</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>run_tests.py<span class="w"> </span>doctest
+</pre></div>
+</div>
+<p>You can also skip any tests which have been setup with an explicit
+online component by adding <code class="docutils literal notranslate"><span class="pre">--offline</span></code>, e.g.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>run_tests.py<span class="w"> </span>--offline
+</pre></div>
+</div>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code> runs all tests, including the docstring
+tests.</p>
+<p>If an individual test is failing, you can also try running it directly,
+which may give you more information.</p>
+<p>Tests based on Python’s standard <code class="docutils literal notranslate"><span class="pre">unittest</span></code> framework will
+<code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">unittest</span></code> and then define <code class="docutils literal notranslate"><span class="pre">unittest.TestCase</span></code> classes, each
+with one or more sub-tests as methods starting with <code class="docutils literal notranslate"><span class="pre">test_</span></code> which
+check some specific aspect of the code.</p>
+<section id="running-the-tests-using-tox">
+<h3>Running the tests using Tox<a class="headerlink" href="#running-the-tests-using-tox" title="Permalink to this headline"></a></h3>
+<p>Like most Python projects, you can also use
+<a class="reference external" href="https://tox.readthedocs.org/en/latest/">Tox</a> to run the tests on
+multiple Python versions, provided they are already installed in your
+system.</p>
+<p>We do not provide the configuration <code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> file in our code base
+because of difficulties pinning down user-specific settings (e.g.
+executable names of the Python versions). You may also only be
+interested in testing Biopython only against a subset of the Python
+versions that we support.</p>
+<p>If you are interested in using Tox, you could start with the example
+<code class="docutils literal notranslate"><span class="pre">tox.ini</span></code> shown below:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[tox]
+envlist = pypy,py38,py39
+
+[testenv]
+changedir = Tests
+commands = {envpython} run_tests.py --offline
+deps =
+    numpy
+    reportlab
+</pre></div>
+</div>
+<p>Using the template above, executing <code class="docutils literal notranslate"><span class="pre">tox</span></code> will test your Biopython
+code against PyPy, Python 3.8 and 3.9. It assumes that those Pythons’
+executables are named “python3.8“ for Python 3.8, and so on.</p>
+</section>
+</section>
+<section id="writing-tests">
+<h2>Writing tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline"></a></h2>
+<p>Let’s say you want to write some tests for a module called <code class="docutils literal notranslate"><span class="pre">Biospam</span></code>.
+This can be a module you wrote, or an existing module that doesn’t have
+any tests yet. In the examples below, we assume that <code class="docutils literal notranslate"><span class="pre">Biospam</span></code> is a
+module that does simple math.</p>
+<p>Each Biopython test consists of a script containing the test itself, and
+optionally a directory with input files used by the test:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">test_Biospam.py</span></code> – The actual test code for your module.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Biospam</span></code> [optional]– A directory where any necessary input files
+will be located. If you have any output files that should be manually
+reviewed, output them here (but this is discouraged) to prevent
+clogging up the main Tests directory. In general, use a temporary
+file/folder.</p></li>
+</ol>
+<p>Any script with a <code class="docutils literal notranslate"><span class="pre">test_</span></code> prefix in the <code class="docutils literal notranslate"><span class="pre">Tests</span></code> directory will be
+found and run by <code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code>. Below, we show an example test script
+<code class="docutils literal notranslate"><span class="pre">test_Biospam.py</span></code>. If you put this script in the Biopython <code class="docutils literal notranslate"><span class="pre">Tests</span></code>
+directory, then <code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code> will find it and execute the tests
+contained in it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>run_tests.py
+<span class="go">test_Ace ... ok</span>
+<span class="go">test_AlignIO ... ok</span>
+<span class="go">test_BioSQL ... ok</span>
+<span class="go">test_BioSQL_SeqIO ... ok</span>
+<span class="go">test_Biospam ... ok</span>
+<span class="go">test_CAPS ... ok</span>
+<span class="go">test_Clustalw ... ok</span>
+<span class="go">...</span>
+<span class="go">----------------------------------------------------------------------</span>
+<span class="go">Ran 107 tests in 86.127 seconds</span>
+</pre></div>
+</div>
+<section id="writing-a-test-using-unittest">
+<h3>Writing a test using <code class="docutils literal notranslate"><span class="pre">unittest</span></code><a class="headerlink" href="#writing-a-test-using-unittest" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">unittest</span></code>-framework has been included with Python since version
+2.1, and is documented in the Python Library Reference (which I know you
+are keeping under your pillow, as recommended). There is also <a class="reference external" href="https://docs.python.org/3/library/unittest.html">online
+documentation for
+unittest</a>. If you
+are familiar with the <code class="docutils literal notranslate"><span class="pre">unittest</span></code> system (or something similar like the
+nose test framework), you shouldn’t have any trouble. You may find
+looking at the existing examples within Biopython helpful too.</p>
+<p>Here’s a minimal <code class="docutils literal notranslate"><span class="pre">unittest</span></code>-style test script for <code class="docutils literal notranslate"><span class="pre">Biospam</span></code>, which
+you can copy and paste to get started:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Biospam</span>
+
+
+<span class="k">class</span> <span class="nc">BiospamTestAddition</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_addition1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Biospam</span><span class="o">.</span><span class="n">addition</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_addition2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Biospam</span><span class="o">.</span><span class="n">addition</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BiospamTestDivision</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_division1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Biospam</span><span class="o">.</span><span class="n">division</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_division2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Biospam</span><span class="o">.</span><span class="n">division</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.0</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TextTestRunner</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">testRunner</span><span class="o">=</span><span class="n">runner</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the division tests, we use <code class="docutils literal notranslate"><span class="pre">assertAlmostEqual</span></code> instead of
+<code class="docutils literal notranslate"><span class="pre">assertEqual</span></code> to avoid tests failing due to roundoff errors; see the
+<code class="docutils literal notranslate"><span class="pre">unittest</span></code> chapter in the Python documentation for details and for
+other functionality available in <code class="docutils literal notranslate"><span class="pre">unittest</span></code> (<a class="reference external" href="https://docs.python.org/3/library/unittest.html">online
+reference</a>).</p>
+<p>These are the key points of <code class="docutils literal notranslate"><span class="pre">unittest</span></code>-based tests:</p>
+<ul>
+<li><p>Test cases are stored in classes that derive from
+<code class="docutils literal notranslate"><span class="pre">unittest.TestCase</span></code> and cover one basic aspect of your code</p></li>
+<li><p>You can use methods <code class="docutils literal notranslate"><span class="pre">setUp</span></code> and <code class="docutils literal notranslate"><span class="pre">tearDown</span></code> for any repeated code
+which should be run before and after each test method. For example,
+the <code class="docutils literal notranslate"><span class="pre">setUp</span></code> method might be used to create an instance of the
+object you are testing, or open a file handle. The <code class="docutils literal notranslate"><span class="pre">tearDown</span></code>
+should do any “tidying up”, for example closing the file handle.</p></li>
+<li><p>The tests are prefixed with <code class="docutils literal notranslate"><span class="pre">test_</span></code> and each test should cover one
+specific part of what you are trying to test. You can have as many
+tests as you want in a class.</p></li>
+<li><p>At the end of the test script, you can use</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TextTestRunner</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">testRunner</span><span class="o">=</span><span class="n">runner</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>to execute the tests when the script is run by itself (rather than
+imported from <code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code>). If you run this script, then you’ll
+see something like the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>test_BiospamMyModule.py
+<span class="go">test_addition1 (__main__.TestAddition) ... ok</span>
+<span class="go">test_addition2 (__main__.TestAddition) ... ok</span>
+<span class="go">test_division1 (__main__.TestDivision) ... ok</span>
+<span class="go">test_division2 (__main__.TestDivision) ... ok</span>
+
+<span class="go">----------------------------------------------------------------------</span>
+<span class="go">Ran 4 tests in 0.059s</span>
+
+<span class="go">OK</span>
+</pre></div>
+</div>
+</li>
+<li><p>To indicate more clearly what each test is doing, you can add
+docstrings to each test. These are shown when running the tests,
+which can be useful information if a test is failing.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Biospam</span>
+
+
+<span class="k">class</span> <span class="nc">BiospamTestAddition</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_addition1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An addition test&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Biospam</span><span class="o">.</span><span class="n">addition</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_addition2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A second addition test&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Biospam</span><span class="o">.</span><span class="n">addition</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BiospamTestDivision</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">test_division1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Now let&#39;s check division&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Biospam</span><span class="o">.</span><span class="n">division</span><span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_division2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A second division test&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">Biospam</span><span class="o">.</span><span class="n">division</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.0</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TextTestRunner</span><span class="p">(</span><span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="n">testRunner</span><span class="o">=</span><span class="n">runner</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Running the script will now show you:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>test_BiospamMyModule.py
+<span class="go">An addition test ... ok</span>
+<span class="go">A second addition test ... ok</span>
+<span class="go">Now let&#39;s check division ... ok</span>
+<span class="go">A second division test ... ok</span>
+
+<span class="go">----------------------------------------------------------------------</span>
+<span class="go">Ran 4 tests in 0.001s</span>
+
+<span class="go">OK</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>If your module contains docstring tests (see section
+<a class="reference internal" href="#sec-doctest"><span class="std std-ref">Writing doctests</span></a>), you <em>may</em> want to include those in the tests to
+be run. You can do so as follows by modifying the code under
+<code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">__name__</span> <span class="pre">==</span> <span class="pre">&quot;__main__&quot;:</span></code> to look like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">unittest_suite</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TestLoader</span><span class="p">()</span><span class="o">.</span><span class="n">loadTestsFromName</span><span class="p">(</span><span class="s2">&quot;test_Biospam&quot;</span><span class="p">)</span>
+    <span class="n">doctest_suite</span> <span class="o">=</span> <span class="n">doctest</span><span class="o">.</span><span class="n">DocTestSuite</span><span class="p">(</span><span class="n">Biospam</span><span class="p">)</span>
+    <span class="n">suite</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TestSuite</span><span class="p">((</span><span class="n">unittest_suite</span><span class="p">,</span> <span class="n">doctest_suite</span><span class="p">))</span>
+    <span class="n">runner</span> <span class="o">=</span> <span class="n">unittest</span><span class="o">.</span><span class="n">TextTestRunner</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">runner</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">suite</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is only relevant if you want to run the docstring tests when you
+execute <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">test_Biospam.py</span></code> if it has some complex run-time
+dependency checking.</p>
+<p>In general instead include the docstring tests by adding them to the
+<code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code> as explained below.</p>
+</section>
+</section>
+<section id="writing-doctests">
+<span id="sec-doctest"></span><h2>Writing doctests<a class="headerlink" href="#writing-doctests" title="Permalink to this headline"></a></h2>
+<p>Python modules, classes and functions support built in documentation
+using docstrings. The <a class="reference external" href="https://docs.python.org/3/library/doctest.html">doctest
+framework</a> (included
+with Python) allows the developer to embed working examples in the
+docstrings, and have these examples automatically tested.</p>
+<p>Currently only part of Biopython includes doctests. The <code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code>
+script takes care of running the doctests. For this purpose, at the top
+of the <code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code> script is a manually compiled list of modules to
+skip, important where optional external dependencies which may not be
+installed (e.g. the Reportlab and NumPy libraries). So, if you’ve added
+some doctests to the docstrings in a Biopython module, in order to have
+them excluded in the Biopython test suite, you must update
+<code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code> to include your module. Currently, the relevant part of
+<code class="docutils literal notranslate"><span class="pre">run_tests.py</span></code> looks as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Following modules have historic failures. If you fix one of these</span>
+<span class="c1"># please remove here!</span>
+<span class="n">EXCLUDE_DOCTEST_MODULES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Bio.PDB&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bio.PDB.AbstractPropertyMap&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bio.Phylo.Applications._Fasttree&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bio.Phylo._io&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bio.Phylo.TreeConstruction&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bio.Phylo._utils&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># Exclude modules with online activity</span>
+<span class="c1"># They are not excluded by default, use --offline to exclude them</span>
+<span class="n">ONLINE_DOCTEST_MODULES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Bio.Entrez&quot;</span><span class="p">,</span> <span class="s2">&quot;Bio.ExPASy&quot;</span><span class="p">,</span> <span class="s2">&quot;Bio.TogoWS&quot;</span><span class="p">]</span>
+
+<span class="c1"># Silently ignore any doctests for modules requiring numpy!</span>
+<span class="k">if</span> <span class="n">numpy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">EXCLUDE_DOCTEST_MODULES</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="s2">&quot;Bio.Affy.CelFile&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Bio.Cluster&quot;</span><span class="p">,</span>
+            <span class="c1"># ...</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that we regard doctests primarily as documentation, so you should
+stick to typical usage. Generally complicated examples dealing with
+error conditions and the like would be best left to a dedicated unit
+test.</p>
+<p>Note that if you want to write doctests involving file parsing, defining
+the file location complicates matters. Ideally use relative paths
+assuming the code will be run from the <code class="docutils literal notranslate"><span class="pre">Tests</span></code> directory, see the
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> doctests for an example of this.</p>
+<p>To run the docstring tests only, use</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>run_tests.py<span class="w"> </span>doctest
+</pre></div>
+</div>
+<p>Note that the doctest system is fragile and care is needed to ensure
+your output will match on all the different versions of Python that
+Biopython supports (e.g. differences in floating point numbers).</p>
+</section>
+<section id="writing-doctests-in-the-tutorial">
+<span id="sec-doctest-tutorial"></span><h2>Writing doctests in the Tutorial<a class="headerlink" href="#writing-doctests-in-the-tutorial" title="Permalink to this headline"></a></h2>
+<p>This Tutorial you are reading has a lot of code snippets, which are
+often formatted like a doctest. We have our own system in file
+<code class="docutils literal notranslate"><span class="pre">test_Tutorial.py</span></code> to allow tagging code snippets in the Tutorial
+source to be run as Python doctests. This works by adding special
+<code class="docutils literal notranslate"><span class="pre">%doctest</span></code> comment lines before each Python block, e.g.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">pandocignoreme</span> <span class="o">..</span> <span class="n">doctest</span>
+\<span class="n">begin</span><span class="p">{</span><span class="n">minted</span><span class="p">}{</span><span class="n">pycon</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+<span class="mi">4</span>
+\<span class="n">end</span><span class="p">{</span><span class="n">minted</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>Often code examples are not self-contained, but continue from the
+previous Python block. Here we use the magic comment <code class="docutils literal notranslate"><span class="pre">%cont-doctest</span></code>
+as shown here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>\<span class="n">pandocignoreme</span> <span class="o">..</span> <span class="n">cont</span><span class="o">-</span><span class="n">doctest</span>
+\<span class="n">begin</span><span class="p">{</span><span class="n">minted</span><span class="p">}{</span><span class="n">pycon</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">==</span> <span class="s2">&quot;ACGT&quot;</span>
+<span class="kc">True</span>
+\<span class="n">end</span><span class="p">{</span><span class="n">minted</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The special <code class="docutils literal notranslate"><span class="pre">%doctest</span></code> comment line can take a working directory
+(relative to the <code class="docutils literal notranslate"><span class="pre">Doc/</span></code> folder) to use if you have any example data
+files, e.g. <code class="docutils literal notranslate"><span class="pre">%doctest</span> <span class="pre">examples</span></code> will use the <code class="docutils literal notranslate"><span class="pre">Doc/examples</span></code> folder,
+while <code class="docutils literal notranslate"><span class="pre">%doctest</span> <span class="pre">../Tests/GenBank</span></code> will use the <code class="docutils literal notranslate"><span class="pre">Tests/GenBank</span></code>
+folder.</p>
+<p>After the directory argument, you can specify any Python dependencies
+which must be present in order to run the test by adding <code class="docutils literal notranslate"><span class="pre">lib:XXX</span></code> to
+indicate <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">XXX</span></code> must work, e.g. <code class="docutils literal notranslate"><span class="pre">%doctest</span> <span class="pre">examples</span> <span class="pre">lib:numpy</span></code></p>
+<p>You can run the Tutorial doctests via:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>test_Tutorial.py
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>run_tests.py<span class="w"> </span>test_Tutorial.py
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_cookbook.html" class="btn btn-neutral float-left" title="Cookbook – Cool things to do with it" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_contributing.html" class="btn btn-neutral float-right" title="Where to go from here – contributing to Biopython" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phylogenetics with Bio.Phylo &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sequence motif analysis using Bio.motifs" href="chapter_motifs.html" />
+    <link rel="prev" title="Bio.PopGen: Population genetics" href="chapter_popgen.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Phylogenetics with Bio.Phylo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#demo-whats-in-a-tree">Demo: What’s in a Tree?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#coloring-branches-within-a-tree">Coloring branches within a tree</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#i-o-functions">I/O functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view-and-export-trees">View and export trees</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-tree-and-clade-objects">Using Tree and Clade objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#search-and-traversal-methods">Search and traversal methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#information-methods">Information methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modification-methods">Modification methods</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#features-of-phyloxml-trees">Features of PhyloXML trees</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#running-external-applications">Running external applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#paml-integration">PAML integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#future-plans">Future plans</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">Phylogenetics with Bio.Phylo</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_phylo.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_popgen.html" class="btn btn-neutral float-left" title="Bio.PopGen: Population genetics" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_motifs.html" class="btn btn-neutral float-right" title="Sequence motif analysis using Bio.motifs" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="phylogenetics-with-bio-phylo">
+<span id="chapter-phylo"></span><h1>Phylogenetics with Bio.Phylo<a class="headerlink" href="#phylogenetics-with-bio-phylo" title="Permalink to this headline"></a></h1>
+<p>The Bio.Phylo module was introduced in Biopython 1.54. Following the
+lead of SeqIO and AlignIO, it aims to provide a common way to work with
+phylogenetic trees independently of the source data format, as well as a
+consistent API for I/O operations.</p>
+<p>Bio.Phylo is described in an open-access journal article
+Talevich <em>et al.</em> 2012 <a class="reference internal" href="chapter_bibliography.html#talevich2012" id="id1"><span>[Talevich2012]</span></a>, which you might also find
+helpful.</p>
+<section id="demo-whats-in-a-tree">
+<h2>Demo: What’s in a Tree?<a class="headerlink" href="#demo-whats-in-a-tree" title="Permalink to this headline"></a></h2>
+<p>To get acquainted with the module, let’s start with a tree that we’ve
+already constructed, and inspect it a few different ways. Then we’ll
+colorize the branches, to use a special phyloXML feature, and finally
+save it.</p>
+<p>Create a simple Newick file named <code class="docutils literal notranslate"><span class="pre">simple.dnd</span></code> using your favorite
+text editor, or use
+<code class="docutils literal notranslate"><span class="pre">`simple.dnd</span></code> &lt;<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/simple.dnd">https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/simple.dnd</a>&gt;`__
+provided with the Biopython source code:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>(((A,B),(C,D)),(E,F,G));
+</pre></div>
+</div>
+<p>This tree has no branch lengths, only a topology and labeled terminals.
+(If you have a real tree file available, you can follow this demo using
+that instead.)</p>
+<p>Launch the Python interpreter of your choice:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>ipython<span class="w"> </span>-pylab
+</pre></div>
+</div>
+<p>For interactive work, launching the IPython interpreter with the
+<code class="docutils literal notranslate"><span class="pre">-pylab</span></code> flag enables <strong>matplotlib</strong> integration, so graphics will pop
+up automatically. We’ll use that during this demo.</p>
+<p>Now, within Python, read the tree file, giving the file name and the
+name of the format.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Phylo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;simple.dnd&quot;</span><span class="p">,</span> <span class="s2">&quot;newick&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Printing the tree object as a string gives us a look at the entire
+object hierarchy.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="go">Tree(rooted=False, weight=1.0)</span>
+<span class="go">    Clade()</span>
+<span class="go">        Clade()</span>
+<span class="go">            Clade()</span>
+<span class="go">                Clade(name=&#39;A&#39;)</span>
+<span class="go">                Clade(name=&#39;B&#39;)</span>
+<span class="go">            Clade()</span>
+<span class="go">                Clade(name=&#39;C&#39;)</span>
+<span class="go">                Clade(name=&#39;D&#39;)</span>
+<span class="go">        Clade()</span>
+<span class="go">            Clade(name=&#39;E&#39;)</span>
+<span class="go">            Clade(name=&#39;F&#39;)</span>
+<span class="go">            Clade(name=&#39;G&#39;)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object contains global information about the tree, such as
+whether it’s rooted or unrooted. It has one root clade, and under that,
+it’s nested lists of clades all the way down to the tips.</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">draw_ascii</span></code> creates a simple ASCII-art (plain text)
+dendrogram. This is a convenient visualization for interactive
+exploration, in case better graphical tools aren’t available.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Phylo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;simple.dnd&quot;</span><span class="p">,</span> <span class="s2">&quot;newick&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">draw_ascii</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="go">                                                    ________________________ A</span>
+<span class="go">                           ________________________|</span>
+<span class="go">                          |                        |________________________ B</span>
+<span class="go">  ________________________|</span>
+<span class="go"> |                        |                         ________________________ C</span>
+<span class="go"> |                        |________________________|</span>
+<span class="go">_|                                                 |________________________ D</span>
+<span class="go"> |</span>
+<span class="go"> |                         ________________________ E</span>
+<span class="go"> |                        |</span>
+<span class="go"> |________________________|________________________ F</span>
+<span class="go">                          |</span>
+<span class="go">                          |________________________ G</span>
+</pre></div>
+</div>
+<p>If you have <strong>matplotlib</strong> or <strong>pylab</strong> installed, you can create a
+graphical tree using the <code class="docutils literal notranslate"><span class="pre">draw</span></code> function.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">rooted</span> <span class="o">=</span> <span class="kc">True</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-phylo-simple-draw">
+<a class="reference internal image-reference" href="../_images/phylo-simple-draw.png"><img alt="A rooted tree drawn with ``Phylo.draw``." src="../_images/phylo-simple-draw.png" style="width: 70.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">A rooted tree drawn with <code class="docutils literal notranslate"><span class="pre">Phylo.draw</span></code>.</span><a class="headerlink" href="#fig-phylo-simple-draw" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>See <a class="reference internal" href="#fig-phylo-simple-draw"><span class="std std-numref">Fig. 6</span></a>.</p>
+<section id="coloring-branches-within-a-tree">
+<h3>Coloring branches within a tree<a class="headerlink" href="#coloring-branches-within-a-tree" title="Permalink to this headline"></a></h3>
+<p>The function <code class="docutils literal notranslate"><span class="pre">draw</span></code> supports the display of different colors and
+branch widths in a tree. As of Biopython 1.59, the <code class="docutils literal notranslate"><span class="pre">color</span></code> and
+<code class="docutils literal notranslate"><span class="pre">width</span></code> attributes are available on the basic Clade object and there’s
+nothing extra required to use them. Both attributes refer to the branch
+leading the given clade, and apply recursively, so all descendent
+branches will also inherit the assigned width and color values during
+display.</p>
+<p>In earlier versions of Biopython, these were special features of
+PhyloXML trees, and using the attributes required first converting the
+tree to a subclass of the basic tree object called Phylogeny, from the
+Bio.Phylo.PhyloXML module.</p>
+<p>In Biopython 1.55 and later, this is a convenient tree method:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">as_phyloxml</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In Biopython 1.54, you can accomplish the same thing with one extra
+import:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Phylo.PhyloXML</span> <span class="kn">import</span> <span class="n">Phylogeny</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Phylogeny</span><span class="o">.</span><span class="n">from_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the file formats Newick and Nexus don’t support branch colors
+or widths, so if you use these attributes in Bio.Phylo, you will only be
+able to save the values in PhyloXML format. (You can still save a tree
+as Newick or Nexus, but the color and width values will be skipped in
+the output file.)</p>
+<p>Now we can begin assigning colors. First, we’ll color the root clade
+gray. We can do that by assigning the 24-bit color value as an RGB
+triple, an HTML-style hex string, or the name of one of the predefined
+colors.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Or:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;#808080&quot;</span>
+</pre></div>
+</div>
+<p>Or:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;gray&quot;</span>
+</pre></div>
+</div>
+<p>Colors for a clade are treated as cascading down through the entire
+clade, so when we colorize the root here, it turns the whole tree gray.
+We can override that by assigning a different color lower down on the
+tree.</p>
+<p>Let’s target the most recent common ancestor (MRCA) of the nodes named
+“E” and “F”. The <code class="docutils literal notranslate"><span class="pre">common_ancestor</span></code> method returns a reference to that
+clade in the original tree, so when we color that clade “salmon”, the
+color will show up in the original tree.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mrca</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">common_ancestor</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;E&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;F&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mrca</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;salmon&quot;</span>
+</pre></div>
+</div>
+<p>If we happened to know exactly where a certain clade is in the tree, in
+terms of nested list entries, we can jump directly to that position in
+the tree by indexing it. Here, the index <code class="docutils literal notranslate"><span class="pre">[0,1]</span></code> refers to the second
+child of the first child of the root.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">clade</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span>
+</pre></div>
+</div>
+<p>Finally, show our work:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-phylo-color-draw">
+<a class="reference internal image-reference" href="../_images/phylo-color-draw.png"><img alt="A colorized tree drawn with ``Phylo.draw``." src="../_images/phylo-color-draw.png" style="width: 70.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">A colorized tree drawn with <code class="docutils literal notranslate"><span class="pre">Phylo.draw</span></code>.</span><a class="headerlink" href="#fig-phylo-color-draw" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>See <a class="reference internal" href="#fig-phylo-color-draw"><span class="std std-numref">Fig. 7</span></a>.</p>
+<p>Note that a clade’s color includes the branch leading to that clade, as
+well as its descendents. The common ancestor of E and F turns out to be
+just under the root, and with this coloring we can see exactly where the
+root of the tree is.</p>
+<p>My, we’ve accomplished a lot! Let’s take a break here and save our work.
+Call the <code class="docutils literal notranslate"><span class="pre">write</span></code> function with a file name or handle — here we use
+standard output, to see what would be written — and the format
+<code class="docutils literal notranslate"><span class="pre">phyloxml</span></code>. PhyloXML saves the colors we assigned, so you can open
+this phyloXML file in another tree viewer like Archaeopteryx, and the
+colors will show up there, too.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="s2">&quot;phyloxml&quot;</span><span class="p">)</span>  
+<span class="go">&lt;phyloxml ...&gt;</span>
+<span class="go">  &lt;phylogeny rooted=&quot;true&quot;&gt;</span>
+<span class="go">    &lt;clade&gt;</span>
+<span class="go">      &lt;color&gt;</span>
+<span class="go">        &lt;red&gt;128&lt;/red&gt;</span>
+<span class="go">        &lt;green&gt;128&lt;/green&gt;</span>
+<span class="go">        &lt;blue&gt;128&lt;/blue&gt;</span>
+<span class="go">      &lt;/color&gt;</span>
+<span class="go">      &lt;clade&gt;</span>
+<span class="go">        &lt;clade&gt;</span>
+<span class="go">          &lt;clade&gt;</span>
+<span class="go">            &lt;name&gt;A&lt;/name&gt;</span>
+<span class="go">          &lt;/clade&gt;</span>
+<span class="go">          &lt;clade&gt;</span>
+<span class="go">            &lt;name&gt;B&lt;/name&gt;</span>
+<span class="go">          &lt;/clade&gt;</span>
+<span class="go">        &lt;/clade&gt;</span>
+<span class="go">        &lt;clade&gt;</span>
+<span class="go">          &lt;color&gt;</span>
+<span class="go">            &lt;red&gt;0&lt;/red&gt;</span>
+<span class="go">            &lt;green&gt;0&lt;/green&gt;</span>
+<span class="go">            &lt;blue&gt;255&lt;/blue&gt;</span>
+<span class="go">          &lt;/color&gt;</span>
+<span class="go">          &lt;clade&gt;</span>
+<span class="go">            &lt;name&gt;C&lt;/name&gt;</span>
+<span class="go">          &lt;/clade&gt;</span>
+<span class="go">          ...</span>
+<span class="go">    &lt;/clade&gt;</span>
+<span class="go">  &lt;/phylogeny&gt;</span>
+<span class="go">&lt;/phyloxml&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<p>The rest of this chapter covers the core functionality of Bio.Phylo in
+greater detail. For more examples of using Bio.Phylo, see the cookbook
+page on Biopython.org:</p>
+<p><a class="reference external" href="http://biopython.org/wiki/Phylo_cookbook">http://biopython.org/wiki/Phylo_cookbook</a></p>
+</section>
+</section>
+<section id="i-o-functions">
+<h2>I/O functions<a class="headerlink" href="#i-o-functions" title="Permalink to this headline"></a></h2>
+<p>Like SeqIO and AlignIO, Phylo handles file input and output through four
+functions: <code class="docutils literal notranslate"><span class="pre">parse</span></code>, <code class="docutils literal notranslate"><span class="pre">read</span></code>, <code class="docutils literal notranslate"><span class="pre">write</span></code> and <code class="docutils literal notranslate"><span class="pre">convert</span></code>, all of which
+support the tree file formats Newick, NEXUS, phyloXML and NeXML, as well
+as the Comparative Data Analysis Ontology (CDAO).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">read</span></code> function parses a single tree in the given file and returns
+it. Careful; it will raise an error if the file contains more than one
+tree, or no trees.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Phylo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Tests/Nexus/int_node_labels.nwk&quot;</span><span class="p">,</span> <span class="s2">&quot;newick&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>  
+<span class="go">Tree(rooted=False, weight=1.0)</span>
+<span class="go">    Clade(branch_length=75.0, name=&#39;gymnosperm&#39;)</span>
+<span class="go">        Clade(branch_length=25.0, name=&#39;Coniferales&#39;)</span>
+<span class="go">            Clade(branch_length=25.0)</span>
+<span class="go">                Clade(branch_length=10.0, name=&#39;Tax+nonSci&#39;)</span>
+<span class="go">                    Clade(branch_length=90.0, name=&#39;Taxaceae&#39;)</span>
+<span class="go">                        Clade(branch_length=125.0, name=&#39;Cephalotaxus&#39;)</span>
+<span class="go">                        ...</span>
+</pre></div>
+</div>
+<p>(Example files are available in the <code class="docutils literal notranslate"><span class="pre">Tests/Nexus/</span></code> and
+<code class="docutils literal notranslate"><span class="pre">Tests/PhyloXML/</span></code> directories of the Biopython distribution.)</p>
+<p>To handle multiple (or an unknown number of) trees, use the <code class="docutils literal notranslate"><span class="pre">parse</span></code>
+function iterates through each of the trees in the given file:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">trees</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Tests/PhyloXML/phyloxml_examples.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;phyloxml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">trees</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>  
+<span class="gp">...</span>
+<span class="go">Phylogeny(description=&#39;phyloXML allows to use either a &quot;branch_length&quot; attribute...&#39;, name=&#39;example from Prof. Joe Felsenstein&#39;s book &quot;Inferring Phyl...&#39;, rooted=True)</span>
+<span class="go">    Clade()</span>
+<span class="go">        Clade(branch_length=0.06)</span>
+<span class="go">            Clade(branch_length=0.102, name=&#39;A&#39;)</span>
+<span class="go">            ...</span>
+</pre></div>
+</div>
+<p>Write a tree or iterable of trees back to file with the <code class="docutils literal notranslate"><span class="pre">write</span></code>
+function:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">trees</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Tests/PhyloXML/phyloxml_examples.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;phyloxml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree1</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">tree1</span><span class="p">,</span> <span class="s2">&quot;tree1.nwk&quot;</span><span class="p">,</span> <span class="s2">&quot;newick&quot;</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">trees</span><span class="p">,</span> <span class="s2">&quot;other_trees.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;phyloxml&quot;</span><span class="p">)</span>  <span class="c1"># write the remaining trees</span>
+<span class="go">12</span>
+</pre></div>
+</div>
+<p>Convert files between any of the supported formats with the <code class="docutils literal notranslate"><span class="pre">convert</span></code>
+function:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;tree1.nwk&quot;</span><span class="p">,</span> <span class="s2">&quot;newick&quot;</span><span class="p">,</span> <span class="s2">&quot;tree1.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;nexml&quot;</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;other_trees.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;phyloxml&quot;</span><span class="p">,</span> <span class="s2">&quot;other_trees.nex&quot;</span><span class="p">,</span> <span class="s2">&quot;nexus&quot;</span><span class="p">)</span>
+<span class="go">12</span>
+</pre></div>
+</div>
+<p>To use strings as input or output instead of actual files, use
+<code class="docutils literal notranslate"><span class="pre">StringIO</span></code> as you would with SeqIO and AlignIO:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Phylo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s2">&quot;(((A,B),(C,D)),(E,F,G));&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;newick&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="view-and-export-trees">
+<h2>View and export trees<a class="headerlink" href="#view-and-export-trees" title="Permalink to this headline"></a></h2>
+<p>The simplest way to get an overview of a <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object is to <code class="docutils literal notranslate"><span class="pre">print</span></code>
+it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Phylo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PhyloXML/example.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;phyloxml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="go">Phylogeny(description=&#39;phyloXML allows to use either a &quot;branch_length&quot; attribute...&#39;, name=&#39;example from Prof. Joe Felsenstein&#39;s book &quot;Inferring Phyl...&#39;, rooted=True)</span>
+<span class="go">    Clade()</span>
+<span class="go">        Clade(branch_length=0.06)</span>
+<span class="go">            Clade(branch_length=0.102, name=&#39;A&#39;)</span>
+<span class="go">            Clade(branch_length=0.23, name=&#39;B&#39;)</span>
+<span class="go">        Clade(branch_length=0.4, name=&#39;C&#39;)</span>
+</pre></div>
+</div>
+<p>This is essentially an outline of the object hierarchy Biopython uses to
+represent a tree. But more likely, you’d want to see a drawing of the
+tree. There are three functions to do this.</p>
+<p>As we saw in the demo, <code class="docutils literal notranslate"><span class="pre">draw_ascii</span></code> prints an ascii-art drawing of the
+tree (a rooted phylogram) to standard output, or an open file handle if
+given. Not all of the available information about the tree is shown, but
+it provides a way to quickly view the tree without relying on any
+external dependencies.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;PhyloXML/example.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;phyloxml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">draw_ascii</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="go">             __________________ A</span>
+<span class="go">  __________|</span>
+<span class="go">_|          |___________________________________________ B</span>
+<span class="go"> |</span>
+<span class="go"> |___________________________________________________________________________ C</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">draw</span></code> function draws a more attractive image using the matplotlib
+library. See the API documentation for details on the arguments it
+accepts to customize the output.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">branch_labels</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">branch_length</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default" id="fig-phylo-draw-example">
+<a class="reference internal image-reference" href="../_images/phylo-draw-example.png"><img alt="A simple rooted tree plotted with the ``draw`` function." src="../_images/phylo-draw-example.png" style="width: 70.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">A simple rooted tree plotted with the <code class="docutils literal notranslate"><span class="pre">draw</span></code> function.</span><a class="headerlink" href="#fig-phylo-draw-example" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>See <a class="reference internal" href="#fig-phylo-draw-example"><span class="std std-numref">Fig. 8</span></a> for example.</p>
+<p>See the Phylo page on the Biopython wiki
+(<a class="reference external" href="http://biopython.org/wiki/Phylo">http://biopython.org/wiki/Phylo</a>) for descriptions and examples of the
+more advanced functionality in <code class="docutils literal notranslate"><span class="pre">draw_ascii</span></code>, <code class="docutils literal notranslate"><span class="pre">draw_graphviz</span></code> and
+<code class="docutils literal notranslate"><span class="pre">to_networkx</span></code>.</p>
+</section>
+<section id="using-tree-and-clade-objects">
+<h2>Using Tree and Clade objects<a class="headerlink" href="#using-tree-and-clade-objects" title="Permalink to this headline"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Tree</span></code> objects produced by <code class="docutils literal notranslate"><span class="pre">parse</span></code> and <code class="docutils literal notranslate"><span class="pre">read</span></code> are containers
+for recursive sub-trees, attached to the <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object at the <code class="docutils literal notranslate"><span class="pre">root</span></code>
+attribute (whether or not the phylogenetic tree is actually considered
+rooted). A <code class="docutils literal notranslate"><span class="pre">Tree</span></code> has globally applied information for the phylogeny,
+such as rootedness, and a reference to a single <code class="docutils literal notranslate"><span class="pre">Clade</span></code>; a <code class="docutils literal notranslate"><span class="pre">Clade</span></code>
+has node- and clade-specific information, such as branch length, and a
+list of its own descendent <code class="docutils literal notranslate"><span class="pre">Clade</span></code> instances, attached at the
+<code class="docutils literal notranslate"><span class="pre">clades</span></code> attribute.</p>
+<p>So there is a distinction between <code class="docutils literal notranslate"><span class="pre">tree</span></code> and <code class="docutils literal notranslate"><span class="pre">tree.root</span></code>. In
+practice, though, you rarely need to worry about it. To smooth over the
+difference, both <code class="docutils literal notranslate"><span class="pre">Tree</span></code> and <code class="docutils literal notranslate"><span class="pre">Clade</span></code> inherit from <code class="docutils literal notranslate"><span class="pre">TreeMixin</span></code>,
+which contains the implementations for methods that would be commonly
+used to search, inspect or modify a tree or any of its clades. This
+means that almost all of the methods supported by <code class="docutils literal notranslate"><span class="pre">tree</span></code> are also
+available on <code class="docutils literal notranslate"><span class="pre">tree.root</span></code> and any clade below it. (<code class="docutils literal notranslate"><span class="pre">Clade</span></code> also has a
+<code class="docutils literal notranslate"><span class="pre">root</span></code> property, which returns the clade object itself.)</p>
+<section id="search-and-traversal-methods">
+<h3>Search and traversal methods<a class="headerlink" href="#search-and-traversal-methods" title="Permalink to this headline"></a></h3>
+<p>For convenience, we provide a couple of simplified methods that return
+all external or internal nodes directly as a list:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">get_terminals</span></code></dt><dd><p>makes a list of all of this tree’s terminal (leaf) nodes.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">get_nonterminals</span></code></dt><dd><p>makes a list of all of this tree’s nonterminal (internal) nodes.</p>
+</dd>
+</dl>
+<p>These both wrap a method with full control over tree traversal,
+<code class="docutils literal notranslate"><span class="pre">find_clades</span></code>. Two more traversal methods, <code class="docutils literal notranslate"><span class="pre">find_elements</span></code> and
+<code class="docutils literal notranslate"><span class="pre">find_any</span></code>, rely on the same core functionality and accept the same
+arguments, which we’ll call a “target specification” for lack of a
+better description. These specify which objects in the tree will be
+matched and returned during iteration. The first argument can be any of
+the following types:</p>
+<ul>
+<li><p>A <strong>TreeElement instance</strong>, which tree elements will match by
+identity — so searching with a Clade instance as the target will find
+that clade in the tree;</p></li>
+<li><p>A <strong>string</strong>, which matches tree elements’ string representation — in
+particular, a clade’s <code class="docutils literal notranslate"><span class="pre">name</span></code> <em>(added in Biopython 1.56)</em>;</p></li>
+<li><p>A <strong>class</strong> or <strong>type</strong>, where every tree element of the same type
+(or sub-type) will be matched;</p></li>
+<li><p>A <strong>dictionary</strong> where keys are tree element attributes and values
+are matched to the corresponding attribute of each tree element. This
+one gets even more elaborate:</p>
+<ul class="simple">
+<li><p>If an <code class="docutils literal notranslate"><span class="pre">int</span></code> is given, it matches numerically equal attributes,
+e.g. 1 will match 1 or 1.0</p></li>
+<li><p>If a boolean is given (True or False), the corresponding attribute
+value is evaluated as a boolean and checked for the same</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> matches <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
+<li><p>If a string is given, the value is treated as a regular expression
+(which must match the whole string in the corresponding element
+attribute, not just a prefix). A given string without special
+regex characters will match string attributes exactly, so if you
+don’t use regexes, don’t worry about it. For example, in a tree
+with clade names Foo1, Foo2 and Foo3,
+<code class="docutils literal notranslate"><span class="pre">tree.find_clades({&quot;name&quot;:</span> <span class="pre">&quot;Foo1&quot;})</span></code> matches Foo1,
+<code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;Foo.*&quot;}</span></code> matches all three clades, and
+<code class="docutils literal notranslate"><span class="pre">{&quot;name&quot;:</span> <span class="pre">&quot;Foo&quot;}</span></code> doesn’t match anything.</p></li>
+</ul>
+<p>Since floating-point arithmetic can produce some strange behavior, we
+don’t support matching <code class="docutils literal notranslate"><span class="pre">float</span></code>s directly. Instead, use the
+boolean <code class="docutils literal notranslate"><span class="pre">True</span></code> to match every element with a nonzero value in the
+specified attribute, then filter on that attribute manually with an
+inequality (or exact number, if you like living dangerously).</p>
+<p>If the dictionary contains multiple entries, a matching element must
+match each of the given attribute values — think “and”, not “or”.</p>
+</li>
+<li><p>A <strong>function</strong> taking a single argument (it will be applied to each
+element in the tree), returning True or False. For convenience,
+LookupError, AttributeError and ValueError are silenced, so this
+provides another safe way to search for floating-point values in the
+tree, or some more complex characteristic.</p></li>
+</ul>
+<p>After the target, there are two optional keyword arguments:</p>
+<dl class="simple">
+<dt>terminal</dt><dd><p>— A boolean value to select for or against terminal clades (a.k.a.
+leaf nodes): True searches for only terminal clades, False for
+non-terminal (internal) clades, and the default, None, searches both
+terminal and non-terminal clades, as well as any tree elements
+lacking the <code class="docutils literal notranslate"><span class="pre">is_terminal</span></code> method.</p>
+</dd>
+<dt>order</dt><dd><p>— Tree traversal order: <code class="docutils literal notranslate"><span class="pre">&quot;preorder&quot;</span></code> (default) is depth-first
+search, <code class="docutils literal notranslate"><span class="pre">&quot;postorder&quot;</span></code> is DFS with child nodes preceding parents,
+and <code class="docutils literal notranslate"><span class="pre">&quot;level&quot;</span></code> is breadth-first search.</p>
+</dd>
+</dl>
+<p>Finally, the methods accept arbitrary keyword arguments which are
+treated the same way as a dictionary target specification: keys indicate
+the name of the element attribute to search for, and the argument value
+(string, integer, None or boolean) is compared to the value of each
+attribute found. If no keyword arguments are given, then any TreeElement
+types are matched. The code for this is generally shorter than passing a
+dictionary as the target specification:
+<code class="docutils literal notranslate"><span class="pre">tree.find_clades({&quot;name&quot;:</span> <span class="pre">&quot;Foo1&quot;})</span></code> can be shortened to
+<code class="docutils literal notranslate"><span class="pre">tree.find_clades(name=&quot;Foo1&quot;)</span></code>.</p>
+<p>(In Biopython 1.56 or later, this can be even shorter:
+<code class="docutils literal notranslate"><span class="pre">tree.find_clades(&quot;Foo1&quot;)</span></code>)</p>
+<p>Now that we’ve mastered target specifications, here are the methods used
+to traverse a tree:</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">find_clades</span></code></dt><dd><p>Find each clade containing a matching element. That is, find each
+element as with <code class="docutils literal notranslate"><span class="pre">find_elements</span></code>, but return the corresponding clade
+object. (This is usually what you want.)</p>
+<p>The result is an iterable through all matching objects, searching
+depth-first by default. This is not necessarily the same order as the
+elements appear in the Newick, Nexus or XML source file!</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">find_elements</span></code></dt><dd><p>Find all tree elements matching the given attributes, and return the
+matching elements themselves. Simple Newick trees don’t have complex
+sub-elements, so this behaves the same as <code class="docutils literal notranslate"><span class="pre">find_clades</span></code> on them.
+PhyloXML trees often do have complex objects attached to clades, so
+this method is useful for extracting those.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">find_any</span></code></dt><dd><p>Return the first element found by <code class="docutils literal notranslate"><span class="pre">find_elements()</span></code>, or None. This
+is also useful for checking whether any matching element exists in
+the tree, and can be used in a conditional.</p>
+</dd>
+</dl>
+<p>Two more methods help navigating between nodes in the tree:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">get_path</span></code></dt><dd><p>List the clades directly between the tree root (or current clade) and
+the given target. Returns a list of all clade objects along this
+path, ending with the given target, but excluding the root clade.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">trace</span></code></dt><dd><p>List of all clade object between two targets in this tree. Excluding
+start, including finish.</p>
+</dd>
+</dl>
+</section>
+<section id="information-methods">
+<h3>Information methods<a class="headerlink" href="#information-methods" title="Permalink to this headline"></a></h3>
+<p>These methods provide information about the whole tree (or any clade).</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">common_ancestor</span></code></dt><dd><p>Find the most recent common ancestor of all the given targets. (This
+will be a Clade object). If no target is given, returns the root of
+the current clade (the one this method is called from); if 1 target
+is given, this returns the target itself. However, if any of the
+specified targets are not found in the current tree (or clade), an
+exception is raised.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">count_terminals</span></code></dt><dd><p>Counts the number of terminal (leaf) nodes within the tree.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">depths</span></code></dt><dd><p>Create a mapping of tree clades to depths. The result is a dictionary
+where the keys are all of the Clade instances in the tree, and the
+values are the distance from the root to each clade (including
+terminals). By default the distance is the cumulative branch length
+leading to the clade, but with the <code class="docutils literal notranslate"><span class="pre">unit_branch_lengths=True</span></code>
+option, only the number of branches (levels in the tree) is counted.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">distance</span></code></dt><dd><p>Calculate the sum of the branch lengths between two targets. If only
+one target is specified, the other is the root of this tree.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">total_branch_length</span></code></dt><dd><p>Calculate the sum of all the branch lengths in this tree. This is
+usually just called the “length” of the tree in phylogenetics, but we
+use a more explicit name to avoid confusion with Python terminology.</p>
+</dd>
+</dl>
+<p>The rest of these methods are boolean checks:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">is_bifurcating</span></code></dt><dd><p>True if the tree is strictly bifurcating; i.e. all nodes have either
+2 or 0 children (internal or external, respectively). The root may
+have 3 descendents and still be considered part of a bifurcating
+tree.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">is_monophyletic</span></code></dt><dd><p>Test if all of the given targets comprise a complete subclade — i.e.,
+there exists a clade such that its terminals are the same set as the
+given targets. The targets should be terminals of the tree. For
+convenience, this method returns the common ancestor (MCRA) of the
+targets if they are monophyletic (instead of the value <code class="docutils literal notranslate"><span class="pre">True</span></code>), and
+<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">is_parent_of</span></code></dt><dd><p>True if target is a descendent of this tree — not required to be a
+direct descendent. To check direct descendents of a clade, simply use
+list membership testing: <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">subclade</span> <span class="pre">in</span> <span class="pre">clade:</span> <span class="pre">...</span></code></p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">is_preterminal</span></code></dt><dd><p>True if all direct descendents are terminal; False if any direct
+descendent is not terminal.</p>
+</dd>
+</dl>
+</section>
+<section id="modification-methods">
+<h3>Modification methods<a class="headerlink" href="#modification-methods" title="Permalink to this headline"></a></h3>
+<p>These methods modify the tree in-place. If you want to keep the original
+tree intact, make a complete copy of the tree first, using Python’s
+<code class="docutils literal notranslate"><span class="pre">copy</span></code> module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;example.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;phyloxml&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="n">newtree</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">collapse</span></code></dt><dd><p>Deletes the target from the tree, relinking its children to its
+parent.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">collapse_all</span></code></dt><dd><p>Collapse all the descendents of this tree, leaving only terminals.
+Branch lengths are preserved, i.e. the distance to each terminal
+stays the same. With a target specification (see above), collapses
+only the internal nodes matching the specification.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">ladderize</span></code></dt><dd><p>Sort clades in-place according to the number of terminal nodes.
+Deepest clades are placed last by default. Use <code class="docutils literal notranslate"><span class="pre">reverse=True</span></code> to
+sort clades deepest-to-shallowest.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">prune</span></code></dt><dd><p>Prunes a terminal clade from the tree. If taxon is from a
+bifurcation, the connecting node will be collapsed and its branch
+length added to remaining terminal node. This might no longer be a
+meaningful value.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">root_with_outgroup</span></code></dt><dd><p>Reroot this tree with the outgroup clade containing the given
+targets, i.e. the common ancestor of the outgroup. This method is
+only available on Tree objects, not Clades.</p>
+<p>If the outgroup is identical to self.root, no change occurs. If the
+outgroup clade is terminal (e.g. a single terminal node is given as
+the outgroup), a new bifurcating root clade is created with a
+0-length branch to the given outgroup. Otherwise, the internal node
+at the base of the outgroup becomes a trifurcating root for the whole
+tree. If the original root was bifurcating, it is dropped from the
+tree.</p>
+<p>In all cases, the total branch length of the tree stays the same.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">root_at_midpoint</span></code></dt><dd><p>Reroot this tree at the calculated midpoint between the two most
+distant tips of the tree. (This uses <code class="docutils literal notranslate"><span class="pre">root_with_outgroup</span></code> under the
+hood.)</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">split</span></code></dt><dd><p>Generate <em>n</em> (default 2) new descendants. In a species tree, this is
+a speciation event. New clades have the given <code class="docutils literal notranslate"><span class="pre">branch_length</span></code> and
+the same name as this clade’s root plus an integer suffix (counting
+from 0) — for example, splitting a clade named “A” produces the
+sub-clades “A0” and “A1”.</p>
+</dd>
+</dl>
+<p>See the Phylo page on the Biopython wiki
+(<a class="reference external" href="http://biopython.org/wiki/Phylo">http://biopython.org/wiki/Phylo</a>) for more examples of using the
+available methods.</p>
+</section>
+<section id="features-of-phyloxml-trees">
+<span id="sec-phyloxml"></span><h3>Features of PhyloXML trees<a class="headerlink" href="#features-of-phyloxml-trees" title="Permalink to this headline"></a></h3>
+<p>The phyloXML file format includes fields for annotating trees with
+additional data types and visual cues.</p>
+<p>See the PhyloXML page on the Biopython wiki
+(<a class="reference external" href="http://biopython.org/wiki/PhyloXML">http://biopython.org/wiki/PhyloXML</a>) for descriptions and examples of
+using the additional annotation features provided by PhyloXML.</p>
+</section>
+</section>
+<section id="running-external-applications">
+<span id="sec-phyloapps"></span><h2>Running external applications<a class="headerlink" href="#running-external-applications" title="Permalink to this headline"></a></h2>
+<p>While Bio.Phylo doesn’t infer trees from alignments itself, there are
+third-party programs available that do. These can be accessed from
+within python by using the <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module.</p>
+<p>Below is an example on how to use a python script to interact with PhyML
+(<a class="reference external" href="http://www.atgc-montpellier.fr/phyml/">http://www.atgc-montpellier.fr/phyml/</a>). The program accepts an input
+alignment in <code class="docutils literal notranslate"><span class="pre">phylip-relaxed</span></code> format (that’s Phylip format, but
+without the 10-character limit on taxon names) and a variety of options.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;phyml -i Tests/Phylip/random.phy&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The ‘stdout = subprocess.PIPE‘ argument makes the output of the program
+accessible through ‘results.stdout‘ for debugging purposes, (the same
+can be done for ‘stderr‘), and ‘text=True‘ makes the returned
+information be a python string, instead of a ‘bytes‘ object.</p>
+<p>This generates a tree file and a stats file with the names
+[<em>input filename</em>]<code class="docutils literal notranslate"><span class="pre">_phyml_tree.txt</span></code> and
+[<em>input filename</em>]<code class="docutils literal notranslate"><span class="pre">_phyml_stats.txt</span></code>. The tree file is in Newick
+format:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Phylo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Phylo</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Tests/Phylip/random.phy_phyml_tree.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;newick&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Phylo</span><span class="o">.</span><span class="n">draw_ascii</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="go">  __________________ F</span>
+<span class="go"> |</span>
+<span class="go"> | I</span>
+<span class="go"> |</span>
+<span class="go">_|                     ________ C</span>
+<span class="go"> |            ________|</span>
+<span class="go"> |           |        |        , J</span>
+<span class="go"> |           |        |________|</span>
+<span class="go"> |           |                 |          , H</span>
+<span class="go"> |___________|                 |__________|</span>
+<span class="go">             |                            |______________ D</span>
+<span class="go">             |</span>
+<span class="go">             , G</span>
+<span class="go">             |</span>
+<span class="go">             |                , E</span>
+<span class="go">             |________________|</span>
+<span class="go">                              |                 ___________________________ A</span>
+<span class="go">                              |________________|</span>
+<span class="go">                                               |_________ B</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">subprocess</span></code> module can also be used for interacting with any
+other programs that provide a command line interface such as RAxML
+(<a class="reference external" href="https://sco.h-its.org/exelixis/software.html">https://sco.h-its.org/exelixis/software.html</a>), FastTree
+(<a class="reference external" href="http://www.microbesonline.org/fasttree/">http://www.microbesonline.org/fasttree/</a>), <code class="docutils literal notranslate"><span class="pre">dnaml</span></code> and <code class="docutils literal notranslate"><span class="pre">protml</span></code>.</p>
+</section>
+<section id="paml-integration">
+<span id="sec-phylopaml"></span><h2>PAML integration<a class="headerlink" href="#paml-integration" title="Permalink to this headline"></a></h2>
+<p>Biopython 1.58 brought support for PAML
+(<a class="reference external" href="http://abacus.gene.ucl.ac.uk/software/paml.html">http://abacus.gene.ucl.ac.uk/software/paml.html</a>), a suite of programs
+for phylogenetic analysis by maximum likelihood. Currently the programs
+codeml, baseml and yn00 are implemented. Due to PAML’s usage of control
+files rather than command line arguments to control runtime options,
+usage of this wrapper strays from the format of other application
+wrappers in Biopython.</p>
+<p>A typical workflow would be to initialize a PAML object, specifying an
+alignment file, a tree file, an output file and a working directory.
+Next, runtime options are set via the <code class="docutils literal notranslate"><span class="pre">set_options()</span></code> method or by
+reading an existing control file. Finally, the program is run via the
+<code class="docutils literal notranslate"><span class="pre">run()</span></code> method and the output file is automatically parsed to a
+results dictionary.</p>
+<p>Here is an example of typical usage of codeml:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Phylo.PAML</span> <span class="kn">import</span> <span class="n">codeml</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cml</span> <span class="o">=</span> <span class="n">codeml</span><span class="o">.</span><span class="n">Codeml</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cml</span><span class="o">.</span><span class="n">alignment</span> <span class="o">=</span> <span class="s2">&quot;Tests/PAML/Alignments/alignment.phylip&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cml</span><span class="o">.</span><span class="n">tree</span> <span class="o">=</span> <span class="s2">&quot;Tests/PAML/Trees/species.tree&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cml</span><span class="o">.</span><span class="n">out_file</span> <span class="o">=</span> <span class="s2">&quot;results.out&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cml</span><span class="o">.</span><span class="n">working_dir</span> <span class="o">=</span> <span class="s2">&quot;./scratch&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cml</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">seqtype</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">noisy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">RateAncestor</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">model</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">NSsites</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="n">CodonFreq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">cleandata</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">fix_alpha</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">kappa</span><span class="o">=</span><span class="mf">4.54006</span><span class="p">,</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">cml</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ns_sites</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;NSsites&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m0</span> <span class="o">=</span> <span class="n">ns_sites</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">m0_params</span> <span class="o">=</span> <span class="n">m0</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;parameters&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">m0_params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;omega&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Existing output files may be parsed as well using a module’s <code class="docutils literal notranslate"><span class="pre">read()</span></code>
+function:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">codeml</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Tests/PAML/Results/codeml/codeml_NSsites_all.out&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lnL max&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Detailed documentation for this new module currently lives on the
+Biopython wiki: <a class="reference external" href="http://biopython.org/wiki/PAML">http://biopython.org/wiki/PAML</a></p>
+</section>
+<section id="future-plans">
+<span id="sec-phylofuture"></span><h2>Future plans<a class="headerlink" href="#future-plans" title="Permalink to this headline"></a></h2>
+<p>Bio.Phylo is under active development. Here are some features we might
+add in future releases:</p>
+<dl>
+<dt>New methods</dt><dd><p>Generally useful functions for operating on Tree or Clade objects
+appear on the Biopython wiki first, so that casual users can test
+them and decide if they’re useful before we add them to Bio.Phylo:</p>
+<p><a class="reference external" href="http://biopython.org/wiki/Phylo_cookbook">http://biopython.org/wiki/Phylo_cookbook</a></p>
+</dd>
+<dt>Bio.Nexus port</dt><dd><p>Much of this module was written during Google Summer of Code 2009,
+under the auspices of NESCent, as a project to implement Python
+support for the phyloXML data format (see <a class="reference internal" href="#sec-phyloxml"><span class="std std-ref">Features of PhyloXML trees</span></a>).
+Support for Newick and Nexus formats was added by porting part of the
+existing Bio.Nexus module to the new classes used by Bio.Phylo.</p>
+<p>Currently, Bio.Nexus contains some useful features that have not yet
+been ported to Bio.Phylo classes — notably, calculating a consensus
+tree. If you find some functionality lacking in Bio.Phylo, try poking
+through Bio.Nexus to see if it’s there instead.</p>
+</dd>
+</dl>
+<p>We’re open to any suggestions for improving the functionality and
+usability of this module; just let us know on the mailing list or our
+bug database.</p>
+<p>Finally, if you need additional functionality not yet included in the
+Phylo module, check if it’s available in another of the high-quality
+Python libraries for phylogenetics such as DendroPy
+(<a class="reference external" href="https://dendropy.org/">https://dendropy.org/</a>) or PyCogent (<a class="reference external" href="http://pycogent.org/">http://pycogent.org/</a>). Since these
+libraries also support standard file formats for phylogenetic trees, you
+can easily transfer data between libraries by writing to a temporary
+file or StringIO object.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_popgen.html" class="btn btn-neutral float-left" title="Bio.PopGen: Population genetics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_motifs.html" class="btn btn-neutral float-right" title="Sequence motif analysis using Bio.motifs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

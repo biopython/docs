@@ -1,0 +1,2070 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cluster analysis &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Graphics including GenomeDiagram" href="chapter_graphics.html" />
+    <link rel="prev" title="Sequence motif analysis using Bio.motifs" href="chapter_motifs.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Cluster analysis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#data-representation">Data representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#missing-values">Missing values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#random-number-generator">Random number generator</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#distance-functions">Distance functions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#euclidean-distance">Euclidean distance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#city-block-distance">City-block distance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-pearson-correlation-coefficient">The Pearson correlation coefficient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#absolute-pearson-correlation">Absolute Pearson correlation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uncentered-correlation-cosine-of-the-angle">Uncentered correlation (cosine of the angle)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#absolute-uncentered-correlation">Absolute uncentered correlation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spearman-rank-correlation">Spearman rank correlation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kendalls-tau">Kendall’s <span class="math notranslate nohighlight">\(\tau\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#weighting">Weighting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calculating-the-distance-matrix">Calculating the distance matrix</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#calculating-cluster-properties">Calculating cluster properties</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#calculating-the-cluster-centroids">Calculating the cluster centroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calculating-the-distance-between-clusters">Calculating the distance between clusters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#partitioning-algorithms">Partitioning algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#k-means-and-k-medians"><span class="math notranslate nohighlight">\(k\)</span>-means and <span class="math notranslate nohighlight">\(k\)</span>-medians</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#k-medoids-clustering"><span class="math notranslate nohighlight">\(k\)</span>-medoids clustering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hierarchical-clustering">Hierarchical clustering</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#representing-a-hierarchical-clustering-solution">Representing a hierarchical clustering solution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performing-hierarchical-clustering">Performing hierarchical clustering</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#self-organizing-maps">Self-Organizing Maps</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#principal-component-analysis">Principal Component Analysis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#handling-cluster-treeview-type-files">Handling Cluster/TreeView-type files</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">Calculating the distance matrix</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id13">Calculating the cluster centroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calculating-the-distance-between-clusters-1">Calculating the distance between clusters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performing-hierarchical-clustering-1">Performing hierarchical clustering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performing-k-means-or-k-medians-clustering">Performing <span class="math notranslate nohighlight">\(k\)</span>-means or <span class="math notranslate nohighlight">\(k\)</span>-medians clustering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#calculating-a-self-organizing-map">Calculating a Self-Organizing Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#saving-the-clustering-result">Saving the clustering result</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-calculation">Example calculation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">Cluster analysis</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_cluster.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_motifs.html" class="btn btn-neutral float-left" title="Sequence motif analysis using Bio.motifs" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_graphics.html" class="btn btn-neutral float-right" title="Graphics including GenomeDiagram" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cluster-analysis">
+<span id="chapter-cluster"></span><h1>Cluster analysis<a class="headerlink" href="#cluster-analysis" title="Permalink to this headline"></a></h1>
+<p>Cluster analysis is the grouping of items into clusters based on the
+similarity of the items to each other. In bioinformatics, clustering is
+widely used in gene expression data analysis to find groups of genes
+with similar gene expression profiles. This may identify functionally
+related genes, as well as suggest the function of presently unknown
+genes.</p>
+<p>The Biopython module <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> provides commonly used clustering
+algorithms and was designed with the application to gene expression data
+in mind. However, this module can also be used for cluster analysis of
+other types of data. <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> and the underlying C Clustering
+Library is described by De Hoon <em>et al.</em> <a class="reference internal" href="chapter_bibliography.html#dehoon2004" id="id1"><span>[deHoon2004]</span></a>.</p>
+<p>The following four clustering approaches are implemented in
+<code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>:</p>
+<ul class="simple">
+<li><p>Hierarchical clustering (pairwise centroid-, single-, complete-, and
+average-linkage);</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span>-means, <span class="math notranslate nohighlight">\(k\)</span>-medians, and <span class="math notranslate nohighlight">\(k\)</span>-medoids clustering;</p></li>
+<li><p>Self-Organizing Maps;</p></li>
+<li><p>Principal Component Analysis.</p></li>
+</ul>
+<section id="data-representation">
+<h2>Data representation<a class="headerlink" href="#data-representation" title="Permalink to this headline"></a></h2>
+<p>The data to be clustered are represented by a <span class="math notranslate nohighlight">\(n \times m\)</span>
+Numerical Python array <code class="docutils literal notranslate"><span class="pre">data</span></code>. Within the context of gene expression
+data clustering, typically the rows correspond to different genes
+whereas the columns correspond to different experimental conditions. The
+clustering algorithms in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> can be applied both to rows
+(genes) and to columns (experiments).</p>
+</section>
+<section id="missing-values">
+<h2>Missing values<a class="headerlink" href="#missing-values" title="Permalink to this headline"></a></h2>
+<p>The <span class="math notranslate nohighlight">\(n \times m\)</span> Numerical Python integer array <code class="docutils literal notranslate"><span class="pre">mask</span></code> indicates
+if any of the values in <code class="docutils literal notranslate"><span class="pre">data</span></code> are missing. If <code class="docutils literal notranslate"><span class="pre">mask[i,</span> <span class="pre">j]</span> <span class="pre">==</span> <span class="pre">0</span></code>,
+then <code class="docutils literal notranslate"><span class="pre">data[i,</span> <span class="pre">j]</span></code> is missing and is ignored in the analysis.</p>
+</section>
+<section id="random-number-generator">
+<h2>Random number generator<a class="headerlink" href="#random-number-generator" title="Permalink to this headline"></a></h2>
+<p>The <span class="math notranslate nohighlight">\(k\)</span>-means/medians/medoids clustering algorithms and
+Self-Organizing Maps (SOMs) include the use of a random number
+generator. The uniform random number generator in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> is
+based on the algorithm by L’Ecuyer <a class="reference internal" href="chapter_bibliography.html#lecuyer1988" id="id2"><span>[Lecuyer1988]</span></a>,
+while random numbers following the binomial distribution are generated
+using the BTPE algorithm by Kachitvichyanukul and Schmeiser
+<a class="reference internal" href="chapter_bibliography.html#kachitvichyanukul1988" id="id3"><span>[Kachitvichyanukul1988]</span></a>. The random number generator
+is initialized automatically during its first call. As this random
+number generator uses a combination of two multiplicative linear
+congruential generators, two (integer) seeds are needed for
+initialization, for which we use the system-supplied random number
+generator <code class="docutils literal notranslate"><span class="pre">rand</span></code> (in the C standard library). We initialize this
+generator by calling <code class="docutils literal notranslate"><span class="pre">srand</span></code> with the epoch time in seconds, and use
+the first two random numbers generated by <code class="docutils literal notranslate"><span class="pre">rand</span></code> as seeds for the
+uniform random number generator in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>.</p>
+<section id="distance-functions">
+<span id="sec-distancefunctions"></span><h3>Distance functions<a class="headerlink" href="#distance-functions" title="Permalink to this headline"></a></h3>
+<p>In order to cluster items into groups based on their similarity, we
+should first define what exactly we mean by <em>similar</em>. <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>
+provides eight distance functions, indicated by a single character, to
+measure similarity, or conversely, distance:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'e'</span></code>: Euclidean distance;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'b'</span></code>: City-block distance.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'c'</span></code>: Pearson correlation coefficient;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'a'</span></code>: Absolute value of the Pearson correlation coefficient;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'u'</span></code>: Uncentered Pearson correlation (equivalent to the cosine of
+the angle between two data vectors);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'x'</span></code>: Absolute uncentered Pearson correlation;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'s'</span></code>: Spearman’s rank correlation;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'k'</span></code>: Kendall’s <span class="math notranslate nohighlight">\(\tau\)</span>.</p></li>
+</ul>
+<p>The first two are true distance functions that satisfy the triangle
+inequality:</p>
+<div class="math notranslate nohighlight">
+\[d\left(\underline{u},\underline{v}\right) \leq d\left(\underline{u},\underline{w}\right) + d\left(\underline{w},\underline{v}\right) \textrm{ for all } \underline{u}, \underline{v}, \underline{w},\]</div>
+<p>and are therefore referred to as <em>metrics</em>. In everyday language, this
+means that the shortest distance between two points is a straight line.</p>
+<p>The remaining six distance measures are related to the correlation
+coefficient, where the distance <span class="math notranslate nohighlight">\(d\)</span> is defined in terms of the
+correlation <span class="math notranslate nohighlight">\(r\)</span> by <span class="math notranslate nohighlight">\(d=1-r\)</span>. Note that these distance
+functions are <em>semi-metrics</em> that do not satisfy the triangle
+inequality. For example, for</p>
+<div class="math notranslate nohighlight">
+\[\underline{u}=\left(1,0,-1\right);\]</div>
+<div class="math notranslate nohighlight">
+\[\underline{v}=\left(1,1,0\right);\]</div>
+<div class="math notranslate nohighlight">
+\[\underline{w}=\left(0,1,1\right);\]</div>
+<p>we find a Pearson distance
+<span class="math notranslate nohighlight">\(d\left(\underline{u},\underline{w}\right) = 1.8660\)</span>, while
+<span class="math notranslate nohighlight">\(d\left(\underline{u},\underline{v}\right)+d\left(\underline{v},\underline{w}\right) = 1.6340\)</span>.</p>
+</section>
+</section>
+<section id="euclidean-distance">
+<h2>Euclidean distance<a class="headerlink" href="#euclidean-distance" title="Permalink to this headline"></a></h2>
+<p>In <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>, we define the Euclidean distance as</p>
+<div class="math notranslate nohighlight">
+\[d = {1 \over n} \sum_{i=1}^{n} \left(x_i-y_i\right)^{2}.\]</div>
+<p>Only those terms are included in the summation for which both
+<span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(y_i\)</span> are present, and the denominator <span class="math notranslate nohighlight">\(n\)</span>
+is chosen accordingly. As the expression data <span class="math notranslate nohighlight">\(x_i\)</span> and
+<span class="math notranslate nohighlight">\(y_i\)</span> are subtracted directly from each other, we should make sure
+that the expression data are properly normalized when using the
+Euclidean distance.</p>
+</section>
+<section id="city-block-distance">
+<h2>City-block distance<a class="headerlink" href="#city-block-distance" title="Permalink to this headline"></a></h2>
+<p>The city-block distance, alternatively known as the Manhattan distance,
+is related to the Euclidean distance. Whereas the Euclidean distance
+corresponds to the length of the shortest path between two points, the
+city-block distance is the sum of distances along each dimension. As
+gene expression data tend to have missing values, in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> we
+define the city-block distance as the sum of distances divided by the
+number of dimensions:</p>
+<div class="math notranslate nohighlight">
+\[d = {1 \over n} \sum_{i=1}^n \left|x_i-y_i\right|.\]</div>
+<p>This is equal to the distance you would have to walk between two points
+in a city, where you have to walk along city blocks. As for the
+Euclidean distance, the expression data are subtracted directly from
+each other, and we should therefore make sure that they are properly
+normalized.</p>
+</section>
+<section id="the-pearson-correlation-coefficient">
+<h2>The Pearson correlation coefficient<a class="headerlink" href="#the-pearson-correlation-coefficient" title="Permalink to this headline"></a></h2>
+<p>The Pearson correlation coefficient is defined as</p>
+<div class="math notranslate nohighlight">
+\[r = \frac{1}{n} \sum_{i=1}^n \left( \frac{x_i -\bar{x}}{\sigma_x} \right) \left(\frac{y_i -\bar{y}}{\sigma_y} \right),\]</div>
+<p>in which <span class="math notranslate nohighlight">\(\bar{x}, \bar{y}\)</span> are the sample mean of <span class="math notranslate nohighlight">\(x\)</span> and
+<span class="math notranslate nohighlight">\(y\)</span> respectively, and <span class="math notranslate nohighlight">\(\sigma_x, \sigma_y\)</span> are the sample
+standard deviation of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>. The Pearson correlation
+coefficient is a measure for how well a straight line can be fitted to a
+scatterplot of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>. If all the points in the
+scatterplot lie on a straight line, the Pearson correlation coefficient
+is either +1 or -1, depending on whether the slope of line is positive
+or negative. If the Pearson correlation coefficient is equal to zero,
+there is no correlation between <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>The <em>Pearson distance</em> is then defined as</p>
+<div class="math notranslate nohighlight">
+\[d_{\textrm{P}} \equiv 1 - r.\]</div>
+<p>As the Pearson correlation coefficient lies between -1 and 1, the
+Pearson distance lies between 0 and 2.</p>
+</section>
+<section id="absolute-pearson-correlation">
+<h2>Absolute Pearson correlation<a class="headerlink" href="#absolute-pearson-correlation" title="Permalink to this headline"></a></h2>
+<p>By taking the absolute value of the Pearson correlation, we find a
+number between 0 and 1. If the absolute value is 1, all the points in
+the scatter plot lie on a straight line with either a positive or a
+negative slope. If the absolute value is equal to zero, there is no
+correlation between <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span>.</p>
+<p>The corresponding distance is defined as</p>
+<div class="math notranslate nohighlight">
+\[d_{\textrm A} \equiv 1 - \left|r\right|,\]</div>
+<p>where <span class="math notranslate nohighlight">\(r\)</span> is the Pearson correlation coefficient. As the absolute
+value of the Pearson correlation coefficient lies between 0 and 1, the
+corresponding distance lies between 0 and 1 as well.</p>
+<p>In the context of gene expression experiments, the absolute correlation
+is equal to 1 if the gene expression profiles of two genes are either
+exactly the same or exactly opposite. The absolute correlation
+coefficient should therefore be used with care.</p>
+</section>
+<section id="uncentered-correlation-cosine-of-the-angle">
+<h2>Uncentered correlation (cosine of the angle)<a class="headerlink" href="#uncentered-correlation-cosine-of-the-angle" title="Permalink to this headline"></a></h2>
+<p>In some cases, it may be preferable to use the <em>uncentered correlation</em>
+instead of the regular Pearson correlation coefficient. The uncentered
+correlation is defined as</p>
+<div class="math notranslate nohighlight">
+\[r_{\textrm U} = \frac{1}{n} \sum_{i=1}^{n} \left(\frac{x_i}{\sigma_x^{(0)}} \right) \left(\frac{y_i}{\sigma_y^{(0)}} \right),\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{aligned}
+\sigma_x^{(0)} &amp; = &amp; \sqrt{{\frac{1}{n}} \sum_{i=1}^{n}x_i^2}; \nonumber \\
+\sigma_y^{(0)} &amp; = &amp; \sqrt{{\frac{1}{n}} \sum_{i=1}^{n}y_i^2}. \nonumber
+\end{aligned}\end{split}\]</div>
+<p>This is the same expression as for the regular Pearson correlation
+coefficient, except that the sample means <span class="math notranslate nohighlight">\(\bar{x}, \bar{y}\)</span> are
+set equal to zero. The uncentered correlation may be appropriate if
+there is a zero reference state. For instance, in the case of gene
+expression data given in terms of log-ratios, a log-ratio equal to zero
+corresponds to the green and red signal being equal, which means that
+the experimental manipulation did not affect the gene expression.</p>
+<p>The distance corresponding to the uncentered correlation coefficient is
+defined as</p>
+<div class="math notranslate nohighlight">
+\[d_{\mbox{U}} \equiv 1 - r_{\mbox{U}},\]</div>
+<p>where <span class="math notranslate nohighlight">\(r_{\mbox{U}}\)</span> is the uncentered correlation. As the
+uncentered correlation coefficient lies between -1 and 1, the
+corresponding distance lies between 0 and 2.</p>
+<p>The uncentered correlation is equal to the cosine of the angle of the
+two data vectors in <span class="math notranslate nohighlight">\(n\)</span>-dimensional space, and is often referred
+to as such.</p>
+</section>
+<section id="absolute-uncentered-correlation">
+<h2>Absolute uncentered correlation<a class="headerlink" href="#absolute-uncentered-correlation" title="Permalink to this headline"></a></h2>
+<p>As for the regular Pearson correlation, we can define a distance measure
+using the absolute value of the uncentered correlation:</p>
+<div class="math notranslate nohighlight">
+\[d_{\mbox{AU}} \equiv 1 - \left|r_{\mbox{U}}\right|,\]</div>
+<p>where <span class="math notranslate nohighlight">\(r_{\mbox{U}}\)</span> is the uncentered correlation coefficient. As
+the absolute value of the uncentered correlation coefficient lies
+between 0 and 1, the corresponding distance lies between 0 and 1 as
+well.</p>
+<p>Geometrically, the absolute value of the uncentered correlation is equal
+to the cosine between the supporting lines of the two data vectors
+(i.e., the angle without taking the direction of the vectors into
+consideration).</p>
+</section>
+<section id="spearman-rank-correlation">
+<h2>Spearman rank correlation<a class="headerlink" href="#spearman-rank-correlation" title="Permalink to this headline"></a></h2>
+<p>The Spearman rank correlation is an example of a non-parametric
+similarity measure, and tends to be more robust against outliers than
+the Pearson correlation.</p>
+<p>To calculate the Spearman rank correlation, we replace each data value
+by their rank if we would order the data in each vector by their value.
+We then calculate the Pearson correlation between the two rank vectors
+instead of the data vectors.</p>
+<p>As in the case of the Pearson correlation, we can define a distance
+measure corresponding to the Spearman rank correlation as</p>
+<div class="math notranslate nohighlight">
+\[d_{\mbox{S}} \equiv 1 - r_{\mbox{S}},\]</div>
+<p>where <span class="math notranslate nohighlight">\(r_{\mbox{S}}\)</span> is the Spearman rank correlation.</p>
+</section>
+<section id="kendalls-tau">
+<h2>Kendall’s <span class="math notranslate nohighlight">\(\tau\)</span><a class="headerlink" href="#kendalls-tau" title="Permalink to this headline"></a></h2>
+<p>Kendall’s <span class="math notranslate nohighlight">\(\tau\)</span> is another example of a non-parametric similarity
+measure. It is similar to the Spearman rank correlation, but instead of
+the ranks themselves only the relative ranks are used to calculate
+<span class="math notranslate nohighlight">\(\tau\)</span> (see Snedecor &amp; Cochran <a class="reference internal" href="chapter_bibliography.html#snedecor1989" id="id4"><span>[Snedecor1989]</span></a>).</p>
+<p>We can define a distance measure corresponding to Kendall’s <span class="math notranslate nohighlight">\(\tau\)</span>
+as</p>
+<div class="math notranslate nohighlight">
+\[d_{\mbox{K}} \equiv 1 - \tau.\]</div>
+<p>As Kendall’s <span class="math notranslate nohighlight">\(\tau\)</span> is always between -1 and 1, the corresponding
+distance will be between 0 and 2.</p>
+</section>
+<section id="weighting">
+<h2>Weighting<a class="headerlink" href="#weighting" title="Permalink to this headline"></a></h2>
+<p>For most of the distance functions available in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>, a
+weight vector can be applied. The weight vector contains weights for the
+items in the data vector. If the weight for item <span class="math notranslate nohighlight">\(i\)</span> is
+<span class="math notranslate nohighlight">\(w_i\)</span>, then that item is treated as if it occurred <span class="math notranslate nohighlight">\(w_i\)</span>
+times in the data. The weight do not have to be integers.</p>
+</section>
+<section id="calculating-the-distance-matrix">
+<span id="sec-distancematrix"></span><h2>Calculating the distance matrix<a class="headerlink" href="#calculating-the-distance-matrix" title="Permalink to this headline"></a></h2>
+<p>The distance matrix is a square matrix with all pairwise distances
+between the items in <code class="docutils literal notranslate"><span class="pre">data</span></code>, and can be calculated by the function
+<code class="docutils literal notranslate"><span class="pre">distancematrix</span></code> in the <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> module:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">distancematrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">distancematrix</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">data</span></code> (required)</div>
+<div class="line">Array containing the data for the items.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">mask</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">Array of integers showing which data are missing. If
+<code class="docutils literal notranslate"><span class="pre">mask[i,</span> <span class="pre">j]</span> <span class="pre">==</span> <span class="pre">0</span></code>, then <code class="docutils literal notranslate"><span class="pre">data[i,</span> <span class="pre">j]</span></code> is missing. If <code class="docutils literal notranslate"><span class="pre">mask</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, then all data are present.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">weight</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">The weights to be used when calculating distances. If <code class="docutils literal notranslate"><span class="pre">weight</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, then equal weights are assumed.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">Determines if the distances between the rows of <code class="docutils literal notranslate"><span class="pre">data</span></code> are to be
+calculated (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>), or between the columns of
+<code class="docutils literal notranslate"><span class="pre">data</span></code> (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dist</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'e'</span></code>, Euclidean distance)</div>
+<div class="line">Defines the distance function to be used (see
+<a class="reference internal" href="#sec-distancefunctions"><span class="std std-ref">Distance functions</span></a>).</div>
+</div>
+</li>
+</ul>
+<p>To save memory, the distance matrix is returned as a list of 1D arrays.
+The number of columns in each row is equal to the row number. Hence, the
+first row has zero elements. For example,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">distancematrix</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">],</span>
+<span class="gp">... </span>              <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">]])</span>  <span class="c1"># fmt: skip</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distances</span> <span class="o">=</span> <span class="n">distancematrix</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="s2">&quot;e&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>yields a distance matrix</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">distances</span>
+<span class="go">[array([], dtype=float64), array([ 16.]), array([ 64.,  16.]), array([  1.,   9.,  49.])]</span>
+</pre></div>
+</div>
+<p>which can be rewritten as</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">float64</span><span class="p">),</span> <span class="n">array</span><span class="p">([</span><span class="mf">16.0</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mf">64.0</span><span class="p">,</span> <span class="mf">16.0</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">,</span> <span class="mf">49.0</span><span class="p">])]</span>
+</pre></div>
+</div>
+<p>This corresponds to the distance matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\left(
+\begin{array}{cccc}
+0  &amp; 16 &amp; 64 &amp;  1  \\
+16 &amp;  0 &amp; 16 &amp;  9  \\
+64 &amp; 16 &amp;  0 &amp; 49  \\
+ 1 &amp;  9 &amp; 49 &amp;  0
+\end{array}
+\right).\end{split}\]</div>
+<section id="calculating-cluster-properties">
+<h3>Calculating cluster properties<a class="headerlink" href="#calculating-cluster-properties" title="Permalink to this headline"></a></h3>
+</section>
+</section>
+<section id="calculating-the-cluster-centroids">
+<span id="sec-clustercentroids"></span><h2>Calculating the cluster centroids<a class="headerlink" href="#calculating-the-cluster-centroids" title="Permalink to this headline"></a></h2>
+<p>The centroid of a cluster can be defined either as the mean or as the
+median of each dimension over all cluster items. The function
+<code class="docutils literal notranslate"><span class="pre">clustercentroids</span></code> in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> can be used to calculate either:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">clustercentroids</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cdata</span><span class="p">,</span> <span class="n">cmask</span> <span class="o">=</span> <span class="n">clustercentroids</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">data</span></code> (required)</div>
+<div class="line">Array containing the data for the items.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">mask</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">Array of integers showing which data are missing. If
+<code class="docutils literal notranslate"><span class="pre">mask[i,</span> <span class="pre">j]</span> <span class="pre">==</span> <span class="pre">0</span></code>, then <code class="docutils literal notranslate"><span class="pre">data[i,</span> <span class="pre">j]</span></code> is missing. If <code class="docutils literal notranslate"><span class="pre">mask</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, then all data are present.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">clusterid</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">Vector of integers showing to which cluster each item belongs. If
+<code class="docutils literal notranslate"><span class="pre">clusterid</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then all items are assumed to belong to
+the same cluster.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">method</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'a'</span></code>)</div>
+<div class="line">Specifies whether the arithmetic mean (<code class="docutils literal notranslate"><span class="pre">method=='a'</span></code>) or the
+median (<code class="docutils literal notranslate"><span class="pre">method=='m'</span></code>) is used to calculate the cluster center.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">Determines if the centroids of the rows of <code class="docutils literal notranslate"><span class="pre">data</span></code> are to be
+calculated (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>), or the centroids of the
+columns of <code class="docutils literal notranslate"><span class="pre">data</span></code> (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</div>
+</div>
+</li>
+</ul>
+<p>This function returns the tuple <code class="docutils literal notranslate"><span class="pre">(cdata,</span> <span class="pre">cmask)</span></code>. The centroid data
+are stored in the 2D Numerical Python array <code class="docutils literal notranslate"><span class="pre">cdata</span></code>, with missing data
+indicated by the 2D Numerical Python integer array <code class="docutils literal notranslate"><span class="pre">cmask</span></code>. The
+dimensions of these arrays are
+<span class="math notranslate nohighlight">\(\left(\textrm{number of clusters}, \textrm{number of columns}\right)\)</span>
+if <code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">0</span></code>, or
+<span class="math notranslate nohighlight">\(\left(\textrm{number of rows}, \textrm{number of clusters}\right)\)</span>
+if <code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code>. Each row (if <code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">0</span></code>) or
+column (if <code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code>) contains the averaged data
+corresponding to the centroid of each cluster.</p>
+</section>
+<section id="calculating-the-distance-between-clusters">
+<h2>Calculating the distance between clusters<a class="headerlink" href="#calculating-the-distance-between-clusters" title="Permalink to this headline"></a></h2>
+<p>Given a distance function between <em>items</em>, we can define the distance
+between two <em>clusters</em> in several ways. The distance between the
+arithmetic means of the two clusters is used in pairwise
+centroid-linkage clustering and in <span class="math notranslate nohighlight">\(k\)</span>-means clustering. In
+<span class="math notranslate nohighlight">\(k\)</span>-medoids clustering, the distance between the medians of the
+two clusters is used instead. The shortest pairwise distance between
+items of the two clusters is used in pairwise single-linkage clustering,
+while the longest pairwise distance is used in pairwise maximum-linkage
+clustering. In pairwise average-linkage clustering, the distance between
+two clusters is defined as the average over the pairwise distances.</p>
+<p>To calculate the distance between two clusters, use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">clusterdistance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">clusterdistance</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">data</span></code> (required)</div>
+<div class="line">Array containing the data for the items.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">mask</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">Array of integers showing which data are missing. If
+<code class="docutils literal notranslate"><span class="pre">mask[i,</span> <span class="pre">j]</span> <span class="pre">==</span> <span class="pre">0</span></code>, then <code class="docutils literal notranslate"><span class="pre">data[i,</span> <span class="pre">j]</span></code> is missing. If <code class="docutils literal notranslate"><span class="pre">mask</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, then all data are present.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">weight</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">The weights to be used when calculating distances. If <code class="docutils literal notranslate"><span class="pre">weight</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, then equal weights are assumed.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">index1</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">A list containing the indices of the items belonging to the first
+cluster. A cluster containing only one item <span class="math notranslate nohighlight">\(i\)</span> can be
+represented either as a list <code class="docutils literal notranslate"><span class="pre">[i]</span></code>, or as an integer <code class="docutils literal notranslate"><span class="pre">i</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">index2</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">A list containing the indices of the items belonging to the second
+cluster. A cluster containing only one items <span class="math notranslate nohighlight">\(i\)</span> can be
+represented either as a list <code class="docutils literal notranslate"><span class="pre">[i]</span></code>, or as an integer <code class="docutils literal notranslate"><span class="pre">i</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">method</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'a'</span></code>)</div>
+<div class="line">Specifies how the distance between clusters is defined:</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'a'</span></code>: Distance between the two cluster centroids (arithmetic
+mean);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'m'</span></code>: Distance between the two cluster centroids (median);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'s'</span></code>: Shortest pairwise distance between items in the two
+clusters;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'x'</span></code>: Longest pairwise distance between items in the two
+clusters;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'v'</span></code>: Average over the pairwise distances between items in the
+two clusters.</p></li>
+</ul>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dist</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'e'</span></code>, Euclidean distance)</div>
+<div class="line">Defines the distance function to be used (see
+<a class="reference internal" href="#sec-distancefunctions"><span class="std std-ref">Distance functions</span></a>).</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">If <code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, calculate the distance between the
+rows of <code class="docutils literal notranslate"><span class="pre">data</span></code>. If <code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, calculate the
+distance between the columns of <code class="docutils literal notranslate"><span class="pre">data</span></code>.</div>
+</div>
+</li>
+</ul>
+<section id="partitioning-algorithms">
+<h3>Partitioning algorithms<a class="headerlink" href="#partitioning-algorithms" title="Permalink to this headline"></a></h3>
+<p>Partitioning algorithms divide items into <span class="math notranslate nohighlight">\(k\)</span> clusters such that
+the sum of distances over the items to their cluster centers is minimal.
+The number of clusters <span class="math notranslate nohighlight">\(k\)</span> is specified by the user. Three
+partitioning algorithms are available in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(k\)</span>-means clustering</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span>-medians clustering</p></li>
+<li><p><span class="math notranslate nohighlight">\(k\)</span>-medoids clustering</p></li>
+</ul>
+<p>These algorithms differ in how the cluster center is defined. In
+<span class="math notranslate nohighlight">\(k\)</span>-means clustering, the cluster center is defined as the mean
+data vector averaged over all items in the cluster. Instead of the mean,
+in <span class="math notranslate nohighlight">\(k\)</span>-medians clustering the median is calculated for each
+dimension in the data vector. Finally, in <span class="math notranslate nohighlight">\(k\)</span>-medoids clustering
+the cluster center is defined as the item which has the smallest sum of
+distances to the other items in the cluster. This clustering algorithm
+is suitable for cases in which the distance matrix is known but the
+original data matrix is not available, for example when clustering
+proteins based on their structural similarity.</p>
+<p>The expectation-maximization (EM) algorithm is used to find this
+partitioning into <span class="math notranslate nohighlight">\(k\)</span> groups. In the initialization of the EM
+algorithm, we randomly assign items to clusters. To ensure that no empty
+clusters are produced, we use the binomial distribution to randomly
+choose the number of items in each cluster to be one or more. We then
+randomly permute the cluster assignments to items such that each item
+has an equal probability to be in any cluster. Each cluster is thus
+guaranteed to contain at least one item.</p>
+<p>We then iterate:</p>
+<ul class="simple">
+<li><p>Calculate the centroid of each cluster, defined as either the mean,
+the median, or the medoid of the cluster;</p></li>
+<li><p>Calculate the distances of each item to the cluster centers;</p></li>
+<li><p>For each item, determine which cluster centroid is closest;</p></li>
+<li><p>Reassign each item to its closest cluster, or stop the iteration if
+no further item reassignments take place.</p></li>
+</ul>
+<p>To avoid clusters becoming empty during the iteration, in
+<span class="math notranslate nohighlight">\(k\)</span>-means and <span class="math notranslate nohighlight">\(k\)</span>-medians clustering the algorithm keeps
+track of the number of items in each cluster, and prohibits the last
+remaining item in a cluster from being reassigned to a different
+cluster. For <span class="math notranslate nohighlight">\(k\)</span>-medoids clustering, such a check is not needed,
+as the item that functions as the cluster centroid has a zero distance
+to itself, and will therefore never be closer to a different cluster.</p>
+<p>As the initial assignment of items to clusters is done randomly, usually
+a different clustering solution is found each time the EM algorithm is
+executed. To find the optimal clustering solution, the <span class="math notranslate nohighlight">\(k\)</span>-means
+algorithm is repeated many times, each time starting from a different
+initial random clustering. The sum of distances of the items to their
+cluster center is saved for each run, and the solution with the smallest
+value of this sum will be returned as the overall clustering solution.</p>
+<p>How often the EM algorithm should be run depends on the number of items
+being clustered. As a rule of thumb, we can consider how often the
+optimal solution was found; this number is returned by the partitioning
+algorithms as implemented in this library. If the optimal solution was
+found many times, it is unlikely that better solutions exist than the
+one that was found. However, if the optimal solution was found only
+once, there may well be other solutions with a smaller within-cluster
+sum of distances. If the number of items is large (more than several
+hundreds), it may be difficult to find the globally optimal solution.</p>
+<p>The EM algorithm terminates when no further reassignments take place. We
+noticed that for some sets of initial cluster assignments, the EM
+algorithm fails to converge due to the same clustering solution
+reappearing periodically after a small number of iteration steps. We
+therefore check for the occurrence of such periodic solutions during the
+iteration. After a given number of iteration steps, the current
+clustering result is saved as a reference. By comparing the clustering
+result after each subsequent iteration step to the reference state, we
+can determine if a previously encountered clustering result is found. In
+such a case, the iteration is halted. If after a given number of
+iterations the reference state has not yet been encountered, the current
+clustering solution is saved to be used as the new reference state.
+Initially, ten iteration steps are executed before resaving the
+reference state. This number of iteration steps is doubled each time, to
+ensure that periodic behavior with longer periods can also be detected.</p>
+</section>
+</section>
+<section id="k-means-and-k-medians">
+<h2><span class="math notranslate nohighlight">\(k\)</span>-means and <span class="math notranslate nohighlight">\(k\)</span>-medians<a class="headerlink" href="#k-means-and-k-medians" title="Permalink to this headline"></a></h2>
+<p>The <span class="math notranslate nohighlight">\(k\)</span>-means and <span class="math notranslate nohighlight">\(k\)</span>-medians algorithms are implemented as
+the function <code class="docutils literal notranslate"><span class="pre">kcluster</span></code> in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">kcluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clusterid</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">nfound</span> <span class="o">=</span> <span class="n">kcluster</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">data</span></code> (required)</div>
+<div class="line">Array containing the data for the items.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">nclusters</span></code> (default: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</div>
+<div class="line">The number of clusters <span class="math notranslate nohighlight">\(k\)</span>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">mask</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">Array of integers showing which data are missing. If
+<code class="docutils literal notranslate"><span class="pre">mask[i,</span> <span class="pre">j]</span> <span class="pre">==</span> <span class="pre">0</span></code>, then <code class="docutils literal notranslate"><span class="pre">data[i,</span> <span class="pre">j]</span></code> is missing. If <code class="docutils literal notranslate"><span class="pre">mask</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, then all data are present.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">weight</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">The weights to be used when calculating distances. If <code class="docutils literal notranslate"><span class="pre">weight</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, then equal weights are assumed.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">Determines if rows (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">0</span></code>) or columns
+(<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code>) are to be clustered.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">npass</span></code> (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</div>
+<div class="line">The number of times the <span class="math notranslate nohighlight">\(k\)</span>-means/-medians clustering
+algorithm is performed, each time with a different (random) initial
+condition. If <code class="docutils literal notranslate"><span class="pre">initialid</span></code> is given, the value of <code class="docutils literal notranslate"><span class="pre">npass</span></code> is
+ignored and the clustering algorithm is run only once, as it
+behaves deterministically in that case.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">method</span></code> (default: <code class="docutils literal notranslate"><span class="pre">a</span></code>)</div>
+<div class="line">describes how the center of a cluster is found:</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='a'</span></code>: arithmetic mean (<span class="math notranslate nohighlight">\(k\)</span>-means clustering);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='m'</span></code>: median (<span class="math notranslate nohighlight">\(k\)</span>-medians clustering).</p></li>
+</ul>
+<p>For other values of <code class="docutils literal notranslate"><span class="pre">method</span></code>, the arithmetic mean is used.</p>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dist</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'e'</span></code>, Euclidean distance)</div>
+<div class="line">Defines the distance function to be used (see
+<a class="reference internal" href="#sec-distancefunctions"><span class="std std-ref">Distance functions</span></a>). Whereas all eight distance
+measures are accepted by <code class="docutils literal notranslate"><span class="pre">kcluster</span></code>, from a theoretical viewpoint
+it is best to use the Euclidean distance for the <span class="math notranslate nohighlight">\(k\)</span>-means
+algorithm, and the city-block distance for <span class="math notranslate nohighlight">\(k\)</span>-medians.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">initialid</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">Specifies the initial clustering to be used for the EM algorithm.
+If <code class="docutils literal notranslate"><span class="pre">initialid</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then a different random initial
+clustering is used for each of the <code class="docutils literal notranslate"><span class="pre">npass</span></code> runs of the EM
+algorithm. If <code class="docutils literal notranslate"><span class="pre">initialid</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, then it should be
+equal to a 1D array containing the cluster number (between <code class="docutils literal notranslate"><span class="pre">0</span></code>
+and <code class="docutils literal notranslate"><span class="pre">nclusters-1</span></code>) for each item. Each cluster should contain at
+least one item. With the initial clustering specified, the EM
+algorithm is deterministic.</div>
+</div>
+</li>
+</ul>
+<p>This function returns a tuple <code class="docutils literal notranslate"><span class="pre">(clusterid,</span> <span class="pre">error,</span> <span class="pre">nfound)</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">clusterid</span></code> is an integer array containing the number of the cluster
+to which each row or cluster was assigned, <code class="docutils literal notranslate"><span class="pre">error</span></code> is the
+within-cluster sum of distances for the optimal clustering solution, and
+<code class="docutils literal notranslate"><span class="pre">nfound</span></code> is the number of times this optimal solution was found.</p>
+</section>
+<section id="k-medoids-clustering">
+<h2><span class="math notranslate nohighlight">\(k\)</span>-medoids clustering<a class="headerlink" href="#k-medoids-clustering" title="Permalink to this headline"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">kmedoids</span></code> routine performs <span class="math notranslate nohighlight">\(k\)</span>-medoids clustering on a
+given set of items, using the distance matrix and the number of clusters
+passed by the user:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">kmedoids</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clusterid</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">nfound</span> <span class="o">=</span> <span class="n">kmedoids</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined: , nclusters=2, npass=1,
+initialid=None)|</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">distance</span></code> (required)</div>
+<div class="line">The matrix containing the distances between the items; this matrix
+can be specified in three ways:</div>
+</div>
+<ul>
+<li><p>as a 2D Numerical Python array (in which only the left-lower part
+of the array will be accessed):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]])</span>
+</pre></div>
+</div>
+</li>
+<li><p>as a 1D Numerical Python array containing consecutively the
+distances in the left-lower part of the distance matrix:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])</span>
+</pre></div>
+</div>
+</li>
+<li><p>as a list containing the rows of the left-lower part of the
+distance matrix:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span><span class="p">([]),</span> <span class="n">array</span><span class="p">([</span><span class="mf">1.1</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>These three expressions correspond to the same distance matrix.</p>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">nclusters</span></code> (default: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</div>
+<div class="line">The number of clusters <span class="math notranslate nohighlight">\(k\)</span>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">npass</span></code> (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</div>
+<div class="line">The number of times the <span class="math notranslate nohighlight">\(k\)</span>-medoids clustering algorithm is
+performed, each time with a different (random) initial condition.
+If <code class="docutils literal notranslate"><span class="pre">initialid</span></code> is given, the value of <code class="docutils literal notranslate"><span class="pre">npass</span></code> is ignored, as
+the clustering algorithm behaves deterministically in that case.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">initialid</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">Specifies the initial clustering to be used for the EM algorithm.
+If <code class="docutils literal notranslate"><span class="pre">initialid</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then a different random initial
+clustering is used for each of the <code class="docutils literal notranslate"><span class="pre">npass</span></code> runs of the EM
+algorithm. If <code class="docutils literal notranslate"><span class="pre">initialid</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, then it should be
+equal to a 1D array containing the cluster number (between <code class="docutils literal notranslate"><span class="pre">0</span></code>
+and <code class="docutils literal notranslate"><span class="pre">nclusters-1</span></code>) for each item. Each cluster should contain at
+least one item. With the initial clustering specified, the EM
+algorithm is deterministic.</div>
+</div>
+</li>
+</ul>
+<p>This function returns a tuple <code class="docutils literal notranslate"><span class="pre">(clusterid,</span> <span class="pre">error,</span> <span class="pre">nfound)</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">clusterid</span></code> is an array containing the number of the cluster to which
+each item was assigned, <code class="docutils literal notranslate"><span class="pre">error</span></code> is the within-cluster sum of distances
+for the optimal <span class="math notranslate nohighlight">\(k\)</span>-medoids clustering solution, and <code class="docutils literal notranslate"><span class="pre">nfound</span></code> is
+the number of times the optimal solution was found. Note that the
+cluster number in <code class="docutils literal notranslate"><span class="pre">clusterid</span></code> is defined as the item number of the
+item representing the cluster centroid.</p>
+<section id="hierarchical-clustering">
+<h3>Hierarchical clustering<a class="headerlink" href="#hierarchical-clustering" title="Permalink to this headline"></a></h3>
+<p>Hierarchical clustering methods are inherently different from the
+<span class="math notranslate nohighlight">\(k\)</span>-means clustering method. In hierarchical clustering, the
+similarity in the expression profile between genes or experimental
+conditions are represented in the form of a tree structure. This tree
+structure can be shown graphically by programs such as Treeview and Java
+Treeview, which has contributed to the popularity of hierarchical
+clustering in the analysis of gene expression data.</p>
+<p>The first step in hierarchical clustering is to calculate the distance
+matrix, specifying all the distances between the items to be clustered.
+Next, we create a node by joining the two closest items. Subsequent
+nodes are created by pairwise joining of items or nodes based on the
+distance between them, until all items belong to the same node. A tree
+structure can then be created by retracing which items and nodes were
+merged. Unlike the EM algorithm, which is used in <span class="math notranslate nohighlight">\(k\)</span>-means
+clustering, the complete process of hierarchical clustering is
+deterministic.</p>
+<p>Several flavors of hierarchical clustering exist, which differ in how
+the distance between subnodes is defined in terms of their members. In
+<code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>, pairwise single, maximum, average, and centroid linkage
+are available.</p>
+<ul class="simple">
+<li><p>In pairwise single-linkage clustering, the distance between two nodes
+is defined as the shortest distance among the pairwise distances
+between the members of the two nodes.</p></li>
+<li><p>In pairwise maximum-linkage clustering, alternatively known as
+pairwise complete-linkage clustering, the distance between two nodes
+is defined as the longest distance among the pairwise distances
+between the members of the two nodes.</p></li>
+<li><p>In pairwise average-linkage clustering, the distance between two
+nodes is defined as the average over all pairwise distances between
+the items of the two nodes.</p></li>
+<li><p>In pairwise centroid-linkage clustering, the distance between two
+nodes is defined as the distance between their centroids. The
+centroids are calculated by taking the mean over all the items in a
+cluster. As the distance from each newly formed node to existing
+nodes and items need to be calculated at each step, the computing
+time of pairwise centroid-linkage clustering may be significantly
+longer than for the other hierarchical clustering methods. Another
+peculiarity is that (for a distance measure based on the Pearson
+correlation), the distances do not necessarily increase when going up
+in the clustering tree, and may even decrease. This is caused by an
+inconsistency between the centroid calculation and the distance
+calculation when using the Pearson correlation: Whereas the Pearson
+correlation effectively normalizes the data for the distance
+calculation, no such normalization occurs for the centroid
+calculation.</p></li>
+</ul>
+<p>For pairwise single-, complete-, and average-linkage clustering, the
+distance between two nodes can be found directly from the distances
+between the individual items. Therefore, the clustering algorithm does
+not need access to the original gene expression data, once the distance
+matrix is known. For pairwise centroid-linkage clustering, however, the
+centroids of newly formed subnodes can only be calculated from the
+original data and not from the distance matrix.</p>
+<p>The implementation of pairwise single-linkage hierarchical clustering is
+based on the SLINK algorithm <a class="reference internal" href="chapter_bibliography.html#sibson1973" id="id5"><span>[Sibson1973]</span></a>, which is
+much faster and more memory-efficient than a straightforward
+implementation of pairwise single-linkage clustering. The clustering
+result produced by this algorithm is identical to the clustering
+solution found by the conventional single-linkage algorithm. The
+single-linkage hierarchical clustering algorithm implemented in this
+library can be used to cluster large gene expression data sets, for
+which conventional hierarchical clustering algorithms fail due to
+excessive memory requirements and running time.</p>
+</section>
+</section>
+<section id="representing-a-hierarchical-clustering-solution">
+<h2>Representing a hierarchical clustering solution<a class="headerlink" href="#representing-a-hierarchical-clustering-solution" title="Permalink to this headline"></a></h2>
+<p>The result of hierarchical clustering consists of a tree of nodes, in
+which each node joins two items or subnodes. Usually, we are not only
+interested in which items or subnodes are joined at each node, but also
+in their similarity (or distance) as they are joined. To store one node
+in the hierarchical clustering tree, we make use of the class <code class="docutils literal notranslate"><span class="pre">Node</span></code>,
+which defined in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>. An instance of <code class="docutils literal notranslate"><span class="pre">Node</span></code> has three
+attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">left</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">right</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">distance</span></code></p></li>
+</ul>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code> are integers referring to the two items or
+subnodes that are joined at this node, and <code class="docutils literal notranslate"><span class="pre">distance</span></code> is the distance
+between them. The items being clustered are numbered from 0 to
+<span class="math notranslate nohighlight">\(\left(\textrm{number of items} - 1\right)\)</span>, while clusters are
+numbered from -1 to <span class="math notranslate nohighlight">\(-\left(\textrm{number of items}-1\right)\)</span>.
+Note that the number of nodes is one less than the number of items.</p>
+<p>To create a new <code class="docutils literal notranslate"><span class="pre">Node</span></code> object, we need to specify <code class="docutils literal notranslate"><span class="pre">left</span></code> and
+<code class="docutils literal notranslate"><span class="pre">right</span></code>; <code class="docutils literal notranslate"><span class="pre">distance</span></code> is optional.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Node</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="go">(2, 3): 0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Node</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.91</span><span class="p">)</span>
+<span class="go">(2, 3): 0.91</span>
+</pre></div>
+</div>
+<p>The attributes <code class="docutils literal notranslate"><span class="pre">left</span></code>, <code class="docutils literal notranslate"><span class="pre">right</span></code>, and <code class="docutils literal notranslate"><span class="pre">distance</span></code> of an existing
+<code class="docutils literal notranslate"><span class="pre">Node</span></code> object can be modified directly:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="mf">0.73</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span>
+<span class="go">(6, 2): 0.73</span>
+</pre></div>
+</div>
+<p>An error is raised if <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code> are not integers, or if
+<code class="docutils literal notranslate"><span class="pre">distance</span></code> cannot be converted to a floating-point value.</p>
+<p>The Python class <code class="docutils literal notranslate"><span class="pre">Tree</span></code> represents a full hierarchical clustering
+solution. A <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object can be created from a list of <code class="docutils literal notranslate"><span class="pre">Node</span></code>
+objects:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">Tree</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="go">(1, 2): 0.2</span>
+<span class="go">(0, 3): 0.5</span>
+<span class="go">(-2, 4): 0.6</span>
+<span class="go">(-1, -3): 0.9</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Tree</span></code> initializer checks if the list of nodes is a valid
+hierarchical clustering result:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Tree</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">?</span>
+<span class="gr">ValueError</span>: <span class="n">Inconsistent tree</span>
+</pre></div>
+</div>
+<p>Individual nodes in a <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object can be accessed using square
+brackets:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">(1, 2): 0.2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">(0, -1): 0.5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">(0, -1): 0.5</span>
+</pre></div>
+</div>
+<p>As a <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object is immutable, we cannot change individual nodes in
+a <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object. However, we can convert the tree to a list of nodes,
+modify this list, and create a new tree from this list:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">([</span><span class="n">Node</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">Node</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="go">(1, 2): 0.1</span>
+<span class="go">(0, -1): 0.5</span>
+<span class="go">(-2, 3): 0.9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span> <span class="o">=</span> <span class="n">tree</span><span class="p">[:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="go">(0, 1): 0.2</span>
+<span class="go">(2, -1): 0.5</span>
+<span class="go">(-2, 3): 0.9</span>
+</pre></div>
+</div>
+<p>This guarantees that any <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object is always well-formed.</p>
+<p>To display a hierarchical clustering solution with visualization
+programs such as Java Treeview, it is better to scale all node distances
+such that they are between zero and one. This can be accomplished by
+calling the <code class="docutils literal notranslate"><span class="pre">scale</span></code> method on an existing <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span><span class="o">.</span><span class="n">scale</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This method takes no arguments, and returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>Before drawing the tree, you may also want to reorder the tree nodes. A
+hierarchical clustering solution of <span class="math notranslate nohighlight">\(n\)</span> items can be drawn as
+<span class="math notranslate nohighlight">\(2^{n-1}\)</span> different but equivalent dendrograms by switching the
+left and right subnode at each node. The <code class="docutils literal notranslate"><span class="pre">tree.sort(order)</span></code> method
+visits each node in the hierarchical clustering tree and verifies if the
+average order value of the left subnode is less than or equal to the
+average order value of the right subnode. If not, the left and right
+subnodes are exchanged. Here, the order values of the items are given by
+the user. In the resulting dendrogram, items in the left-to-right order
+will tend to have increasing order values. The method will return the
+indices of the elements in the left-to-right order after sorting:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">indices</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>such that item <code class="docutils literal notranslate"><span class="pre">indices[i]</span></code> will occur at position <span class="math notranslate nohighlight">\(i\)</span> in the
+dendrogram.</p>
+<p>After hierarchical clustering, the items can be grouped into <span class="math notranslate nohighlight">\(k\)</span>
+clusters based on the tree structure stored in the <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object by
+cutting the tree:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clusterid</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">nclusters</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">nclusters</span></code> (defaulting to <code class="docutils literal notranslate"><span class="pre">1</span></code>) is the desired number of
+clusters <span class="math notranslate nohighlight">\(k\)</span>. This method ignores the top <span class="math notranslate nohighlight">\(k-1\)</span> linking
+events in the tree structure, resulting in <span class="math notranslate nohighlight">\(k\)</span> separated clusters
+of items. The number of clusters <span class="math notranslate nohighlight">\(k\)</span> should be positive, and less
+than or equal to the number of items. This method returns an array
+<code class="docutils literal notranslate"><span class="pre">clusterid</span></code> containing the number of the cluster to which each item is
+assigned. Clusters are numbered <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(k-1\)</span> in their
+left-to-right order in the dendrogram.</p>
+</section>
+<section id="performing-hierarchical-clustering">
+<h2>Performing hierarchical clustering<a class="headerlink" href="#performing-hierarchical-clustering" title="Permalink to this headline"></a></h2>
+<p>To perform hierarchical clustering, use the <code class="docutils literal notranslate"><span class="pre">treecluster</span></code> function in
+<code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">treecluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">treecluster</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">data</span></code></div>
+<div class="line">Array containing the data for the items.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">mask</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">Array of integers showing which data are missing. If
+<code class="docutils literal notranslate"><span class="pre">mask[i,</span> <span class="pre">j]</span> <span class="pre">==</span> <span class="pre">0</span></code>, then <code class="docutils literal notranslate"><span class="pre">data[i,</span> <span class="pre">j]</span></code> is missing. If <code class="docutils literal notranslate"><span class="pre">mask</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, then all data are present.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">weight</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">The weights to be used when calculating distances. If <code class="docutils literal notranslate"><span class="pre">weight</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, then equal weights are assumed.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">Determines if rows (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>) or columns
+(<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>) are to be clustered.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">method</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'m'</span></code>)</div>
+<div class="line">defines the linkage method to be used:</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='s'</span></code>: pairwise single-linkage clustering</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='m'</span></code>: pairwise maximum- (or complete-) linkage
+clustering</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='c'</span></code>: pairwise centroid-linkage clustering</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='a'</span></code>: pairwise average-linkage clustering</p></li>
+</ul>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dist</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'e'</span></code>, Euclidean distance)</div>
+<div class="line">Defines the distance function to be used (see
+<a class="reference internal" href="#sec-distancefunctions"><span class="std std-ref">Distance functions</span></a>).</div>
+</div>
+</li>
+</ul>
+<p>To apply hierarchical clustering on a precalculated distance matrix,
+specify the <code class="docutils literal notranslate"><span class="pre">distancematrix</span></code> argument when calling <code class="docutils literal notranslate"><span class="pre">treecluster</span></code>
+function instead of the <code class="docutils literal notranslate"><span class="pre">data</span></code> argument:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">treecluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">treecluster</span><span class="p">(</span><span class="n">distancematrix</span><span class="o">=</span><span class="n">distance</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this case, the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">distancematrix</span></code></div>
+<div class="line">The distance matrix, which can be specified in three ways:</div>
+</div>
+<ul>
+<li><p>as a 2D Numerical Python array (in which only the left-lower part
+of the array will be accessed):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]])</span>
+</pre></div>
+</div>
+</li>
+<li><p>as a 1D Numerical Python array containing consecutively the
+distances in the left-lower part of the distance matrix:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="n">array</span><span class="p">([</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])</span>
+</pre></div>
+</div>
+</li>
+<li><p>as a list containing the rows of the left-lower part of the
+distance matrix:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="p">[</span><span class="n">array</span><span class="p">([]),</span> <span class="n">array</span><span class="p">([</span><span class="mf">1.1</span><span class="p">]),</span> <span class="n">array</span><span class="p">([</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>These three expressions correspond to the same distance matrix. As
+<code class="docutils literal notranslate"><span class="pre">treecluster</span></code> may shuffle the values in the distance matrix as part
+of the clustering algorithm, be sure to save this array in a
+different variable before calling <code class="docutils literal notranslate"><span class="pre">treecluster</span></code> if you need it
+later.</p>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">method</span></code></div>
+<div class="line">The linkage method to be used:</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='s'</span></code>: pairwise single-linkage clustering</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='m'</span></code>: pairwise maximum- (or complete-) linkage
+clustering</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='a'</span></code>: pairwise average-linkage clustering</p></li>
+</ul>
+<p>While pairwise single-, maximum-, and average-linkage clustering can
+be calculated from the distance matrix alone, pairwise
+centroid-linkage cannot.</p>
+</li>
+</ul>
+<p>When calling <code class="docutils literal notranslate"><span class="pre">treecluster</span></code>, either <code class="docutils literal notranslate"><span class="pre">data</span></code> or <code class="docutils literal notranslate"><span class="pre">distancematrix</span></code>
+should be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>This function returns a <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object. This object contains
+<span class="math notranslate nohighlight">\(\left(\textrm{number of items} - 1\right)\)</span> nodes, where the
+number of items is the number of rows if rows were clustered, or the
+number of columns if columns were clustered. Each node describes a
+pairwise linking event, where the node attributes <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code>
+each contain the number of one item or subnode, and <code class="docutils literal notranslate"><span class="pre">distance</span></code> the
+distance between them. Items are numbered from 0 to
+<span class="math notranslate nohighlight">\(\left(\textrm{number of items} - 1\right)\)</span>, while clusters are
+numbered -1 to <span class="math notranslate nohighlight">\(-\left(\textrm{number of items}-1\right)\)</span>.</p>
+<section id="self-organizing-maps">
+<h3>Self-Organizing Maps<a class="headerlink" href="#self-organizing-maps" title="Permalink to this headline"></a></h3>
+<p>Self-Organizing Maps (SOMs) were invented by Kohonen to describe neural
+networks (see for instance Kohonen, 1997
+<a class="reference internal" href="chapter_bibliography.html#kohonen1997" id="id6"><span>[Kohonen1997]</span></a>). Tamayo (1999) first applied
+Self-Organizing Maps to gene expression data
+<a class="reference internal" href="chapter_bibliography.html#tamayo1999" id="id7"><span>[Tamayo1999]</span></a>.</p>
+<p>SOMs organize items into clusters that are situated in some topology.
+Usually a rectangular topology is chosen. The clusters generated by SOMs
+are such that neighboring clusters in the topology are more similar to
+each other than clusters far from each other in the topology.</p>
+<p>The first step to calculate a SOM is to randomly assign a data vector to
+each cluster in the topology. If rows are being clustered, then the
+number of elements in each data vector is equal to the number of
+columns.</p>
+<p>An SOM is then generated by taking rows one at a time, and finding which
+cluster in the topology has the closest data vector. The data vector of
+that cluster, as well as those of the neighboring clusters, are adjusted
+using the data vector of the row under consideration. The adjustment is
+given by</p>
+<div class="math notranslate nohighlight">
+\[\Delta \underline{x}_{\textrm{cell}} = \tau \cdot \left(\underline{x}_{\textrm{row}} - \underline{x}_{\textrm{cell}} \right).\]</div>
+<p>The parameter <span class="math notranslate nohighlight">\(\tau\)</span> is a parameter that decreases at each
+iteration step. We have used a simple linear function of the iteration
+step:</p>
+<div class="math notranslate nohighlight">
+\[\tau = \tau_{\textrm{init}} \cdot \left(1 - {i \over n}\right),\]</div>
+<p><span class="math notranslate nohighlight">\(\tau_{\textrm{init}}\)</span> is the initial value of <span class="math notranslate nohighlight">\(\tau\)</span> as
+specified by the user, <span class="math notranslate nohighlight">\(i\)</span> is the number of the current iteration
+step, and <span class="math notranslate nohighlight">\(n\)</span> is the total number of iteration steps to be
+performed. While changes are made rapidly in the beginning of the
+iteration, at the end of iteration only small changes are made.</p>
+<p>All clusters within a radius <span class="math notranslate nohighlight">\(R\)</span> are adjusted to the gene under
+consideration. This radius decreases as the calculation progresses as</p>
+<div class="math notranslate nohighlight">
+\[R = R_{\textrm{max}} \cdot \left(1 - {i \over n}\right),\]</div>
+<p>in which the maximum radius is defined as</p>
+<div class="math notranslate nohighlight">
+\[R_{\textrm{max}} = \sqrt{N_x^2 + N_y^2},\]</div>
+<p>where <span class="math notranslate nohighlight">\(\left(N_x, N_y\right)\)</span> are the dimensions of the rectangle
+defining the topology.</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">somcluster</span></code> implements the complete algorithm to
+calculate a Self-Organizing Map on a rectangular grid. First it
+initializes the random number generator. The node data are then
+initialized using the random number generator. The order in which genes
+or samples are used to modify the SOM is also randomized. The total
+number of iterations in the SOM algorithm is specified by the user.</p>
+<p>To run <code class="docutils literal notranslate"><span class="pre">somcluster</span></code>, use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">somcluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clusterid</span><span class="p">,</span> <span class="n">celldata</span> <span class="o">=</span> <span class="n">somcluster</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">data</span></code> (required)</div>
+<div class="line">Array containing the data for the items.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">mask</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">Array of integers showing which data are missing. If
+<code class="docutils literal notranslate"><span class="pre">mask[i,</span> <span class="pre">j]</span> <span class="pre">==</span> <span class="pre">0</span></code>, then <code class="docutils literal notranslate"><span class="pre">data[i,</span> <span class="pre">j]</span></code> is missing. If <code class="docutils literal notranslate"><span class="pre">mask</span></code> is
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, then all data are present.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">weight</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">contains the weights to be used when calculating distances. If
+<code class="docutils literal notranslate"><span class="pre">weight</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>, then equal weights are assumed.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">Determines if rows (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">0</span></code>) or columns
+(<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code>) are to be clustered.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">nxgrid,</span> <span class="pre">nygrid</span></code> (default: <code class="docutils literal notranslate"><span class="pre">2,</span> <span class="pre">1</span></code>)</div>
+<div class="line">The number of cells horizontally and vertically in the rectangular
+grid on which the Self-Organizing Map is calculated.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">inittau</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0.02</span></code>)</div>
+<div class="line">The initial value for the parameter <span class="math notranslate nohighlight">\(\tau\)</span> that is used in
+the SOM algorithm. The default value for <code class="docutils literal notranslate"><span class="pre">inittau</span></code> is 0.02, which
+was used in Michael Eisen’s Cluster/TreeView program.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">niter</span></code> (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</div>
+<div class="line">The number of iterations to be performed.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dist</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'e'</span></code>, Euclidean distance)</div>
+<div class="line">Defines the distance function to be used (see
+<a class="reference internal" href="#sec-distancefunctions"><span class="std std-ref">Distance functions</span></a>).</div>
+</div>
+</li>
+</ul>
+<p>This function returns the tuple <code class="docutils literal notranslate"><span class="pre">(clusterid,</span> <span class="pre">celldata)</span></code>:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">clusterid</span></code>:</div>
+<div class="line">An array with two columns, where the number of rows is equal to the
+number of items that were clustered. Each row contains the
+<span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> coordinates of the cell in the rectangular
+SOM grid to which the item was assigned.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">celldata</span></code>:</div>
+<div class="line">An array with dimensions
+<span class="math notranslate nohighlight">\(\left(\verb|nxgrid|, \verb|nygrid|, \textrm{number of columns}\right)\)</span>
+if rows are being clustered, or
+<span class="math notranslate nohighlight">\(\left(\verb|nxgrid|, \verb|nygrid|, \textrm{number of rows}\right)\)</span>
+if columns are being clustered. Each element <code class="docutils literal notranslate"><span class="pre">[ix][iy]</span></code> of this
+array is a 1D vector containing the gene expression data for the
+centroid of the cluster in the grid cell with coordinates
+<code class="docutils literal notranslate"><span class="pre">[ix][iy]</span></code>.</div>
+</div>
+</li>
+</ul>
+</section>
+<section id="principal-component-analysis">
+<h3>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this headline"></a></h3>
+<p>Principal Component Analysis (PCA) is a widely used technique for
+analyzing multivariate data. A practical example of applying Principal
+Component Analysis to gene expression data is presented by Yeung and
+Ruzzo (2001) <a class="reference internal" href="chapter_bibliography.html#yeung2001" id="id8"><span>[Yeung2001]</span></a>.</p>
+<p>In essence, PCA is a coordinate transformation in which each row in the
+data matrix is written as a linear sum over basis vectors called
+principal components, which are ordered and chosen such that each
+maximally explains the remaining variance in the data vectors. For
+example, an <span class="math notranslate nohighlight">\(n \times 3\)</span> data matrix can be represented as an
+ellipsoidal cloud of <span class="math notranslate nohighlight">\(n\)</span> points in three dimensional space. The
+first principal component is the longest axis of the ellipsoid, the
+second principal component the second longest axis of the ellipsoid, and
+the third principal component is the shortest axis. Each row in the data
+matrix can be reconstructed as a suitable linear combination of the
+principal components. However, in order to reduce the dimensionality of
+the data, usually only the most important principal components are
+retained. The remaining variance present in the data is then regarded as
+unexplained variance.</p>
+<p>The principal components can be found by calculating the eigenvectors of
+the covariance matrix of the data. The corresponding eigenvalues
+determine how much of the variance present in the data is explained by
+each principal component.</p>
+<p>Before applying principal component analysis, typically the mean is
+subtracted from each column in the data matrix. In the example above,
+this effectively centers the ellipsoidal cloud around its centroid in 3D
+space, with the principal components describing the variation of points
+in the ellipsoidal cloud with respect to their centroid.</p>
+<p>The function <code class="docutils literal notranslate"><span class="pre">pca</span></code> below first uses the singular value decomposition
+to calculate the eigenvalues and eigenvectors of the data matrix. The
+singular value decomposition is implemented as a translation in C of the
+Algol procedure <code class="docutils literal notranslate"><span class="pre">svd</span></code> <a class="reference internal" href="chapter_bibliography.html#golub1971" id="id9"><span>[Golub1971]</span></a>, which uses
+Householder bidiagonalization and a variant of the QR algorithm. The
+principal components, the coordinates of each data vector along the
+principal components, and the eigenvalues corresponding to the principal
+components are then evaluated and returned in decreasing order of the
+magnitude of the eigenvalue. If data centering is desired, the mean
+should be subtracted from each column in the data matrix before calling
+the <code class="docutils literal notranslate"><span class="pre">pca</span></code> routine.</p>
+<p>To apply Principal Component Analysis to a rectangular matrix <code class="docutils literal notranslate"><span class="pre">data</span></code>,
+use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">pca</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">columnmean</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">pca</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This function returns a tuple
+<code class="docutils literal notranslate"><span class="pre">columnmean,</span> <span class="pre">coordinates,</span> <span class="pre">components,</span> <span class="pre">eigenvalues</span></code>:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">columnmean</span></code></div>
+<div class="line">Array containing the mean over each column in <code class="docutils literal notranslate"><span class="pre">data</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">coordinates</span></code></div>
+<div class="line">The coordinates of each row in <code class="docutils literal notranslate"><span class="pre">data</span></code> with respect to the
+principal components.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">components</span></code></div>
+<div class="line">The principal components.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">eigenvalues</span></code></div>
+<div class="line">The eigenvalues corresponding to each of the principal components.</div>
+</div>
+</li>
+</ul>
+<p>The original matrix <code class="docutils literal notranslate"><span class="pre">data</span></code> can be recreated by calculating
+<code class="docutils literal notranslate"><span class="pre">columnmean</span> <span class="pre">+</span>&#160; <span class="pre">dot(coordinates,</span> <span class="pre">components)</span></code>.</p>
+</section>
+<section id="handling-cluster-treeview-type-files">
+<h3>Handling Cluster/TreeView-type files<a class="headerlink" href="#handling-cluster-treeview-type-files" title="Permalink to this headline"></a></h3>
+<p>Cluster/TreeView are GUI-based codes for clustering gene expression
+data. They were originally written by <a class="reference external" href="http://rana.lbl.gov">Michael
+Eisen</a> while at Stanford University
+<a class="reference internal" href="chapter_bibliography.html#eisen1998" id="id10"><span>[Eisen1998]</span></a>. <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> contains functions for
+reading and writing data files that correspond to the format specified
+for Cluster/TreeView. In particular, by saving a clustering result in
+that format, TreeView can be used to visualize the clustering results.
+We recommend using Alok Saldanha’s
+<a class="reference external" href="http://jtreeview.sourceforge.net/">http://jtreeview.sourceforge.net/</a>Java TreeView program
+<a class="reference internal" href="chapter_bibliography.html#saldanha2004" id="id11"><span>[Saldanha2004]</span></a>, which can display hierarchical as well
+as <span class="math notranslate nohighlight">\(k\)</span>-means clustering results.</p>
+<p>An object of the class <code class="docutils literal notranslate"><span class="pre">Record</span></code> contains all information stored in a
+Cluster/TreeView-type data file. To store the information contained in
+the data file in a <code class="docutils literal notranslate"><span class="pre">Record</span></code> object, we first open the file and then
+read it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Cluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;mydatafile.txt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">record</span> <span class="o">=</span> <span class="n">Cluster</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>This two-step process gives you some flexibility in the source of the
+data. For example, you can use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gzip</span>  <span class="c1"># Python standard library</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;mydatafile.txt.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>to open a gzipped file, or</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">TextIOWrapper</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/biopython/biopython/master/Tests/Cluster/cyano.txt&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">TextIOWrapper</span><span class="p">(</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>to open a file stored on the Internet before calling <code class="docutils literal notranslate"><span class="pre">read</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">read</span></code> command reads the tab-delimited text file
+<code class="docutils literal notranslate"><span class="pre">mydatafile.txt</span></code> containing gene expression data in the format
+specified for Michael Eisen’s Cluster/TreeView program. In this file
+format, rows represent genes and columns represent samples or
+observations. For a simple time course, a minimal input file would look
+like this:</p>
+<div class="center docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 20%" />
+<col style="width: 22%" />
+<col style="width: 13%" />
+<col style="width: 15%" />
+<col style="width: 15%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>YORF</p></td>
+<td><p>0 minutes</p></td>
+<td><p>30 minutes</p></td>
+<td><p>1 hour</p></td>
+<td><p>2 hours</p></td>
+<td><p>4 hours</p></td>
+</tr>
+<tr class="row-even"><td><p>YAL001C</p></td>
+<td><p>1</p></td>
+<td><p>1.3</p></td>
+<td><p>2.4</p></td>
+<td><p>5.8</p></td>
+<td><p>2.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>YAL002W</p></td>
+<td><p>0.9</p></td>
+<td><p>0.8</p></td>
+<td><p>0.7</p></td>
+<td><p>0.5</p></td>
+<td><p>0.2</p></td>
+</tr>
+<tr class="row-even"><td><p>YAL003W</p></td>
+<td><p>0.8</p></td>
+<td><p>2.1</p></td>
+<td><p>4.2</p></td>
+<td><p>10.1</p></td>
+<td><p>10.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>YAL005C</p></td>
+<td><p>1.1</p></td>
+<td><p>1.3</p></td>
+<td><p>0.8</p></td>
+<td></td>
+<td><p>0.4</p></td>
+</tr>
+<tr class="row-even"><td><p>YAL010C</p></td>
+<td><p>1.2</p></td>
+<td><p>1</p></td>
+<td><p>1.1</p></td>
+<td><p>4.5</p></td>
+<td><p>8.3</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Each row (gene) has an identifier that always goes in the first column.
+In this example, we are using yeast open reading frame codes. Each
+column (sample) has a label in the first row. In this example, the
+labels describe the time at which a sample was taken. The first column
+of the first row contains a special field that tells the program what
+kind of objects are in each row. In this case, YORF stands for yeast
+open reading frame. This field can be any alphanumeric value. The
+remaining cells in the table contain data for the appropriate gene and
+sample. The 5.8 in row 2 column 4 means that the observed value for gene
+YAL001C at 2 hours was 5.8. Missing values are acceptable and are
+designated by empty cells (e.g. YAL004C at 2 hours).</p>
+<p>The input file may contain additional information. A maximal input file
+would look like this:</p>
+<div class="center docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 41%" />
+<col style="width: 11%" />
+<col style="width: 10%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 5%" />
+<col style="width: 6%" />
+<col style="width: 6%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>YORF</p></td>
+<td><p>NAME</p></td>
+<td><p>GWEIGHT</p></td>
+<td><p>GORDER</p></td>
+<td><p>0</p></td>
+<td><p>30</p></td>
+<td><p>1</p></td>
+<td><p>2</p></td>
+<td><p>4</p></td>
+</tr>
+<tr class="row-even"><td><p>EWEIGHT</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>EORDER</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>5</p></td>
+<td><p>3</p></td>
+<td><p>2</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>YAL001C</p></td>
+<td><p>TFIIIC 138 KD SUBUNIT</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1.3</p></td>
+<td><p>2.4</p></td>
+<td><p>5.8</p></td>
+<td><p>2.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>YAL002W</p></td>
+<td><p>UNKNOWN</p></td>
+<td><p>0.4</p></td>
+<td><p>3</p></td>
+<td><p>0.9</p></td>
+<td><p>0.8</p></td>
+<td><p>0.7</p></td>
+<td><p>0.5</p></td>
+<td><p>0.2</p></td>
+</tr>
+<tr class="row-even"><td><p>YAL003W</p></td>
+<td><p>ELONGATION FACTOR EF1-BETA</p></td>
+<td><p>0.4</p></td>
+<td><p>2</p></td>
+<td><p>0.8</p></td>
+<td><p>2.1</p></td>
+<td><p>4.2</p></td>
+<td><p>10.1</p></td>
+<td><p>10.1</p></td>
+</tr>
+<tr class="row-odd"><td><p>YAL005C</p></td>
+<td><p>CYTOSOLIC HSP70</p></td>
+<td><p>0.4</p></td>
+<td><p>5</p></td>
+<td><p>1.1</p></td>
+<td><p>1.3</p></td>
+<td><p>0.8</p></td>
+<td></td>
+<td><p>0.4</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The added columns NAME, GWEIGHT, and GORDER and rows EWEIGHT and EORDER
+are optional. The NAME column allows you to specify a label for each
+gene that is distinct from the ID in column 1.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Record</span></code> object has the following attributes:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">data</span></code></div>
+<div class="line">The data array containing the gene expression data. Genes are
+stored row-wise, while samples are stored column-wise.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">mask</span></code></div>
+<div class="line">This array shows which elements in the <code class="docutils literal notranslate"><span class="pre">data</span></code> array, if any, are
+missing. If <code class="docutils literal notranslate"><span class="pre">mask[i,</span> <span class="pre">j]</span> <span class="pre">==</span> <span class="pre">0</span></code>, then <code class="docutils literal notranslate"><span class="pre">data[i,</span> <span class="pre">j]</span></code> is missing. If
+no data were found to be missing, <code class="docutils literal notranslate"><span class="pre">mask</span></code> is set to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">geneid</span></code></div>
+<div class="line">This is a list containing a unique description for each gene (i.e.,
+ORF numbers).</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">genename</span></code></div>
+<div class="line">This is a list containing a description for each gene (i.e., gene
+name). If not present in the data file, <code class="docutils literal notranslate"><span class="pre">genename</span></code> is set to
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">gweight</span></code></div>
+<div class="line">The weights that are to be used to calculate the distance in
+expression profile between genes. If not present in the data file,
+<code class="docutils literal notranslate"><span class="pre">gweight</span></code> is set to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">gorder</span></code></div>
+<div class="line">The preferred order in which genes should be stored in an output
+file. If not present in the data file, <code class="docutils literal notranslate"><span class="pre">gorder</span></code> is set to
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">expid</span></code></div>
+<div class="line">This is a list containing a description of each sample, e.g.
+experimental condition.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">eweight</span></code></div>
+<div class="line">The weights that are to be used to calculate the distance in
+expression profile between samples. If not present in the data
+file, <code class="docutils literal notranslate"><span class="pre">eweight</span></code> is set to <code class="docutils literal notranslate"><span class="pre">None</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">eorder</span></code></div>
+<div class="line">The preferred order in which samples should be stored in an output
+file. If not present in the data file, <code class="docutils literal notranslate"><span class="pre">eorder</span></code> is set to
+<code class="docutils literal notranslate"><span class="pre">None</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">uniqid</span></code></div>
+<div class="line">The string that was used instead of UNIQID in the data file.</div>
+</div>
+</li>
+</ul>
+<p>After loading a <code class="docutils literal notranslate"><span class="pre">Record</span></code> object, each of these attributes can be
+accessed and modified directly. For example, the data can be
+log-transformed by taking the logarithm of <code class="docutils literal notranslate"><span class="pre">record.data</span></code>.</p>
+</section>
+</section>
+<section id="id12">
+<h2>Calculating the distance matrix<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h2>
+<p>To calculate the distance matrix between the items stored in the record,
+use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">distancematrix</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">Determines if the distances between the rows of <code class="docutils literal notranslate"><span class="pre">data</span></code> are to be
+calculated (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>), or between the columns of
+<code class="docutils literal notranslate"><span class="pre">data</span></code> (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dist</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'e'</span></code>, Euclidean distance)</div>
+<div class="line">Defines the distance function to be used (see
+<a class="reference internal" href="#sec-distancefunctions"><span class="std std-ref">Distance functions</span></a>).</div>
+</div>
+</li>
+</ul>
+<p>This function returns the distance matrix as a list of rows, where the
+number of columns of each row is equal to the row number (see section
+<a class="reference internal" href="#sec-distancematrix"><span class="std std-ref">Calculating the distance matrix</span></a>).</p>
+</section>
+<section id="id13">
+<h2>Calculating the cluster centroids<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h2>
+<p>To calculate the centroids of clusters of items stored in the record,
+use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cdata</span><span class="p">,</span> <span class="n">cmask</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">clustercentroids</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">clusterid</span></code> (default: <code class="docutils literal notranslate"><span class="pre">None</span></code>)</div>
+<div class="line">Vector of integers showing to which cluster each item belongs. If
+<code class="docutils literal notranslate"><span class="pre">clusterid</span></code> is not given, then all items are assumed to belong to
+the same cluster.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">method</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'a'</span></code>)</div>
+<div class="line">Specifies whether the arithmetic mean (<code class="docutils literal notranslate"><span class="pre">method=='a'</span></code>) or the
+median (<code class="docutils literal notranslate"><span class="pre">method=='m'</span></code>) is used to calculate the cluster center.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">Determines if the centroids of the rows of <code class="docutils literal notranslate"><span class="pre">data</span></code> are to be
+calculated (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>), or the centroids of the
+columns of <code class="docutils literal notranslate"><span class="pre">data</span></code> (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</div>
+</div>
+</li>
+</ul>
+<p>This function returns the tuple <code class="docutils literal notranslate"><span class="pre">cdata,</span> <span class="pre">cmask</span></code>; see section
+<a class="reference internal" href="#sec-clustercentroids"><span class="std std-ref">Calculating the cluster centroids</span></a> for a description.</p>
+</section>
+<section id="calculating-the-distance-between-clusters-1">
+<span id="id14"></span><h2>Calculating the distance between clusters<a class="headerlink" href="#calculating-the-distance-between-clusters-1" title="Permalink to this headline"></a></h2>
+<p>To calculate the distance between clusters of items stored in the
+record, use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">clusterdistance</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">index1</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">A list containing the indices of the items belonging to the first
+cluster. A cluster containing only one item <span class="math notranslate nohighlight">\(i\)</span> can be
+represented either as a list <code class="docutils literal notranslate"><span class="pre">[i]</span></code>, or as an integer <code class="docutils literal notranslate"><span class="pre">i</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">index2</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">A list containing the indices of the items belonging to the second
+cluster. A cluster containing only one item <span class="math notranslate nohighlight">\(i\)</span> can be
+represented either as a list <code class="docutils literal notranslate"><span class="pre">[i]</span></code>, or as an integer <code class="docutils literal notranslate"><span class="pre">i</span></code>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">method</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'a'</span></code>)</div>
+<div class="line">Specifies how the distance between clusters is defined:</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">'a'</span></code>: Distance between the two cluster centroids (arithmetic
+mean);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'m'</span></code>: Distance between the two cluster centroids (median);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'s'</span></code>: Shortest pairwise distance between items in the two
+clusters;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'x'</span></code>: Longest pairwise distance between items in the two
+clusters;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">'v'</span></code>: Average over the pairwise distances between items in the
+two clusters.</p></li>
+</ul>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dist</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'e'</span></code>, Euclidean distance)</div>
+<div class="line">Defines the distance function to be used (see
+<a class="reference internal" href="#sec-distancefunctions"><span class="std std-ref">Distance functions</span></a>).</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">If <code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, calculate the distance between the
+rows of <code class="docutils literal notranslate"><span class="pre">data</span></code>. If <code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, calculate the
+distance between the columns of <code class="docutils literal notranslate"><span class="pre">data</span></code>.</div>
+</div>
+</li>
+</ul>
+</section>
+<section id="performing-hierarchical-clustering-1">
+<span id="id15"></span><h2>Performing hierarchical clustering<a class="headerlink" href="#performing-hierarchical-clustering-1" title="Permalink to this headline"></a></h2>
+<p>To perform hierarchical clustering on the items stored in the record,
+use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">treecluster</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">Determines if rows (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>) or columns
+(<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>) are to be clustered.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">method</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'m'</span></code>)</div>
+<div class="line">defines the linkage method to be used:</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='s'</span></code>: pairwise single-linkage clustering</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='m'</span></code>: pairwise maximum- (or complete-) linkage
+clustering</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='c'</span></code>: pairwise centroid-linkage clustering</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='a'</span></code>: pairwise average-linkage clustering</p></li>
+</ul>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dist</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'e'</span></code>, Euclidean distance)</div>
+<div class="line">Defines the distance function to be used (see
+<a class="reference internal" href="#sec-distancefunctions"><span class="std std-ref">Distance functions</span></a>).</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code></div>
+<div class="line">Determines if genes or samples are being clustered. If
+<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, genes (rows) are being clustered. If
+<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, samples (columns) are clustered.</div>
+</div>
+</li>
+</ul>
+<p>This function returns a <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object. This object contains
+<span class="math notranslate nohighlight">\(\left(\textrm{number of items} - 1\right)\)</span> nodes, where the
+number of items is the number of rows if rows were clustered, or the
+number of columns if columns were clustered. Each node describes a
+pairwise linking event, where the node attributes <code class="docutils literal notranslate"><span class="pre">left</span></code> and <code class="docutils literal notranslate"><span class="pre">right</span></code>
+each contain the number of one item or subnode, and <code class="docutils literal notranslate"><span class="pre">distance</span></code> the
+distance between them. Items are numbered from 0 to
+<span class="math notranslate nohighlight">\(\left(\textrm{number of items} - 1\right)\)</span>, while clusters are
+numbered -1 to <span class="math notranslate nohighlight">\(-\left(\textrm{number of items}-1\right)\)</span>.</p>
+</section>
+<section id="performing-k-means-or-k-medians-clustering">
+<h2>Performing <span class="math notranslate nohighlight">\(k\)</span>-means or <span class="math notranslate nohighlight">\(k\)</span>-medians clustering<a class="headerlink" href="#performing-k-means-or-k-medians-clustering" title="Permalink to this headline"></a></h2>
+<p>To perform <span class="math notranslate nohighlight">\(k\)</span>-means or <span class="math notranslate nohighlight">\(k\)</span>-medians clustering on the items
+stored in the record, use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clusterid</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">nfound</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">kcluster</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">nclusters</span></code> (default: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</div>
+<div class="line">The number of clusters <span class="math notranslate nohighlight">\(k\)</span>.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">Determines if rows (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">0</span></code>) or columns
+(<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code>) are to be clustered.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">npass</span></code> (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</div>
+<div class="line">The number of times the <span class="math notranslate nohighlight">\(k\)</span>-means/-medians clustering
+algorithm is performed, each time with a different (random) initial
+condition. If <code class="docutils literal notranslate"><span class="pre">initialid</span></code> is given, the value of <code class="docutils literal notranslate"><span class="pre">npass</span></code> is
+ignored and the clustering algorithm is run only once, as it
+behaves deterministically in that case.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">method</span></code> (default: <code class="docutils literal notranslate"><span class="pre">a</span></code>)</div>
+<div class="line">describes how the center of a cluster is found:</div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='a'</span></code>: arithmetic mean (<span class="math notranslate nohighlight">\(k\)</span>-means clustering);</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=='m'</span></code>: median (<span class="math notranslate nohighlight">\(k\)</span>-medians clustering).</p></li>
+</ul>
+<p>For other values of <code class="docutils literal notranslate"><span class="pre">method</span></code>, the arithmetic mean is used.</p>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dist</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'e'</span></code>, Euclidean distance)</div>
+<div class="line">Defines the distance function to be used (see
+<a class="reference internal" href="#sec-distancefunctions"><span class="std std-ref">Distance functions</span></a>).</div>
+</div>
+</li>
+</ul>
+<p>This function returns a tuple <code class="docutils literal notranslate"><span class="pre">(clusterid,</span> <span class="pre">error,</span> <span class="pre">nfound)</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">clusterid</span></code> is an integer array containing the number of the cluster
+to which each row or cluster was assigned, <code class="docutils literal notranslate"><span class="pre">error</span></code> is the
+within-cluster sum of distances for the optimal clustering solution, and
+<code class="docutils literal notranslate"><span class="pre">nfound</span></code> is the number of times this optimal solution was found.</p>
+</section>
+<section id="calculating-a-self-organizing-map">
+<h2>Calculating a Self-Organizing Map<a class="headerlink" href="#calculating-a-self-organizing-map" title="Permalink to this headline"></a></h2>
+<p>To calculate a Self-Organizing Map of the items stored in the record,
+use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clusterid</span><span class="p">,</span> <span class="n">celldata</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">somcluster</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">transpose</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</div>
+<div class="line">Determines if rows (<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">0</span></code>) or columns
+(<code class="docutils literal notranslate"><span class="pre">transpose</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code>) are to be clustered.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">nxgrid,</span> <span class="pre">nygrid</span></code> (default: <code class="docutils literal notranslate"><span class="pre">2,</span> <span class="pre">1</span></code>)</div>
+<div class="line">The number of cells horizontally and vertically in the rectangular
+grid on which the Self-Organizing Map is calculated.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">inittau</span></code> (default: <code class="docutils literal notranslate"><span class="pre">0.02</span></code>)</div>
+<div class="line">The initial value for the parameter <span class="math notranslate nohighlight">\(\tau\)</span> that is used in
+the SOM algorithm. The default value for <code class="docutils literal notranslate"><span class="pre">inittau</span></code> is 0.02, which
+was used in Michael Eisen’s Cluster/TreeView program.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">niter</span></code> (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</div>
+<div class="line">The number of iterations to be performed.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">dist</span></code> (default: <code class="docutils literal notranslate"><span class="pre">'e'</span></code>, Euclidean distance)</div>
+<div class="line">Defines the distance function to be used (see
+<a class="reference internal" href="#sec-distancefunctions"><span class="std std-ref">Distance functions</span></a>).</div>
+</div>
+</li>
+</ul>
+<p>This function returns the tuple <code class="docutils literal notranslate"><span class="pre">(clusterid,</span> <span class="pre">celldata)</span></code>:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">clusterid</span></code>:</div>
+<div class="line">An array with two columns, where the number of rows is equal to the
+number of items that were clustered. Each row contains the
+<span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> coordinates of the cell in the rectangular
+SOM grid to which the item was assigned.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">celldata</span></code>:</div>
+<div class="line">An array with dimensions
+<span class="math notranslate nohighlight">\(\left(\verb|nxgrid|, \verb|nygrid|, \textrm{number of columns}\right)\)</span>
+if rows are being clustered, or
+<span class="math notranslate nohighlight">\(\left(\verb|nxgrid|, \verb|nygrid|, \textrm{number of rows}\right)\)</span>
+if columns are being clustered. Each element <code class="docutils literal notranslate"><span class="pre">[ix][iy]</span></code> of this
+array is a 1D vector containing the gene expression data for the
+centroid of the cluster in the grid cell with coordinates
+<code class="docutils literal notranslate"><span class="pre">[ix][iy]</span></code>.</div>
+</div>
+</li>
+</ul>
+</section>
+<section id="saving-the-clustering-result">
+<h2>Saving the clustering result<a class="headerlink" href="#saving-the-clustering-result" title="Permalink to this headline"></a></h2>
+<p>To save the clustering result, use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">jobname</span><span class="p">,</span> <span class="n">geneclusters</span><span class="p">,</span> <span class="n">expclusters</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the following arguments are defined:</p>
+<ul>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">jobname</span></code></div>
+<div class="line">The string <code class="docutils literal notranslate"><span class="pre">jobname</span></code> is used as the base name for names of the
+files that are to be saved.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">geneclusters</span></code></div>
+<div class="line">This argument describes the gene (row-wise) clustering result. In
+case of <span class="math notranslate nohighlight">\(k\)</span>-means clustering, this is a 1D array containing
+the number of the cluster each gene belongs to. It can be
+calculated using <code class="docutils literal notranslate"><span class="pre">kcluster</span></code>. In case of hierarchical clustering,
+<code class="docutils literal notranslate"><span class="pre">geneclusters</span></code> is a <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object.</div>
+</div>
+</li>
+<li><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">expclusters</span></code></div>
+<div class="line">This argument describes the (column-wise) clustering result for the
+experimental conditions. In case of <span class="math notranslate nohighlight">\(k\)</span>-means clustering,
+this is a 1D array containing the number of the cluster each
+experimental condition belongs to. It can be calculated using
+<code class="docutils literal notranslate"><span class="pre">kcluster</span></code>. In case of hierarchical clustering, <code class="docutils literal notranslate"><span class="pre">expclusters</span></code>
+is a <code class="docutils literal notranslate"><span class="pre">Tree</span></code> object.</div>
+</div>
+</li>
+</ul>
+<p>This method writes the text file <code class="docutils literal notranslate"><span class="pre">jobname.cdt</span></code>, <code class="docutils literal notranslate"><span class="pre">jobname.gtr</span></code>,
+<code class="docutils literal notranslate"><span class="pre">jobname.atr</span></code>, <code class="docutils literal notranslate"><span class="pre">jobname*.kgg</span></code>, and/or <code class="docutils literal notranslate"><span class="pre">jobname*.kag</span></code> for
+subsequent reading by the Java TreeView program. If <code class="docutils literal notranslate"><span class="pre">geneclusters</span></code> and
+<code class="docutils literal notranslate"><span class="pre">expclusters</span></code> are both <code class="docutils literal notranslate"><span class="pre">None</span></code>, this method only writes the text file
+<code class="docutils literal notranslate"><span class="pre">jobname.cdt</span></code>; this file can subsequently be read into a new
+<code class="docutils literal notranslate"><span class="pre">Record</span></code> object.</p>
+<section id="example-calculation">
+<h3>Example calculation<a class="headerlink" href="#example-calculation" title="Permalink to this headline"></a></h3>
+<p>This is an example of a hierarchical clustering calculation, using
+single linkage clustering for genes and maximum linkage clustering for
+experimental conditions. As the Euclidean distance is being used for
+gene clustering, it is necessary to scale the node distances
+<code class="docutils literal notranslate"><span class="pre">genetree</span></code> such that they are all between zero and one. This is needed
+for the Java TreeView code to display the tree diagram correctly. To
+cluster the experimental conditions, the uncentered correlation is being
+used. No scaling is needed in this case, as the distances in <code class="docutils literal notranslate"><span class="pre">exptree</span></code>
+are already between zero and two.</p>
+<p>The example data <code class="docutils literal notranslate"><span class="pre">cyano.txt</span></code> can be found in Biopython’s
+<code class="docutils literal notranslate"><span class="pre">Tests/Cluster</span></code> subdirectory and is from the paper
+Hihara <em>et al.</em> 2001 <a class="reference internal" href="chapter_bibliography.html#hihara2001" id="id16"><span>[Hihara2001]</span></a>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Cluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;cyano.txt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">record</span> <span class="o">=</span> <span class="n">Cluster</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">genetree</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">treecluster</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;s&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">genetree</span><span class="o">.</span><span class="n">scale</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exptree</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">treecluster</span><span class="p">(</span><span class="n">dist</span><span class="o">=</span><span class="s2">&quot;u&quot;</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;cyano_result&quot;</span><span class="p">,</span> <span class="n">genetree</span><span class="p">,</span> <span class="n">exptree</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will create the files <code class="docutils literal notranslate"><span class="pre">cyano_result.cdt</span></code>, <code class="docutils literal notranslate"><span class="pre">cyano_result.gtr</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">cyano_result.atr</span></code>.</p>
+<p>Similarly, we can save a <span class="math notranslate nohighlight">\(k\)</span>-means clustering solution:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Cluster</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;cyano.txt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">record</span> <span class="o">=</span> <span class="n">Cluster</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">geneclusters</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">ifound</span><span class="p">)</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">kcluster</span><span class="p">(</span><span class="n">nclusters</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">npass</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">(</span><span class="n">expclusters</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">ifound</span><span class="p">)</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">kcluster</span><span class="p">(</span><span class="n">nclusters</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">npass</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">transpose</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;cyano_result&quot;</span><span class="p">,</span> <span class="n">geneclusters</span><span class="p">,</span> <span class="n">expclusters</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will create the files <code class="docutils literal notranslate"><span class="pre">cyano_result_K_G2_A2.cdt</span></code>,
+<code class="docutils literal notranslate"><span class="pre">cyano_result_K_G2.kgg</span></code>, and <code class="docutils literal notranslate"><span class="pre">cyano_result_K_A2.kag</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_motifs.html" class="btn btn-neutral float-left" title="Sequence motif analysis using Bio.motifs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_graphics.html" class="btn btn-neutral float-right" title="Graphics including GenomeDiagram" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio.phenotype: analyze phenotypic data &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cookbook – Cool things to do with it" href="chapter_cookbook.html" />
+    <link rel="prev" title="KEGG" href="chapter_kegg.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Bio.phenotype: analyze phenotypic data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#phenotype-microarrays">Phenotype Microarrays</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parsing-phenotype-microarray-data">Parsing Phenotype Microarray data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#manipulating-phenotype-microarray-data">Manipulating Phenotype Microarray data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#writing-phenotype-microarray-data">Writing Phenotype Microarray data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">Bio.phenotype: analyze phenotypic data</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_phenotype.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_kegg.html" class="btn btn-neutral float-left" title="KEGG" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_cookbook.html" class="btn btn-neutral float-right" title="Cookbook – Cool things to do with it" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bio-phenotype-analyze-phenotypic-data">
+<span id="chapter-phenotype"></span><h1>Bio.phenotype: analyze phenotypic data<a class="headerlink" href="#bio-phenotype-analyze-phenotypic-data" title="Permalink to this headline"></a></h1>
+<p>This chapter gives an overview of the functionalities of the
+<code class="docutils literal notranslate"><span class="pre">Bio.phenotype</span></code> package included in Biopython. The scope of this
+package is the analysis of phenotypic data, which means parsing and
+analyzing growth measurements of cell cultures. In its current state the
+package is focused on the analysis of high-throughput phenotypic
+experiments produced by the <a class="reference external" href="https://en.wikipedia.org/wiki/Phenotype_microarray">Phenotype Microarray
+technology</a>, but
+future developments may include other platforms and formats.</p>
+<section id="phenotype-microarrays">
+<span id="sec-phenotypemicroarrays"></span><h2>Phenotype Microarrays<a class="headerlink" href="#phenotype-microarrays" title="Permalink to this headline"></a></h2>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Phenotype_microarray">Phenotype
+Microarray</a> is a
+technology that measures the metabolism of bacterial and eukaryotic
+cells on roughly 2000 chemicals, divided in twenty 96-well plates. The
+technology measures the reduction of a tetrazolium dye by NADH, whose
+production by the cell is used as a proxy for cell metabolism; color
+development due to the reduction of this dye is typically measured once
+every 15 minutes. When cells are grown in a media that sustains cell
+metabolism, the recorded phenotypic data resembles a sigmoid growth
+curve, from which a series of growth parameters can be retrieved.</p>
+<section id="parsing-phenotype-microarray-data">
+<h3>Parsing Phenotype Microarray data<a class="headerlink" href="#parsing-phenotype-microarray-data" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.phenotype</span></code> package can parse two different formats of
+Phenotype Microarray data: the
+<a class="reference external" href="https://en.wikipedia.org/wiki/Comma-separated_values">CSV</a> (comma
+separated values) files produced by the machine’s proprietary software
+and <a class="reference external" href="https://en.wikipedia.org/wiki/JSON">JSON</a> files produced by
+analysis software, like
+<a class="reference external" href="https://www.dsmz.de/research/microorganisms/projects/analysis-of-omnilog-phenotype-microarray-data.html">opm</a>
+or <a class="reference external" href="https://combogenomics.github.io/DuctApe/">DuctApe</a>. The parser
+will return one or a generator of PlateRecord objects, depending on
+whether the read or parse method is being used. You can test the parse
+function by using the
+<code class="docutils literal notranslate"><span class="pre">`Plates.csv</span></code> &lt;<a class="reference external" href="https://github.com/biopython/biopython/blob/master/Doc/examples/Plates.csv">https://github.com/biopython/biopython/blob/master/Doc/examples/Plates.csv</a>&gt;`__
+file provided with the Biopython source code.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">phenotype</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Plates.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-csv&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">PM01 96</span>
+<span class="go">PM01 96</span>
+<span class="go">PM09 96</span>
+<span class="go">PM09 96</span>
+</pre></div>
+</div>
+<p>The parser returns a series of PlateRecord objects, each one containing
+a series of WellRecord objects (holding each well’s experimental data)
+arranged in 8 rows and 12 columns; each row is indicated by a uppercase
+character from A to H, while columns are indicated by a two digit
+number, from 01 to 12. There are several ways to access WellRecord
+objects from a PlateRecord objects:</p>
+<dl>
+<dt>Well identifier</dt><dd><p>If you know the well identifier (row + column identifiers) you can
+access the desired well directly.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;A02&quot;</span><span class="p">]</span>
+<span class="go">WellRecord(&#39;(0.0, 12.0), (0.25, 18.0), (0.5, 27.0), (0.75, 35.0), (1.0, 37.0), ..., (71.75, 143.0)&#39;)</span>
+</pre></div>
+</div>
+</dd>
+<dt>Well plate coordinates</dt><dd><p>The same well can be retrieved by using the row and columns numbers
+(0-based index).</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">phenotype</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Plates.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-csv&quot;</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="go">A02</span>
+</pre></div>
+</div>
+</dd>
+<dt>Row or column coordinates</dt><dd><p>A series of WellRecord objects contiguous to each other in the plate
+can be retrieved in bulk by using the python list slicing syntax on
+PlateRecord objects; rows and columns are numbered with a 0-based
+index.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">Plate ID: PM09</span>
+<span class="go">Well: 12</span>
+<span class="go">Rows: 1</span>
+<span class="go">Columns: 12</span>
+<span class="go">PlateRecord(&#39;WellRecord[&#39;A01&#39;], WellRecord[&#39;A02&#39;], WellRecord[&#39;A03&#39;], ..., WellRecord[&#39;A12&#39;]&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">Plate ID: PM09</span>
+<span class="go">Well: 8</span>
+<span class="go">Rows: 8</span>
+<span class="go">Columns: 1</span>
+<span class="go">PlateRecord(&#39;WellRecord[&#39;A01&#39;], WellRecord[&#39;B01&#39;], WellRecord[&#39;C01&#39;], ..., WellRecord[&#39;H01&#39;]&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">Plate ID: PM09</span>
+<span class="go">Well: 9</span>
+<span class="go">Rows: 3</span>
+<span class="go">Columns: 3</span>
+<span class="go">PlateRecord(&#39;WellRecord[&#39;A01&#39;], WellRecord[&#39;A02&#39;], WellRecord[&#39;A03&#39;], ..., WellRecord[&#39;C03&#39;]&#39;)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</section>
+<section id="manipulating-phenotype-microarray-data">
+<h3>Manipulating Phenotype Microarray data<a class="headerlink" href="#manipulating-phenotype-microarray-data" title="Permalink to this headline"></a></h3>
+<section id="accessing-raw-data">
+<h4>Accessing raw data<a class="headerlink" href="#accessing-raw-data" title="Permalink to this headline"></a></h4>
+<p>The raw data extracted from the PM files is comprised of a series of
+tuples for each well, containing the time (in hours) and the
+colorimetric measure (in arbitrary units). Usually the instrument
+collects data every fifteen minutes, but that can vary between
+experiments. The raw data can be accessed by iterating on a WellRecord
+object; in the example below only the first ten time points are shown.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">phenotype</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Plates.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-csv&quot;</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">well</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;A02&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">time</span><span class="p">,</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">well</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">signal</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">(0.0, 12.0)</span>
+<span class="go">(0.25, 18.0)</span>
+<span class="go">(0.5, 27.0)</span>
+<span class="go">(0.75, 35.0)</span>
+<span class="go">(1.0, 37.0)</span>
+<span class="go">(1.25, 41.0)</span>
+<span class="go">(1.5, 44.0)</span>
+<span class="go">(1.75, 44.0)</span>
+<span class="go">(2.0, 44.0)</span>
+<span class="go">(2.25, 44.0)</span>
+<span class="go">[...]</span>
+</pre></div>
+</div>
+<p>This method, while providing a way to access the raw data, doesn’t allow
+a direct comparison between different WellRecord objects, which may have
+measurements at different time points.</p>
+</section>
+<section id="accessing-interpolated-data">
+<h4>Accessing interpolated data<a class="headerlink" href="#accessing-interpolated-data" title="Permalink to this headline"></a></h4>
+<p>To make it easier to compare different experiments and in general to
+allow a more intuitive handling of the phenotypic data, the module
+allows to define a custom slicing of the time points that are present in
+the WellRecord object. Colorimetric data for time points that have not
+been directly measured are derived through a linear interpolation of the
+available data, otherwise a NaN is returned. This method only works in
+the time interval where actual data is available. Time intervals can be
+defined with the same syntax as list indexing; the default time interval
+is therefore one hour.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">well</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+<span class="go">[12.0, 37.0, 44.0, 44.0, 44.0, 44.0, 44.0, 44.0, 44.0, 44.0]</span>
+</pre></div>
+</div>
+<p>Different time intervals can be used, for instance five minutes:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">well</span><span class="p">[</span><span class="mi">63</span><span class="p">:</span><span class="mi">64</span><span class="p">:</span><span class="mf">0.083</span><span class="p">]</span>
+<span class="go">[12.0, 37.0, 44.0, 44.0, 44.0, 44.0, 44.0, 44.0, 44.0, 44.0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">well</span><span class="p">[</span><span class="mf">9.55</span><span class="p">]</span>
+<span class="go">44.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">well</span><span class="p">[</span><span class="mf">63.33</span><span class="p">:</span><span class="mf">73.33</span><span class="p">]</span>
+<span class="go">[113.31999999999999,</span>
+<span class="go"> 117.0,</span>
+<span class="go"> 120.31999999999999,</span>
+<span class="go"> 128.0,</span>
+<span class="go"> 129.63999999999999,</span>
+<span class="go"> 132.95999999999998,</span>
+<span class="go"> 136.95999999999998,</span>
+<span class="go"> 140.0,</span>
+<span class="go"> 142.0,</span>
+<span class="go"> nan]</span>
+</pre></div>
+</div>
+</section>
+<section id="control-well-subtraction">
+<h4>Control well subtraction<a class="headerlink" href="#control-well-subtraction" title="Permalink to this headline"></a></h4>
+<p>Many Phenotype Microarray plates contain a control well (usually A01),
+that is a well where the media shouldn’t support any growth; the low
+signal produced by this well can be subtracted from the other wells. The
+PlateRecord objects have a dedicated function for that, which returns
+another PlateRecord object with the corrected data.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">corrected</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">subtract_control</span><span class="p">(</span><span class="n">control</span><span class="o">=</span><span class="s2">&quot;A01&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;A01&quot;</span><span class="p">][</span><span class="mi">63</span><span class="p">]</span>
+<span class="go">336.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">corrected</span><span class="p">[</span><span class="s2">&quot;A01&quot;</span><span class="p">][</span><span class="mi">63</span><span class="p">]</span>
+<span class="go">0.0</span>
+</pre></div>
+</div>
+</section>
+<section id="parameters-extraction">
+<h4>Parameters extraction<a class="headerlink" href="#parameters-extraction" title="Permalink to this headline"></a></h4>
+<p>Those wells where metabolic activity is observed show a sigmoid behavior
+for the colorimetric data. To allow an easier way to compare different
+experiments a sigmoid curve can be fitted onto the data, so that a
+series of summary parameters can be extracted and used for comparisons.
+The parameters that can be extracted from the curve are:</p>
+<ul class="simple">
+<li><p>Minimum (<strong>min</strong>) and maximum (<strong>max</strong>) signal;</p></li>
+<li><p>Average height (<strong>average_height</strong>);</p></li>
+<li><p>Area under the curve (<strong>area</strong>);</p></li>
+<li><p>Curve plateau point (<strong>plateau</strong>);</p></li>
+<li><p>Curve slope during exponential metabolic activity (<strong>slope</strong>);</p></li>
+<li><p>Curve lag time (<strong>lag</strong>).</p></li>
+</ul>
+<p>All the parameters (except <strong>min</strong>, <strong>max</strong> and <strong>average_height</strong>)
+require the <a class="reference external" href="https://www.scipy.org/">scipy library</a> to be installed.</p>
+<p>The fit function uses three sigmoid functions:</p>
+<dl class="simple">
+<dt>Gompertz</dt><dd><p><span class="math notranslate nohighlight">\(Ae^{-e^{(\frac{\mu_{m}e}{A}(\lambda - t) + 1)}} + y0\)</span></p>
+</dd>
+<dt>Logistic</dt><dd><p><span class="math notranslate nohighlight">\(\frac{A}{1+e^{(\frac{4\mu_{m}}{A}(\lambda - t) + 2)}} + y_{0}\)</span></p>
+</dd>
+<dt>Richards</dt><dd><p><span class="math notranslate nohighlight">\(A(1 + ve^{1 + v} + e^{\frac{\mu_{m}}{A}(1 + v)(1 + \frac{1}{v})(\lambda - t)})^{-\frac{1}{v}} + y0\)</span></p>
+</dd>
+</dl>
+<p>Where:</p>
+<ul class="simple">
+<li><p>corresponds to the <strong>plateau</strong></p></li>
+<li><p>corresponds to the <strong>slope</strong></p></li>
+<li><p>corresponds to the <strong>lag</strong></p></li>
+</ul>
+<p>These functions have been derived from <a class="reference external" href="https://www.ncbi.nlm.nih.gov/pubmed/16348228">this
+publication</a>. The fit
+method by default tries first to fit the gompertz function: if it fails
+it will then try to fit the logistic and then the richards function. The
+user can also specify one of the three functions to be applied.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">phenotype</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;Plates.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-csv&quot;</span><span class="p">))[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">well</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;A02&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">well</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Function fitted: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">well</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+<span class="go">Function fitted: gompertz</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">,</span> <span class="s2">&quot;average_height&quot;</span><span class="p">,</span> <span class="s2">&quot;lag&quot;</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">,</span> <span class="s2">&quot;min&quot;</span><span class="p">,</span> <span class="s2">&quot;plateau&quot;</span><span class="p">,</span> <span class="s2">&quot;slope&quot;</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\t</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">well</span><span class="p">,</span> <span class="n">param</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">area    4414.38</span>
+<span class="go">average_height  61.58</span>
+<span class="go">lag     48.60</span>
+<span class="go">max     143.00</span>
+<span class="go">min     12.00</span>
+<span class="go">plateau 120.02</span>
+<span class="go">slope   4.99</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="writing-phenotype-microarray-data">
+<h3>Writing Phenotype Microarray data<a class="headerlink" href="#writing-phenotype-microarray-data" title="Permalink to this headline"></a></h3>
+<p>PlateRecord objects can be written to file in the form of
+<a class="reference external" href="https://en.wikipedia.org/wiki/JSON">JSON</a> files, a format compatible
+with other software packages such as
+<a class="reference external" href="https://www.dsmz.de/research/microorganisms/projects/analysis-of-omnilog-phenotype-microarray-data.html">opm</a>
+or <a class="reference external" href="https://combogenomics.github.io/DuctApe/">DuctApe</a>.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">phenotype</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="s2">&quot;out.json&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-json&quot;</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_kegg.html" class="btn btn-neutral float-left" title="KEGG" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_cookbook.html" class="btn btn-neutral float-right" title="Cookbook – Cool things to do with it" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

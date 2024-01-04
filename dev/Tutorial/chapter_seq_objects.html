@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sequence objects &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sequence annotation objects" href="chapter_seq_annot.html" />
+    <link rel="prev" title="Quick Start – What can you do with Biopython?" href="chapter_quick_start.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sequence objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sequences-act-like-strings">Sequences act like strings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#slicing-a-sequence">Slicing a sequence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#turning-seq-objects-into-strings">Turning Seq objects into strings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#concatenating-or-adding-sequences">Concatenating or adding sequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#changing-case">Changing case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nucleotide-sequences-and-reverse-complements">Nucleotide sequences and (reverse) complements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#transcription">Transcription</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#translation">Translation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#translation-tables">Translation Tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comparing-seq-objects">Comparing Seq objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sequences-with-unknown-sequence-contents">Sequences with unknown sequence contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sequences-with-partially-defined-sequence-contents">Sequences with partially defined sequence contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mutableseq-objects">MutableSeq objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#finding-subsequences">Finding subsequences</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-strings-directly">Working with strings directly</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">Sequence objects</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_seq_objects.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_quick_start.html" class="btn btn-neutral float-left" title="Quick Start – What can you do with Biopython?" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_seq_annot.html" class="btn btn-neutral float-right" title="Sequence annotation objects" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sequence-objects">
+<span id="chapter-seq-objects"></span><h1>Sequence objects<a class="headerlink" href="#sequence-objects" title="Permalink to this headline"></a></h1>
+<p>Biological sequences are arguably the central object in Bioinformatics,
+and in this chapter we’ll introduce the Biopython mechanism for dealing
+with sequences, the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object.
+Chapter <a class="reference internal" href="chapter_seq_annot.html#chapter-seq-annot"><span class="std std-ref">Sequence annotation objects</span></a> will introduce the
+related <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object, which combines the sequence information
+with any annotation, used again in
+Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a> for Sequence Input/Output.</p>
+<p>Sequences are essentially strings of letters like <code class="docutils literal notranslate"><span class="pre">AGTACACTGGT</span></code>, which
+seems very natural since this is the most common way that sequences are
+seen in biological file formats.</p>
+<p>The most important difference between <code class="docutils literal notranslate"><span class="pre">Seq</span></code> objects and standard
+Python strings is they have different methods. Although the <code class="docutils literal notranslate"><span class="pre">Seq</span></code>
+object supports many of the same methods as a plain string, its
+<code class="docutils literal notranslate"><span class="pre">translate()</span></code> method differs by doing biological translation, and
+there are also additional biologically relevant methods like
+<code class="docutils literal notranslate"><span class="pre">reverse_complement()</span></code>.</p>
+<section id="sequences-act-like-strings">
+<h2>Sequences act like strings<a class="headerlink" href="#sequences-act-like-strings" title="Permalink to this headline"></a></h2>
+<p>In most ways, we can deal with Seq objects as if they were normal Python
+strings, for example getting the length, or iterating over the elements:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GATCG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">letter</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">my_seq</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">letter</span><span class="p">))</span>
+<span class="gp">...</span>
+<span class="go">0 G</span>
+<span class="go">1 A</span>
+<span class="go">2 T</span>
+<span class="go">3 C</span>
+<span class="go">4 G</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">my_seq</span><span class="p">))</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+<p>You can access elements of the sequence in the same way as for strings
+(but remember, Python counts from zero!):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>  <span class="c1"># first letter</span>
+<span class="go">G</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># third letter</span>
+<span class="go">T</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># last letter</span>
+<span class="go">G</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object has a <code class="docutils literal notranslate"><span class="pre">.count()</span></code> method, just like a string. Note
+that this means that like a Python string, this gives a
+<em>non-overlapping</em> count:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;AAAA&quot;</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;AA&quot;</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AAAA&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;AA&quot;</span><span class="p">)</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>For some biological uses, you may actually want an overlapping count
+(i.e. <span class="math notranslate nohighlight">\(3\)</span> in this trivial example). When searching for single
+letters, this makes no difference:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GATCGATGGGCCTATATAGGATCGAAAATCGC&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">32</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;G&quot;</span><span class="p">)</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">my_seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;G&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">my_seq</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">46.875</span>
+</pre></div>
+</div>
+<p>While you could use the above snippet of code to calculate a GC%, note
+that the <code class="docutils literal notranslate"><span class="pre">Bio.SeqUtils</span></code> module has several GC functions already built.
+For example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">gc_fraction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GATCGATGGGCCTATATAGGATCGAAAATCGC&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gc_fraction</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">0.46875</span>
+</pre></div>
+</div>
+<p>Note that using the <code class="docutils literal notranslate"><span class="pre">Bio.SeqUtils.gc_fraction()</span></code> function should
+automatically cope with mixed case sequences and the ambiguous
+nucleotide S which means G or C.</p>
+<p>Also note that just like a normal Python string, the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object is
+in some ways “read-only”. If you need to edit your sequence, for example
+simulating a point mutation, look at the
+Section <a class="reference internal" href="#sec-mutable-seq"><span class="std std-ref">MutableSeq objects</span></a> below which talks about the
+<code class="docutils literal notranslate"><span class="pre">MutableSeq</span></code> object.</p>
+</section>
+<section id="slicing-a-sequence">
+<h2>Slicing a sequence<a class="headerlink" href="#slicing-a-sequence" title="Permalink to this headline"></a></h2>
+<p>A more complicated example, let’s get a slice of the sequence:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GATCGATGGGCCTATATAGGATCGAAAATCGC&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span>
+<span class="go">Seq(&#39;GATGGGCC&#39;)</span>
+</pre></div>
+</div>
+<p>Note that ‘Seq‘ objects follow the usual indexing conventions for Python
+strings, with the first element of the sequence numbered 0. When you do
+a slice the first item is included (i.e. 4 in this case) and the last is
+excluded (12 in this case).</p>
+<p>Also like a Python string, you can do slices with a start, stop and
+<em>stride</em> (the step size, which defaults to one). For example, we can get
+the first, second and third codon positions of this DNA sequence:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">0</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">Seq(&#39;GCTGTAGTAAG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">Seq(&#39;AGGCATGCATC&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">2</span><span class="p">::</span><span class="mi">3</span><span class="p">]</span>
+<span class="go">Seq(&#39;TAGCTAAGAC&#39;)</span>
+</pre></div>
+</div>
+<p>Another stride trick you might have seen with a Python string is the use
+of a -1 stride to reverse the string. You can do this with a <code class="docutils literal notranslate"><span class="pre">Seq</span></code>
+object too:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">Seq(&#39;CGCTAAAAGCTAGGATATATCCGGGTAGCTAG&#39;)</span>
+</pre></div>
+</div>
+</section>
+<section id="turning-seq-objects-into-strings">
+<span id="sec-seq-to-string"></span><h2>Turning Seq objects into strings<a class="headerlink" href="#turning-seq-objects-into-strings" title="Permalink to this headline"></a></h2>
+<p>If you really do just need a plain string, for example to write to a
+file, or insert into a database, then this is very easy to get:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">&#39;GATCGATGGGCCTATATAGGATCGAAAATCGC&#39;</span>
+</pre></div>
+</div>
+<p>Since calling <code class="docutils literal notranslate"><span class="pre">str()</span></code> on a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object returns the full sequence as
+a string, you often don’t actually have to do this conversion
+explicitly. Python does this automatically in the print function:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="go">GATCGATGGGCCTATATAGGATCGAAAATCGC</span>
+</pre></div>
+</div>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object directly with a <code class="docutils literal notranslate"><span class="pre">%s</span></code> placeholder
+when using the Python string formatting or interpolation operator
+(<code class="docutils literal notranslate"><span class="pre">%</span></code>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fasta_format_string</span> <span class="o">=</span> <span class="s2">&quot;&gt;Name</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">my_seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">fasta_format_string</span><span class="p">)</span>
+<span class="go">&gt;Name</span>
+<span class="go">GATCGATGGGCCTATATAGGATCGAAAATCGC</span>
+</pre></div>
+</div>
+<p>This line of code constructs a simple FASTA format record (without
+worrying about line wrapping).
+Section <a class="reference internal" href="chapter_seq_annot.html#sec-seqrecord-format"><span class="std std-ref">The format method</span></a> describes a
+neat way to get a FASTA formatted string from a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object,
+while the more general topic of reading and writing FASTA format
+sequence files is covered in
+Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>.</p>
+</section>
+<section id="concatenating-or-adding-sequences">
+<h2>Concatenating or adding sequences<a class="headerlink" href="#concatenating-or-adding-sequences" title="Permalink to this headline"></a></h2>
+<p>Two <code class="docutils literal notranslate"><span class="pre">Seq</span></code> objects can be concatenated by adding them:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AACCGG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">+</span> <span class="n">seq2</span>
+<span class="go">Seq(&#39;ACGTAACCGG&#39;)</span>
+</pre></div>
+</div>
+<p>Biopython does not check the sequence contents and will not raise an
+exception if for example you concatenate a protein sequence and a DNA
+sequence (which is likely a mistake):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;EVRNAK&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dna_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein_seq</span> <span class="o">+</span> <span class="n">dna_seq</span>
+<span class="go">Seq(&#39;EVRNAKACGT&#39;)</span>
+</pre></div>
+</div>
+<p>You may often have many sequences to add together, which can be done
+with a for loop like this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">list_of_seqs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">),</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AACC&quot;</span><span class="p">),</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GGTT&quot;</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">concatenated</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">list_of_seqs</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">concatenated</span> <span class="o">+=</span> <span class="n">s</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">concatenated</span>
+<span class="go">Seq(&#39;ACGTAACCGGTT&#39;)</span>
+</pre></div>
+</div>
+<p>Like Python strings, Biopython <code class="docutils literal notranslate"><span class="pre">Seq</span></code> also has a <code class="docutils literal notranslate"><span class="pre">.join</span></code> method:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">contigs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ATG&quot;</span><span class="p">),</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ATCCCG&quot;</span><span class="p">),</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;TTGCA&quot;</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spacer</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;N&quot;</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spacer</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">contigs</span><span class="p">)</span>
+<span class="go">Seq(&#39;ATGNNNNNNNNNNATCCCGNNNNNNNNNNTTGCA&#39;)</span>
+</pre></div>
+</div>
+</section>
+<section id="changing-case">
+<h2>Changing case<a class="headerlink" href="#changing-case" title="Permalink to this headline"></a></h2>
+<p>Python strings have very useful <code class="docutils literal notranslate"><span class="pre">upper</span></code> and <code class="docutils literal notranslate"><span class="pre">lower</span></code> methods for
+changing the case. For example,</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dna_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;acgtACGT&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dna_seq</span>
+<span class="go">Seq(&#39;acgtACGT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dna_seq</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="go">Seq(&#39;ACGTACGT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dna_seq</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="go">Seq(&#39;acgtacgt&#39;)</span>
+</pre></div>
+</div>
+<p>These are useful for doing case insensitive matching:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;GTAC&quot;</span> <span class="ow">in</span> <span class="n">dna_seq</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;GTAC&quot;</span> <span class="ow">in</span> <span class="n">dna_seq</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</section>
+<section id="nucleotide-sequences-and-reverse-complements">
+<span id="sec-seq-reverse-complement"></span><h2>Nucleotide sequences and (reverse) complements<a class="headerlink" href="#nucleotide-sequences-and-reverse-complements" title="Permalink to this headline"></a></h2>
+<p>For nucleotide sequences, you can easily obtain the complement or
+reverse complement of a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object using its built-in methods:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GATCGATGGGCCTATATAGGATCGAAAATCGC&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span>
+<span class="go">Seq(&#39;GATCGATGGGCCTATATAGGATCGAAAATCGC&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
+<span class="go">Seq(&#39;CTAGCTACCCGGATATATCCTAGCTTTTAGCG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="go">Seq(&#39;GCGATTTTCGATCCTATATAGGCCCATCGATC&#39;)</span>
+</pre></div>
+</div>
+<p>As mentioned earlier, an easy way to just reverse a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object (or a
+Python string) is slice it with -1 step:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">Seq(&#39;CGCTAAAAGCTAGGATATATCCGGGTAGCTAG&#39;)</span>
+</pre></div>
+</div>
+<p>If you do accidentally end up trying to do something weird like taking
+the (reverse) complement of a protein sequence, the results are
+biologically meaningless:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;EVRNAK&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein_seq</span><span class="o">.</span><span class="n">complement</span><span class="p">()</span>
+<span class="go">Seq(&#39;EBYNTM&#39;)</span>
+</pre></div>
+</div>
+<p>Here the letter “E” is not a valid IUPAC ambiguity code for nucleotides,
+so was not complemented. However, “V” means “A”, “C” or “G” and has
+complement “B“, and so on.</p>
+<p>The example in
+Section <a class="reference internal" href="chapter_seqio.html#sec-seqio-reverse-complement"><span class="std std-ref">Converting a file of sequences to their reverse complements</span></a>
+combines the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object’s reverse complement method with
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> for sequence input/output.</p>
+</section>
+<section id="transcription">
+<h2>Transcription<a class="headerlink" href="#transcription" title="Permalink to this headline"></a></h2>
+<p>Before talking about transcription, I want to try to clarify the strand
+issue. Consider the following (made up) stretch of double stranded DNA
+which encodes a short peptide:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 94%" />
+<col style="width: 3%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p></p></td>
+<td><p>DNA coding strand (aka Crick strand, strand <span class="math notranslate nohighlight">\(+1\)</span>)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>5’</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG</span></code></p></td>
+<td><p>3’</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">|||||||||||||||||||||||||||||||||||||||</span></code></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>3’</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">TACCGGTAACATTACCCGGCGACTTTCCCACGGGCTATC</span></code></p></td>
+<td><p>5’</p></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p>DNA template strand (aka Watson strand, strand <span class="math notranslate nohighlight">\(-1\)</span>)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><span class="math notranslate nohighlight">\(|\)</span></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>Transcription</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td><p><span class="math notranslate nohighlight">\(\downarrow\)</span></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>5’</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG</span></code></p></td>
+<td><p>3’</p></td>
+</tr>
+<tr class="row-even"><td><p></p></td>
+<td><p>Single stranded messenger RNA</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p></p></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The actual biological transcription process works from the template
+strand, doing a reverse complement (TCAG <span class="math notranslate nohighlight">\(\rightarrow\)</span> CUGA) to
+give the mRNA. However, in Biopython and bioinformatics in general, we
+typically work directly with the coding strand because this means we can
+get the mRNA sequence just by switching T <span class="math notranslate nohighlight">\(\rightarrow\)</span> U.</p>
+<p>Now let’s actually get down to doing a transcription in Biopython.
+First, let’s create <code class="docutils literal notranslate"><span class="pre">Seq</span></code> objects for the coding and template DNA
+strands:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span>
+<span class="go">Seq(&#39;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template_dna</span> <span class="o">=</span> <span class="n">coding_dna</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">template_dna</span>
+<span class="go">Seq(&#39;CTATCGGGCACCCTTTCAGCGGCCCATTACAATGGCCAT&#39;)</span>
+</pre></div>
+</div>
+<p>These should match the figure above - remember by convention nucleotide
+sequences are normally read from the 5’ to 3’ direction, while in the
+figure the template strand is shown reversed.</p>
+<p>Now let’s transcribe the coding strand into the corresponding mRNA,
+using the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object’s built in <code class="docutils literal notranslate"><span class="pre">transcribe</span></code> method:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span>
+<span class="go">Seq(&#39;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span> <span class="o">=</span> <span class="n">coding_dna</span><span class="o">.</span><span class="n">transcribe</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span>
+<span class="go">Seq(&#39;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&#39;)</span>
+</pre></div>
+</div>
+<p>As you can see, all this does is to replace T by U.</p>
+<p>If you do want to do a true biological transcription starting with the
+template strand, then this becomes a two-step process:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">template_dna</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span><span class="o">.</span><span class="n">transcribe</span><span class="p">()</span>
+<span class="go">Seq(&#39;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&#39;)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object also includes a back-transcription method for going
+from the mRNA to the coding strand of the DNA. Again, this is a simple U
+<span class="math notranslate nohighlight">\(\rightarrow\)</span> T substitution:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span>
+<span class="go">Seq(&#39;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span><span class="o">.</span><span class="n">back_transcribe</span><span class="p">()</span>
+<span class="go">Seq(&#39;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&#39;)</span>
+</pre></div>
+</div>
+<p><em>Note:</em> The <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object’s <code class="docutils literal notranslate"><span class="pre">transcribe</span></code> and <code class="docutils literal notranslate"><span class="pre">back_transcribe</span></code>
+methods were added in Biopython 1.49. For older releases you would have
+to use the <code class="docutils literal notranslate"><span class="pre">Bio.Seq</span></code> module’s functions instead, see
+Section <a class="reference internal" href="#sec-seq-module-functions"><span class="std std-ref">Working with strings directly</span></a>.</p>
+</section>
+<section id="translation">
+<span id="sec-translation"></span><h2>Translation<a class="headerlink" href="#translation" title="Permalink to this headline"></a></h2>
+<p>Sticking with the same example discussed in the transcription section
+above, now let’s translate this mRNA into the corresponding protein
+sequence - again taking advantage of one of the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object’s
+biological methods:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span>
+<span class="go">Seq(&#39;AUGGCCAUUGUAAUGGGCCGCUGAAAGGGUGCCCGAUAG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">messenger_rna</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span>
+<span class="go">Seq(&#39;MAIVMGR*KGAR*&#39;)</span>
+</pre></div>
+</div>
+<p>You can also translate directly from the coding strand DNA sequence:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span>
+<span class="go">Seq(&#39;ATGGCCATTGTAATGGGCCGCTGAAAGGGTGCCCGATAG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span>
+<span class="go">Seq(&#39;MAIVMGR*KGAR*&#39;)</span>
+</pre></div>
+</div>
+<p>You should notice in the above protein sequences that in addition to the
+end stop character, there is an internal stop as well. This was a
+deliberate choice of example, as it gives an excuse to talk about some
+optional arguments, including different translation tables (Genetic
+Codes).</p>
+<p>The translation tables available in Biopython are based on those <a class="reference external" href="https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi">from
+the NCBI</a>
+(see the next section of this tutorial). By default, translation will
+use the <em>standard</em> genetic code (NCBI table id 1). Suppose we are
+dealing with a mitochondrial sequence. We need to tell the translation
+function to use the relevant genetic code instead:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;Vertebrate Mitochondrial&quot;</span><span class="p">)</span>
+<span class="go">Seq(&#39;MAIVMGRWKGAR*&#39;)</span>
+</pre></div>
+</div>
+<p>You can also specify the table using the NCBI table number which is
+shorter, and often included in the feature annotation of GenBank files:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">Seq(&#39;MAIVMGRWKGAR*&#39;)</span>
+</pre></div>
+</div>
+<p>Now, you may want to translate the nucleotides up to the first in frame
+stop codon, and then stop (as happens in nature):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span><span class="o">.</span><span class="n">translate</span><span class="p">()</span>
+<span class="go">Seq(&#39;MAIVMGR*KGAR*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">to_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">Seq(&#39;MAIVMGR&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">Seq(&#39;MAIVMGRWKGAR*&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">to_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">Seq(&#39;MAIVMGRWKGAR&#39;)</span>
+</pre></div>
+</div>
+<p>Notice that when you use the <code class="docutils literal notranslate"><span class="pre">to_stop</span></code> argument, the stop codon itself
+is not translated - and the stop symbol is not included at the end of
+your protein sequence.</p>
+<p>You can even specify the stop symbol if you don’t like the default
+asterisk:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coding_dna</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stop_symbol</span><span class="o">=</span><span class="s2">&quot;@&quot;</span><span class="p">)</span>
+<span class="go">Seq(&#39;MAIVMGRWKGAR@&#39;)</span>
+</pre></div>
+</div>
+<p>Now, suppose you have a complete coding sequence CDS, which is to say a
+nucleotide sequence (e.g. mRNA – after any splicing) which is a whole
+number of codons (i.e. the length is a multiple of three), commences
+with a start codon, ends with a stop codon, and has no internal in-frame
+stop codons. In general, given a complete CDS, the default translate
+method will do what you want (perhaps with the <code class="docutils literal notranslate"><span class="pre">to_stop</span></code> option).
+However, what if your sequence uses a non-standard start codon? This
+happens a lot in bacteria – for example the gene yaaX in <code class="docutils literal notranslate"><span class="pre">E.</span> <span class="pre">coli</span></code>
+K12:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gene</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="s2">&quot;GTGAAAAAGATGCAATCTATCGTACTCGCACTTTCCCTGGTTCTGGTCGCTCCCATGGCA&quot;</span>
+<span class="gp">... </span>    <span class="s2">&quot;GCACAGGCTGCGGAAATTACGTTAGTCCCGTCAGTAAAATTACAGATAGGCGATCGTGAT&quot;</span>
+<span class="gp">... </span>    <span class="s2">&quot;AATCGTGGCTATTACTGGGATGGAGGTCACTGGCGCGACCACGGCTGGTGGAAACAACAT&quot;</span>
+<span class="gp">... </span>    <span class="s2">&quot;TATGAATGGCGAGGCAATCGCTGGCACCTACACGGACCGCCGCCACCGCCGCGCCACCAT&quot;</span>
+<span class="gp">... </span>    <span class="s2">&quot;AAGAAAGCTCCTCATGATCATCACGGCGGTCATGGTCCAGGCAAACATCACCGCTAA&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gene</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;Bacterial&quot;</span><span class="p">)</span>
+<span class="go">Seq(&#39;VKKMQSIVLALSLVLVAPMAAQAAEITLVPSVKLQIGDRDNRGYYWDGGHWRDH...HR*&#39;,</span>
+<span class="go">ProteinAlpabet())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gene</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;Bacterial&quot;</span><span class="p">,</span> <span class="n">to_stop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">Seq(&#39;VKKMQSIVLALSLVLVAPMAAQAAEITLVPSVKLQIGDRDNRGYYWDGGHWRDH...HHR&#39;)</span>
+</pre></div>
+</div>
+<p>In the bacterial genetic code <code class="docutils literal notranslate"><span class="pre">GTG</span></code> is a valid start codon, and while
+it does <em>normally</em> encode Valine, if used as a start codon it should be
+translated as methionine. This happens if you tell Biopython your
+sequence is a complete CDS:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">gene</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">table</span><span class="o">=</span><span class="s2">&quot;Bacterial&quot;</span><span class="p">,</span> <span class="n">cds</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="go">Seq(&#39;MKKMQSIVLALSLVLVAPMAAQAAEITLVPSVKLQIGDRDNRGYYWDGGHWRDH...HHR&#39;)</span>
+</pre></div>
+</div>
+<p>In addition to telling Biopython to translate an alternative start codon
+as methionine, using this option also makes sure your sequence really is
+a valid CDS (you’ll get an exception if not).</p>
+<p>The example in Section <a class="reference internal" href="chapter_cookbook.html#sec-seqio-translate"><span class="std std-ref">Translating a FASTA file of CDS entries</span></a>
+combines the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object’s translate method with <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> for
+sequence input/output.</p>
+</section>
+<section id="translation-tables">
+<h2>Translation Tables<a class="headerlink" href="#translation-tables" title="Permalink to this headline"></a></h2>
+<p>In the previous sections we talked about the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object translation
+method (and mentioned the equivalent function in the <code class="docutils literal notranslate"><span class="pre">Bio.Seq</span></code> module
+– see Section <a class="reference internal" href="#sec-seq-module-functions"><span class="std std-ref">Working with strings directly</span></a>). Internally these
+use codon table objects derived from the NCBI information at
+<a class="reference external" href="ftp://ftp.ncbi.nlm.nih.gov/entrez/misc/data/gc.prt">ftp://ftp.ncbi.nlm.nih.gov/entrez/misc/data/gc.prt</a>, also shown on
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi">https://www.ncbi.nlm.nih.gov/Taxonomy/Utils/wprintgc.cgi</a> in a much more
+readable layout.</p>
+<p>As before, let’s just focus on two choices: the Standard translation
+table, and the translation table for Vertebrate Mitochondrial DNA.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Data</span> <span class="kn">import</span> <span class="n">CodonTable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">standard_table</span> <span class="o">=</span> <span class="n">CodonTable</span><span class="o">.</span><span class="n">unambiguous_dna_by_name</span><span class="p">[</span><span class="s2">&quot;Standard&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mito_table</span> <span class="o">=</span> <span class="n">CodonTable</span><span class="o">.</span><span class="n">unambiguous_dna_by_name</span><span class="p">[</span><span class="s2">&quot;Vertebrate Mitochondrial&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Alternatively, these tables are labeled with ID numbers 1 and 2,
+respectively:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Data</span> <span class="kn">import</span> <span class="n">CodonTable</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">standard_table</span> <span class="o">=</span> <span class="n">CodonTable</span><span class="o">.</span><span class="n">unambiguous_dna_by_id</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mito_table</span> <span class="o">=</span> <span class="n">CodonTable</span><span class="o">.</span><span class="n">unambiguous_dna_by_id</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>You can compare the actual tables visually by printing them:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">standard_table</span><span class="p">)</span>
+<span class="go">Table 1 Standard, SGC0</span>
+
+<span class="go">  |  T      |  C      |  A      |  G      |</span>
+<span class="go">--+---------+---------+---------+---------+--</span>
+<span class="go">T | TTT F   | TCT S   | TAT Y   | TGT C   | T</span>
+<span class="go">T | TTC F   | TCC S   | TAC Y   | TGC C   | C</span>
+<span class="go">T | TTA L   | TCA S   | TAA Stop| TGA Stop| A</span>
+<span class="go">T | TTG L(s)| TCG S   | TAG Stop| TGG W   | G</span>
+<span class="go">--+---------+---------+---------+---------+--</span>
+<span class="go">C | CTT L   | CCT P   | CAT H   | CGT R   | T</span>
+<span class="go">C | CTC L   | CCC P   | CAC H   | CGC R   | C</span>
+<span class="go">C | CTA L   | CCA P   | CAA Q   | CGA R   | A</span>
+<span class="go">C | CTG L(s)| CCG P   | CAG Q   | CGG R   | G</span>
+<span class="go">--+---------+---------+---------+---------+--</span>
+<span class="go">A | ATT I   | ACT T   | AAT N   | AGT S   | T</span>
+<span class="go">A | ATC I   | ACC T   | AAC N   | AGC S   | C</span>
+<span class="go">A | ATA I   | ACA T   | AAA K   | AGA R   | A</span>
+<span class="go">A | ATG M(s)| ACG T   | AAG K   | AGG R   | G</span>
+<span class="go">--+---------+---------+---------+---------+--</span>
+<span class="go">G | GTT V   | GCT A   | GAT D   | GGT G   | T</span>
+<span class="go">G | GTC V   | GCC A   | GAC D   | GGC G   | C</span>
+<span class="go">G | GTA V   | GCA A   | GAA E   | GGA G   | A</span>
+<span class="go">G | GTG V   | GCG A   | GAG E   | GGG G   | G</span>
+<span class="go">--+---------+---------+---------+---------+--</span>
+</pre></div>
+</div>
+<p>and:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">mito_table</span><span class="p">)</span>
+<span class="go">Table 2 Vertebrate Mitochondrial, SGC1</span>
+
+<span class="go">  |  T      |  C      |  A      |  G      |</span>
+<span class="go">--+---------+---------+---------+---------+--</span>
+<span class="go">T | TTT F   | TCT S   | TAT Y   | TGT C   | T</span>
+<span class="go">T | TTC F   | TCC S   | TAC Y   | TGC C   | C</span>
+<span class="go">T | TTA L   | TCA S   | TAA Stop| TGA W   | A</span>
+<span class="go">T | TTG L   | TCG S   | TAG Stop| TGG W   | G</span>
+<span class="go">--+---------+---------+---------+---------+--</span>
+<span class="go">C | CTT L   | CCT P   | CAT H   | CGT R   | T</span>
+<span class="go">C | CTC L   | CCC P   | CAC H   | CGC R   | C</span>
+<span class="go">C | CTA L   | CCA P   | CAA Q   | CGA R   | A</span>
+<span class="go">C | CTG L   | CCG P   | CAG Q   | CGG R   | G</span>
+<span class="go">--+---------+---------+---------+---------+--</span>
+<span class="go">A | ATT I(s)| ACT T   | AAT N   | AGT S   | T</span>
+<span class="go">A | ATC I(s)| ACC T   | AAC N   | AGC S   | C</span>
+<span class="go">A | ATA M(s)| ACA T   | AAA K   | AGA Stop| A</span>
+<span class="go">A | ATG M(s)| ACG T   | AAG K   | AGG Stop| G</span>
+<span class="go">--+---------+---------+---------+---------+--</span>
+<span class="go">G | GTT V   | GCT A   | GAT D   | GGT G   | T</span>
+<span class="go">G | GTC V   | GCC A   | GAC D   | GGC G   | C</span>
+<span class="go">G | GTA V   | GCA A   | GAA E   | GGA G   | A</span>
+<span class="go">G | GTG V(s)| GCG A   | GAG E   | GGG G   | G</span>
+<span class="go">--+---------+---------+---------+---------+--</span>
+</pre></div>
+</div>
+<p>You may find these following properties useful – for example if you are
+trying to do your own gene finding:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mito_table</span><span class="o">.</span><span class="n">stop_codons</span>
+<span class="go">[&#39;TAA&#39;, &#39;TAG&#39;, &#39;AGA&#39;, &#39;AGG&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mito_table</span><span class="o">.</span><span class="n">start_codons</span>
+<span class="go">[&#39;ATT&#39;, &#39;ATC&#39;, &#39;ATA&#39;, &#39;ATG&#39;, &#39;GTG&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mito_table</span><span class="o">.</span><span class="n">forward_table</span><span class="p">[</span><span class="s2">&quot;ACG&quot;</span><span class="p">]</span>
+<span class="go">&#39;T&#39;</span>
+</pre></div>
+</div>
+</section>
+<section id="comparing-seq-objects">
+<span id="sec-seq-comparison"></span><h2>Comparing Seq objects<a class="headerlink" href="#comparing-seq-objects" title="Permalink to this headline"></a></h2>
+<p>Sequence comparison is actually a very complicated topic, and there is
+no easy way to decide if two sequences are equal. The basic problem is
+the meaning of the letters in a sequence are context dependent - the
+letter “A” could be part of a DNA, RNA or protein sequence. Biopython
+can track the molecule type, so comparing two <code class="docutils literal notranslate"><span class="pre">Seq</span></code> objects could mean
+considering this too.</p>
+<p>Should a DNA fragment “ACG” and an RNA fragment “ACG” be equal? What
+about the peptide “ACG“? Or the Python string “ACG“? In everyday use,
+your sequences will generally all be the same type of (all DNA, all RNA,
+or all protein). Well, as of Biopython 1.65, sequence comparison only
+looks at the sequence and compares like the Python string.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;ACGT&quot;</span> <span class="o">==</span> <span class="n">seq1</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">==</span> <span class="s2">&quot;ACGT&quot;</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>As an extension to this, using sequence objects as keys in a Python
+dictionary is equivalent to using the sequence as a plain string for the
+key. See also Section <a class="reference internal" href="#sec-seq-to-string"><span class="std std-ref">Turning Seq objects into strings</span></a>.</p>
+</section>
+<section id="sequences-with-unknown-sequence-contents">
+<h2>Sequences with unknown sequence contents<a class="headerlink" href="#sequences-with-unknown-sequence-contents" title="Permalink to this headline"></a></h2>
+<p>In some cases, the length of a sequence may be known but not the actual
+letters constituting it. For example, GenBank and EMBL files may
+represent a genomic DNA sequence only by its config information, without
+specifying the sequence contents explicitly. Such sequences can be
+represented by creating a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object with the argument <code class="docutils literal notranslate"><span class="pre">None</span></code>,
+followed by the sequence length:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">unknown_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object thus created has a well-defined length. Any attempt
+to access the sequence contents, however, will raise an
+<code class="docutils literal notranslate"><span class="pre">UndefinedSequenceError</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">unknown_seq</span>
+<span class="go">Seq(None, length=10)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">unknown_seq</span><span class="p">)</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">unknown_seq</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">Bio.Seq.UndefinedSequenceError</span>: <span class="n">Sequence content is undefined</span>
+<span class="gp">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+</section>
+<section id="sequences-with-partially-defined-sequence-contents">
+<span id="sec-partial-seq"></span><h2>Sequences with partially defined sequence contents<a class="headerlink" href="#sequences-with-partially-defined-sequence-contents" title="Permalink to this headline"></a></h2>
+<p>Sometimes the sequence contents is defined for parts of the sequence
+only, and undefined elsewhere. For example, the following excerpt of a
+MAF (Multiple Alignment Format) file shows an alignment of human, chimp,
+macaque, mouse, rat, dog, and opossum genome sequences:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>s hg38.chr7     117512683 36 + 159345973 TTGAAAACCTGAATGTGAGAGTCAGTCAAGGATAGT
+s panTro4.chr7  119000876 36 + 161824586 TTGAAAACCTGAATGTGAGAGTCACTCAAGGATAGT
+s rheMac3.chr3  156330991 36 + 198365852 CTGAAATCCTGAATGTGAGAGTCAATCAAGGATGGT
+s mm10.chr6      18207101 36 + 149736546 CTGAAAACCTAAGTAGGAGAATCAACTAAGGATAAT
+s rn5.chr4       42326848 36 + 248343840 CTGAAAACCTAAGTAGGAGAGACAGTTAAAGATAAT
+s canFam3.chr14  56325207 36 +  60966679 TTGAAAAACTGATTATTAGAGTCAATTAAGGATAGT
+s monDom5.chr8  173163865 36 + 312544902 TTAAGAAACTGGAAATGAGGGTTGAATGACAAACTT
+</pre></div>
+</div>
+<p>In each row, the first number indicates the starting position (in
+zero-based coordinates) of the aligned sequence on the chromosome,
+followed by the size of the aligned sequence, the strand, the size of
+the full chromosome, and the aligned sequence.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object representing such a partially defined sequence can be
+created using a dictionary for the <code class="docutils literal notranslate"><span class="pre">data</span></code> argument, where the keys are
+the starting coordinates of the known sequence segments, and the values
+are the corresponding sequence contents. For example, for the first
+sequence we would use</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">({</span><span class="mi">117512683</span><span class="p">:</span> <span class="s2">&quot;TTGAAAACCTGAATGTGAGAGTCAGTCAAGGATAGT&quot;</span><span class="p">},</span> <span class="n">length</span><span class="o">=</span><span class="mi">159345973</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Extracting a subsequence from a partially define sequence may return a
+fully defined sequence, an undefined sequence, or a partially defined
+sequence, depending on the coordinates:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="p">[</span><span class="mi">1000</span><span class="p">:</span><span class="mi">1020</span><span class="p">]</span>
+<span class="go">Seq(None, length=20)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="p">[</span><span class="mi">117512690</span><span class="p">:</span><span class="mi">117512700</span><span class="p">]</span>
+<span class="go">Seq(&#39;CCTGAATGTG&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="p">[</span><span class="mi">117512670</span><span class="p">:</span><span class="mi">117512690</span><span class="p">]</span>
+<span class="go">Seq({13: &#39;TTGAAAA&#39;}, length=20)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="p">[</span><span class="mi">117512700</span><span class="p">:]</span>
+<span class="go">Seq({0: &#39;AGAGTCAGTCAAGGATAGT&#39;}, length=41833273)</span>
+</pre></div>
+</div>
+<p>Partially defined sequences can also be created by appending sequences,
+if at least one of the sequences is partially or fully undefined:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ACGT&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">undefined_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">+</span> <span class="n">undefined_seq</span> <span class="o">+</span> <span class="n">seq</span>
+<span class="go">Seq({0: &#39;ACGT&#39;, 14: &#39;ACGT&#39;}, length=18)</span>
+</pre></div>
+</div>
+</section>
+<section id="mutableseq-objects">
+<span id="sec-mutable-seq"></span><h2>MutableSeq objects<a class="headerlink" href="#mutableseq-objects" title="Permalink to this headline"></a></h2>
+<p>Just like the normal Python string, the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object is “read only”,
+or in Python terminology, immutable. Apart from wanting the <code class="docutils literal notranslate"><span class="pre">Seq</span></code>
+object to act like a string, this is also a useful default since in many
+biological applications you want to ensure you are not changing your
+sequence data:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GCCATTGTAATGGGCCGCTGAAAGGGTGCCCGA&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Observe what happens if you try to edit the sequence:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_seq</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;G&quot;</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">TypeError</span>: <span class="n">&#39;Seq&#39; object does not support item assignment</span>
+</pre></div>
+</div>
+<p>However, you can convert it into a mutable sequence (a <code class="docutils literal notranslate"><span class="pre">MutableSeq</span></code>
+object) and do pretty much anything you want with it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mutable_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="n">my_seq</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mutable_seq</span>
+<span class="go">MutableSeq(&#39;GCCATTGTAATGGGCCGCTGAAAGGGTGCCCGA&#39;)</span>
+</pre></div>
+</div>
+<p>Alternatively, you can create a <code class="docutils literal notranslate"><span class="pre">MutableSeq</span></code> object directly from a
+string:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">MutableSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mutable_seq</span> <span class="o">=</span> <span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;GCCATTGTAATGGGCCGCTGAAAGGGTGCCCGA&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Either way will give you a sequence object which can be changed:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">mutable_seq</span>
+<span class="go">MutableSeq(&#39;GCCATTGTAATGGGCCGCTGAAAGGGTGCCCGA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mutable_seq</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mutable_seq</span>
+<span class="go">MutableSeq(&#39;GCCATCGTAATGGGCCGCTGAAAGGGTGCCCGA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mutable_seq</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mutable_seq</span>
+<span class="go">MutableSeq(&#39;GCCACGTAATGGGCCGCTGAAAGGGTGCCCGA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mutable_seq</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mutable_seq</span>
+<span class="go">MutableSeq(&#39;AGCCCGTGGGAAAGTCGCCGGGTAATGCACCG&#39;)</span>
+</pre></div>
+</div>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">MutableSeq</span></code> object’s <code class="docutils literal notranslate"><span class="pre">reverse()</span></code> method, like the
+<code class="docutils literal notranslate"><span class="pre">reverse()</span></code> method of a Python list, reverses the sequence in place.</p>
+<p>An important technical difference between mutable and immutable objects
+in Python means that you can’t use a <code class="docutils literal notranslate"><span class="pre">MutableSeq</span></code> object as a
+dictionary key, but you can use a Python string or a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object in
+this way.</p>
+<p>Once you have finished editing your a <code class="docutils literal notranslate"><span class="pre">MutableSeq</span></code> object, it’s easy
+to get back to a read-only <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object should you need to:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="n">mutable_seq</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_seq</span>
+<span class="go">Seq(&#39;AGCCCGTGGGAAAGTCGCCGGGTAATGCACCG&#39;)</span>
+</pre></div>
+</div>
+<p>You can also get a string from a <code class="docutils literal notranslate"><span class="pre">MutableSeq</span></code> object just like from a
+<code class="docutils literal notranslate"><span class="pre">Seq</span></code> object (Section <a class="reference internal" href="#sec-seq-to-string"><span class="std std-ref">Turning Seq objects into strings</span></a>).</p>
+</section>
+<section id="finding-subsequences">
+<h2>Finding subsequences<a class="headerlink" href="#finding-subsequences" title="Permalink to this headline"></a></h2>
+<p>Sequence objects have “find“, “rfind“, “index“, and “rindex“ methods
+that perform the same function as the corresponding methods on plain
+string objects. The only difference is that the subsequence can be a
+string, “bytes“, “bytearray“, “Seq“, or “MutableSeq“ object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span><span class="p">,</span> <span class="n">MutableSeq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GCCATTGTAATGGGCCGCTGAAAGGGTGCCCGA&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;ATGGGCCGC&quot;</span><span class="p">)</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;ATGGGCCGC&quot;</span><span class="p">)</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;ATGGGCCGC&quot;</span><span class="p">))</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;ATGGGCCGC&quot;</span><span class="p">))</span>
+<span class="go">9</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">MutableSeq</span><span class="p">(</span><span class="s2">&quot;ATGGGCCGC&quot;</span><span class="p">))</span>
+<span class="go">9</span>
+</pre></div>
+</div>
+<p>A “ValueError“ is raised if the subsequence is not found:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;ACTG&quot;</span><span class="p">)</span>  
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">...</span>
+</pre></div>
+</div>
+<p>while the “find“ method returns -1 if the subsequence is not found:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;ACTG&quot;</span><span class="p">)</span>
+<span class="go">-1</span>
+</pre></div>
+</div>
+<p>The methods “rfind“ and “rindex“ search for the subsequence starting
+from the right hand side of the sequence:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;CC&quot;</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;CC&quot;</span><span class="p">)</span>
+<span class="go">29</span>
+</pre></div>
+</div>
+<p>Use the “search“ method to search for multiple subsequences at the same
+time. This method returns an iterator:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">seq</span><span class="o">.</span><span class="n">search</span><span class="p">([</span><span class="s2">&quot;CC&quot;</span><span class="p">,</span> <span class="s2">&quot;GGG&quot;</span><span class="p">,</span> <span class="s2">&quot;CC&quot;</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">sub</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">1 CC</span>
+<span class="go">11 GGG</span>
+<span class="go">14 CC</span>
+<span class="go">23 GGG</span>
+<span class="go">28 CC</span>
+<span class="go">29 CC</span>
+</pre></div>
+</div>
+<p>The “search“ method also takes plain strings, ‘bytes‘, ‘bytearray‘,
+‘Seq‘, and ‘MutableSeq‘ objects as subsequences; identical subsequences
+are reported only once, as in the example above.</p>
+</section>
+<section id="working-with-strings-directly">
+<span id="sec-seq-module-functions"></span><h2>Working with strings directly<a class="headerlink" href="#working-with-strings-directly" title="Permalink to this headline"></a></h2>
+<p>To close this chapter, for those you who <em>really</em> don’t want to use the
+sequence objects (or who prefer a functional programming style to an
+object orientated one), there are module level functions in <code class="docutils literal notranslate"><span class="pre">Bio.Seq</span></code>
+will accept plain Python strings, <code class="docutils literal notranslate"><span class="pre">Seq</span></code> objects or <code class="docutils literal notranslate"><span class="pre">MutableSeq</span></code>
+objects:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">reverse_complement</span><span class="p">,</span> <span class="n">transcribe</span><span class="p">,</span> <span class="n">back_transcribe</span><span class="p">,</span> <span class="n">translate</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_string</span> <span class="o">=</span> <span class="s2">&quot;GCTGTTATGGGTCGTTGGAAGGGTGGTCGTGCTGCTGGTTAG&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">my_string</span><span class="p">)</span>
+<span class="go">&#39;CTAACCAGCAGCACGACCACCCTTCCAACGACCCATAACAGC&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">transcribe</span><span class="p">(</span><span class="n">my_string</span><span class="p">)</span>
+<span class="go">&#39;GCUGUUAUGGGUCGUUGGAAGGGUGGUCGUGCUGCUGGUUAG&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">back_transcribe</span><span class="p">(</span><span class="n">my_string</span><span class="p">)</span>
+<span class="go">&#39;GCTGTTATGGGTCGTTGGAAGGGTGGTCGTGCTGCTGGTTAG&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translate</span><span class="p">(</span><span class="n">my_string</span><span class="p">)</span>
+<span class="go">&#39;AVMGRWKGGRAAG*&#39;</span>
+</pre></div>
+</div>
+<p>You are, however, encouraged to work with <code class="docutils literal notranslate"><span class="pre">Seq</span></code> objects by default.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_quick_start.html" class="btn btn-neutral float-left" title="Quick Start – What can you do with Biopython?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_seq_annot.html" class="btn btn-neutral float-right" title="Sequence annotation objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

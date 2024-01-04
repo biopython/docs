@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sequence Input/Output &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sequence alignments" href="chapter_align.html" />
+    <link rel="prev" title="Sequence annotation objects" href="chapter_seq_annot.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Sequence Input/Output</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#parsing-or-reading-sequences">Parsing or Reading Sequences</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#reading-sequence-files">Reading Sequence Files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iterating-over-the-records-in-a-sequence-file">Iterating over the records in a sequence file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-a-list-of-the-records-in-a-sequence-file">Getting a list of the records in a sequence file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extracting-data">Extracting data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modifying-data">Modifying data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parsing-sequences-from-compressed-files">Parsing sequences from compressed files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parsing-sequences-from-the-net">Parsing sequences from the net</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#parsing-genbank-records-from-the-net">Parsing GenBank records from the net</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#parsing-swissprot-sequences-from-the-net">Parsing SwissProt sequences from the net</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#sequence-files-as-dictionaries">Sequence files as Dictionaries</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sequence-files-as-dictionaries-in-memory">Sequence files as Dictionaries – In memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sequence-files-as-dictionaries-indexed-files">Sequence files as Dictionaries – Indexed files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sequence-files-as-dictionaries-database-indexed-files">Sequence files as Dictionaries – Database indexed files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#indexing-compressed-files">Indexing compressed files</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#discussion">Discussion</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-sequence-files">Writing Sequence Files</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#round-trips">Round trips</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#converting-between-sequence-file-formats">Converting between sequence file formats</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#converting-a-file-of-sequences-to-their-reverse-complements">Converting a file of sequences to their reverse complements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-your-seqrecord-objects-as-formatted-strings">Getting your SeqRecord objects as formatted strings</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#low-level-fasta-and-fastq-parsers">Low level FASTA and FASTQ parsers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_graphics.html">Graphics including GenomeDiagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">Sequence Input/Output</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_seqio.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_seq_annot.html" class="btn btn-neutral float-left" title="Sequence annotation objects" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_align.html" class="btn btn-neutral float-right" title="Sequence alignments" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sequence-input-output">
+<span id="chapter-seqio"></span><h1>Sequence Input/Output<a class="headerlink" href="#sequence-input-output" title="Permalink to this headline"></a></h1>
+<p>In this chapter we’ll discuss in more detail the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> module,
+which was briefly introduced in
+Chapter <a class="reference internal" href="chapter_quick_start.html#chapter-quick-start"><span class="std std-ref">Quick Start – What can you do with Biopython?</span></a> and also used
+in Chapter <a class="reference internal" href="chapter_seq_annot.html#chapter-seq-annot"><span class="std std-ref">Sequence annotation objects</span></a>. This aims to
+provide a simple interface for working with assorted sequence file
+formats in a uniform way. See also the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> wiki page
+(<a class="reference external" href="http://biopython.org/wiki/SeqIO">http://biopython.org/wiki/SeqIO</a>), and the built in documentation (also
+<a class="reference external" href="http://biopython.org/docs/bpversion/api/Bio.SeqIO.html">online</a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">SeqIO</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The “catch” is that you have to work with <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects (see
+Chapter <a class="reference internal" href="chapter_seq_annot.html#chapter-seq-annot"><span class="std std-ref">Sequence annotation objects</span></a>), which contain a
+<code class="docutils literal notranslate"><span class="pre">Seq</span></code> object (see
+Chapter <a class="reference internal" href="chapter_seq_objects.html#chapter-seq-objects"><span class="std std-ref">Sequence objects</span></a>) plus
+annotation like an identifier and description. Note that when dealing
+with very large FASTA or FASTQ files, the overhead of working with all
+these objects can make scripts too slow. In this case consider the
+low-level <code class="docutils literal notranslate"><span class="pre">SimpleFastaParser</span></code> and <code class="docutils literal notranslate"><span class="pre">FastqGeneralIterator</span></code> parsers
+which return just a tuple of strings for each record (see
+Section <a class="reference internal" href="#sec-low-level-fasta-fastq"><span class="std std-ref">Low level FASTA and FASTQ parsers</span></a>).</p>
+<section id="parsing-or-reading-sequences">
+<span id="sec-bio-seqio-input"></span><h2>Parsing or Reading Sequences<a class="headerlink" href="#parsing-or-reading-sequences" title="Permalink to this headline"></a></h2>
+<p>The workhorse function <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> is used to read in sequence
+data as SeqRecord objects. This function expects two arguments:</p>
+<ol class="arabic simple">
+<li><p>The first argument is a <em>handle</em> to read the data from, or a
+filename. A handle is typically a file opened for reading, but could
+be the output from a command line program, or data downloaded from
+the internet (see Section <a class="reference internal" href="#sec-seqio-online"><span class="std std-ref">Parsing sequences from the net</span></a>). See
+Section <a class="reference internal" href="chapter_appendix.html#sec-appendix-handles"><span class="std std-ref">What the heck is a handle?</span></a> for more
+about handles.</p></li>
+<li><p>The second argument is a lower case string specifying sequence format
+– we don’t try and guess the file format for you! See
+<a class="reference external" href="http://biopython.org/wiki/SeqIO">http://biopython.org/wiki/SeqIO</a> for a full listing of supported
+formats.</p></li>
+</ol>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> function returns an <em>iterator</em> which gives
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects. Iterators are typically used in a for loop as
+shown below.</p>
+<p>Sometimes you’ll find yourself dealing with files which contain only a
+single record. For this situation use the function <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.read()</span></code>
+which takes the same arguments. Provided there is one and only one
+record in the file, this is returned as a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object.
+Otherwise an exception is raised.</p>
+<section id="reading-sequence-files">
+<h3>Reading Sequence Files<a class="headerlink" href="#reading-sequence-files" title="Permalink to this headline"></a></h3>
+<p>In general <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> is used to read in sequence files as
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects, and is typically used with a for loop like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="k">for</span> <span class="n">seq_record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq_record</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The above example is repeated from the introduction in
+Section <a class="reference internal" href="chapter_quick_start.html#sec-sequence-parsing"><span class="std std-ref">Parsing sequence file formats</span></a>, and will
+load the orchid DNA sequences in the FASTA format file
+<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/ls_orchid.fasta">ls_orchid.fasta</a>.
+If instead you wanted to load a GenBank format file like
+<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/ls_orchid.gbk">ls_orchid.gbk</a>
+then all you need to do is change the filename and the format string:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="k">for</span> <span class="n">seq_record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">seq_record</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Similarly, if you wanted to read in a file in another file format, then
+assuming <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> supports it you would just need to change
+the format string as appropriate, for example “swiss” for SwissProt
+files or “embl” for EMBL text files. There is a full listing on the wiki
+page (<a class="reference external" href="http://biopython.org/wiki/SeqIO">http://biopython.org/wiki/SeqIO</a>) and in the built in documentation
+(also
+<a class="reference external" href="http://biopython.org/docs/bpversion/api/Bio.SeqIO.html">online</a>).</p>
+<p>Another very common way to use a Python iterator is within a list
+comprehension (or a generator expression). For example, if all you
+wanted to extract from the file was a list of the record identifiers we
+can easily do this with the following list comprehension:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">identifiers</span> <span class="o">=</span> <span class="p">[</span><span class="n">seq_record</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">seq_record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">identifiers</span>
+<span class="go">[&#39;Z78533.1&#39;, &#39;Z78532.1&#39;, &#39;Z78531.1&#39;, &#39;Z78530.1&#39;, &#39;Z78529.1&#39;, &#39;Z78527.1&#39;, ..., &#39;Z78439.1&#39;]</span>
+</pre></div>
+</div>
+<p>There are more examples using <code class="docutils literal notranslate"><span class="pre">SeqIO.parse()</span></code> in a list comprehension
+like this in
+Section <a class="reference internal" href="chapter_cookbook.html#sec-sequence-parsing-plus-pylab"><span class="std std-ref">Sequence parsing plus simple plots</span></a>
+(e.g. for plotting sequence lengths or GC%).</p>
+</section>
+<section id="iterating-over-the-records-in-a-sequence-file">
+<h3>Iterating over the records in a sequence file<a class="headerlink" href="#iterating-over-the-records-in-a-sequence-file" title="Permalink to this headline"></a></h3>
+<p>In the above examples, we have usually used a for loop to iterate over
+all the records one by one. You can use the for loop with all sorts of
+Python objects (including lists, tuples and strings) which support the
+iteration interface.</p>
+<p>The object returned by <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> is actually an iterator which
+returns <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects. You get to see each record in turn, but
+once and only once. The plus point is that an iterator can save you
+memory when dealing with large files.</p>
+<p>Instead of using a for loop, can also use the <code class="docutils literal notranslate"><span class="pre">next()</span></code> function on an
+iterator to step through the entries, like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+
+<span class="n">first_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+
+<span class="n">second_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">second_record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">second_record</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that if you try to use <code class="docutils literal notranslate"><span class="pre">next()</span></code> and there are no more results,
+you’ll get the special <code class="docutils literal notranslate"><span class="pre">StopIteration</span></code> exception.</p>
+<p>One special case to consider is when your sequence files have multiple
+records, but you only want the first one. In this situation the
+following code is very concise:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">first_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>A word of warning here – using the <code class="docutils literal notranslate"><span class="pre">next()</span></code> function like this will
+silently ignore any additional records in the file. If your files have
+<em>one and only one</em> record, like some of the online examples later in
+this chapter, or a GenBank file for a single chromosome, then use the
+new <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.read()</span></code> function instead. This will check there are no
+extra unexpected records present.</p>
+</section>
+<section id="getting-a-list-of-the-records-in-a-sequence-file">
+<h3>Getting a list of the records in a sequence file<a class="headerlink" href="#getting-a-list-of-the-records-in-a-sequence-file" title="Permalink to this headline"></a></h3>
+<p>In the previous section we talked about the fact that
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> gives you a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> iterator, and that you
+get the records one by one. Very often you need to be able to access the
+records in any order. The Python <code class="docutils literal notranslate"><span class="pre">list</span></code> data type is perfect for this,
+and we can turn the record iterator into a list of <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects
+using the built-in Python function <code class="docutils literal notranslate"><span class="pre">list()</span></code> like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">records</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found </span><span class="si">%i</span><span class="s2"> records&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The last record&quot;</span><span class="p">)</span>
+<span class="n">last_record</span> <span class="o">=</span> <span class="n">records</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># using Python&#39;s list tricks</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">last_record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">last_record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">last_record</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The first record&quot;</span><span class="p">)</span>
+<span class="n">first_record</span> <span class="o">=</span> <span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># remember, Python counts from zero</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_record</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Giving:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Found 94 records
+The last record
+Z78439.1
+Seq(&#39;CATTGTTGAGATCACATAATAATTGATCGAGTTAATCTGGAGGATCTGTTTACT...GCC&#39;)
+592
+The first record
+Z78533.1
+Seq(&#39;CGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTGATGAGACCGTGG...CGC&#39;)
+740
+</pre></div>
+</div>
+<p>You can of course still use a for loop with a list of <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>
+objects. Using a list is much more flexible than an iterator (for
+example, you can determine the number of records from the length of the
+list), but does need more memory because it will hold all the records in
+memory at once.</p>
+</section>
+<section id="extracting-data">
+<h3>Extracting data<a class="headerlink" href="#extracting-data" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object and its annotation structures are described
+more fully in Chapter <a class="reference internal" href="chapter_seq_annot.html#chapter-seq-annot"><span class="std std-ref">Sequence annotation objects</span></a>. As
+an example of how annotations are stored, we’ll look at the output from
+parsing the first record in the GenBank file
+<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/ls_orchid.gbk">ls_orchid.gbk</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="n">first_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">first_record</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>That should give something like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>ID: Z78533.1
+Name: Z78533
+Description: C.irapeanum 5.8S rRNA gene and ITS1 and ITS2 DNA.
+Number of features: 5
+/sequence_version=1
+/source=Cypripedium irapeanum
+/taxonomy=[&#39;Eukaryota&#39;, &#39;Viridiplantae&#39;, &#39;Streptophyta&#39;, ..., &#39;Cypripedium&#39;]
+/keywords=[&#39;5.8S ribosomal RNA&#39;, &#39;5.8S rRNA gene&#39;, ..., &#39;ITS1&#39;, &#39;ITS2&#39;]
+/references=[...]
+/accessions=[&#39;Z78533&#39;]
+/data_file_division=PLN
+/date=30-NOV-2006
+/organism=Cypripedium irapeanum
+/gi=2765658
+Seq(&#39;CGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTGATGAGACCGTGG...CGC&#39;)
+</pre></div>
+</div>
+<p>This gives a human readable summary of most of the annotation data for
+the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>. For this example we’re going to use the
+<code class="docutils literal notranslate"><span class="pre">.annotations</span></code> attribute which is just a Python dictionary. The
+contents of this annotations dictionary were shown when we printed the
+record above. You can also print them out directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Like any Python dictionary, you can easily get the keys:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>or values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">annotations</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>In general, the annotation values are strings, or lists of strings. One
+special case is any references in the file get stored as reference
+objects.</p>
+<p>Suppose you wanted to extract a list of the species from the
+<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/ls_orchid.gbk">ls_orchid.gbk</a>
+GenBank file. The information we want, <em>Cypripedium irapeanum</em>, is held
+in the annotations dictionary under ‘source’ and ‘organism’, which we
+can access like this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">])</span>
+<span class="go">Cypripedium irapeanum</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;organism&quot;</span><span class="p">])</span>
+<span class="go">Cypripedium irapeanum</span>
+</pre></div>
+</div>
+<p>In general, ‘organism’ is used for the scientific name (in Latin, e.g.
+<em>Arabidopsis thaliana</em>), while ‘source’ will often be the common name
+(e.g. thale cress). In this example, as is often the case, the two
+fields are identical.</p>
+<p>Now let’s go through all the records, building up a list of the species
+each orchid sequence is from:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">all_species</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">seq_record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">):</span>
+    <span class="n">all_species</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;organism&quot;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">all_species</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Another way of writing this code is to use a list comprehension:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">all_species</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">seq_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;organism&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">seq_record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">all_species</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In either case, the result is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[&#39;Cypripedium irapeanum&#39;, &#39;Cypripedium californicum&#39;, ..., &#39;Paphiopedilum barbatum&#39;]
+</pre></div>
+</div>
+<p>Great. That was pretty easy because GenBank files are annotated in a
+standardized way.</p>
+<p>Now, let’s suppose you wanted to extract a list of the species from a
+FASTA file, rather than the GenBank file. The bad news is you will have
+to write some code to extract the data you want from the record’s
+description line - if the information is in the file in the first place!
+Our example FASTA format file
+<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/ls_orchid.fasta">ls_orchid.fasta</a>
+starts like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;gi|2765658|emb|Z78533.1|CIZ78533 C.irapeanum 5.8S rRNA gene and ITS1 and ITS2 DNA
+CGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTGATGAGACCGTGGAATAAACGATCGAGTG
+AATCCGGAGGACCGGTGTACTCAGCTCACCGGGGGCATTGCTCCCGTGGTGACCCTGATTTGTTGTTGGG
+...
+</pre></div>
+</div>
+<p>You can check by hand, but for every record the species name is in the
+description line as the second word. This means if we break up each
+record’s <code class="docutils literal notranslate"><span class="pre">.description</span></code> at the spaces, then the species is there as
+field number one (field zero is the record identifier). That means we
+can do this:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">all_species</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">seq_record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">all_species</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">all_species</span><span class="p">)</span>  
+<span class="go">[&#39;C.irapeanum&#39;, &#39;C.californicum&#39;, &#39;C.fasciculatum&#39;, ..., &#39;P.barbatum&#39;]</span>
+</pre></div>
+</div>
+<p>The concise alternative using list comprehensions would be:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">all_species</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">seq_record</span><span class="o">.</span><span class="n">description</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">seq_record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">all_species</span><span class="p">)</span>  
+<span class="go">[&#39;C.irapeanum&#39;, &#39;C.californicum&#39;, &#39;C.fasciculatum&#39;, ..., &#39;P.barbatum&#39;]</span>
+</pre></div>
+</div>
+<p>In general, extracting information from the FASTA description line is
+not very nice. If you can get your sequences in a well annotated file
+format like GenBank or EMBL, then this sort of annotation information is
+much easier to deal with.</p>
+</section>
+<section id="modifying-data">
+<h3>Modifying data<a class="headerlink" href="#modifying-data" title="Permalink to this headline"></a></h3>
+<p>In the previous section, we demonstrated how to extract data from a
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>. Another common task is to alter this data. The attributes
+of a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> can be modified directly, for example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_record</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;gi|2765658|emb|Z78533.1|CIZ78533&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_record</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s2">&quot;new_id&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_record</span><span class="o">.</span><span class="n">id</span>
+<span class="go">&#39;new_id&#39;</span>
+</pre></div>
+</div>
+<p>Note, if you want to change the way FASTA is output when written to a
+file (see Section <a class="reference internal" href="#sec-writing-sequence-files"><span class="std std-ref">Writing Sequence Files</span></a>), then you
+should modify both the <code class="docutils literal notranslate"><span class="pre">id</span></code> and <code class="docutils literal notranslate"><span class="pre">description</span></code> attributes. To ensure
+the correct behavior, it is best to include the <code class="docutils literal notranslate"><span class="pre">id</span></code> plus a space at
+the start of the desired <code class="docutils literal notranslate"><span class="pre">description</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">record_iterator</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_record</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="s2">&quot;new_id&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">first_record</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="n">first_record</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="s2">&quot;desired new description&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">first_record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fasta&quot;</span><span class="p">)[:</span><span class="mi">200</span><span class="p">])</span>
+<span class="go">&gt;new_id desired new description</span>
+<span class="go">CGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTGATGAGACCGTGGAATAAA</span>
+<span class="go">CGATCGAGTGAATCCGGAGGACCGGTGTACTCAGCTCACCGGGGGCATTGCTCCCGTGGT</span>
+<span class="go">GACCCTGATTTGTTGTTGGGCCGCCTCGGGAGCGTCCATGGCGGGT</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="parsing-sequences-from-compressed-files">
+<span id="sec-seqio-compressed"></span><h2>Parsing sequences from compressed files<a class="headerlink" href="#parsing-sequences-from-compressed-files" title="Permalink to this headline"></a></h2>
+<p>In the previous section, we looked at parsing sequence data from a file.
+Instead of using a filename, you can give <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> a handle (see
+Section <a class="reference internal" href="chapter_appendix.html#sec-appendix-handles"><span class="std std-ref">What the heck is a handle?</span></a>), and in this
+section we’ll use handles to parse sequence from compressed files.</p>
+<p>As you’ll have seen above, we can use <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.read()</span></code> or
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> with a filename - for instance this quick example
+calculates the total length of the sequences in a multiple record
+GenBank file using a generator expression:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)))</span>
+<span class="go">67518</span>
+</pre></div>
+</div>
+<p>Here we use a file handle instead, using the <code class="docutils literal notranslate"><span class="pre">with</span></code> statement to close
+the handle automatically:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">67518</span>
+</pre></div>
+</div>
+<p>Or, the old fashioned way where you manually close the handle:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)))</span>
+<span class="go">67518</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now, suppose we have a gzip compressed file instead? These are very
+commonly used on Linux. We can use Python’s <code class="docutils literal notranslate"><span class="pre">gzip</span></code> module to open the
+compressed file for reading - which gives us a handle object:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gzip</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk.gz&quot;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">67518</span>
+</pre></div>
+</div>
+<p>Similarly if we had a bzip2 compressed file:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">bz2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">bz2</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk.bz2&quot;</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)))</span>
+<span class="gp">...</span>
+<span class="go">67518</span>
+</pre></div>
+</div>
+<p>There is a gzip (GNU Zip) variant called BGZF (Blocked GNU Zip Format),
+which can be treated like an ordinary gzip file for reading, but has
+advantages for random access later which we’ll talk about later in
+Section <a class="reference internal" href="#sec-seqio-index-bgzf"><span class="std std-ref">Indexing compressed files</span></a>.</p>
+</section>
+<section id="parsing-sequences-from-the-net">
+<span id="sec-seqio-online"></span><h2>Parsing sequences from the net<a class="headerlink" href="#parsing-sequences-from-the-net" title="Permalink to this headline"></a></h2>
+<p>In the previous sections, we looked at parsing sequence data from a file
+(using a filename or handle), and from compressed files (using a
+handle). Here we’ll use <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> with another type of handle, a
+network connection, to download and parse sequences from the internet.</p>
+<p>Note that just because you <em>can</em> download sequence data and parse it
+into a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object in one go doesn’t mean this is a good idea.
+In general, you should probably download sequences <em>once</em> and save them
+to a file for reuse.</p>
+<section id="parsing-genbank-records-from-the-net">
+<span id="sec-seqio-genbank-online"></span><h3>Parsing GenBank records from the net<a class="headerlink" href="#parsing-genbank-records-from-the-net" title="Permalink to this headline"></a></h3>
+<p>Section <a class="reference internal" href="chapter_entrez.html#sec-efetch"><span class="std std-ref">EFetch: Downloading full records from Entrez</span></a> talks about the Entrez EFetch
+interface in more detail, but for now let’s just connect to the NCBI and
+get a few <em>Opuntia</em> (prickly-pear) sequences from GenBank using their GI
+numbers.</p>
+<p>First of all, let’s fetch just one record. If you don’t care about the
+annotations and features downloading a FASTA file is a good choice as
+these are compact. Now remember, when you expect the handle to contain
+one and only one record, use the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.read()</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;A.N.Other@example.com&quot;</span>
+<span class="k">with</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span>
+    <span class="n">db</span><span class="o">=</span><span class="s2">&quot;nucleotide&quot;</span><span class="p">,</span> <span class="n">rettype</span><span class="o">=</span><span class="s2">&quot;fasta&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;6273291&quot;</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">seq_record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> with </span><span class="si">%i</span><span class="s2"> features&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">features</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Expected output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>gi|6273291|gb|AF191665.1|AF191665 with 0 features
+</pre></div>
+</div>
+<p>The NCBI will also let you ask for the file in other formats, in
+particular as a GenBank file. Until Easter 2009, the Entrez EFetch API
+let you use “genbank” as the return type, however the NCBI now insist on
+using the official return types of “gb” (or “gp” for proteins) as
+described on <a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK3837/">EFetch for Sequence and other Molecular Biology
+Databases</a>. As a result,
+in Biopython 1.50 onwards, we support “gb” as an alias for “genbank” in
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;A.N.Other@example.com&quot;</span>
+<span class="k">with</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span>
+    <span class="n">db</span><span class="o">=</span><span class="s2">&quot;nucleotide&quot;</span><span class="p">,</span> <span class="n">rettype</span><span class="o">=</span><span class="s2">&quot;gb&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;6273291&quot;</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">seq_record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)</span>  <span class="c1"># using &quot;gb&quot; as an alias for &quot;genbank&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> with </span><span class="si">%i</span><span class="s2"> features&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">features</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>The expected output of this example is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>AF191665.1 with 3 features
+</pre></div>
+</div>
+<p>Notice this time we have three features.</p>
+<p>Now let’s fetch several records. This time the handle contains multiple
+records, so we must use the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Entrez</span>
+<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;A.N.Other@example.com&quot;</span>
+<span class="k">with</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span>
+    <span class="n">db</span><span class="o">=</span><span class="s2">&quot;nucleotide&quot;</span><span class="p">,</span> <span class="n">rettype</span><span class="o">=</span><span class="s2">&quot;gb&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;6273291,6273290,6273289&quot;</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">seq_record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">seq_record</span><span class="o">.</span><span class="n">description</span><span class="p">[:</span><span class="mi">50</span><span class="p">]))</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">&quot;Sequence length </span><span class="si">%i</span><span class="s2">, </span><span class="si">%i</span><span class="s2"> features, from: </span><span class="si">%s</span><span class="s2">&quot;</span>
+            <span class="o">%</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">seq_record</span><span class="p">),</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">features</span><span class="p">),</span>
+                <span class="n">seq_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+</pre></div>
+</div>
+<p>That should give the following output:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>AF191665.1 Opuntia marenae rpl16 gene; chloroplast gene for c...
+Sequence length 902, 3 features, from: chloroplast Opuntia marenae
+AF191664.1 Opuntia clavata rpl16 gene; chloroplast gene for c...
+Sequence length 899, 3 features, from: chloroplast Grusonia clavata
+AF191663.1 Opuntia bradtiana rpl16 gene; chloroplast gene for...
+Sequence length 899, 3 features, from: chloroplast Opuntia bradtianaa
+</pre></div>
+</div>
+<p>See Chapter <a class="reference internal" href="chapter_entrez.html#chapter-entrez"><span class="std std-ref">Accessing NCBI’s Entrez databases</span></a> for more about the
+<code class="docutils literal notranslate"><span class="pre">Bio.Entrez</span></code> module, and make sure to read about the NCBI guidelines
+for using Entrez
+(Section <a class="reference internal" href="chapter_entrez.html#sec-entrez-guidelines"><span class="std std-ref">Entrez Guidelines</span></a>).</p>
+</section>
+<section id="parsing-swissprot-sequences-from-the-net">
+<span id="sec-seqio-expasy-and-swissprot"></span><h3>Parsing SwissProt sequences from the net<a class="headerlink" href="#parsing-swissprot-sequences-from-the-net" title="Permalink to this headline"></a></h3>
+<p>Now let’s use a handle to download a SwissProt file from ExPASy,
+something covered in more depth in
+Chapter <a class="reference internal" href="chapter_uniprot.html#chapter-uniprot"><span class="std std-ref">Swiss-Prot and ExPASy</span></a>. As mentioned above,
+when you expect the handle to contain one and only one record, use the
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.read()</span></code> function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">ExPASy</span>
+<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="k">with</span> <span class="n">ExPASy</span><span class="o">.</span><span class="n">get_sprot_raw</span><span class="p">(</span><span class="s2">&quot;O23729&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+    <span class="n">seq_record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;swiss&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq_record</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;keywords&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Assuming your network connection is OK, you should get back:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>O23729
+CHS3_BROFI
+RecName: Full=Chalcone synthase 3; EC=2.3.1.74; AltName: Full=Naringenin-chalcone synthase 3;
+Seq(&#39;MAPAMEEIRQAQRAEGPAAVLAIGTSTPPNALYQADYPDYYFRITKSEHLTELK...GAE&#39;)
+Length 394
+[&#39;Acyltransferase&#39;, &#39;Flavonoid biosynthesis&#39;, &#39;Transferase&#39;]
+</pre></div>
+</div>
+</section>
+</section>
+<section id="sequence-files-as-dictionaries">
+<span id="sec-seqio-directionaries"></span><h2>Sequence files as Dictionaries<a class="headerlink" href="#sequence-files-as-dictionaries" title="Permalink to this headline"></a></h2>
+<p>Looping over the iterator returned by <code class="docutils literal notranslate"><span class="pre">SeqIO.parse</span></code> once will exhaust
+the file. For self-indexed files, such as files in the twoBit format,
+the return value of <code class="docutils literal notranslate"><span class="pre">SeqIO.parse</span></code> can also be used as a dictionary,
+allowing random access to the sequence contents. As in this case parsing
+is done on demand, the file must remain open as long as the sequence
+data is being accessed:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;sequence.bigendian.2bit&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;twobit&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">dict_keys([&#39;seq11111&#39;, &#39;seq222&#39;, &#39;seq3333&#39;, &#39;seq4&#39;, &#39;seq555&#39;, &#39;seq6&#39;])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;seq222&quot;</span><span class="p">]</span>
+<span class="go">SeqRecord(seq=Seq(&#39;TTGATCGGTGACAAATTTTTTACAAAGAACTGTAGGACTTGCTACTTCTCCCTC...ACA&#39;), id=&#39;seq222&#39;, name=&#39;&lt;unknown name&gt;&#39;, description=&#39;&lt;unknown description&gt;&#39;, dbxrefs=[])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;seq222&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span>
+<span class="go">Seq(&#39;TTGATCGGTGACAAATTTTTTACAAAGAACTGTAGGACTTGCTACTTCTCCCTC...ACA&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span><span class="p">[</span><span class="s2">&quot;seq222&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">seq</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">cannot retrieve sequence: file is closed</span>
+</pre></div>
+</div>
+<p>For other file formats, <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> provides three related functions
+module which allow dictionary like random access to a multi-sequence
+file. There is a trade off here between flexibility and memory usage. In
+summary:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.to_dict()</span></code> is the most flexible but also the most memory
+demanding option (see Section <a class="reference internal" href="#sec-seqio-todict"><span class="std std-ref">Sequence files as Dictionaries – In memory</span></a>). This is
+basically a helper function to build a normal Python <code class="docutils literal notranslate"><span class="pre">dictionary</span></code>
+with each entry held as a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object in memory, allowing
+you to modify the records.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> is a useful middle ground, acting like a read
+only dictionary and parsing sequences into <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects on
+demand (see Section <a class="reference internal" href="#sec-seqio-index"><span class="std std-ref">Sequence files as Dictionaries – Indexed files</span></a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index_db()</span></code> also acts like a read only dictionary but
+stores the identifiers and file offsets in a file on disk (as an
+SQLite3 database), meaning it has very low memory requirements (see
+Section <a class="reference internal" href="#sec-seqio-index-db"><span class="std std-ref">Sequence files as Dictionaries – Database indexed files</span></a>), but will be a little bit
+slower.</p></li>
+</ul>
+<p>See the discussion for an broad overview
+(Section <a class="reference internal" href="#sec-seqio-indexing-discussion"><span class="std std-ref">Discussion</span></a>).</p>
+<section id="sequence-files-as-dictionaries-in-memory">
+<span id="sec-seqio-todict"></span><h3>Sequence files as Dictionaries – In memory<a class="headerlink" href="#sequence-files-as-dictionaries-in-memory" title="Permalink to this headline"></a></h3>
+<p>The next thing that we’ll do with our ubiquitous orchid files is to show
+how to index them and access them like a database using the Python
+<code class="docutils literal notranslate"><span class="pre">dictionary</span></code> data type (like a hash in Perl). This is very useful for
+moderately large files where you only need to access certain elements of
+the file, and makes for a nice quick ’n dirty database. For dealing with
+larger files where memory becomes a problem, see
+Section <a class="reference internal" href="#sec-seqio-index"><span class="std std-ref">Sequence files as Dictionaries – Indexed files</span></a> below.</p>
+<p>You can use the function <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.to_dict()</span></code> to make a SeqRecord
+dictionary (in memory). By default this will use each record’s
+identifier (i.e. the <code class="docutils literal notranslate"><span class="pre">.id</span></code> attribute) as the key. Let’s try this using
+our GenBank file:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>There is just one required argument for <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.to_dict()</span></code>, a list
+or generator giving <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects. Here we have just used the
+output from the <code class="docutils literal notranslate"><span class="pre">SeqIO.parse</span></code> function. As the name suggests, this
+returns a Python dictionary.</p>
+<p>Since this variable <code class="docutils literal notranslate"><span class="pre">orchid_dict</span></code> is an ordinary Python dictionary, we
+can look at all of the keys we have available:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">orchid_dict</span><span class="p">)</span>
+<span class="go">94</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;Z78484.1&#39;, &#39;Z78464.1&#39;, &#39;Z78455.1&#39;, &#39;Z78442.1&#39;, &#39;Z78532.1&#39;, &#39;Z78453.1&#39;, ..., &#39;Z78471.1&#39;]</span>
+</pre></div>
+</div>
+<p>Under Python 3 the dictionary methods like “.keys()“ and “.values()“ are
+iterators rather than lists.</p>
+<p>If you really want to, you can even look at all the records at once:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>  <span class="c1"># lots of output!</span>
+</pre></div>
+</div>
+<p>We can access a single <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object via the keys and manipulate
+the object as normal:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq_record</span> <span class="o">=</span> <span class="n">orchid_dict</span><span class="p">[</span><span class="s2">&quot;Z78475.1&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="go">P.supardii 5.8S rRNA gene and ITS1 and ITS2 DNA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq_record</span><span class="o">.</span><span class="n">seq</span>
+<span class="go">Seq(&#39;CGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTGTTGAGATCACAT...GGT&#39;)</span>
+</pre></div>
+</div>
+<p>So, it is very easy to create an in memory “database” of our GenBank
+records. Next we’ll try this for the FASTA file instead.</p>
+<p>Note that those of you with prior Python experience should all be able
+to construct a dictionary like this “by hand”. However, typical
+dictionary construction methods will not deal with the case of repeated
+keys very nicely. Using the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.to_dict()</span></code> will explicitly
+check for duplicate keys, and raise an exception if any are found.</p>
+<section id="specifying-the-dictionary-keys">
+<span id="sec-seqio-todict-functionkey"></span><h4>Specifying the dictionary keys<a class="headerlink" href="#specifying-the-dictionary-keys" title="Permalink to this headline"></a></h4>
+<p>Using the same code as above, but for the FASTA file instead:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">orchid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>This time the keys are:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[&#39;gi|2765596|emb|Z78471.1|PDZ78471&#39;, &#39;gi|2765646|emb|Z78521.1|CCZ78521&#39;, ...
+ ..., &#39;gi|2765613|emb|Z78488.1|PTZ78488&#39;, &#39;gi|2765583|emb|Z78458.1|PHZ78458&#39;]
+</pre></div>
+</div>
+<p>You should recognize these strings from when we parsed the FASTA file
+earlier in Section <a class="reference internal" href="chapter_quick_start.html#sec-fasta-parsing"><span class="std std-ref">Simple FASTA parsing example</span></a>. Suppose
+you would rather have something else as the keys - like the accession
+numbers. This brings us nicely to <code class="docutils literal notranslate"><span class="pre">SeqIO.to_dict()</span></code>’s optional
+argument <code class="docutils literal notranslate"><span class="pre">key_function</span></code>, which lets you define what to use as the
+dictionary key for your records.</p>
+<p>First you must write your own function to return the key you want (as a
+string) when given a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object. In general, the details of
+function will depend on the sort of input records you are dealing with.
+But for our orchids, we can just split up the record’s identifier using
+the “pipe” character (the vertical line) and return the fourth entry
+(field three):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_accession</span><span class="p">(</span><span class="n">record</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a SeqRecord, return the accession number as a string.</span>
+
+<span class="sd">    e.g. &quot;gi|2765613|emb|Z78488.1|PTZ78488&quot; -&gt; &quot;Z78488.1&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gi&quot;</span> <span class="ow">and</span> <span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;emb&quot;</span>
+    <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Then we can give this function to the <code class="docutils literal notranslate"><span class="pre">SeqIO.to_dict()</span></code> function to
+use in building the dictionary:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">orchid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span>
+    <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">),</span> <span class="n">key_function</span><span class="o">=</span><span class="n">get_accession</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Finally, as desired, the new dictionary keys:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;Z78484.1&#39;, &#39;Z78464.1&#39;, &#39;Z78455.1&#39;, &#39;Z78442.1&#39;, &#39;Z78532.1&#39;, &#39;Z78453.1&#39;, ..., &#39;Z78471.1&#39;]</span>
+</pre></div>
+</div>
+<p>Not too complicated, I hope!</p>
+</section>
+<section id="indexing-a-dictionary-using-the-seguid-checksum">
+<h4>Indexing a dictionary using the SEGUID checksum<a class="headerlink" href="#indexing-a-dictionary-using-the-seguid-checksum" title="Permalink to this headline"></a></h4>
+<p>To give another example of working with dictionaries of <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>
+objects, we’ll use the SEGUID checksum function. This is a relatively
+recent checksum, and collisions should be very rare (i.e. two different
+sequences with the same checksum), an improvement on the CRC64 checksum.</p>
+<p>Once again, working with the orchids GenBank file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="kn">from</span> <span class="nn">Bio.SeqUtils.CheckSum</span> <span class="kn">import</span> <span class="n">seguid</span>
+
+<span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">seguid</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This should give:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Z78533.1 JUEoWn6DPhgZ9nAyowsgtoD9TTo
+Z78532.1 MN/s0q9zDoCVEEc+k/IFwCNF2pY
+...
+Z78439.1 H+JfaShya/4yyAj7IbMqgNkxdxQ
+</pre></div>
+</div>
+<p>Now, recall the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.to_dict()</span></code> function’s <code class="docutils literal notranslate"><span class="pre">key_function</span></code>
+argument expects a function which turns a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> into a string.
+We can’t use the <code class="docutils literal notranslate"><span class="pre">seguid()</span></code> function directly because it expects to be
+given a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object (or a string). However, we can use Python’s
+<code class="docutils literal notranslate"><span class="pre">lambda</span></code> feature to create a “one off” function to give to
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.to_dict()</span></code> instead:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqUtils.CheckSum</span> <span class="kn">import</span> <span class="n">seguid</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seguid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">),</span> <span class="k">lambda</span> <span class="n">rec</span><span class="p">:</span> <span class="n">seguid</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">seguid_dict</span><span class="p">[</span><span class="s2">&quot;MN/s0q9zDoCVEEc+k/IFwCNF2pY&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="go">Z78532.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="go">C.californicum 5.8S rRNA gene and ITS1 and ITS2 DNA</span>
+</pre></div>
+</div>
+<p>That should have retrieved the record <code class="docutils literal notranslate"><span class="pre">Z78532.1</span></code>, the second entry in
+the file.</p>
+</section>
+</section>
+<section id="sequence-files-as-dictionaries-indexed-files">
+<span id="sec-seqio-index"></span><h3>Sequence files as Dictionaries – Indexed files<a class="headerlink" href="#sequence-files-as-dictionaries-indexed-files" title="Permalink to this headline"></a></h3>
+<p>As the previous couple of examples tried to illustrate, using
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.to_dict()</span></code> is very flexible. However, because it holds
+everything in memory, the size of file you can work with is limited by
+your computer’s RAM. In general, this will only work on small to medium
+files.</p>
+<p>For larger files you should consider <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code>, which works
+a little differently. Although it still returns a dictionary like
+object, this does <em>not</em> keep <em>everything</em> in memory. Instead, it just
+records where each record is within the file – when you ask for a
+particular record, it then parses it on demand.</p>
+<p>As an example, let’s use the same GenBank file as before:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">orchid_dict</span><span class="p">)</span>
+<span class="go">94</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;Z78484.1&#39;, &#39;Z78464.1&#39;, &#39;Z78455.1&#39;, &#39;Z78442.1&#39;, &#39;Z78532.1&#39;, &#39;Z78453.1&#39;, ..., &#39;Z78471.1&#39;]</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seq_record</span> <span class="o">=</span> <span class="n">orchid_dict</span><span class="p">[</span><span class="s2">&quot;Z78475.1&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">seq_record</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="go">P.supardii 5.8S rRNA gene and ITS1 and ITS2 DNA</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq_record</span><span class="o">.</span><span class="n">seq</span>
+<span class="go">Seq(&#39;CGTAACAAGGTTTCCGTAGGTGAACCTGCGGAAGGATCATTGTTGAGATCACAT...GGT&#39;)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> won’t take a handle, but only a
+filename. There are good reasons for this, but it is a little technical.
+The second argument is the file format (a lower case string as used in
+the other <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> functions). You can use many other simple file
+formats, including FASTA and FASTQ files (see the example in
+Section <a class="reference internal" href="chapter_cookbook.html#sec-fastq-indexing"><span class="std std-ref">Indexing a FASTQ file</span></a>). However,
+alignment formats like PHYLIP or Clustal are not supported. Finally as
+an optional argument you can supply a key function.</p>
+<p>Here is the same example using the FASTA file - all we change is the
+filename and the format name:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">orchid_dict</span><span class="p">)</span>
+<span class="go">94</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="go">[&#39;gi|2765596|emb|Z78471.1|PDZ78471&#39;, &#39;gi|2765646|emb|Z78521.1|CCZ78521&#39;, ...</span>
+<span class="go"> ..., &#39;gi|2765613|emb|Z78488.1|PTZ78488&#39;, &#39;gi|2765583|emb|Z78458.1|PHZ78458&#39;]</span>
+</pre></div>
+</div>
+<section id="sec-seqio-index-functionkey">
+<span id="id1"></span><h4>Specifying the dictionary keys<a class="headerlink" href="#sec-seqio-index-functionkey" title="Permalink to this headline"></a></h4>
+<p>Suppose you want to use the same keys as before? Much like with the
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.to_dict()</span></code> example in
+Section <a class="reference internal" href="#sec-seqio-todict-functionkey"><span class="std std-ref">Specifying the dictionary keys</span></a>, you’ll need to
+write a tiny function to map from the FASTA identifier (as a string) to
+the key you want:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_acc</span><span class="p">(</span><span class="n">identifier</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a SeqRecord identifier string, return the accession number as a string.</span>
+
+<span class="sd">    e.g. &quot;gi|2765613|emb|Z78488.1|PTZ78488&quot; -&gt; &quot;Z78488.1&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">identifier</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span> <span class="ow">and</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gi&quot;</span> <span class="ow">and</span> <span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;emb&quot;</span>
+    <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Then we can give this function to the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> function to
+use in building the dictionary:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">,</span> <span class="n">key_function</span><span class="o">=</span><span class="n">get_acc</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;Z78484.1&#39;, &#39;Z78464.1&#39;, &#39;Z78455.1&#39;, &#39;Z78442.1&#39;, &#39;Z78532.1&#39;, &#39;Z78453.1&#39;, ..., &#39;Z78471.1&#39;]</span>
+</pre></div>
+</div>
+<p>Easy when you know how?</p>
+</section>
+<section id="getting-the-raw-data-for-a-record">
+<span id="sec-seqio-index-getraw"></span><h4>Getting the raw data for a record<a class="headerlink" href="#getting-the-raw-data-for-a-record" title="Permalink to this headline"></a></h4>
+<p>The dictionary-like object from <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> gives you each
+entry as a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object. However, it is sometimes useful to be
+able to get the original raw data straight from the file. For this use
+the <code class="docutils literal notranslate"><span class="pre">get_raw()</span></code> method which takes a single argument (the record
+identifier) and returns a bytes string (extracted from the file without
+modification).</p>
+<p>A motivating example is extracting a subset of a records from a large
+file where either <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code> does not (yet) support the
+output file format (e.g. the plain text SwissProt file format) or where
+you need to preserve the text exactly (e.g. GenBank or EMBL output from
+Biopython does not yet preserve every last bit of annotation).</p>
+<p>Let’s suppose you have download the whole of UniProt in the plain text
+SwissPort file format from their FTP site
+(<a class="reference external" href="ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz">ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.dat.gz</a>)
+and uncompressed it as the file <code class="docutils literal notranslate"><span class="pre">uniprot_sprot.dat</span></code>, and you want to
+extract just a few records from it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">uniprot</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;uniprot_sprot.dat&quot;</span><span class="p">,</span> <span class="s2">&quot;swiss&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;selected.dat&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">acc</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;P33487&quot;</span><span class="p">,</span> <span class="s2">&quot;P19801&quot;</span><span class="p">,</span> <span class="s2">&quot;P13689&quot;</span><span class="p">,</span> <span class="s2">&quot;Q8JZQ5&quot;</span><span class="p">,</span> <span class="s2">&quot;Q9TRC7&quot;</span><span class="p">]:</span>
+<span class="gp">... </span>        <span class="n">out_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">uniprot</span><span class="o">.</span><span class="n">get_raw</span><span class="p">(</span><span class="n">acc</span><span class="p">))</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>Note with Python 3 onwards, we have to open the file for writing in
+binary mode because the <code class="docutils literal notranslate"><span class="pre">get_raw()</span></code> method returns bytes strings.</p>
+<p>There is a longer example in
+Section <a class="reference internal" href="chapter_cookbook.html#sec-seqio-sort"><span class="std std-ref">Sorting a sequence file</span></a> using the
+<code class="docutils literal notranslate"><span class="pre">SeqIO.index()</span></code> function to sort a large sequence file (without
+loading everything into memory at once).</p>
+</section>
+</section>
+<section id="sequence-files-as-dictionaries-database-indexed-files">
+<span id="sec-seqio-index-db"></span><h3>Sequence files as Dictionaries – Database indexed files<a class="headerlink" href="#sequence-files-as-dictionaries-database-indexed-files" title="Permalink to this headline"></a></h3>
+<p>Biopython 1.57 introduced an alternative, <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index_db()</span></code>,
+which can work on even extremely large files since it stores the record
+information as a file on disk (using an SQLite3 database) rather than in
+memory. Also, you can index multiple files together (providing all the
+record identifiers are unique).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> function takes three required arguments:</p>
+<ul class="simple">
+<li><p>Index filename, we suggest using something ending <code class="docutils literal notranslate"><span class="pre">.idx</span></code>. This
+index file is actually an SQLite3 database.</p></li>
+<li><p>List of sequence filenames to index (or a single filename)</p></li>
+<li><p>File format (lower case string as used in the rest of the <code class="docutils literal notranslate"><span class="pre">SeqIO</span></code>
+module).</p></li>
+</ul>
+<p>As an example, consider the GenBank flat file releases from the NCBI FTP
+site, <a class="reference external" href="ftp://ftp.ncbi.nih.gov/genbank/">ftp://ftp.ncbi.nih.gov/genbank/</a>, which are gzip compressed GenBank
+files.</p>
+<p>As of GenBank release <span class="math notranslate nohighlight">\(210\)</span>, there are <span class="math notranslate nohighlight">\(38\)</span> files making up
+the viral sequences, <code class="docutils literal notranslate"><span class="pre">gbvrl1.seq</span></code>, …, <code class="docutils literal notranslate"><span class="pre">gbvrl38.seq</span></code>, taking about
+8GB on disk once decompressed, and containing in total nearly two
+million records.</p>
+<p>If you were interested in the viruses, you could download all the virus
+files from the command line very easily with the <code class="docutils literal notranslate"><span class="pre">rsync</span></code> command, and
+then decompress them with <code class="docutils literal notranslate"><span class="pre">gunzip</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>For<span class="w"> </span>illustration<span class="w"> </span>only,<span class="w"> </span>see<span class="w"> </span>reduced<span class="w"> </span>example<span class="w"> </span>below
+<span class="gp">$ </span>rsync<span class="w"> </span>-avP<span class="w"> </span><span class="s2">&quot;ftp.ncbi.nih.gov::genbank/gbvrl*.seq.gz&quot;</span><span class="w"> </span>.
+<span class="gp">$ </span>gunzip<span class="w"> </span>gbvrl*.seq.gz
+</pre></div>
+</div>
+<p>Unless you care about viruses, that’s a lot of data to download just for
+this example - so let’s download <em>just</em> the first four chunks (about
+25MB each compressed), and decompress them (taking in all about 1GB of
+space):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>Reduced<span class="w"> </span>example,<span class="w"> </span>download<span class="w"> </span>only<span class="w"> </span>the<span class="w"> </span>first<span class="w"> </span>four<span class="w"> </span>chunks
+<span class="gp">$ </span>curl<span class="w"> </span>-O<span class="w"> </span>ftp://ftp.ncbi.nih.gov/genbank/gbvrl1.seq.gz
+<span class="gp">$ </span>curl<span class="w"> </span>-O<span class="w"> </span>ftp://ftp.ncbi.nih.gov/genbank/gbvrl2.seq.gz
+<span class="gp">$ </span>curl<span class="w"> </span>-O<span class="w"> </span>ftp://ftp.ncbi.nih.gov/genbank/gbvrl3.seq.gz
+<span class="gp">$ </span>curl<span class="w"> </span>-O<span class="w"> </span>ftp://ftp.ncbi.nih.gov/genbank/gbvrl4.seq.gz
+<span class="gp">$ </span>gunzip<span class="w"> </span>gbvrl*.seq.gz
+</pre></div>
+</div>
+<p>Now, in Python, index these GenBank files as follows:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;gbvrl*.seq&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> files to index&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">))</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">gb_vrl</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index_db</span><span class="p">(</span><span class="s2">&quot;gbvrl.idx&quot;</span><span class="p">,</span> <span class="n">files</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> sequences indexed&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">gb_vrl</span><span class="p">))</span>
+<span class="go">272960 sequences indexed</span>
+</pre></div>
+</div>
+<p>Indexing the full set of virus GenBank files took about ten minutes on
+my machine, just the first four files took about a minute or so.</p>
+<p>However, once done, repeating this will reload the index file
+<code class="docutils literal notranslate"><span class="pre">gbvrl.idx</span></code> in a fraction of a second.</p>
+<p>You can use the index as a read only Python dictionary - without having
+to worry about which file the sequence comes from, e.g.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">gb_vrl</span><span class="p">[</span><span class="s2">&quot;AB811634.1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+<span class="go">Equine encephalosis virus NS3 gene, complete cds, isolate: Kimron1.</span>
+</pre></div>
+</div>
+<section id="id2">
+<h4>Getting the raw data for a record<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h4>
+<p>Just as with the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> function discussed above in
+Section <a class="reference internal" href="#sec-seqio-index-getraw"><span class="std std-ref">Getting the raw data for a record</span></a>, the dictionary like
+object also lets you get at the raw bytes of each record:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">gb_vrl</span><span class="o">.</span><span class="n">get_raw</span><span class="p">(</span><span class="s2">&quot;AB811634.1&quot;</span><span class="p">))</span>
+<span class="go">LOCUS       AB811634                 723 bp    RNA     linear   VRL 17-JUN-2015</span>
+<span class="go">DEFINITION  Equine encephalosis virus NS3 gene, complete cds, isolate: Kimron1.</span>
+<span class="go">ACCESSION   AB811634</span>
+<span class="go">...</span>
+<span class="go">//</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="indexing-compressed-files">
+<span id="sec-seqio-index-bgzf"></span><h3>Indexing compressed files<a class="headerlink" href="#indexing-compressed-files" title="Permalink to this headline"></a></h3>
+<p>Very often when you are indexing a sequence file it can be quite large –
+so you may want to compress it on disk. Unfortunately efficient random
+access is difficult with the more common file formats like gzip and
+bzip2. In this setting, BGZF (Blocked GNU Zip Format) can be very
+helpful. This is a variant of gzip (and can be decompressed using
+standard gzip tools) popularized by the BAM file format,
+<a class="reference external" href="https://www.htslib.org/">samtools</a>, and
+<a class="reference external" href="https://www.htslib.org/doc/tabix.html">tabix</a>.</p>
+<p>To create a BGZF compressed file you can use the command line tool
+<code class="docutils literal notranslate"><span class="pre">bgzip</span></code> which comes with samtools. In our examples we use a filename
+extension <code class="docutils literal notranslate"><span class="pre">*.bgz</span></code>, so they can be distinguished from normal gzipped
+files (named <code class="docutils literal notranslate"><span class="pre">*.gz</span></code>). You can also use the <code class="docutils literal notranslate"><span class="pre">Bio.bgzf</span></code> module to read
+and write BGZF files from within Python.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> and <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index_db()</span></code> can both be used
+with BGZF compressed files. For example, if you started with an
+uncompressed GenBank file:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">orchid_dict</span><span class="p">)</span>
+<span class="go">94</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You could compress this (while keeping the original file) at the command
+line using the following command – but don’t worry, the compressed file
+is already included with the other example files:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>bgzip<span class="w"> </span>-c<span class="w"> </span>ls_orchid.gbk<span class="w"> </span>&gt;<span class="w"> </span>ls_orchid.gbk.bgz
+</pre></div>
+</div>
+<p>You can use the compressed file in exactly the same way:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">orchid_dict</span><span class="p">)</span>
+<span class="go">94</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index_db</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk.bgz.idx&quot;</span><span class="p">,</span> <span class="s2">&quot;ls_orchid.gbk.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">orchid_dict</span><span class="p">)</span>
+<span class="go">94</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">orchid_dict</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">SeqIO</span></code> indexing automatically detects the BGZF compression. Note
+that you can’t use the same index file for the uncompressed and
+compressed files.</p>
+</section>
+<section id="discussion">
+<span id="sec-seqio-indexing-discussion"></span><h3>Discussion<a class="headerlink" href="#discussion" title="Permalink to this headline"></a></h3>
+<p>So, which of these methods should you use and why? It depends on what
+you are trying to do (and how much data you are dealing with). However,
+in general picking <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> is a good starting point. If
+you are dealing with millions of records, multiple files, or repeated
+analyses, then look at <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index_db()</span></code>.</p>
+<p>Reasons to choose <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.to_dict()</span></code> over either
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> or <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index_db()</span></code> boil down to a need
+for flexibility despite its high memory needs. The advantage of storing
+the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects in memory is they can be changed, added to, or
+removed at will. In addition to the downside of high memory consumption,
+indexing can also take longer because all the records must be fully
+parsed.</p>
+<p>Both <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> and <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index_db()</span></code> only parse
+records on demand. When indexing, they scan the file once looking for
+the start of each record and do as little work as possible to extract
+the identifier.</p>
+<p>Reasons to choose <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> over <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index_db()</span></code>
+include:</p>
+<ul class="simple">
+<li><p>Faster to build the index (more noticeable in simple file formats)</p></li>
+<li><p>Slightly faster access as SeqRecord objects (but the difference is
+only really noticeable for simple to parse file formats).</p></li>
+<li><p>Can use any immutable Python object as the dictionary keys (e.g. a
+tuple of strings, or a frozen set) not just strings.</p></li>
+<li><p>Don’t need to worry about the index database being out of date if the
+sequence file being indexed has changed.</p></li>
+</ul>
+<p>Reasons to choose <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index_db()</span></code> over <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code>
+include:</p>
+<ul class="simple">
+<li><p>Not memory limited – this is already important with files from second
+generation sequencing where 10s of millions of sequences are common,
+and using <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> can require more than 4GB of RAM and
+therefore a 64bit version of Python.</p></li>
+<li><p>Because the index is kept on disk, it can be reused. Although
+building the index database file takes longer, if you have a script
+which will be rerun on the same datafiles in future, this could save
+time in the long run.</p></li>
+<li><p>Indexing multiple files together</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">get_raw()</span></code> method can be much faster, since for most file
+formats the length of each record is stored as well as its offset.</p></li>
+</ul>
+</section>
+</section>
+<section id="writing-sequence-files">
+<span id="sec-writing-sequence-files"></span><h2>Writing Sequence Files<a class="headerlink" href="#writing-sequence-files" title="Permalink to this headline"></a></h2>
+<p>We’ve talked about using <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> for sequence input
+(reading files), and now we’ll look at <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code> which is
+for sequence output (writing files). This is a function taking three
+arguments: some <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects, a handle or filename to write to,
+and a sequence format.</p>
+<p>Here is an example, where we start by creating a few <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>
+objects the hard way (by hand, rather than by loading them from a file):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+
+<span class="n">rec1</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span>
+    <span class="n">Seq</span><span class="p">(</span>
+        <span class="s2">&quot;MMYQQGCFAGGTVLRLAKDLAENNRGARVLVVCSEITAVTFRGPSETHLDSMVGQALFGD&quot;</span>
+        <span class="s2">&quot;GAGAVIVGSDPDLSVERPLYELVWTGATLLPDSEGAIDGHLREVGLTFHLLKDVPGLISK&quot;</span>
+        <span class="s2">&quot;NIEKSLKEAFTPLGISDWNSTFWIAHPGGPAILDQVEAKLGLKEEKMRATREVLSEYGNM&quot;</span>
+        <span class="s2">&quot;SSAC&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;gi|14150838|gb|AAK54648.1|AF376133_1&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;chalcone synthase [Cucumis sativus]&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">rec2</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span>
+    <span class="n">Seq</span><span class="p">(</span>
+        <span class="s2">&quot;YPDYYFRITNREHKAELKEKFQRMCDKSMIKKRYMYLTEEILKENPSMCEYMAPSLDARQ&quot;</span>
+        <span class="s2">&quot;DMVVVEIPKLGKEAAVKAIKEWGQ&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;gi|13919613|gb|AAK33142.1|&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;chalcone synthase [Fragaria vesca subsp. bracteata]&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">rec3</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span>
+    <span class="n">Seq</span><span class="p">(</span>
+        <span class="s2">&quot;MVTVEEFRRAQCAEGPATVMAIGTATPSNCVDQSTYPDYYFRITNSEHKVELKEKFKRMC&quot;</span>
+        <span class="s2">&quot;EKSMIKKRYMHLTEEILKENPNICAYMAPSLDARQDIVVVEVPKLGKEAAQKAIKEWGQP&quot;</span>
+        <span class="s2">&quot;KSKITHLVFCTTSGVDMPGCDYQLTKLLGLRPSVKRFMMYQQGCFAGGTVLRMAKDLAEN&quot;</span>
+        <span class="s2">&quot;NKGARVLVVCSEITAVTFRGPNDTHLDSLVGQALFGDGAAAVIIGSDPIPEVERPLFELV&quot;</span>
+        <span class="s2">&quot;SAAQTLLPDSEGAIDGHLREVGLTFHLLKDVPGLISKNIEKSLVEAFQPLGISDWNSLFW&quot;</span>
+        <span class="s2">&quot;IAHPGGPAILDQVELKLGLKQEKLKATRKVLSNYGNMSSACVLFILDEMRKASAKEGLGT&quot;</span>
+        <span class="s2">&quot;TGEGLEWGVLFGFGPGLTVETVVLHSVAT&quot;</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;gi|13925890|gb|AAK49457.1|&quot;</span><span class="p">,</span>
+    <span class="n">description</span><span class="o">=</span><span class="s2">&quot;chalcone synthase [Nicotiana tabacum]&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">my_records</span> <span class="o">=</span> <span class="p">[</span><span class="n">rec1</span><span class="p">,</span> <span class="n">rec2</span><span class="p">,</span> <span class="n">rec3</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now we have a list of <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects, we’ll write them to a FASTA
+format file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">my_records</span><span class="p">,</span> <span class="s2">&quot;my_example.faa&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And if you open this file in your favorite text editor it should look
+like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;gi|14150838|gb|AAK54648.1|AF376133_1 chalcone synthase [Cucumis sativus]
+MMYQQGCFAGGTVLRLAKDLAENNRGARVLVVCSEITAVTFRGPSETHLDSMVGQALFGD
+GAGAVIVGSDPDLSVERPLYELVWTGATLLPDSEGAIDGHLREVGLTFHLLKDVPGLISK
+NIEKSLKEAFTPLGISDWNSTFWIAHPGGPAILDQVEAKLGLKEEKMRATREVLSEYGNM
+SSAC
+&gt;gi|13919613|gb|AAK33142.1| chalcone synthase [Fragaria vesca subsp. bracteata]
+YPDYYFRITNREHKAELKEKFQRMCDKSMIKKRYMYLTEEILKENPSMCEYMAPSLDARQ
+DMVVVEIPKLGKEAAVKAIKEWGQ
+&gt;gi|13925890|gb|AAK49457.1| chalcone synthase [Nicotiana tabacum]
+MVTVEEFRRAQCAEGPATVMAIGTATPSNCVDQSTYPDYYFRITNSEHKVELKEKFKRMC
+EKSMIKKRYMHLTEEILKENPNICAYMAPSLDARQDIVVVEVPKLGKEAAQKAIKEWGQP
+KSKITHLVFCTTSGVDMPGCDYQLTKLLGLRPSVKRFMMYQQGCFAGGTVLRMAKDLAEN
+NKGARVLVVCSEITAVTFRGPNDTHLDSLVGQALFGDGAAAVIIGSDPIPEVERPLFELV
+SAAQTLLPDSEGAIDGHLREVGLTFHLLKDVPGLISKNIEKSLVEAFQPLGISDWNSLFW
+IAHPGGPAILDQVELKLGLKQEKLKATRKVLSNYGNMSSACVLFILDEMRKASAKEGLGT
+TGEGLEWGVLFGFGPGLTVETVVLHSVAT
+</pre></div>
+</div>
+<p>Suppose you wanted to know how many records the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code>
+function wrote to the handle? If your records were in a list you could
+just use <code class="docutils literal notranslate"><span class="pre">len(my_records)</span></code>, however you can’t do that when your
+records come from a generator/iterator. The <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code>
+function returns the number of <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects written to the
+file.</p>
+<p><em>Note</em> - If you tell the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code> function to write to a
+file that already exists, the old file will be overwritten without any
+warning.</p>
+<section id="round-trips">
+<h3>Round trips<a class="headerlink" href="#round-trips" title="Permalink to this headline"></a></h3>
+<p>Some people like their parsers to be “round-tripable”, meaning if you
+read in a file and write it back out again it is unchanged. This
+requires that the parser must extract enough information to reproduce
+the original file <em>exactly</em>. <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> does <em>not</em> aim to do this.</p>
+<p>As a trivial example, any line wrapping of the sequence data in FASTA
+files is allowed. An identical <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> would be given from parsing
+the following two examples which differ only in their line breaks:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&gt;YAL068C-7235.2170 Putative promoter sequence
+TACGAGAATAATTTCTCATCATCCAGCTTTAACACAAAATTCGCACAGTTTTCGTTAAGA
+GAACTTAACATTTTCTTATGACGTAAATGAAGTTTATATATAAATTTCCTTTTTATTGGA
+
+&gt;YAL068C-7235.2170 Putative promoter sequence
+TACGAGAATAATTTCTCATCATCCAGCTTTAACACAAAATTCGCA
+CAGTTTTCGTTAAGAGAACTTAACATTTTCTTATGACGTAAATGA
+AGTTTATATATAAATTTCCTTTTTATTGGA
+</pre></div>
+</div>
+<p>To make a round-tripable FASTA parser you would need to keep track of
+where the sequence line breaks occurred, and this extra information is
+usually pointless. Instead Biopython uses a default line wrapping of
+<span class="math notranslate nohighlight">\(60\)</span> characters on output. The same problem with white space
+applies in many other file formats too. Another issue in some cases is
+that Biopython does not (yet) preserve every last bit of annotation
+(e.g. GenBank and EMBL).</p>
+<p>Occasionally preserving the original layout (with any quirks it may
+have) is important. See Section <a class="reference internal" href="#sec-seqio-index-getraw"><span class="std std-ref">Getting the raw data for a record</span></a>
+about the <code class="docutils literal notranslate"><span class="pre">get_raw()</span></code> method of the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code>
+dictionary-like object for one potential solution.</p>
+</section>
+<section id="converting-between-sequence-file-formats">
+<span id="sec-seqio-conversion"></span><h3>Converting between sequence file formats<a class="headerlink" href="#converting-between-sequence-file-formats" title="Permalink to this headline"></a></h3>
+<p>In previous example we used a list of <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects as input to
+the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code> function, but it will also accept a
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> iterator like we get from <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> – this
+lets us do file conversion by combining these two functions.</p>
+<p>For this example we’ll read in the GenBank format file
+<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/ls_orchid.gbk">ls_orchid.gbk</a>
+and write it out in FASTA format:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="s2">&quot;my_example.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converted </span><span class="si">%i</span><span class="s2"> records&quot;</span> <span class="o">%</span> <span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Still, that is a little bit complicated. So, because file conversion is
+such a common task, there is a helper function letting you replace that
+with just:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">,</span> <span class="s2">&quot;my_example.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converted </span><span class="si">%i</span><span class="s2"> records&quot;</span> <span class="o">%</span> <span class="n">count</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.convert()</span></code> function will take handles <em>or</em> filenames.
+Watch out though – if the output file already exists, it will overwrite
+it! To find out more, see the built in help:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In principle, just by changing the filenames and the format names, this
+code could be used to convert between any file formats available in
+Biopython. However, writing some formats requires information (e.g.
+quality scores) which other files formats don’t contain. For example,
+while you can turn a FASTQ file into a FASTA file, you can’t do the
+reverse. See also
+Sections <a class="reference internal" href="chapter_cookbook.html#sec-seqio-fastq-conversion"><span class="std std-ref">Converting FASTQ files</span></a>
+and <a class="reference internal" href="chapter_cookbook.html#sec-seqio-fasta-qual-conversion"><span class="std std-ref">Converting FASTA and QUAL files into FASTQ files</span></a>
+in the cookbook chapter which looks at inter-converting between
+different FASTQ formats.</p>
+<p>Finally, as an added incentive for using the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.convert()</span></code>
+function (on top of the fact your code will be shorter), doing it this
+way may also be faster! The reason for this is the convert function can
+take advantage of several file format specific optimizations and tricks.</p>
+</section>
+<section id="converting-a-file-of-sequences-to-their-reverse-complements">
+<span id="sec-seqio-reverse-complement"></span><h3>Converting a file of sequences to their reverse complements<a class="headerlink" href="#converting-a-file-of-sequences-to-their-reverse-complements" title="Permalink to this headline"></a></h3>
+<p>Suppose you had a file of nucleotide sequences, and you wanted to turn
+it into a file containing their reverse complement sequences. This time
+a little bit of work is required to transform the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects
+we get from our input file into something suitable for saving to our
+output file.</p>
+<p>To start with, we’ll use <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> to load some nucleotide
+sequences from a file, then print out their reverse complements using
+the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object’s built in <code class="docutils literal notranslate"><span class="pre">.reverse_complement()</span></code> method (see
+Section <a class="reference internal" href="chapter_seq_objects.html#sec-seq-reverse-complement"><span class="std std-ref">Nucleotide sequences and (reverse) complements</span></a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">())</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>Now, if we want to save these reverse complements to a file, we’ll need
+to make <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects. We can use the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object’s
+built in <code class="docutils literal notranslate"><span class="pre">.reverse_complement()</span></code> method (see
+Section <a class="reference internal" href="chapter_seq_annot.html#sec-seqrecord-reverse-complement"><span class="std std-ref">Reverse-complementing SeqRecord objects</span></a>)
+but we must decide how to name our new records.</p>
+<p>This is an excellent place to demonstrate the power of list
+comprehensions which make a list in memory:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">rec</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;rc_&quot;</span> <span class="o">+</span> <span class="n">rec</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;reverse complement&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="go">94</span>
+</pre></div>
+</div>
+<p>Now list comprehensions have a nice trick up their sleeves, you can add
+a conditional statement:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">rec</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;rc_&quot;</span> <span class="o">+</span> <span class="n">rec</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;reverse complement&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">700</span>
+<span class="gp">... </span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">records</span><span class="p">)</span>
+<span class="go">18</span>
+</pre></div>
+</div>
+<p>That would create an in memory list of reverse complement records where
+the sequence length was under 700 base pairs. However, we can do exactly
+the same with a generator expression - but with the advantage that this
+does not create a list of all the records in memory at once:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">rec</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;rc_&quot;</span> <span class="o">+</span> <span class="n">rec</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;reverse complement&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">700</span>
+<span class="gp">... </span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As a complete example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="p">(</span>
+<span class="gp">... </span>    <span class="n">rec</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;rc_&quot;</span> <span class="o">+</span> <span class="n">rec</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;reverse complement&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">700</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="s2">&quot;rev_comp.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="go">18</span>
+</pre></div>
+</div>
+<p>There is a related example in
+Section <a class="reference internal" href="chapter_cookbook.html#sec-seqio-translate"><span class="std std-ref">Translating a FASTA file of CDS entries</span></a>, translating
+each record in a FASTA file from nucleotides to amino acids.</p>
+</section>
+<section id="getting-your-seqrecord-objects-as-formatted-strings">
+<span id="sec-bio-seqio-and-stringio"></span><h3>Getting your SeqRecord objects as formatted strings<a class="headerlink" href="#getting-your-seqrecord-objects-as-formatted-strings" title="Permalink to this headline"></a></h3>
+<p>Suppose that you don’t really want to write your records to a file or
+handle – instead you want a string containing the records in a
+particular file format. The <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> interface is based on handles,
+but Python has a useful built in module which provides a string based
+handle.</p>
+<p>For an example of how you might use this, let’s load in a bunch of
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects from our orchids GenBank file, and create a string
+containing the records in FASTA format:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
+
+<span class="n">records</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="n">out_handle</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+<span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">out_handle</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="n">fasta_data</span> <span class="o">=</span> <span class="n">out_handle</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fasta_data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This isn’t entirely straightforward the first time you see it! On the
+bright side, for the special case where you would like a string
+containing a <em>single</em> record in a particular file format, use the the
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> class’ <code class="docutils literal notranslate"><span class="pre">format()</span></code> method (see
+Section <a class="reference internal" href="chapter_seq_annot.html#sec-seqrecord-format"><span class="std std-ref">The format method</span></a>).</p>
+<p>Note that although we don’t encourage it, you <em>can</em> use the <code class="docutils literal notranslate"><span class="pre">format()</span></code>
+method to write to a file, for example something like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ls_orchid_long.tab&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_handle</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="n">out_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;tab&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>While this style of code will work for a simple sequential file format
+like FASTA or the simple tab separated format used here, it will <em>not</em>
+work for more complex or interlaced file formats. This is why we still
+recommend using <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code>, as in the following example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">records</span> <span class="o">=</span> <span class="p">(</span><span class="n">rec</span> <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="s2">&quot;ls_orchid.tab&quot;</span><span class="p">,</span> <span class="s2">&quot;tab&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Making a single call to <code class="docutils literal notranslate"><span class="pre">SeqIO.write(...)</span></code> is also much quicker than
+multiple calls to the <code class="docutils literal notranslate"><span class="pre">SeqRecord.format(...)</span></code> method.</p>
+</section>
+</section>
+<section id="low-level-fasta-and-fastq-parsers">
+<span id="sec-low-level-fasta-fastq"></span><h2>Low level FASTA and FASTQ parsers<a class="headerlink" href="#low-level-fasta-and-fastq-parsers" title="Permalink to this headline"></a></h2>
+<p>Working with the low-level <code class="docutils literal notranslate"><span class="pre">SimpleFastaParser</span></code> or
+<code class="docutils literal notranslate"><span class="pre">FastqGeneralIterator</span></code> is often more practical than
+<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse</span></code> when dealing with large high-throughput FASTA or
+FASTQ sequencing files where speed matters. As noted in the introduction
+to this chapter, the file-format neutral <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> interface has the
+overhead of creating many objects even for simple formats like FASTA.</p>
+<p>When parsing FASTA files, internally <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code> calls the
+low-level <code class="docutils literal notranslate"><span class="pre">SimpleFastaParser</span></code> with the file handle. You can use this
+directly - it iterates over the file handle returning each record as a
+tuple of two strings, the title line (everything after the <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>
+character) and the sequence (as a plain string):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqIO.FastaIO</span> <span class="kn">import</span> <span class="n">SimpleFastaParser</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">total_len</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">in_handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">SimpleFastaParser</span><span class="p">(</span><span class="n">in_handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">... </span>        <span class="n">total_len</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> records with total sequence length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">total_len</span><span class="p">))</span>
+<span class="go">94 records with total sequence length 67518</span>
+</pre></div>
+</div>
+<p>As long as you don’t care about line wrapping (and you probably don’t
+for short read high-throughput data), then outputting FASTA format from
+these strings is also very fast:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="n">out_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&gt;</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">))</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Likewise, when parsing FASTQ files, internally <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.parse()</span></code>
+calls the low-level <code class="docutils literal notranslate"><span class="pre">FastqGeneralIterator</span></code> with the file handle. If
+you don’t need the quality scores turned into integers, or can work with
+them as ASCII strings this is ideal:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqIO.QualityIO</span> <span class="kn">import</span> <span class="n">FastqGeneralIterator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">total_len</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example.fastq&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">in_handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">qual</span> <span class="ow">in</span> <span class="n">FastqGeneralIterator</span><span class="p">(</span><span class="n">in_handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">... </span>        <span class="n">total_len</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> records with total sequence length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">total_len</span><span class="p">))</span>
+<span class="go">3 records with total sequence length 75</span>
+</pre></div>
+</div>
+<p>There are more examples of this in the Cookbook
+(Chapter <a class="reference internal" href="chapter_cookbook.html#chapter-cookbook"><span class="std std-ref">Cookbook – Cool things to do with it</span></a>), including how to
+output FASTQ efficiently from strings using this code snippet:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="n">out_handle</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;@</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">+</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">,</span> <span class="n">qual</span><span class="p">))</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_seq_annot.html" class="btn btn-neutral float-left" title="Sequence annotation objects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_align.html" class="btn btn-neutral float-right" title="Sequence alignments" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graphics including GenomeDiagram &mdash; Biopython 1.83.dev0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="KEGG" href="chapter_kegg.html" />
+    <link rel="prev" title="Cluster analysis" href="chapter_cluster.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="../index.html">
+            
+              <img src="../_static/biopython_logo.svg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Biopython Tutorial &amp; Cookbook</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="chapter_introduction.html">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_quick_start.html">Quick Start – What can you do with Biopython?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_objects.html">Sequence objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seq_annot.html">Sequence annotation objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise.html">Pairwise sequence alignment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_msa.html">Multiple Sequence Alignment objects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pairwise2.html">Pairwise alignments using pairwise2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html">BLAST (new)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_blast.html#blast-old">BLAST (old)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_searchio.html">BLAST and other sequence search tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_entrez.html">Accessing NCBI’s Entrez databases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_uniprot.html">Swiss-Prot and ExPASy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_pdb.html">Going 3D: The PDB module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_popgen.html">Bio.PopGen: Population genetics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phylo.html">Phylogenetics with Bio.Phylo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_motifs.html">Sequence motif analysis using Bio.motifs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cluster.html">Cluster analysis</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Graphics including GenomeDiagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#genomediagram">GenomeDiagram</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#diagrams-tracks-feature-sets-and-features">Diagrams, tracks, feature-sets and features</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#a-top-down-example">A top down example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#a-bottom-up-example">A bottom up example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#features-without-a-seqfeature">Features without a SeqFeature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#feature-captions">Feature captions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#feature-sigils">Feature sigils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#arrow-sigils">Arrow sigils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#a-nice-example">A nice example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiple-tracks">Multiple tracks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cross-links-between-tracks">Cross-Links between tracks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#further-options">Further options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#converting-old-code">Converting old code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#chromosomes">Chromosomes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#simple-chromosomes">Simple Chromosomes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#annotated-chromosomes">Annotated Chromosomes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_kegg.html">KEGG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_phenotype.html">Bio.phenotype: analyze phenotypic data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_cookbook.html">Cookbook – Cool things to do with it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_testing.html">The Biopython testing framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_contributing.html">Where to go from here – contributing to Biopython</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_appendix.html">Appendix: Useful stuff about Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="chapter_bibliography.html">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Welcome to Biopython’s API documentation!</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Biopython Tutorial &amp; Cookbook</a></li>
+      <li class="breadcrumb-item active">Graphics including GenomeDiagram</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/biopython/biopython/blob/master/Doc/Tutorial/chapter_graphics.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="chapter_cluster.html" class="btn btn-neutral float-left" title="Cluster analysis" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_kegg.html" class="btn btn-neutral float-right" title="KEGG" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="graphics-including-genomediagram">
+<span id="chapter-graphics"></span><h1>Graphics including GenomeDiagram<a class="headerlink" href="#graphics-including-genomediagram" title="Permalink to this headline"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.Graphics</span></code> module depends on the third party Python library
+<a class="reference external" href="https://www.reportlab.com/">ReportLab</a>. Although focused on
+producing PDF files, ReportLab can also create encapsulated postscript
+(EPS) and (SVG) files. In addition to these vector based images,
+provided certain further dependencies such as the <a class="reference external" href="http://www.pythonware.com/products/pil/">Python Imaging
+Library (PIL)</a> are
+installed, ReportLab can also output bitmap images (including JPEG, PNG,
+GIF, BMP and PICT formats).</p>
+<section id="genomediagram">
+<span id="sec-genomediagram"></span><h2>GenomeDiagram<a class="headerlink" href="#genomediagram" title="Permalink to this headline"></a></h2>
+<section id="introduction">
+<h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.Graphics.GenomeDiagram</span></code> module was added to Biopython 1.50,
+having previously been available as a separate Python module dependent
+on Biopython. GenomeDiagram is described in the Bioinformatics journal
+publication by Pritchard et al. (2006)
+<a class="reference internal" href="chapter_bibliography.html#pritchard2006" id="id1"><span>[Pritchard2006]</span></a>, which includes some examples images.
+There is a PDF copy of the old manual here,
+<a class="reference external" href="http://biopython.org/DIST/docs/GenomeDiagram/userguide.pdf">http://biopython.org/DIST/docs/GenomeDiagram/userguide.pdf</a> which has
+some more examples.</p>
+<p>As the name might suggest, GenomeDiagram was designed for drawing whole
+genomes, in particular prokaryotic genomes, either as linear diagrams
+(optionally broken up into fragments to fit better) or as circular wheel
+diagrams. Have a look at Figure 2 in Toth <em>et al.</em> (2006)
+<a class="reference internal" href="chapter_bibliography.html#toth2006" id="id2"><span>[Toth2006]</span></a> for a good example. It proved also well
+suited to drawing quite detailed figures for smaller genomes such as
+phage, plasmids or mitochondria, for example see Figures 1 and 2 in Van
+der Auwera <em>et al.</em> (2009) <a class="reference internal" href="chapter_bibliography.html#vanderauwera2009" id="id3"><span>[Vanderauwera2009]</span></a> (shown
+with additional manual editing).</p>
+<p>This module is easiest to use if you have your genome loaded as a
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object containing lots of <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> objects - for
+example as loaded from a GenBank file (see
+Chapters <a class="reference internal" href="chapter_seq_annot.html#chapter-seq-annot"><span class="std std-ref">Sequence annotation objects</span></a>
+and <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>).</p>
+</section>
+<section id="diagrams-tracks-feature-sets-and-features">
+<h3>Diagrams, tracks, feature-sets and features<a class="headerlink" href="#diagrams-tracks-feature-sets-and-features" title="Permalink to this headline"></a></h3>
+<p>GenomeDiagram uses a nested set of objects. At the top level, you have a
+diagram object representing a sequence (or sequence region) along the
+horizontal axis (or circle). A diagram can contain one or more tracks,
+shown stacked vertically (or radially on circular diagrams). These will
+typically all have the same length and represent the same sequence
+region. You might use one track to show the gene locations, another to
+show regulatory regions, and a third track to show the GC percentage.</p>
+<p>The most commonly used type of track will contain features, bundled
+together in feature-sets. You might choose to use one feature-set for
+all your CDS features, and another for tRNA features. This isn’t
+required - they can all go in the same feature-set, but it makes it
+easier to update the properties of just selected features (e.g. make all
+the tRNA features red).</p>
+<p>There are two main ways to build up a complete diagram. Firstly, the top
+down approach where you create a diagram object, and then using its
+methods add track(s), and use the track methods to add feature-set(s),
+and use their methods to add the features. Secondly, you can create the
+individual objects separately (in whatever order suits your code), and
+then combine them.</p>
+</section>
+<section id="a-top-down-example">
+<span id="sec-gd-top-down"></span><h3>A top down example<a class="headerlink" href="#a-top-down-example" title="Permalink to this headline"></a></h3>
+<p>We’re going to draw a whole genome from a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object read in
+from a GenBank file (see Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>).
+This example uses the pPCP1 plasmid from <em>Yersinia pestis biovar
+Microtus</em>, the file is included with the Biopython unit tests under the
+GenBank folder, or online
+<code class="docutils literal notranslate"><span class="pre">`NC_005816.gb</span></code> &lt;<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.gb">https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.gb</a>&gt;`__
+from our website.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reportlab.lib</span> <span class="kn">import</span> <span class="n">colors</span>
+<span class="kn">from</span> <span class="nn">reportlab.lib.units</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">Bio.Graphics</span> <span class="kn">import</span> <span class="n">GenomeDiagram</span>
+<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We’re using a top down approach, so after loading in our sequence we
+next create an empty diagram, then add an (empty) track, and to that add
+an (empty) feature set:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_diagram</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">&quot;Yersinia pestis biovar Microtus plasmid pPCP1&quot;</span><span class="p">)</span>
+<span class="n">gd_track_for_features</span> <span class="o">=</span> <span class="n">gd_diagram</span><span class="o">.</span><span class="n">new_track</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Annotated Features&quot;</span><span class="p">)</span>
+<span class="n">gd_feature_set</span> <span class="o">=</span> <span class="n">gd_track_for_features</span><span class="o">.</span><span class="n">new_set</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Now the fun part - we take each gene <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> object in our
+<code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>, and use it to generate a feature on the diagram. We’re
+going to color them blue, alternating between a dark blue and a light
+blue.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;gene&quot;</span><span class="p">:</span>
+        <span class="c1"># Exclude this feature</span>
+        <span class="k">continue</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gd_feature_set</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">blue</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">lightblue</span>
+    <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we come to actually making the output file. This happens in two
+steps, first we call the <code class="docutils literal notranslate"><span class="pre">draw</span></code> method, which creates all the shapes
+using ReportLab objects. Then we call the <code class="docutils literal notranslate"><span class="pre">write</span></code> method which renders
+these to the requested file format. Note you can output in multiple file
+formats:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;landscape&quot;</span><span class="p">,</span>
+    <span class="n">pagesize</span><span class="o">=</span><span class="s2">&quot;A4&quot;</span><span class="p">,</span>
+    <span class="n">fragments</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear.eps&quot;</span><span class="p">,</span> <span class="s2">&quot;EPS&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear.svg&quot;</span><span class="p">,</span> <span class="s2">&quot;SVG&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Also, provided you have the dependencies installed, you can also do
+bitmaps, for example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear.png&quot;</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected output is shown in <a class="reference internal" href="#fig-plasmid-linear"><span class="std std-numref">Fig. 9</span></a>.</p>
+<figure class="align-default" id="fig-plasmid-linear">
+<a class="reference internal image-reference" href="../_images/plasmid_linear.png"><img alt="Simple linear diagram for *Y. pestis biovar Microtus* plasmid pPCP1." src="../_images/plasmid_linear.png" style="width: 80.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text">Simple linear diagram for <em>Y. pestis biovar Microtus</em> plasmid pPCP1.</span><a class="headerlink" href="#fig-plasmid-linear" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Notice that the <code class="docutils literal notranslate"><span class="pre">fragments</span></code> argument which we set to four controls how
+many pieces the genome gets broken up into.</p>
+<p>If you want to do a circular figure, then try this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;circular&quot;</span><span class="p">,</span>
+    <span class="n">circular</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">pagesize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">cm</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">cm</span><span class="p">),</span>
+    <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">),</span>
+    <span class="n">circle_core</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_circular.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected output is shown in <a class="reference internal" href="#fig-plasmid-circular"><span class="std std-numref">Fig. 10</span></a>.</p>
+<figure class="align-default" id="fig-plasmid-circular">
+<a class="reference internal image-reference" href="../_images/plasmid_circular.png"><img alt="Simple circular diagram for *Y. pestis biovar Microtus* plasmid pPCP1." src="../_images/plasmid_circular.png" style="width: 8cm; height: 8cm;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text">Simple circular diagram for <em>Y. pestis biovar Microtus</em> plasmid pPCP1.</span><a class="headerlink" href="#fig-plasmid-circular" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>These figures are not very exciting, but we’ve only just got started.</p>
+</section>
+<section id="a-bottom-up-example">
+<h3>A bottom up example<a class="headerlink" href="#a-bottom-up-example" title="Permalink to this headline"></a></h3>
+<p>Now let’s produce exactly the same figures, but using the bottom up
+approach. This means we create the different objects directly (and this
+can be done in almost any order) and then combine them.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reportlab.lib</span> <span class="kn">import</span> <span class="n">colors</span>
+<span class="kn">from</span> <span class="nn">reportlab.lib.units</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">Bio.Graphics</span> <span class="kn">import</span> <span class="n">GenomeDiagram</span>
+<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+
+<span class="c1"># Create the feature set and its feature objects,</span>
+<span class="n">gd_feature_set</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">FeatureSet</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;gene&quot;</span><span class="p">:</span>
+        <span class="c1"># Exclude this feature</span>
+        <span class="k">continue</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gd_feature_set</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">blue</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">lightblue</span>
+    <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># (this for loop is the same as in the previous example)</span>
+
+<span class="c1"># Create a track, and a diagram</span>
+<span class="n">gd_track_for_features</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Track</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Annotated Features&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">&quot;Yersinia pestis biovar Microtus plasmid pPCP1&quot;</span><span class="p">)</span>
+
+<span class="c1"># Now have to glue the bits together...</span>
+<span class="n">gd_track_for_features</span><span class="o">.</span><span class="n">add_set</span><span class="p">(</span><span class="n">gd_feature_set</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">add_track</span><span class="p">(</span><span class="n">gd_track_for_features</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can now call the <code class="docutils literal notranslate"><span class="pre">draw</span></code> and <code class="docutils literal notranslate"><span class="pre">write</span></code> methods as before to produce
+a linear or circular diagram, using the code at the end of the top-down
+example above. The figures should be identical.</p>
+</section>
+<section id="features-without-a-seqfeature">
+<span id="sec-gd-features-without-seqfeatures"></span><h3>Features without a SeqFeature<a class="headerlink" href="#features-without-a-seqfeature" title="Permalink to this headline"></a></h3>
+<p>In the above example we used a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>’s <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> objects
+to build our diagram (see also
+Section <a class="reference internal" href="chapter_seq_annot.html#sec-seq-features"><span class="std std-ref">Feature, location and position objects</span></a>). Sometimes you won’t
+have <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> objects, but just the coordinates for a feature you
+want to draw. You have to create minimal <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> object, but this
+is easy:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">SimpleLocation</span>
+
+<span class="n">my_seq_feature</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">strand</span><span class="o">=+</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>For strand, use <code class="docutils literal notranslate"><span class="pre">+1</span></code> for the forward strand, <code class="docutils literal notranslate"><span class="pre">-1</span></code> for the reverse
+strand, and <code class="docutils literal notranslate"><span class="pre">None</span></code> for both. Here is a short self contained example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">SimpleLocation</span>
+<span class="kn">from</span> <span class="nn">Bio.Graphics</span> <span class="kn">import</span> <span class="n">GenomeDiagram</span>
+<span class="kn">from</span> <span class="nn">reportlab.lib.units</span> <span class="kn">import</span> <span class="n">cm</span>
+
+<span class="n">gdd</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">&quot;Test Diagram&quot;</span><span class="p">)</span>
+<span class="n">gdt_features</span> <span class="o">=</span> <span class="n">gdd</span><span class="o">.</span><span class="n">new_track</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">greytrack</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">gds_features</span> <span class="o">=</span> <span class="n">gdt_features</span><span class="o">.</span><span class="n">new_set</span><span class="p">()</span>
+
+<span class="c1"># Add three features to show the strand options,</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">125</span><span class="p">,</span> <span class="n">strand</span><span class="o">=+</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">gds_features</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Forward&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="n">strand</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
+<span class="n">gds_features</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Strandless&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">feature</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">275</span><span class="p">,</span> <span class="mi">375</span><span class="p">,</span> <span class="n">strand</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">gds_features</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Reverse&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">gdd</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span> <span class="o">*</span> <span class="n">cm</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">cm</span><span class="p">),</span> <span class="n">fragments</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">gdd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;GD_labels_default.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;pdf&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output is shown at the top of <a class="reference internal" href="#fig-gd-sigil-labels"><span class="std std-numref">Fig. 11</span></a>
+(in the default feature color, pale green).</p>
+<p>Notice that we have used the <code class="docutils literal notranslate"><span class="pre">name</span></code> argument here to specify the
+caption text for these features. This is discussed in more detail next.</p>
+</section>
+<section id="feature-captions">
+<span id="sec-gd-feature-captions"></span><h3>Feature captions<a class="headerlink" href="#feature-captions" title="Permalink to this headline"></a></h3>
+<p>Recall we used the following (where <code class="docutils literal notranslate"><span class="pre">feature</span></code> was a <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code>
+object) to add a feature to the diagram:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In the example above the <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> annotation was used to pick a
+sensible caption for the features. By default the following possible
+entries under the <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> object’s qualifiers dictionary are
+used: <code class="docutils literal notranslate"><span class="pre">gene</span></code>, <code class="docutils literal notranslate"><span class="pre">label</span></code>, <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">locus_tag</span></code>, and <code class="docutils literal notranslate"><span class="pre">product</span></code>.
+More simply, you can specify a name directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My Gene&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In addition to the caption text for each feature’s label, you can also
+choose the font, position (this defaults to the start of the sigil, you
+can also choose the middle or at the end) and orientation (for linear
+diagrams only, where this defaults to rotated by <span class="math notranslate nohighlight">\(45\)</span> degrees):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Large font, parallel with the track</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+    <span class="n">feature</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">label_size</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">label_angle</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+
+<span class="c1"># Very small font, perpendicular to the track (towards it)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+    <span class="n">feature</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+    <span class="n">label_position</span><span class="o">=</span><span class="s2">&quot;end&quot;</span><span class="p">,</span>
+    <span class="n">label_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">label_angle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Small font, perpendicular to the track (away from it)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+    <span class="n">feature</span><span class="p">,</span>
+    <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+    <span class="n">label_position</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span><span class="p">,</span>
+    <span class="n">label_size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">label_angle</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Combining each of these three fragments with the complete example in the
+previous section should give something like the tracks in
+<a class="reference internal" href="#fig-gd-sigil-labels"><span class="std std-numref">Fig. 11</span></a>.</p>
+<figure class="align-default" id="fig-gd-sigil-labels">
+<a class="reference internal image-reference" href="../_images/GD_sigil_labels.png"><img alt="Simple GenomeDiagram showing label options." src="../_images/GD_sigil_labels.png" style="width: 80.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text">Simple GenomeDiagram showing label options.</span><a class="headerlink" href="#fig-gd-sigil-labels" title="Permalink to this image"></a></p>
+<div class="legend">
+<p>The top plot in pale green shows the default label settings (see
+Section <a class="reference internal" href="#sec-gd-features-without-seqfeatures"><span class="std std-ref">Features without a SeqFeature</span></a>) while the
+rest show variations in the label size, position and orientation (see
+Section <a class="reference internal" href="#sec-gd-feature-captions"><span class="std std-ref">Feature captions</span></a>).</p>
+</div>
+</figcaption>
+</figure>
+<p>We’ve not shown it here, but you can also set <code class="docutils literal notranslate"><span class="pre">label_color</span></code> to control
+the label’s color (used in Section <a class="reference internal" href="#sec-gd-nice-example"><span class="std std-ref">A nice example</span></a>).</p>
+<p>You’ll notice the default font is quite small - this makes sense because
+you will usually be drawing many (small) features on a page, not just a
+few large ones as shown here.</p>
+</section>
+<section id="feature-sigils">
+<span id="sec-gd-sigils"></span><h3>Feature sigils<a class="headerlink" href="#feature-sigils" title="Permalink to this headline"></a></h3>
+<p>The examples above have all just used the default sigil for the feature,
+a plain box, which was all that was available in the last publicly
+released standalone version of GenomeDiagram. Arrow sigils were included
+when GenomeDiagram was added to Biopython 1.50:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Default uses a BOX sigil</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+
+<span class="c1"># You can make this explicit:</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;BOX&quot;</span><span class="p">)</span>
+
+<span class="c1"># Or opt for an arrow:</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Biopython 1.61 added three more sigils,</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Box with corners cut off (making it an octagon)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;OCTO&quot;</span><span class="p">)</span>
+
+<span class="c1"># Box with jagged edges (useful for showing breaks in contains)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;JAGGY&quot;</span><span class="p">)</span>
+
+<span class="c1"># Arrow which spans the axis with strand used only for direction</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;BIGARROW&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>These are shown in <a class="reference internal" href="#fig-gd-sigils"><span class="std std-numref">Fig. 12</span></a>. Most sigils fit into
+a bounding box (as given by the default BOX sigil), either above or
+below the axis for the forward or reverse strand, or straddling it
+(double the height) for strand-less features. The BIGARROW sigil is
+different, always straddling the axis with the direction taken from the
+feature’s stand.</p>
+<figure class="align-default" id="fig-gd-sigils">
+<a class="reference internal image-reference" href="../_images/GD_sigils.png"><img alt="Simple GenomeDiagram showing different sigils" src="../_images/GD_sigils.png" style="width: 80.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 12 </span><span class="caption-text">Simple GenomeDiagram showing different sigils.</span><a class="headerlink" href="#fig-gd-sigils" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="arrow-sigils">
+<span id="sec-gd-arrow-sigils"></span><h3>Arrow sigils<a class="headerlink" href="#arrow-sigils" title="Permalink to this headline"></a></h3>
+<p>We introduced the arrow sigils in the previous section. There are two
+additional options to adjust the shapes of the arrows, firstly the
+thickness of the arrow shaft, given as a proportion of the height of the
+bounding box:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Full height shafts, giving pointed boxes:</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;brown&quot;</span><span class="p">,</span> <span class="n">arrowshaft_height</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="c1"># Or, thin shafts:</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;teal&quot;</span><span class="p">,</span> <span class="n">arrowshaft_height</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="c1"># Or, very thin shafts:</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+    <span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkgreen&quot;</span><span class="p">,</span> <span class="n">arrowshaft_height</span><span class="o">=</span><span class="mf">0.1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The results are shown in <a class="reference internal" href="#fig-gd-sigil-arrow-shafts"><span class="std std-numref">Fig. 13</span></a>.</p>
+<figure class="align-default" id="fig-gd-sigil-arrow-shafts">
+<a class="reference internal image-reference" href="../_images/GD_sigil_arrow_shafts.png"><img alt="Simple GenomeDiagram showing arrow shaft options" src="../_images/GD_sigil_arrow_shafts.png" style="width: 80.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 13 </span><span class="caption-text">Simple GenomeDiagram showing arrow shaft options.</span><a class="headerlink" href="#fig-gd-sigil-arrow-shafts" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Secondly, the length of the arrow head - given as a proportion of the
+height of the bounding box (defaulting to <span class="math notranslate nohighlight">\(0.5\)</span>, or <span class="math notranslate nohighlight">\(50\%\)</span>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Short arrow heads:</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">arrowhead_length</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="c1"># Or, longer arrow heads:</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">arrowhead_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Or, very very long arrow heads (i.e. all head, no shaft, so triangles):</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">arrowhead_length</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The results are shown in <a class="reference internal" href="#fig-gd-sigil-arrow-heads"><span class="std std-numref">Fig. 14</span></a>.</p>
+<figure class="align-default" id="fig-gd-sigil-arrow-heads">
+<a class="reference internal image-reference" href="../_images/GD_sigil_arrow_heads.png"><img alt="Simple GenomeDiagram showing arrow head options" src="../_images/GD_sigil_arrow_heads.png" style="width: 80.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Simple GenomeDiagram showing arrow head options.</span><a class="headerlink" href="#fig-gd-sigil-arrow-heads" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Biopython 1.61 adds a new <code class="docutils literal notranslate"><span class="pre">BIGARROW</span></code> sigil which always straddles the
+axis, pointing left for the reverse strand or right otherwise:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># A large arrow straddling the axis:</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;BIGARROW&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>All the shaft and arrow head options shown above for the <code class="docutils literal notranslate"><span class="pre">ARROW</span></code> sigil
+can be used for the <code class="docutils literal notranslate"><span class="pre">BIGARROW</span></code> sigil too.</p>
+</section>
+<section id="a-nice-example">
+<span id="sec-gd-nice-example"></span><h3>A nice example<a class="headerlink" href="#a-nice-example" title="Permalink to this headline"></a></h3>
+<p>Now let’s return to the pPCP1 plasmid from <em>Yersinia pestis biovar
+Microtus</em>, and the top down approach used in
+Section <a class="reference internal" href="#sec-gd-top-down"><span class="std std-ref">A top down example</span></a>, but take advantage of the sigil
+options we’ve now discussed. This time we’ll use arrows for the genes,
+and overlay them with strand-less features (as plain boxes) showing the
+position of some restriction digest sites.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reportlab.lib</span> <span class="kn">import</span> <span class="n">colors</span>
+<span class="kn">from</span> <span class="nn">reportlab.lib.units</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">Bio.Graphics</span> <span class="kn">import</span> <span class="n">GenomeDiagram</span>
+<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="kn">from</span> <span class="nn">Bio.SeqFeature</span> <span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">SimpleLocation</span>
+
+<span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+
+<span class="n">gd_diagram</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="n">gd_track_for_features</span> <span class="o">=</span> <span class="n">gd_diagram</span><span class="o">.</span><span class="n">new_track</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Annotated Features&quot;</span><span class="p">)</span>
+<span class="n">gd_feature_set</span> <span class="o">=</span> <span class="n">gd_track_for_features</span><span class="o">.</span><span class="n">new_set</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;gene&quot;</span><span class="p">:</span>
+        <span class="c1"># Exclude this feature</span>
+        <span class="k">continue</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gd_feature_set</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">blue</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">lightblue</span>
+    <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+        <span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label_size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">label_angle</span><span class="o">=</span><span class="mi">0</span>
+    <span class="p">)</span>
+
+<span class="c1"># I want to include some strandless features, so for an example</span>
+<span class="c1"># will use EcoRI recognition sites etc.</span>
+<span class="k">for</span> <span class="n">site</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;GAATTC&quot;</span><span class="p">,</span> <span class="s2">&quot;EcoRI&quot;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">green</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;CCCGGG&quot;</span><span class="p">,</span> <span class="s2">&quot;SmaI&quot;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">orange</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;AAGCTT&quot;</span><span class="p">,</span> <span class="s2">&quot;HindIII&quot;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">red</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;GGATCC&quot;</span><span class="p">,</span> <span class="s2">&quot;BamHI&quot;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">purple</span><span class="p">),</span>
+<span class="p">]:</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">site</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">feature</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">index</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">site</span><span class="p">)))</span>
+        <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="n">feature</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">label_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="n">label_color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">index</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">site</span><span class="p">)</span>
+
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="s2">&quot;A4&quot;</span><span class="p">,</span> <span class="n">fragments</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear_nice.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear_nice.eps&quot;</span><span class="p">,</span> <span class="s2">&quot;EPS&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear_nice.svg&quot;</span><span class="p">,</span> <span class="s2">&quot;SVG&quot;</span><span class="p">)</span>
+
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;circular&quot;</span><span class="p">,</span>
+    <span class="n">circular</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">pagesize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">cm</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">cm</span><span class="p">),</span>
+    <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">),</span>
+    <span class="n">circle_core</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_circular_nice.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_circular_nice.eps&quot;</span><span class="p">,</span> <span class="s2">&quot;EPS&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_circular_nice.svg&quot;</span><span class="p">,</span> <span class="s2">&quot;SVG&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected output is shown in
+Figures <a class="reference internal" href="#fig-plasmid-linear-nice"><span class="std std-ref">Linear diagram for plasmid pPCP1 showing selected restriction digest sites.</span></a>
+and <a class="reference internal" href="#fig-plasmid-circular-nice"><span class="std std-ref">Circular diagram for plasmid pPCP1 showing selected restriction digest sites .</span></a>.</p>
+<figure class="align-default" id="fig-plasmid-linear-nice">
+<a class="reference internal image-reference" href="../_images/plasmid_linear_nice.png"><img alt="Linear diagram for plasmid showing selected restriction digest sites" src="../_images/plasmid_linear_nice.png" style="width: 80.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Linear diagram for plasmid pPCP1 showing selected restriction digest sites.</span><a class="headerlink" href="#fig-plasmid-linear-nice" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="fig-plasmid-circular-nice">
+<a class="reference internal image-reference" href="../_images/plasmid_circular_nice.png"><img alt="Circular diagram for plasmid showing selected restriction digest sites" src="../_images/plasmid_circular_nice.png" style="width: 80.0%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Circular diagram for plasmid pPCP1 showing selected restriction digest sites .</span><a class="headerlink" href="#fig-plasmid-circular-nice" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="multiple-tracks">
+<span id="sec-gd-multiple-tracks"></span><h3>Multiple tracks<a class="headerlink" href="#multiple-tracks" title="Permalink to this headline"></a></h3>
+<p>All the examples so far have used a single track, but you can have more
+than one track – for example show the genes on one, and repeat regions
+on another. In this example we’re going to show three phage genomes side
+by side to scale, inspired by Figure 6 in Proux <em>et al.</em> (2002)
+<a class="reference internal" href="chapter_bibliography.html#proux2002" id="id4"><span>[Proux2002]</span></a>. We’ll need the GenBank files for the
+following three phage:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">NC_002703</span></code> – Lactococcus phage Tuc2009, complete genome
+(<span class="math notranslate nohighlight">\(38347\)</span> bp)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">AF323668</span></code> – Bacteriophage bIL285, complete genome (<span class="math notranslate nohighlight">\(35538\)</span>
+bp)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NC_003212</span></code> – <em>Listeria innocua</em> Clip11262, complete genome, of
+which we are focussing only on integrated prophage 5 (similar
+length).</p></li>
+</ul>
+<p>You can download these using Entrez if you like, see
+Section <a class="reference internal" href="chapter_entrez.html#sec-efetch"><span class="std std-ref">EFetch: Downloading full records from Entrez</span></a> for more details. For the third
+record we’ve worked out where the phage is integrated into the genome,
+and slice the record to extract it (with the features preserved, see
+Section <a class="reference internal" href="chapter_seq_annot.html#sec-seqrecord-slicing"><span class="std std-ref">Slicing a SeqRecord</span></a>), and must
+also reverse complement to match the orientation of the first two phage
+(again preserving the features, see
+Section <a class="reference internal" href="chapter_seq_annot.html#sec-seqrecord-reverse-complement"><span class="std std-ref">Reverse-complementing SeqRecord objects</span></a>):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">A_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_002703.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)</span>
+<span class="n">B_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;AF323668.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)</span>
+<span class="n">C_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_003212.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)[</span><span class="mi">2587879</span><span class="p">:</span><span class="mi">2625807</span><span class="p">]</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The figure we are imitating used different colors for different gene
+functions. One way to do this is to edit the GenBank file to record
+color preferences for each feature - something <a class="reference external" href="https://www.sanger.ac.uk/science/tools/artemis">Sanger’s Artemis
+editor</a> does, and
+which GenomeDiagram should understand. Here however, we’ll just hard
+code three lists of colors.</p>
+<p>Note that the annotation in the GenBank files doesn’t exactly match that
+shown in Proux <em>et al.</em>, they have drawn some unannotated genes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reportlab.lib.colors</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">red</span><span class="p">,</span>
+    <span class="n">grey</span><span class="p">,</span>
+    <span class="n">orange</span><span class="p">,</span>
+    <span class="n">green</span><span class="p">,</span>
+    <span class="n">brown</span><span class="p">,</span>
+    <span class="n">blue</span><span class="p">,</span>
+    <span class="n">lightblue</span><span class="p">,</span>
+    <span class="n">purple</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">A_colors</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">[</span><span class="n">red</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span> <span class="o">*</span> <span class="mi">7</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">orange</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">orange</span><span class="p">]</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span> <span class="o">*</span> <span class="mi">11</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">green</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">green</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">,</span> <span class="n">green</span><span class="p">]</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">brown</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">blue</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">lightblue</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">,</span> <span class="n">lightblue</span><span class="p">]</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">purple</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">B_colors</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">[</span><span class="n">red</span><span class="p">]</span> <span class="o">*</span> <span class="mi">6</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span> <span class="o">*</span> <span class="mi">8</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">orange</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">orange</span><span class="p">]</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span> <span class="o">*</span> <span class="mi">21</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">green</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">brown</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">blue</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">lightblue</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">purple</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="p">)</span>
+<span class="n">C_colors</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">[</span><span class="n">grey</span><span class="p">]</span> <span class="o">*</span> <span class="mi">30</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">green</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">brown</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">blue</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">,</span> <span class="n">blue</span><span class="p">]</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">lightblue</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="o">+</span> <span class="p">[</span><span class="n">grey</span><span class="p">]</span> <span class="o">*</span> <span class="mi">5</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Now to draw them – this time we add three tracks to the diagram, and
+also notice they are given different start/end values to reflect their
+different lengths (this requires Biopython 1.59 or later).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.Graphics</span> <span class="kn">import</span> <span class="n">GenomeDiagram</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Proux Fig 6&quot;</span>
+<span class="n">gd_diagram</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="n">max_len</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">record</span><span class="p">,</span> <span class="n">gene_colors</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">A_rec</span><span class="p">,</span> <span class="n">B_rec</span><span class="p">,</span> <span class="n">C_rec</span><span class="p">],</span> <span class="p">[</span><span class="n">A_colors</span><span class="p">,</span> <span class="n">B_colors</span><span class="p">,</span> <span class="n">C_colors</span><span class="p">]):</span>
+    <span class="n">max_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_len</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
+    <span class="n">gd_track_for_features</span> <span class="o">=</span> <span class="n">gd_diagram</span><span class="o">.</span><span class="n">new_track</span><span class="p">(</span>
+        <span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">greytrack</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">gd_feature_set</span> <span class="o">=</span> <span class="n">gd_track_for_features</span><span class="o">.</span><span class="n">new_set</span><span class="p">()</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;gene&quot;</span><span class="p">:</span>
+            <span class="c1"># Exclude this feature</span>
+            <span class="k">continue</span>
+        <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
+            <span class="n">feature</span><span class="p">,</span>
+            <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">gene_colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+            <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">label_position</span><span class="o">=</span><span class="s2">&quot;start&quot;</span><span class="p">,</span>
+            <span class="n">label_size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">label_angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="s2">&quot;A4&quot;</span><span class="p">,</span> <span class="n">fragments</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">max_len</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.eps&quot;</span><span class="p">,</span> <span class="s2">&quot;EPS&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.svg&quot;</span><span class="p">,</span> <span class="s2">&quot;SVG&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The expected output is shown in
+<a class="reference internal" href="#fig-three-track-simple"><span class="std std-numref">Fig. 17</span></a>.</p>
+<figure class="align-default" id="fig-three-track-simple">
+<img alt="Linear diagram with three tracks for three phages" src="../_images/three_track_simple.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Linear diagram with three tracks for three phages.</span><a class="headerlink" href="#fig-three-track-simple" title="Permalink to this image"></a></p>
+<div class="legend">
+<p>This shows Lactococcus phage Tuc2009 (NC_002703), bacteriophage
+bIL285 (AF323668), and prophage 5 from <em>Listeria innocua</em> Clip11262
+(NC_003212) (see Section <a class="reference internal" href="#sec-gd-multiple-tracks"><span class="std std-ref">Multiple tracks</span></a>).</p>
+</div>
+</figcaption>
+</figure>
+<p>I did wonder why in the original manuscript there were no red or orange
+genes marked in the bottom phage. Another important point is here the
+phage are shown with different lengths - this is because they are all
+drawn to the same scale (they <em>are</em> different lengths).</p>
+<p>The key difference from the published figure is they have color-coded
+links between similar proteins – which is what we will do in the next
+section.</p>
+</section>
+<section id="cross-links-between-tracks">
+<span id="sec-gd-cross-links"></span><h3>Cross-Links between tracks<a class="headerlink" href="#cross-links-between-tracks" title="Permalink to this headline"></a></h3>
+<p>Biopython 1.59 added the ability to draw cross links between tracks -
+both simple linear diagrams as we will show here, but also linear
+diagrams split into fragments and circular diagrams.</p>
+<p>Continuing the example from the previous section inspired by Figure 6
+from Proux <em>et al.</em> 2002 <a class="reference internal" href="chapter_bibliography.html#proux2002" id="id5"><span>[Proux2002]</span></a>, we would need a
+list of cross links between pairs of genes, along with a score or color
+to use. Realistically you might extract this from a BLAST file
+computationally, but here I have manually typed them in.</p>
+<p>My naming convention continues to refer to the three phage as A, B and
+C. Here are the links we want to show between A and B, given as a list
+of tuples (percentage similarity score, gene in A, gene in B).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tuc2009 (NC_002703) vs bIL285 (AF323668)</span>
+<span class="n">A_vs_B</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_01&quot;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_03&quot;</span><span class="p">,</span> <span class="s2">&quot;orf4&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_05&quot;</span><span class="p">,</span> <span class="s2">&quot;orf6&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_06&quot;</span><span class="p">,</span> <span class="s2">&quot;orf7&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_07&quot;</span><span class="p">,</span> <span class="s2">&quot;orf8&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">98</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_08&quot;</span><span class="p">,</span> <span class="s2">&quot;orf9&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">98</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_09&quot;</span><span class="p">,</span> <span class="s2">&quot;orf10&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_10&quot;</span><span class="p">,</span> <span class="s2">&quot;orf12&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_11&quot;</span><span class="p">,</span> <span class="s2">&quot;orf13&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_12&quot;</span><span class="p">,</span> <span class="s2">&quot;orf14&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">87</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_13&quot;</span><span class="p">,</span> <span class="s2">&quot;orf15&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_14&quot;</span><span class="p">,</span> <span class="s2">&quot;orf16&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_15&quot;</span><span class="p">,</span> <span class="s2">&quot;orf17&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">88</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_17&quot;</span><span class="p">,</span> <span class="s2">&quot;rusA&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">91</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_18&quot;</span><span class="p">,</span> <span class="s2">&quot;orf20&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">93</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_19&quot;</span><span class="p">,</span> <span class="s2">&quot;orf22&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">71</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_20&quot;</span><span class="p">,</span> <span class="s2">&quot;orf23&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">51</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_22&quot;</span><span class="p">,</span> <span class="s2">&quot;orf27&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_23&quot;</span><span class="p">,</span> <span class="s2">&quot;orf28&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">88</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_24&quot;</span><span class="p">,</span> <span class="s2">&quot;orf29&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_26&quot;</span><span class="p">,</span> <span class="s2">&quot;orf38&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_46&quot;</span><span class="p">,</span> <span class="s2">&quot;orf52&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">77</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_48&quot;</span><span class="p">,</span> <span class="s2">&quot;orf54&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">91</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_49&quot;</span><span class="p">,</span> <span class="s2">&quot;orf55&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">95</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_52&quot;</span><span class="p">,</span> <span class="s2">&quot;orf60&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Likewise for B and C:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># bIL285 (AF323668) vs Listeria innocua prophage 5 (in NC_003212)</span>
+<span class="n">B_vs_C</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="s2">&quot;orf39&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2581&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">31</span><span class="p">,</span> <span class="s2">&quot;orf40&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2580&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="s2">&quot;orf41&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2579&quot;</span><span class="p">),</span>  <span class="c1"># terL</span>
+    <span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="s2">&quot;orf42&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2578&quot;</span><span class="p">),</span>  <span class="c1"># portal</span>
+    <span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="s2">&quot;orf43&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2577&quot;</span><span class="p">),</span>  <span class="c1"># protease</span>
+    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s2">&quot;orf44&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2576&quot;</span><span class="p">),</span>  <span class="c1"># mhp</span>
+    <span class="p">(</span><span class="mi">51</span><span class="p">,</span> <span class="s2">&quot;orf46&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2575&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s2">&quot;orf47&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2574&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="s2">&quot;orf48&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2573&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;orf49&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2572&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;orf50&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2571&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="s2">&quot;orf51&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2570&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;orf52&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2568&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;orf53&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2567&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;orf54&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2566&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>For the first and last phage these identifiers are locus tags, for the
+middle phage there are no locus tags so I’ve used gene names instead.
+The following little helper function lets us lookup a feature using
+either a locus tag or gene name:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_feature</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;locus_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;gene&quot;</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search list of SeqFeature objects for an identifier under the given tags.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
+            <span class="c1"># tag may not be present in this feature</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">qualifiers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="nb">id</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">f</span>
+    <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can now turn those list of identifier pairs into SeqFeature pairs,
+and thus find their location coordinates. We can now add all that code
+and the following snippet to the previous example (just before the
+<code class="docutils literal notranslate"><span class="pre">gd_diagram.draw(...)</span></code> line – see the finished example script
+<a class="reference external" href="https://github.com/biopython/biopython/blob/master/Doc/examples/Proux_et_al_2002_Figure_6.py">Proux_et_al_2002_Figure_6.py</a>
+included in the <code class="docutils literal notranslate"><span class="pre">Doc/examples</span></code> folder of the Biopython source code) to
+add cross links to the figure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.Graphics.GenomeDiagram</span> <span class="kn">import</span> <span class="n">CrossLink</span>
+<span class="kn">from</span> <span class="nn">reportlab.lib</span> <span class="kn">import</span> <span class="n">colors</span>
+
+<span class="c1"># Note it might have been clearer to assign the track numbers explicitly...</span>
+<span class="k">for</span> <span class="n">rec_X</span><span class="p">,</span> <span class="n">tn_X</span><span class="p">,</span> <span class="n">rec_Y</span><span class="p">,</span> <span class="n">tn_Y</span><span class="p">,</span> <span class="n">X_vs_Y</span> <span class="ow">in</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">A_rec</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">B_rec</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">A_vs_B</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">B_rec</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">C_rec</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">B_vs_C</span><span class="p">),</span>
+<span class="p">]:</span>
+    <span class="n">track_X</span> <span class="o">=</span> <span class="n">gd_diagram</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="n">tn_X</span><span class="p">]</span>
+    <span class="n">track_Y</span> <span class="o">=</span> <span class="n">gd_diagram</span><span class="o">.</span><span class="n">tracks</span><span class="p">[</span><span class="n">tn_Y</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">score</span><span class="p">,</span> <span class="n">id_X</span><span class="p">,</span> <span class="n">id_Y</span> <span class="ow">in</span> <span class="n">X_vs_Y</span><span class="p">:</span>
+        <span class="n">feature_X</span> <span class="o">=</span> <span class="n">get_feature</span><span class="p">(</span><span class="n">rec_X</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">id_X</span><span class="p">)</span>
+        <span class="n">feature_Y</span> <span class="o">=</span> <span class="n">get_feature</span><span class="p">(</span><span class="n">rec_Y</span><span class="o">.</span><span class="n">features</span><span class="p">,</span> <span class="n">id_Y</span><span class="p">)</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">linearlyInterpolatedColor</span><span class="p">(</span>
+            <span class="n">colors</span><span class="o">.</span><span class="n">white</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">firebrick</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">score</span>
+        <span class="p">)</span>
+        <span class="n">link_xy</span> <span class="o">=</span> <span class="n">CrossLink</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">track_X</span><span class="p">,</span> <span class="n">feature_X</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">feature_X</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">track_Y</span><span class="p">,</span> <span class="n">feature_Y</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="n">feature_Y</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">end</span><span class="p">),</span>
+            <span class="n">color</span><span class="p">,</span>
+            <span class="n">colors</span><span class="o">.</span><span class="n">lightgrey</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">gd_diagram</span><span class="o">.</span><span class="n">cross_track_links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link_xy</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There are several important pieces to this code. First the
+<code class="docutils literal notranslate"><span class="pre">GenomeDiagram</span></code> object has a <code class="docutils literal notranslate"><span class="pre">cross_track_links</span></code> attribute which is
+just a list of <code class="docutils literal notranslate"><span class="pre">CrossLink</span></code> objects. Each <code class="docutils literal notranslate"><span class="pre">CrossLink</span></code> object takes
+two sets of track-specific coordinates (here given as tuples, you can
+alternatively use a <code class="docutils literal notranslate"><span class="pre">GenomeDiagram.Feature</span></code> object instead). You can
+optionally supply a color, border color, and say if this link should be
+drawn flipped (useful for showing inversions).</p>
+<p>You can also see how we turn the BLAST percentage identity score into a
+color, interpolating between white (<span class="math notranslate nohighlight">\(0\%\)</span>) and a dark red
+(<span class="math notranslate nohighlight">\(100\%\)</span>). In this example we don’t have any problems with
+overlapping cross-links. One way to tackle that is to use transparency
+in ReportLab, by using colors with their alpha channel set. However,
+this kind of shaded color scheme combined with overlap transparency
+would be difficult to interpret. The expected output is shown in
+<a class="reference internal" href="#fig-three-track-cl"><span class="std std-numref">Fig. 18</span></a>.</p>
+<figure class="align-default" id="fig-three-track-cl">
+<img alt="Linear diagram with three tracks plus basic cross-links" src="../_images/three_track_cl.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Linear diagram with three tracks plus basic cross-links.</span><a class="headerlink" href="#fig-three-track-cl" title="Permalink to this image"></a></p>
+<div class="legend">
+<p>The three tracks show Lactococcus phage Tuc2009 (NC_002703),
+bacteriophage bIL285 (AF323668), and prophage 5 from
+<em>Listeria innocua</em> Clip11262 (NC_003212) plus basic cross-links
+shaded by percentage identity (see
+Section <a class="reference internal" href="#sec-gd-cross-links"><span class="std std-ref">Cross-Links between tracks</span></a>).</p>
+</div>
+</figcaption>
+</figure>
+<p>There is still a lot more that can be done within Biopython to help
+improve this figure. First of all, the cross links in this case are
+between proteins which are drawn in a strand specific manor. It can help
+to add a background region (a feature using the ‘BOX’ sigil) on the
+feature track to extend the cross link. Also, we could reduce the
+vertical height of the feature tracks to allocate more to the links
+instead – one way to do that is to allocate space for empty tracks.
+Furthermore, in cases like this where there are no large gene overlaps,
+we can use the axis-straddling <code class="docutils literal notranslate"><span class="pre">BIGARROW</span></code> sigil, which allows us to
+further reduce the vertical space needed for the track. These
+improvements are demonstrated in the example script
+<a class="reference external" href="https://github.com/biopython/biopython/blob/master/Doc/examples/Proux_et_al_2002_Figure_6.py">Proux_et_al_2002_Figure_6.py</a>
+included in the <code class="docutils literal notranslate"><span class="pre">Doc/examples</span></code> folder of the Biopython source code.
+The expected output is shown in <a class="reference internal" href="#fig-three-track-cl2"><span class="std std-numref">Fig. 19</span></a>.</p>
+<figure class="align-default" id="fig-three-track-cl2">
+<img alt="Linear diagram with three tracks plus shaded cross-links" src="../_images/three_track_cl2a.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Linear diagram with three tracks plus shaded cross-links.</span><a class="headerlink" href="#fig-three-track-cl2" title="Permalink to this image"></a></p>
+<div class="legend">
+<p>The three tracks show Lactococcus phage Tuc2009 (NC_002703),
+bacteriophage bIL285 (AF323668), and prophage 5 from
+<em>Listeria innocua</em> Clip11262 (NC_003212) plus cross-links shaded by
+percentage identity (see Section <a class="reference internal" href="#sec-gd-cross-links"><span class="std std-ref">Cross-Links between tracks</span></a>).</p>
+</div>
+</figcaption>
+</figure>
+<p>Beyond that, finishing touches you might want to do manually in a vector
+image editor include fine tuning the placement of gene labels, and
+adding other custom annotation such as highlighting particular regions.</p>
+<p>Although not really necessary in this example since none of the
+cross-links overlap, using a transparent color in ReportLab is a very
+useful technique for superimposing multiple links. However, in this case
+a shaded color scheme should be avoided.</p>
+</section>
+<section id="further-options">
+<h3>Further options<a class="headerlink" href="#further-options" title="Permalink to this headline"></a></h3>
+<p>You can control the tick marks to show the scale – after all every graph
+should show its units, and the number of the grey-track labels.</p>
+<p>Also, we have only used the <code class="docutils literal notranslate"><span class="pre">FeatureSet</span></code> so far. GenomeDiagram also
+has a <code class="docutils literal notranslate"><span class="pre">GraphSet</span></code> which can be used for show line graphs, bar charts
+and heat plots (e.g. to show plots of GC% on a track parallel to the
+features).</p>
+<p>These options are not covered here yet, so for now we refer you to the
+<a class="reference external" href="http://biopython.org/DIST/docs/GenomeDiagram/userguide.pdf">User Guide
+(PDF)</a>
+included with the standalone version of GenomeDiagram (but please read
+the next section first), and the docstrings.</p>
+</section>
+<section id="converting-old-code">
+<h3>Converting old code<a class="headerlink" href="#converting-old-code" title="Permalink to this headline"></a></h3>
+<p>If you have old code written using the standalone version of
+GenomeDiagram, and you want to switch it over to using the new version
+included with Biopython then you will have to make a few changes - most
+importantly to your import statements.</p>
+<p>Also, the older version of GenomeDiagram used only the UK spellings of
+color and center (colour and centre). You will need to change to the
+American spellings, although for several years the Biopython version of
+GenomeDiagram supported both.</p>
+<p>For example, if you used to have:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">GenomeDiagram</span> <span class="kn">import</span> <span class="n">GDFeatureSet</span><span class="p">,</span> <span class="n">GDDiagram</span>
+
+<span class="n">gdd</span> <span class="o">=</span> <span class="n">GDDiagram</span><span class="p">(</span><span class="s2">&quot;An example&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>you could just switch the import statements like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.Graphics.GenomeDiagram</span> <span class="kn">import</span> <span class="n">FeatureSet</span> <span class="k">as</span> <span class="n">GDFeatureSet</span><span class="p">,</span> <span class="n">Diagram</span> <span class="k">as</span> <span class="n">GDDiagram</span>
+
+<span class="n">gdd</span> <span class="o">=</span> <span class="n">GDDiagram</span><span class="p">(</span><span class="s2">&quot;An example&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>and hopefully that should be enough. In the long term you might want to
+switch to the new names, but you would have to change more of your code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.Graphics.GenomeDiagram</span> <span class="kn">import</span> <span class="n">FeatureSet</span><span class="p">,</span> <span class="n">Diagram</span>
+
+<span class="n">gdd</span> <span class="o">=</span> <span class="n">Diagram</span><span class="p">(</span><span class="s2">&quot;An example&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.Graphics</span> <span class="kn">import</span> <span class="n">GenomeDiagram</span>
+
+<span class="n">gdd</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">&quot;An example&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>If you run into difficulties, please ask on the Biopython mailing list
+for advice. One catch is that we have not included the old module
+<code class="docutils literal notranslate"><span class="pre">GenomeDiagram.GDUtilities</span></code> yet. This included a number of GC% related
+functions, which will probably be merged under <code class="docutils literal notranslate"><span class="pre">Bio.SeqUtils</span></code> later
+on.</p>
+</section>
+</section>
+<section id="chromosomes">
+<h2>Chromosomes<a class="headerlink" href="#chromosomes" title="Permalink to this headline"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.Graphics.BasicChromosome</span></code> module allows drawing of
+chromosomes. There is an example in Jupe <em>et al.</em> (2012)
+<a class="reference internal" href="chapter_bibliography.html#jupe2012" id="id6"><span>[Jupe2012]</span></a> (open access) using colors to highlight
+different gene families.</p>
+<section id="simple-chromosomes">
+<h3>Simple Chromosomes<a class="headerlink" href="#simple-chromosomes" title="Permalink to this headline"></a></h3>
+<p>Here is a very simple example - for which we’ll use <em>Arabidopsis
+thaliana</em>.</p>
+<figure class="align-default" id="fig-simplechromosome">
+<img alt="Simple chromosome diagram for *Arabidopsis thaliana*." src="../_images/simple_chrom.pdf" />
+<figcaption>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">Simple chromosome diagram for <em>Arabidopsis thaliana</em>.</span><a class="headerlink" href="#fig-simplechromosome" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="fig-trnachromosome">
+<img alt="Chromosome diagram for *Arabidopsis thaliana* showing tRNA." src="../_images/tRNA_chrom.pdf" />
+<figcaption>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Chromosome diagram for <em>Arabidopsis thaliana</em> showing tRNA genes.</span><a class="headerlink" href="#fig-trnachromosome" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>You can skip this bit, but first I downloaded the five sequenced
+chromosomes as five individual FASTA files from the NCBI’s FTP site
+<a class="reference external" href="ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/Arabidopsis_thaliana/">ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/Arabidopsis_thaliana/</a>
+and then parsed them with <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> to find out their lengths. You
+could use the GenBank files for this (and the next example uses those
+for plotting features), but if all you want is the length it is faster
+to use the FASTA files for the whole chromosomes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+
+<span class="n">entries</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;Chr I&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_I/NC_003070.fna&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr II&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_II/NC_003071.fna&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr III&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_III/NC_003074.fna&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr IV&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_IV/NC_003075.fna&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr V&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_V/NC_003076.fna&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>This gave the lengths of the five chromosomes, which we’ll now use in
+the following short demonstration of the <code class="docutils literal notranslate"><span class="pre">BasicChromosome</span></code> module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reportlab.lib.units</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">Bio.Graphics</span> <span class="kn">import</span> <span class="n">BasicChromosome</span>
+
+<span class="n">entries</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;Chr I&quot;</span><span class="p">,</span> <span class="mi">30432563</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr II&quot;</span><span class="p">,</span> <span class="mi">19705359</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr III&quot;</span><span class="p">,</span> <span class="mi">23470805</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr IV&quot;</span><span class="p">,</span> <span class="mi">18585042</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr V&quot;</span><span class="p">,</span> <span class="mi">26992728</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">max_len</span> <span class="o">=</span> <span class="mi">30432563</span>  <span class="c1"># Could compute this from the entries dict</span>
+<span class="n">telomere_length</span> <span class="o">=</span> <span class="mi">1000000</span>  <span class="c1"># For illustration</span>
+
+<span class="n">chr_diagram</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">Organism</span><span class="p">()</span>
+<span class="n">chr_diagram</span><span class="o">.</span><span class="n">page_size</span> <span class="o">=</span> <span class="p">(</span><span class="mf">29.7</span> <span class="o">*</span> <span class="n">cm</span><span class="p">,</span> <span class="mi">21</span> <span class="o">*</span> <span class="n">cm</span><span class="p">)</span>  <span class="c1"># A4 landscape</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">length</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
+    <span class="n">cur_chromosome</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">Chromosome</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="c1"># Set the scale to the MAXIMUM length plus the two telomeres in bp,</span>
+    <span class="c1"># want the same scale used on all five chromosomes so they can be</span>
+    <span class="c1"># compared to each other</span>
+    <span class="n">cur_chromosome</span><span class="o">.</span><span class="n">scale_num</span> <span class="o">=</span> <span class="n">max_len</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">telomere_length</span>
+
+    <span class="c1"># Add an opening telomere</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">TelomereSegment</span><span class="p">()</span>
+    <span class="n">start</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">telomere_length</span>
+    <span class="n">cur_chromosome</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+
+    <span class="c1"># Add a body - using bp as the scale length here.</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">ChromosomeSegment</span><span class="p">()</span>
+    <span class="n">body</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">length</span>
+    <span class="n">cur_chromosome</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+
+    <span class="c1"># Add a closing telomere</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">TelomereSegment</span><span class="p">(</span><span class="n">inverted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">end</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">telomere_length</span>
+    <span class="n">cur_chromosome</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+
+    <span class="c1"># This chromosome is done</span>
+    <span class="n">chr_diagram</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cur_chromosome</span><span class="p">)</span>
+
+<span class="n">chr_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;simple_chrom.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;Arabidopsis thaliana&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This should create a very simple PDF file, shown in
+<a class="reference internal" href="#fig-simplechromosome"><span class="std std-numref">Fig. 20</span></a>. This example is deliberately
+short and sweet. The next example shows the location of features of
+interest.</p>
+</section>
+<section id="annotated-chromosomes">
+<h3>Annotated Chromosomes<a class="headerlink" href="#annotated-chromosomes" title="Permalink to this headline"></a></h3>
+<p>Continuing from the previous example, let’s also show the tRNA genes.
+We’ll get their locations by parsing the GenBank files for the five
+<em>Arabidopsis thaliana</em> chromosomes. You’ll need to download these files
+from the NCBI FTP site
+<a class="reference external" href="ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/Arabidopsis_thaliana/">ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/Arabidopsis_thaliana/</a>,
+and preserve the subdirectory names or edit the paths below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">reportlab.lib.units</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="kn">from</span> <span class="nn">Bio.Graphics</span> <span class="kn">import</span> <span class="n">BasicChromosome</span>
+
+<span class="n">entries</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">&quot;Chr I&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_I/NC_003070.gbk&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr II&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_II/NC_003071.gbk&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr III&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_III/NC_003074.gbk&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr IV&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_IV/NC_003075.gbk&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Chr V&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_V/NC_003076.gbk&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">max_len</span> <span class="o">=</span> <span class="mi">30432563</span>  <span class="c1"># Could compute this from the entries dict</span>
+<span class="n">telomere_length</span> <span class="o">=</span> <span class="mi">1000000</span>  <span class="c1"># For illustration</span>
+
+<span class="n">chr_diagram</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">Organism</span><span class="p">()</span>
+<span class="n">chr_diagram</span><span class="o">.</span><span class="n">page_size</span> <span class="o">=</span> <span class="p">(</span><span class="mf">29.7</span> <span class="o">*</span> <span class="n">cm</span><span class="p">,</span> <span class="mi">21</span> <span class="o">*</span> <span class="n">cm</span><span class="p">)</span>  <span class="c1"># A4 landscape</span>
+
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">entries</span><span class="p">):</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;tRNA&quot;</span><span class="p">]</span>
+    <span class="c1"># Record an Artemis style integer color in the feature&#39;s qualifiers,</span>
+    <span class="c1"># 1 = Black, 2 = Red, 3 = Green, 4 = blue, 5 =cyan, 6 = purple</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">qualifiers</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">cur_chromosome</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">Chromosome</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="c1"># Set the scale to the MAXIMUM length plus the two telomeres in bp,</span>
+    <span class="c1"># want the same scale used on all five chromosomes so they can be</span>
+    <span class="c1"># compared to each other</span>
+    <span class="n">cur_chromosome</span><span class="o">.</span><span class="n">scale_num</span> <span class="o">=</span> <span class="n">max_len</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">telomere_length</span>
+
+    <span class="c1"># Add an opening telomere</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">TelomereSegment</span><span class="p">()</span>
+    <span class="n">start</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">telomere_length</span>
+    <span class="n">cur_chromosome</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+
+    <span class="c1"># Add a body - again using bp as the scale length here.</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">AnnotatedChromosomeSegment</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">features</span><span class="p">)</span>
+    <span class="n">body</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">length</span>
+    <span class="n">cur_chromosome</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">body</span><span class="p">)</span>
+
+    <span class="c1"># Add a closing telomere</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">TelomereSegment</span><span class="p">(</span><span class="n">inverted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">end</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">telomere_length</span>
+    <span class="n">cur_chromosome</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+
+    <span class="c1"># This chromosome is done</span>
+    <span class="n">chr_diagram</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cur_chromosome</span><span class="p">)</span>
+
+<span class="n">chr_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;tRNA_chrom.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;Arabidopsis thaliana&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It might warn you about the labels being too close together - have a
+look at the forward strand (right hand side) of Chr I, but it should
+create a colorful PDF file, shown in
+<a class="reference internal" href="#fig-simplechromosome"><span class="std std-numref">Fig. 20</span></a>.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="chapter_cluster.html" class="btn btn-neutral float-left" title="Cluster analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="chapter_kegg.html" class="btn btn-neutral float-right" title="KEGG" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2023, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83.dev0
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.81/">Previous</a></dd>
+        
+          <dd><a href="../../latest/">Latest</a></dd>
+        
+          <dd><a href="../../dev/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
