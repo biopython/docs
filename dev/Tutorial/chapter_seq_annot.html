@@ -164,20 +164,20 @@ basic data type for the <code class="docutils literal notranslate"><span class="
 <p>The <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> class itself is quite simple, and offers the following
 information as attributes:</p>
 <dl class="simple">
-<dt>.seq</dt><dd><p>– The sequence itself, typically a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object.</p>
+<dt>.seq</dt><dd><p>The sequence itself, typically a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object.</p>
 </dd>
-<dt>.id</dt><dd><p>– The primary ID used to identify the sequence – a string. In most
+<dt>.id</dt><dd><p>The primary ID used to identify the sequence – a string. In most
 cases this is something like an accession number.</p>
 </dd>
-<dt>.name</dt><dd><p>– A “common” name/id for the sequence – a string. In some cases this
+<dt>.name</dt><dd><p>A “common” name/id for the sequence – a string. In some cases this
 will be the same as the accession number, but it could also be a
 clone name. I think of this as being analogous to the LOCUS id in a
 GenBank record.</p>
 </dd>
-<dt>.description</dt><dd><p>– A human readable description or expressive name for the sequence –
+<dt>.description</dt><dd><p>A human readable description or expressive name for the sequence –
 a string.</p>
 </dd>
-<dt>.letter_annotations</dt><dd><p>– Holds per-letter-annotations using a (restricted) dictionary of
+<dt>.letter_annotations</dt><dd><p>Holds per-letter-annotations using a (restricted) dictionary of
 additional information about the letters in the sequence. The keys
 are the name of the information, and the information is contained in
 the value as a Python sequence (i.e. a list, tuple or string) with
@@ -187,19 +187,17 @@ Section <a class="reference internal" href="chapter_cookbook.html#sec-fastq-fil
 or secondary structure information (e.g. from Stockholm/PFAM
 alignment files).</p>
 </dd>
-<dt>.annotations</dt><dd><p>– A dictionary of additional information about the sequence. The keys
+<dt>.annotations</dt><dd><p>A dictionary of additional information about the sequence. The keys
 are the name of the information, and the information is contained in
 the value. This allows the addition of more “unstructured”
 information to the sequence.</p>
 </dd>
-<dt>.features</dt><dd><p>– A list of <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> objects with more structured information
+<dt>.features</dt><dd><p>A list of <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> objects with more structured information
 about the features on a sequence (e.g. position of genes on a genome,
 or domains on a protein sequence). The structure of sequence features
 is described below in Section <a class="reference internal" href="#sec-seq-features"><span class="std std-ref">Feature, location and position objects</span></a>.</p>
 </dd>
-<dt>.dbxrefs</dt><dd><ul class="simple">
-<li><p>A list of database cross-references as strings.</p></li>
-</ul>
+<dt>.dbxrefs</dt><dd><p>A list of database cross-references as strings.</p>
 </dd>
 </dl>
 </section>
@@ -275,7 +273,7 @@ later in this chapter) respectively.</p>
 sequence for <em>Yersinia pestis biovar Microtus</em> str. 91001 plasmid pPCP1,
 originally downloaded from the NCBI. This file is included with the
 Biopython unit tests under the GenBank folder, or online
-<code class="docutils literal notranslate"><span class="pre">`NC_005816.fna</span></code> &lt;<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.fna">https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.fna</a>&gt;`__
+<code class="docutils literal notranslate"><span class="pre">NC_005816.fna</span></code> &lt;<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.fna">https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.fna</a>&gt;`__
 from our website.</p>
 <p>The file starts like this - and you can check there is only one record
 present (i.e. only one line starting with a greater than symbol):</p>
@@ -348,7 +346,7 @@ for <em>Yersinia pestis biovar Microtus</em> str. 91001 plasmid pPCP1,
 originally downloaded from the NCBI, but this time as a GenBank file.
 Again, this file is included with the Biopython unit tests under the
 GenBank folder, or online
-<code class="docutils literal notranslate"><span class="pre">`NC_005816.gb</span></code> &lt;<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.gb">https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.gb</a>&gt;`__
+<code class="docutils literal notranslate"><span class="pre">NC_005816.gb</span></code> &lt;<a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.gb">https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.gb</a>&gt;`__
 from our website.</p>
 <p>This file contains a single record (i.e. only one LOCUS line) and
 starts:</p>
@@ -435,22 +433,22 @@ them and their general features, and then later in the chapter work
 through examples to show how this applies to a real life example. The
 attributes of a SeqFeature are:</p>
 <dl>
-<dt>.type</dt><dd><p>– This is a textual description of the type of feature (for instance,
+<dt>.type</dt><dd><p>This is a textual description of the type of feature (for instance,
 this will be something like ‘CDS’ or ‘gene’).</p>
 </dd>
-<dt>.location</dt><dd><p>– The location of the <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> on the sequence that you are
+<dt>.location</dt><dd><p>The location of the <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> on the sequence that you are
 dealing with, see Section <a class="reference internal" href="#sec-locations"><span class="std std-ref">Positions and locations</span></a> below. The
 <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> delegates much of its functionality to the location
 object, and includes a number of shortcut attributes for properties
 of the location:</p>
 <dl class="simple">
-<dt>.ref</dt><dd><p>– shorthand for <code class="docutils literal notranslate"><span class="pre">.location.ref</span></code> – any (different) reference
+<dt>.ref</dt><dd><p>shorthand for <code class="docutils literal notranslate"><span class="pre">.location.ref</span></code> – any (different) reference
 sequence the location is referring to. Usually just None.</p>
 </dd>
-<dt>.ref_db</dt><dd><p>– shorthand for <code class="docutils literal notranslate"><span class="pre">.location.ref_db</span></code> – specifies the database any
+<dt>.ref_db</dt><dd><p>shorthand for <code class="docutils literal notranslate"><span class="pre">.location.ref_db</span></code> – specifies the database any
 identifier in <code class="docutils literal notranslate"><span class="pre">.ref</span></code> refers to. Usually just None.</p>
 </dd>
-<dt>.strand</dt><dd><p>– shorthand for <code class="docutils literal notranslate"><span class="pre">.location.strand</span></code> – the strand on the sequence
+<dt>.strand</dt><dd><p>shorthand for <code class="docutils literal notranslate"><span class="pre">.location.strand</span></code> – the strand on the sequence
 that the feature is located on. For double stranded nucleotide
 sequence this may either be <span class="math notranslate nohighlight">\(1\)</span> for the top strand,
 <span class="math notranslate nohighlight">\(-1\)</span> for the bottom strand, <span class="math notranslate nohighlight">\(0\)</span> if the strand is
@@ -459,7 +457,7 @@ is None for proteins, or single stranded sequences.</p>
 </dd>
 </dl>
 </dd>
-<dt>.qualifiers</dt><dd><p>– This is a Python dictionary of additional information about the
+<dt>.qualifiers</dt><dd><p>This is a Python dictionary of additional information about the
 feature. The key is some kind of terse one-word description of what
 the information contained in the value is about, and the value is the
 actual information. For example, a common key for a qualifier might
@@ -470,7 +468,7 @@ looking at the feature know that it has not be experimentally
 list of strings (even when there is only one string). This is a
 reflection of the feature tables in GenBank/EMBL files.</p>
 </dd>
-<dt>.sub_features</dt><dd><p>– This used to be used to represent features with complicated
+<dt>.sub_features</dt><dd><p>This used to be used to represent features with complicated
 locations like ‘joins’ in GenBank/EMBL files. This has been
 deprecated with the introduction of the <code class="docutils literal notranslate"><span class="pre">CompoundLocation</span></code> object,
 and should now be ignored.</p>
@@ -484,11 +482,11 @@ a parent sequence, for which we use a location object, typically
 describing a range between two positions. Two try to clarify the
 terminology we’re using:</p>
 <dl class="simple">
-<dt>position</dt><dd><p>– This refers to a single position on a sequence, which may be fuzzy
+<dt>position</dt><dd><p>This refers to a single position on a sequence, which may be fuzzy
 or not. For instance, 5, 20, <code class="docutils literal notranslate"><span class="pre">&lt;100</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;200</span></code> are all positions.</p>
 </dd>
-<dt>location</dt><dd><p>– A location is region of sequence bounded by some positions. For
-instance 5..20 (i. e. 5 to 20) is a location.</p>
+<dt>location</dt><dd><p>A location is region of sequence bounded by some positions. For
+instance <code class="docutils literal notranslate"><span class="pre">5..20</span></code> (i. e. 5 to 20) is a location.</p>
 </dd>
 </dl>
 <p>I just mention this because sometimes I get confused between the two.</p>
@@ -521,35 +519,35 @@ help us deal with this, we have the concept of fuzzy positions.
 Basically there are several types of fuzzy positions, so we have five
 classes do deal with them:</p>
 <dl class="simple">
-<dt>ExactPosition</dt><dd><p>– As its name suggests, this class represents a position which is
+<dt>ExactPosition</dt><dd><p>As its name suggests, this class represents a position which is
 specified as exact along the sequence. This is represented as just a
 number, and you can get the position by looking at the <code class="docutils literal notranslate"><span class="pre">position</span></code>
 attribute of the object.</p>
 </dd>
-<dt>BeforePosition</dt><dd><p>– This class represents a fuzzy position that occurs prior to some
+<dt>BeforePosition</dt><dd><p>This class represents a fuzzy position that occurs prior to some
 specified site. In GenBank/EMBL notation, this is represented as
-something like <code class="docutils literal notranslate"><span class="pre">`&lt;13'</span></code>, signifying that the real position
+something like <code class="docutils literal notranslate"><span class="pre">&lt;13</span></code>, signifying that the real position
 is located somewhere less than 13. To get the specified upper
 boundary, look at the <code class="docutils literal notranslate"><span class="pre">position</span></code> attribute of the object.</p>
 </dd>
-<dt>AfterPosition</dt><dd><p>– Contrary to <code class="docutils literal notranslate"><span class="pre">BeforePosition</span></code>, this class represents a position
+<dt>AfterPosition</dt><dd><p>Contrary to <code class="docutils literal notranslate"><span class="pre">BeforePosition</span></code>, this class represents a position
 that occurs after some specified site. This is represented in GenBank
-as <code class="docutils literal notranslate"><span class="pre">`&gt;13'</span></code>, and like <code class="docutils literal notranslate"><span class="pre">BeforePosition</span></code>, you get the
+as <code class="docutils literal notranslate"><span class="pre">&gt;13</span></code>, and like <code class="docutils literal notranslate"><span class="pre">BeforePosition</span></code>, you get the
 boundary number by looking at the <code class="docutils literal notranslate"><span class="pre">position</span></code> attribute of the
 object.</p>
 </dd>
-<dt>WithinPosition</dt><dd><p>– Occasionally used for GenBank/EMBL locations, this class models a
+<dt>WithinPosition</dt><dd><p>Occasionally used for GenBank/EMBL locations, this class models a
 position which occurs somewhere between two specified nucleotides. In
-GenBank/EMBL notation, this would be represented as ‘(1.5)’, to
+GenBank/EMBL notation, this would be represented as <code class="docutils literal notranslate"><span class="pre">(1.5)</span></code>, to
 represent that the position is somewhere within the range 1 to 5.</p>
 </dd>
-<dt>OneOfPosition</dt><dd><p>– Occasionally used for GenBank/EMBL locations, this class deals with
+<dt>OneOfPosition</dt><dd><p>Occasionally used for GenBank/EMBL locations, this class deals with
 a position where several possible values exist, for instance you
 could use this if the start codon was unclear and there where two
 candidates for the start of the gene. Alternatively, that might be
 handled explicitly as two related gene features.</p>
 </dd>
-<dt>UnknownPosition</dt><dd><p>– This class deals with a position of unknown location. This is not
+<dt>UnknownPosition</dt><dd><p>This class deals with a position of unknown location. This is not
 used in GenBank/EMBL, but corresponds to the ‘?’ feature coordinate
 used in UniProt.</p>
 </dd>
@@ -640,7 +638,7 @@ joins are the union of the exons – they do not cover any introns.</p>
 <p>A <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> or location object doesn’t directly contain a sequence,
 instead the location (see Section <a class="reference internal" href="#sec-locations"><span class="std std-ref">Positions and locations</span></a>) describes
 how to get this from the parent sequence. For example consider a (short)
-gene sequence with location 5:18 on the reverse strand, which in
+gene sequence with location <code class="docutils literal notranslate"><span class="pre">5:18</span></code> on the reverse strand, which in
 GenBank/EMBL notation using 1-based counting would be
 <code class="docutils literal notranslate"><span class="pre">complement(6..18)</span></code>, like this:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
@@ -649,7 +647,7 @@ GenBank/EMBL notation using 1-based counting would be
 <span class="gp">&gt;&gt;&gt; </span><span class="n">feature</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="n">strand</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;gene&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You could take the parent sequence, slice it to extract 5:18, and then
+<p>You could take the parent sequence, slice it to extract <code class="docutils literal notranslate"><span class="pre">5:18</span></code>, and then
 take the reverse complement. The feature location’s start and end are
 integer-like so this works:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">feature_seq</span> <span class="o">=</span> <span class="n">seq</span><span class="p">[</span><span class="n">feature</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">start</span> <span class="p">:</span> <span class="n">feature</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">()</span>
