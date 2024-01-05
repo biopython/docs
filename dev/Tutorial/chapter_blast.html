@@ -595,18 +595,28 @@ result:</p>
 </div>
 <p>Note though that you can step through the BLAST records only once.
 Usually, from each BLAST record you would save the information that you
-are interested in. If you want to save all returned BLAST records, you
-can convert the iterator into a list:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
+are interested in.</p>
+<p>Alternatively, you can use <code class="docutils literal notranslate"><span class="pre">blast_records</span></code> as a list, for example by
+extracting one record by index, or by calling <code class="docutils literal notranslate"><span class="pre">len</span></code> or <code class="docutils literal notranslate"><span class="pre">print</span></code> on
+<code class="docutils literal notranslate"><span class="pre">blast_records</span></code>. The parser will then automatically iterate over the records
+and store them:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;xml_2222_blastx_001.xml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>  <span class="c1"># this causes the parser to iterate over all records</span>
+<span class="go">7</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">description</span>
+<span class="go">&#39;gi|5690369|gb|AF158246.1|AF158246 Cricetulus griseus glucose phosphate isomerase (GPI) gene, partial intron sequence&#39;</span>
 </pre></div>
 </div>
-<p>Now you can access each BLAST record in the list with an index as usual.
-If your BLAST file is huge though, you may run into memory problems
+<p>If your BLAST file is huge though, you may run into memory problems
 trying to save them all in a list.</p>
+<p>Be careful not to iterate over the records <em>before</em> using <code class="docutils literal notranslate"><span class="pre">blast_records</span></code> as
+a list, as any record already iterated over will be missing from the list (it is
+fine to iterate over the records afterwards).</p>
 <p>Instead of opening the file yourself, you can just provide the file
 name:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;my_blast_xml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">blast_records</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;my_blast.xml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">blast_records</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">blast_record</span> <span class="ow">in</span> <span class="n">blast_records</span><span class="p">:</span>
 <span class="gp">... </span>        <span class="k">pass</span>  <span class="c1"># Do something with blast_record</span>
 <span class="gp">...</span>
@@ -614,7 +624,7 @@ name:</p>
 </div>
 <p>In this case, Biopython opens the file for you, and closes it as soon as
 the file is not needed any more (while it is possible to simply use
-<code class="docutils literal notranslate"><span class="pre">blast_records</span> <span class="pre">=</span> <span class="pre">Blast.parse(&quot;my_blast_xml&quot;)</span></code>, it has the disadvantage
+<code class="docutils literal notranslate"><span class="pre">blast_records</span> <span class="pre">=</span> <span class="pre">Blast.parse(&quot;my_blast.xml&quot;)</span></code>, it has the disadvantage
 that the file may stay open longer than strictly necessary, thereby
 wasting resources).</p>
 <p>Usually, you’ll be running one BLAST search at a time. Then, all you
@@ -632,7 +642,7 @@ need to do is to pick up the first (and only) BLAST record in
 </div>
 <p>or, equivalently,</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;my_blast_xml&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;my_blast.xml&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>(here, you don’t need to use a <code class="docutils literal notranslate"><span class="pre">with</span></code> block as <code class="docutils literal notranslate"><span class="pre">Blast.read</span></code> will
