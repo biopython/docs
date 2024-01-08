@@ -610,9 +610,14 @@ and store them:</p>
 </div>
 <p>If your BLAST file is huge though, you may run into memory problems
 trying to save them all in a list.</p>
-<p>Be careful not to iterate over the records <em>before</em> using <code class="docutils literal notranslate"><span class="pre">blast_records</span></code> as
-a list, as any record already iterated over will be missing from the list (it is
-fine to iterate over the records afterwards).</p>
+<p>If you start iterating over the records <em>before</em> using <code class="docutils literal notranslate"><span class="pre">blast_records</span></code> as
+a list, the parser will first reset the file stream to the beginning of the
+data to ensure that all records are neing read. Note that this will fail if the
+stream cannot be reset to the beginning, for example if the data are being
+read remotely (e.g. by qblast; see subsection <a class="reference internal" href="#sec-running-www-blast"><span class="std std-ref">Running BLAST over the Internet</span></a>).
+In those cases, you can explicitly read the records into a list by calling
+<code class="docutils literal notranslate"><span class="pre">blast_records</span> <span class="pre">=</span> <span class="pre">blast_records[:]</span></code> before iterating over them. After reading
+in the records, it is safe to iterate over them or use them as a list.</p>
 <p>Instead of opening the file yourself, you can just provide the file
 name:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
@@ -702,13 +707,11 @@ read the whole file and close it immediately afterwards).</p>
 <h2>The BLAST Records and Record classes<a class="headerlink" href="#the-blast-records-and-record-classes" title="Permalink to this headline"></a></h2>
 <section id="the-blast-records-class">
 <span id="subsec-blast-records"></span><h3>The BLAST Records class<a class="headerlink" href="#the-blast-records-class" title="Permalink to this headline"></a></h3>
-<p>A single BLAST output file can contain output from multiple BLAST
-queries. In Biopython, the information in a BLAST output file is stored
-in an <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code> object. This is an iterator returning one
-<code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object (see subsection
-<a class="reference internal" href="#subsec-blast-record"><span class="std std-ref">The BLAST Record class</span></a>) for each query. The
-<code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code> object has the following attributes describing the
-BLAST run:</p>
+<p>A single BLAST output file can contain output from multiple BLAST queries. In
+Biopython, the information in a BLAST output file is stored in an
+<code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code> object. This is an iterator returning one
+<code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object (see subsection <a class="reference internal" href="#subsec-blast-record"><span class="std std-ref">The BLAST Record class</span></a>) for
+each query. The <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code> object has the following attributes describing the BLAST run:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">source</span></code>: The input data from which the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Records</span></code>
 object was constructed (this could be a file name or path, or a
