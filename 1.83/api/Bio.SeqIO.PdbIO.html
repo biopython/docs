@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio.SeqIO.PdbIO module &mdash; Biopython 1.83 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.SeqIO.PhdIO module" href="Bio.SeqIO.PhdIO.html" />
+    <link rel="prev" title="Bio.SeqIO.NibIO module" href="Bio.SeqIO.NibIO.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="Bio.SeqIO.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.SeqIO.html#module-Bio.SeqIO">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="Bio.html">Bio package</a></li>
+          <li class="breadcrumb-item"><a href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+      <li class="breadcrumb-item active">Bio.SeqIO.PdbIO module</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/SeqIO/PdbIO.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="Bio.SeqIO.NibIO.html" class="btn btn-neutral float-left" title="Bio.SeqIO.NibIO module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.SeqIO.PhdIO.html" class="btn btn-neutral float-right" title="Bio.SeqIO.PhdIO module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-Bio.SeqIO.PdbIO">
+<span id="bio-seqio-pdbio-module"></span><h1>Bio.SeqIO.PdbIO module<a class="headerlink" href="#module-Bio.SeqIO.PdbIO" title="Permalink to this headline"></a></h1>
+<p>Bio.SeqIO support for accessing sequences in PDB and mmCIF files.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.AtomIterator">
+<span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.PdbIO.</span></span><span class="sig-name descname"><span class="pre">AtomIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">structure</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.AtomIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Return SeqRecords from Structure objects.</p>
+<p>Base function for sequence parsers that read structures Bio.PDB parsers.</p>
+<p>Once a parser from Bio.PDB has been used to load a structure into a
+Bio.PDB.Structure.Structure object, there is no difference in how the
+sequence parser interprets the residue sequence. The functions in this
+module may be used by SeqIO modules wishing to parse sequences from lists
+of residues.</p>
+<p>Calling functions must pass a Bio.PDB.Structure.Structure object.</p>
+<p>See Bio.SeqIO.PdbIO.PdbAtomIterator and Bio.SeqIO.PdbIO.CifAtomIterator for
+details.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.PdbSeqresIterator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.PdbIO.</span></span><span class="sig-name descname"><span class="pre">PdbSeqresIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.PdbSeqresIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bio.SeqIO.Interfaces.SequenceIterator</span></code></a></p>
+<p>Parser for PDB files.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.PdbSeqresIterator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.PdbSeqresIterator.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Return SeqRecord objects for each chain in a PDB file.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>source - input stream opened in text mode, or a path to a file</p></li>
+</ul>
+</dd>
+</dl>
+<p>The sequences are derived from the SEQRES lines in the
+PDB file header, not the atoms of the 3D structure.</p>
+<p>Specifically, these PDB records are handled: DBREF, DBREF1, DBREF2, SEQADV, SEQRES, MODRES</p>
+<p>See: <a class="reference external" href="http://www.wwpdb.org/documentation/format23/sect3.html">http://www.wwpdb.org/documentation/format23/sect3.html</a></p>
+<p>This gets called internally via Bio.SeqIO for the SEQRES based interpretation
+of the PDB file format:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.pdb&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb-seqres&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Record id 1A8O:A, chain A</span>
+<span class="go">[&#39;UNP:P12497&#39;, &#39;UNP:POL_HV1N5&#39;]</span>
+</pre></div>
+</div>
+<p>Equivalently,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.pdb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">PdbSeqresIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Record id 1A8O:A, chain A</span>
+<span class="go">[&#39;UNP:P12497&#39;, &#39;UNP:POL_HV1N5&#39;]</span>
+</pre></div>
+</div>
+<p>Note the chain is recorded in the annotations dictionary, and any PDB DBREF
+lines are recorded in the database cross-references list.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.PdbSeqresIterator.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.PdbSeqresIterator.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Start parsing the file, and return a SeqRecord generator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.PdbSeqresIterator.iterate">
+<span class="sig-name descname"><span class="pre">iterate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.PdbSeqresIterator.iterate" title="Permalink to this definition"></a></dt>
+<dd><p>Iterate over the records in the PDB file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.PdbSeqresIterator.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqIO.PdbIO.PdbSeqresIterator.__abstractmethods__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.PdbSeqresIterator.__annotations__">
+<span class="sig-name descname"><span class="pre">__annotations__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#Bio.SeqIO.PdbIO.PdbSeqresIterator.__annotations__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.PdbSeqresIterator.__parameters__">
+<span class="sig-name descname"><span class="pre">__parameters__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#Bio.SeqIO.PdbIO.PdbSeqresIterator.__parameters__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.PdbAtomIterator">
+<span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.PdbIO.</span></span><span class="sig-name descname"><span class="pre">PdbAtomIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.PdbAtomIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Return SeqRecord objects for each chain in a PDB file.</p>
+<p>Argument source is a file-like object or a path to a file.</p>
+<p>The sequences are derived from the 3D structure (ATOM records), not the
+SEQRES lines in the PDB file header.</p>
+<p>Unrecognised three letter amino acid codes (e.g. “CSD”) from HETATM entries
+are converted to “X” in the sequence.</p>
+<p>In addition to information from the PDB header (which is the same for all
+records), the following chain specific information is placed in the
+annotation:</p>
+<p>record.annotations[“residues”] = List of residue ID strings
+record.annotations[“chain”] = Chain ID (typically A, B ,…)
+record.annotations[“model”] = Model ID (typically zero)</p>
+<p>Where amino acids are missing from the structure, as indicated by residue
+numbering, the sequence is filled in with ‘X’ characters to match the size
+of the missing region, and  None is included as the corresponding entry in
+the list record.annotations[“residues”].</p>
+<p>This function uses the Bio.PDB module to do most of the hard work. The
+annotation information could be improved but this extra parsing should be
+done in parse_pdb_header, not this module.</p>
+<p>This gets called internally via Bio.SeqIO for the atom based interpretation
+of the PDB file format:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.pdb&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb-atom&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="go">Record id 1A8O:A, chain A</span>
+</pre></div>
+</div>
+<p>Equivalently,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.pdb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">PdbAtomIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="go">Record id 1A8O:A, chain A</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.CifSeqresIterator">
+<span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.PdbIO.</span></span><span class="sig-name descname"><span class="pre">CifSeqresIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.CifSeqresIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Return SeqRecord objects for each chain in an mmCIF file.</p>
+<p>Argument source is a file-like object or a path to a file.</p>
+<p>The sequences are derived from the _entity_poly_seq entries in the mmCIF
+file, not the atoms of the 3D structure.</p>
+<p>Specifically, these mmCIF records are handled: _pdbx_poly_seq_scheme and
+_struct_ref_seq. The _pdbx_poly_seq records contain sequence information,
+and the _struct_ref_seq records contain database cross-references.</p>
+<p>See:
+<a class="reference external" href="http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Categories/pdbx_poly_seq_scheme.html">http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v40.dic/Categories/pdbx_poly_seq_scheme.html</a>
+and
+<a class="reference external" href="http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v50.dic/Categories/struct_ref_seq.html">http://mmcif.wwpdb.org/dictionaries/mmcif_pdbx_v50.dic/Categories/struct_ref_seq.html</a></p>
+<p>This gets called internally via Bio.SeqIO for the sequence-based
+interpretation of the mmCIF file format:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.cif&quot;</span><span class="p">,</span> <span class="s2">&quot;cif-seqres&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Record id 1A8O:A, chain A</span>
+<span class="go">[&#39;UNP:P12497&#39;, &#39;UNP:POL_HV1N5&#39;]</span>
+</pre></div>
+</div>
+<p>Equivalently,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.cif&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">CifSeqresIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">Record id 1A8O:A, chain A</span>
+<span class="go">[&#39;UNP:P12497&#39;, &#39;UNP:POL_HV1N5&#39;]</span>
+</pre></div>
+</div>
+<p>Note the chain is recorded in the annotations dictionary, and any mmCIF
+_struct_ref_seq entries are recorded in the database cross-references list.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.SeqIO.PdbIO.CifAtomIterator">
+<span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.PdbIO.</span></span><span class="sig-name descname"><span class="pre">CifAtomIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.PdbIO.CifAtomIterator" title="Permalink to this definition"></a></dt>
+<dd><p>Return SeqRecord objects for each chain in an mmCIF file.</p>
+<p>Argument source is a file-like object or a path to a file.</p>
+<p>The sequences are derived from the 3D structure (_atom_site.* fields)
+in the mmCIF file.</p>
+<p>Unrecognised three letter amino acid codes (e.g. “CSD”) from HETATM entries
+are converted to “X” in the sequence.</p>
+<p>In addition to information from the PDB header (which is the same for all
+records), the following chain specific information is placed in the
+annotation:</p>
+<p>record.annotations[“residues”] = List of residue ID strings
+record.annotations[“chain”] = Chain ID (typically A, B ,…)
+record.annotations[“model”] = Model ID (typically zero)</p>
+<p>Where amino acids are missing from the structure, as indicated by residue
+numbering, the sequence is filled in with ‘X’ characters to match the size
+of the missing region, and  None is included as the corresponding entry in
+the list record.annotations[“residues”].</p>
+<p>This function uses the Bio.PDB module to do most of the hard work. The
+annotation information could be improved but this extra parsing should be
+done in parse_pdb_header, not this module.</p>
+<p>This gets called internally via Bio.SeqIO for the atom based interpretation
+of the PDB file format:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.cif&quot;</span><span class="p">,</span> <span class="s2">&quot;cif-atom&quot;</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="go">Record id 1A8O:A, chain A</span>
+</pre></div>
+</div>
+<p>Equivalently,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.cif&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">CifAtomIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">...</span>
+<span class="go">Record id 1A8O:A, chain A</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Bio.SeqIO.NibIO.html" class="btn btn-neutral float-left" title="Bio.SeqIO.NibIO module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.SeqIO.PhdIO.html" class="btn btn-neutral float-right" title="Bio.SeqIO.PhdIO module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2024, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.82/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

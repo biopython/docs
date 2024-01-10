@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bio.SearchIO.BlastIO package &mdash; Biopython 1.83 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/biopython.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bio.SearchIO.BlastIO.blast_tab module" href="Bio.SearchIO.BlastIO.blast_tab.html" />
+    <link rel="prev" title="Bio.SearchIO package" href="Bio.SearchIO.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #10100F" >
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/biopython_logo_white.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">API Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="Bio.html">Bio package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="Bio.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Bio.Affy.html">Bio.Affy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Align.html">Bio.Align package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.AlignIO.html">Bio.AlignIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Application.html">Bio.Application package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Blast.html">Bio.Blast package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.CAPS.html">Bio.CAPS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Cluster.html">Bio.Cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Compass.html">Bio.Compass package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Data.html">Bio.Data package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Emboss.html">Bio.Emboss package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.html">Bio.Entrez package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.ExPASy.html">Bio.ExPASy package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.GenBank.html">Bio.GenBank package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Geo.html">Bio.Geo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Graphics.html">Bio.Graphics package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.HMM.html">Bio.HMM package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.KEGG.html">Bio.KEGG package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Medline.html">Bio.Medline package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.NMR.html">Bio.NMR package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Nexus.html">Bio.Nexus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PDB.html">Bio.PDB package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Pathway.html">Bio.Pathway package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Phylo.html">Bio.Phylo package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.PopGen.html">Bio.PopGen package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Restriction.html">Bio.Restriction package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SCOP.html">Bio.SCOP package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SVDSuperimposer.html">Bio.SVDSuperimposer package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="Bio.SearchIO.html">Bio.SearchIO package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="Bio.SearchIO.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.SearchIO.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Bio.SearchIO.html#module-Bio.SearchIO">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqIO.html">Bio.SeqIO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SeqUtils.html">Bio.SeqUtils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Sequencing.html">Bio.Sequencing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.SwissProt.html">Bio.SwissProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.TogoWS.html">Bio.TogoWS package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniGene.html">Bio.UniGene package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.UniProt.html">Bio.UniProt package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.codonalign.html">Bio.codonalign package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.motifs.html">Bio.motifs package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.phenotype.html">Bio.phenotype package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Bio.html#module-Bio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="BioSQL.html">BioSQL package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #10100F" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Biopython</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="Bio.html">Bio package</a></li>
+          <li class="breadcrumb-item"><a href="Bio.SearchIO.html">Bio.SearchIO package</a></li>
+      <li class="breadcrumb-item active">Bio.SearchIO.BlastIO package</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/biopython/biopython/blob/master/Bio/SearchIO/BlastIO/__init__.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="Bio.SearchIO.html" class="btn btn-neutral float-left" title="Bio.SearchIO package" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.SearchIO.BlastIO.blast_tab.html" class="btn btn-neutral float-right" title="Bio.SearchIO.BlastIO.blast_tab module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bio-searchio-blastio-package">
+<h1>Bio.SearchIO.BlastIO package<a class="headerlink" href="#bio-searchio-blastio-package" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Bio.SearchIO.BlastIO.blast_tab.html">Bio.SearchIO.BlastIO.blast_tab module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Bio.SearchIO.BlastIO.blast_xml.html">Bio.SearchIO.BlastIO.blast_xml module</a></li>
+</ul>
+</div>
+</section>
+<section id="module-Bio.SearchIO.BlastIO">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Bio.SearchIO.BlastIO" title="Permalink to this headline"></a></h2>
+<p>Bio.SearchIO support for BLAST+ output formats.</p>
+<p>This module adds support for parsing BLAST+ outputs. BLAST+ is a rewrite of
+NCBI’s legacy BLAST (Basic Local Alignment Search Tool), based on the NCBI
+C++ toolkit. The BLAST+ suite is available as command line programs or on
+NCBI’s web page.</p>
+<p>Bio.SearchIO.BlastIO was tested on the following BLAST+ flavors and versions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>flavors: blastn, blastp, blastx, tblastn, tblastx</p></li>
+<li><p>versions: 2.2.22+, 2.2.26+</p></li>
+</ul>
+</div></blockquote>
+<p>You should also be able to parse outputs from a local BLAST+ search or from
+NCBI’s web interface. Although the module was not tested against all BLAST+,
+it should still be able to parse these other versions’ outputs. Please submit
+a bug report if you stumble upon an unparsable file.</p>
+<p>Some output formats from the BLAST legacy suite (BLAST+’s predecessor) may
+still be parsed by this module. However, results are not guaranteed. You may
+try to use the Bio.Blast module to parse them instead.</p>
+<dl class="simple">
+<dt>More information about BLAST are available through these links:</dt><dd><ul class="simple">
+<li><p>Publication: <a class="reference external" href="http://www.biomedcentral.com/1471-2105/10/421">http://www.biomedcentral.com/1471-2105/10/421</a></p></li>
+<li><p>Web interface: <a class="reference external" href="http://blast.ncbi.nlm.nih.gov/">http://blast.ncbi.nlm.nih.gov/</a></p></li>
+<li><p>User guide: <a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK1762/">http://www.ncbi.nlm.nih.gov/books/NBK1762/</a></p></li>
+</ul>
+</dd>
+</dl>
+<section id="supported-formats">
+<h3>Supported Formats<a class="headerlink" href="#supported-formats" title="Permalink to this headline"></a></h3>
+<p>Bio.SearchIO.BlastIO supports the following BLAST+ output formats:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>XML        - ‘blast-xml’  - parsing, indexing, writing</p></li>
+<li><p>Tabular    - ‘blast-tab’  - parsing, indexing, writing</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="blast-xml">
+<h3>blast-xml<a class="headerlink" href="#blast-xml" title="Permalink to this headline"></a></h3>
+<p>The blast-xml parser follows the BLAST XML DTD written here:
+<a class="reference external" href="http://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.mod.dtd">http://www.ncbi.nlm.nih.gov/dtd/NCBI_BlastOutput.mod.dtd</a></p>
+<p>It provides the following attributes for each SearchIO object:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 36%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Object</p></th>
+<th class="head"><p>Attribute</p></th>
+<th class="head"><p>XML Element</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="24"><p>QueryResult</p></td>
+<td><p>target</p></td>
+<td><p>BlastOutput_db</p></td>
+</tr>
+<tr class="row-odd"><td><p>program</p></td>
+<td><p>BlastOutput_program</p></td>
+</tr>
+<tr class="row-even"><td><p>reference</p></td>
+<td><p>BlastOutput_reference</p></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p>BlastOutput_version <a class="footnote-reference brackets" href="#id3" id="id1">*</a></p></td>
+</tr>
+<tr class="row-even"><td><p>description</p></td>
+<td><p>Iteration_query-def</p></td>
+</tr>
+<tr class="row-odd"><td><p>id</p></td>
+<td><p>Iteration_query-ID</p></td>
+</tr>
+<tr class="row-even"><td><p>seq_len</p></td>
+<td><p>Iteration_query-len</p></td>
+</tr>
+<tr class="row-odd"><td><p>param_evalue_threshold</p></td>
+<td><p>Parameters_expect</p></td>
+</tr>
+<tr class="row-even"><td><p>param_entrez_query</p></td>
+<td><p>Parameters_entrez-query</p></td>
+</tr>
+<tr class="row-odd"><td><p>param_filter</p></td>
+<td><p>Parameters_filter</p></td>
+</tr>
+<tr class="row-even"><td><p>param_gap_extend</p></td>
+<td><p>Parameters_gap-extend</p></td>
+</tr>
+<tr class="row-odd"><td><p>param_gap_open</p></td>
+<td><p>Parameters_gap-open</p></td>
+</tr>
+<tr class="row-even"><td><p>param_include</p></td>
+<td><p>Parameters_include</p></td>
+</tr>
+<tr class="row-odd"><td><p>param_matrix</p></td>
+<td><p>Parameters_matrix</p></td>
+</tr>
+<tr class="row-even"><td><p>param_pattern</p></td>
+<td><p>Parameters_pattern</p></td>
+</tr>
+<tr class="row-odd"><td><p>param_score_match</p></td>
+<td><p>Parameters_sc-match</p></td>
+</tr>
+<tr class="row-even"><td><p>param_score_mismatch</p></td>
+<td><p>Parameters_sc-mismatch</p></td>
+</tr>
+<tr class="row-odd"><td><p>stat_db_num</p></td>
+<td><p>Statistics_db-num</p></td>
+</tr>
+<tr class="row-even"><td><p>stat_db_len</p></td>
+<td><p>Statistics_db-len</p></td>
+</tr>
+<tr class="row-odd"><td><p>stat_eff_space</p></td>
+<td><p>Statistics_eff-space</p></td>
+</tr>
+<tr class="row-even"><td><p>stat_entropy</p></td>
+<td><p>Statistics_entropy</p></td>
+</tr>
+<tr class="row-odd"><td><p>stat_hsp_len</p></td>
+<td><p>Statistics_hsp-len</p></td>
+</tr>
+<tr class="row-even"><td><p>stat_kappa</p></td>
+<td><p>Statistics_kappa</p></td>
+</tr>
+<tr class="row-odd"><td><p>stat_lambda</p></td>
+<td><p>Statistics_lambda</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><p>Hit</p></td>
+<td><p>accession</p></td>
+<td><p>Hit_accession</p></td>
+</tr>
+<tr class="row-odd"><td><p>description</p></td>
+<td><p>Hit_def</p></td>
+</tr>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>Hit_id</p></td>
+</tr>
+<tr class="row-odd"><td><p>seq_len</p></td>
+<td><p>Hit_len</p></td>
+</tr>
+<tr class="row-even"><td rowspan="7"><p>HSP</p></td>
+<td><p>bitscore</p></td>
+<td><p>Hsp_bit-score</p></td>
+</tr>
+<tr class="row-odd"><td><p>density</p></td>
+<td><p>Hsp_density</p></td>
+</tr>
+<tr class="row-even"><td><p>evalue</p></td>
+<td><p>Hsp_evalue</p></td>
+</tr>
+<tr class="row-odd"><td><p>gap_num</p></td>
+<td><p>Hsp_gaps</p></td>
+</tr>
+<tr class="row-even"><td><p>ident_num</p></td>
+<td><p>Hsp_identity</p></td>
+</tr>
+<tr class="row-odd"><td><p>pos_num</p></td>
+<td><p>Hsp_positive</p></td>
+</tr>
+<tr class="row-even"><td><p>bitscore_raw</p></td>
+<td><p>Hsp_score</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="12"><p>HSPFragment
+(also via
+HSP)</p></td>
+<td><p>aln_span</p></td>
+<td><p>Hsp_align-len</p></td>
+</tr>
+<tr class="row-even"><td><p>hit_frame</p></td>
+<td><p>Hsp_hit-frame</p></td>
+</tr>
+<tr class="row-odd"><td><p>hit_start</p></td>
+<td><p>Hsp_hit-from</p></td>
+</tr>
+<tr class="row-even"><td><p>hit_end</p></td>
+<td><p>Hsp_hit-to</p></td>
+</tr>
+<tr class="row-odd"><td><p>hit</p></td>
+<td><p>Hsp_hseq</p></td>
+</tr>
+<tr class="row-even"><td><p>aln_annotation</p></td>
+<td><p>Hsp_midline</p></td>
+</tr>
+<tr class="row-odd"><td><p>pattern_start</p></td>
+<td><p>Hsp_pattern-from</p></td>
+</tr>
+<tr class="row-even"><td><p>pattern_end</p></td>
+<td><p>Hsp_pattern-to</p></td>
+</tr>
+<tr class="row-odd"><td><p>query_frame</p></td>
+<td><p>Hsp_query-frame</p></td>
+</tr>
+<tr class="row-even"><td><p>query_start</p></td>
+<td><p>Hsp_query-from</p></td>
+</tr>
+<tr class="row-odd"><td><p>query_end</p></td>
+<td><p>Hsp_query-to</p></td>
+</tr>
+<tr class="row-even"><td><p>query</p></td>
+<td><p>Hsp_qseq</p></td>
+</tr>
+</tbody>
+</table>
+<p>You may notice that in BLAST XML files, sometimes BLAST replaces your true
+sequence ID with its own generated ID. For example, the query IDs become
+‘Query_1’, ‘Query_2’, and so on. While the hit IDs sometimes become
+‘gnl|BL_ORD_ID|1’, ‘gnl|BL_ORD_ID|2’, and so on. In these cases, BLAST lumps the
+true sequence IDs together with their descriptions.</p>
+<p>The blast-xml parser is aware of these modifications and will attempt to extract
+the true sequence IDs out of the descriptions. So when accessing QueryResult or
+Hit objects, you will use the non-BLAST-generated IDs.</p>
+<p>This behavior on the query IDs can be disabled using the ‘use_raw_query_ids’
+parameter while the behavior on the hit IDs can be disabled using the
+‘use_raw_hit_ids’ parameter. Both are boolean values that can be supplied
+to SearchIO.read or SearchIO.parse, with the default values set to ‘False’.</p>
+<p>In any case, the raw BLAST IDs can always be accessed using the query or hit
+object’s ‘blast_id’ attribute.</p>
+<p>The blast-xml write function also accepts ‘use_raw_query_ids’ and
+‘use_raw_hit_ids’ parameters. However, note that the default values for the
+writer are set to ‘True’. This is because the writer is meant to mimic native
+BLAST result as much as possible.</p>
+</section>
+<section id="blast-tab">
+<h3>blast-tab<a class="headerlink" href="#blast-tab" title="Permalink to this headline"></a></h3>
+<p>The default format for blast-tab support is the variant without comments (-m 6
+flag). Commented BLAST tabular files may be parsed, indexed, or written using
+the keyword argument ‘comments’ set to True:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># blast-tab defaults to parsing uncommented files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SearchIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">uncommented</span> <span class="o">=</span> <span class="s1">&#39;Blast/tab_2226_tblastn_004.txt&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">uncommented</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span>
+<span class="go">QueryResult(id=&#39;gi|11464971:4-101&#39;, 5 hits)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># set the keyword argument to parse commented files</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">commented</span> <span class="o">=</span> <span class="s1">&#39;Blast/tab_2226_tblastn_008.txt&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="n">SearchIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">commented</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">,</span> <span class="n">comments</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span>
+<span class="go">QueryResult(id=&#39;gi|11464971:4-101&#39;, 5 hits)</span>
+</pre></div>
+</div>
+<p>For uncommented files, the parser defaults to using BLAST’s default column
+ordering: ‘qseqid sseqid pident length mismatch gapopen qstart qend sstart send
+evalue bitscore’.</p>
+<p>If you want to parse an uncommented file with a customized column order, you can
+use the ‘fields’ keyword argument to pass the custom column order. The names of
+the column follow BLAST’s naming. For example, ‘qseqid’ is the column for the
+query sequence ID. These names may be passed either as a Python list or as a
+space-separated strings.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># pass the custom column names as a Python list</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;Blast/tab_2226_tblastn_009.txt&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">custom_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;qseqid&#39;</span><span class="p">,</span> <span class="s1">&#39;sseqid&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">SearchIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">custom_fields</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span>
+<span class="go">QueryResult(id=&#39;gi|16080617|ref|NP_391444.1|&#39;, 3 hits)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># pass the custom column names as a space-separated string</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fname</span> <span class="o">=</span> <span class="s1">&#39;Blast/tab_2226_tblastn_009.txt&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">custom_fields</span> <span class="o">=</span> <span class="s1">&#39;qseqid sseqid&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">SearchIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;blast-tab&#39;</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">custom_fields</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">qresult</span>
+<span class="go">QueryResult(id=&#39;gi|16080617|ref|NP_391444.1|&#39;, 3 hits)</span>
+</pre></div>
+</div>
+<p>You may also use the ‘std’ field name as an alias to BLAST’s default 12 columns,
+just like when you run a command line BLAST search.</p>
+<p>Note that the ‘fields’ keyword argument will be ignored if the parsed file is
+commented. Commented files have their column ordering stated explicitly in the
+file, so there is no need to specify it again in SearchIO.</p>
+<p>‘comments’ and ‘fields’ keyword arguments are both applicable for parsing,
+indexing, and writing.</p>
+<p>blast-tab provides the following attributes for each SearchIO objects:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 41%" />
+<col style="width: 30%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Object</p></th>
+<th class="head"><p>Attribute</p></th>
+<th class="head"><p>Column name</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="5"><p>QueryResult</p></td>
+<td><p>accession</p></td>
+<td><p>qacc</p></td>
+</tr>
+<tr class="row-odd"><td><p>accession_version</p></td>
+<td><p>qaccver</p></td>
+</tr>
+<tr class="row-even"><td><p>gi</p></td>
+<td><p>qgi</p></td>
+</tr>
+<tr class="row-odd"><td><p>seq_len</p></td>
+<td><p>qlen</p></td>
+</tr>
+<tr class="row-even"><td><p>id</p></td>
+<td><p>qseqid</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="7"><p>Hit</p></td>
+<td><p>accession</p></td>
+<td><p>sacc</p></td>
+</tr>
+<tr class="row-even"><td><p>accession_version</p></td>
+<td><p>sacc_ver</p></td>
+</tr>
+<tr class="row-odd"><td><p>gi</p></td>
+<td><p>sgi</p></td>
+</tr>
+<tr class="row-even"><td><p>gi_all</p></td>
+<td><p>sallgi</p></td>
+</tr>
+<tr class="row-odd"><td><p>id_all</p></td>
+<td><p>sallseqid</p></td>
+</tr>
+<tr class="row-even"><td><p>seq_len</p></td>
+<td><p>slen</p></td>
+</tr>
+<tr class="row-odd"><td><p>id</p></td>
+<td><p>sseqid</p></td>
+</tr>
+<tr class="row-even"><td rowspan="11"><p>HSP</p></td>
+<td><p>bitscore</p></td>
+<td><p>bitscore</p></td>
+</tr>
+<tr class="row-odd"><td><p>btop</p></td>
+<td><p>btop</p></td>
+</tr>
+<tr class="row-even"><td><p>evalue</p></td>
+<td><p>evalue</p></td>
+</tr>
+<tr class="row-odd"><td><p>gapopen_num</p></td>
+<td><p>gapopen</p></td>
+</tr>
+<tr class="row-even"><td><p>gap_num</p></td>
+<td><p>gaps</p></td>
+</tr>
+<tr class="row-odd"><td><p>ident_num</p></td>
+<td><p>nident</p></td>
+</tr>
+<tr class="row-even"><td><p>ident_pct</p></td>
+<td><p>pident</p></td>
+</tr>
+<tr class="row-odd"><td><p>mismatch_num</p></td>
+<td><p>mismatch</p></td>
+</tr>
+<tr class="row-even"><td><p>pos_pct</p></td>
+<td><p>ppos</p></td>
+</tr>
+<tr class="row-odd"><td><p>pos_num</p></td>
+<td><p>positive</p></td>
+</tr>
+<tr class="row-even"><td><p>bitscore_raw</p></td>
+<td><p>score</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="10"><p>HSPFragment
+(also via
+HSP)</p></td>
+<td><p>frames</p></td>
+<td><p>frames <a class="footnote-reference brackets" href="#id4" id="id2">†</a></p></td>
+</tr>
+<tr class="row-even"><td><p>aln_span</p></td>
+<td><p>length</p></td>
+</tr>
+<tr class="row-odd"><td><p>query_end</p></td>
+<td><p>qend</p></td>
+</tr>
+<tr class="row-even"><td><p>query_frame</p></td>
+<td><p>qframe</p></td>
+</tr>
+<tr class="row-odd"><td><p>query</p></td>
+<td><p>qseq</p></td>
+</tr>
+<tr class="row-even"><td><p>query_start</p></td>
+<td><p>qstart</p></td>
+</tr>
+<tr class="row-odd"><td><p>hit_end</p></td>
+<td><p>send</p></td>
+</tr>
+<tr class="row-even"><td><p>hit_frame</p></td>
+<td><p>sframe</p></td>
+</tr>
+<tr class="row-odd"><td><p>hit</p></td>
+<td><p>sseq</p></td>
+</tr>
+<tr class="row-even"><td><p>hit_start</p></td>
+<td><p>sstart</p></td>
+</tr>
+</tbody>
+</table>
+<p>If the parsed file is commented, the following attributes may be available as
+well:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 26%" />
+<col style="width: 49%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Object</p></th>
+<th class="head"><p>Attribute</p></th>
+<th class="head"><p>Value</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td rowspan="6"><p>QueryResult</p></td>
+<td><p>description</p></td>
+<td><p>query description</p></td>
+</tr>
+<tr class="row-odd"><td><p>fields</p></td>
+<td><p>columns in the output file</p></td>
+</tr>
+<tr class="row-even"><td><p>program</p></td>
+<td><p>BLAST flavor</p></td>
+</tr>
+<tr class="row-odd"><td><p>rid</p></td>
+<td><p>remote search ID</p></td>
+</tr>
+<tr class="row-even"><td><p>target</p></td>
+<td><p>target database</p></td>
+</tr>
+<tr class="row-odd"><td><p>version</p></td>
+<td><p>BLAST version</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="footnote brackets">
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">*</a></span></dt>
+<dd><p>may be modified</p>
+</dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">†</a></span></dt>
+<dd><p>When ‘frames’ is present, both <code class="docutils literal notranslate"><span class="pre">query_frame</span></code> and <code class="docutils literal notranslate"><span class="pre">hit_frame</span></code> will be
+present as well. It is recommended that you use these instead of ‘frames’ directly.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Bio.SearchIO.html" class="btn btn-neutral float-left" title="Bio.SearchIO package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Bio.SearchIO.BlastIO.blast_tab.html" class="btn btn-neutral float-right" title="Bio.SearchIO.BlastIO.blast_tab module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 1999-2024, The Biopython Contributors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+
+
+  <div class="rst-versions" data-toggle="rst-versions" role="note" aria-label="versions">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      Biopython v: 1.83
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl>
+        <dt>Versions</dt>
+        
+          <dd><a href="../../1.82/api/">Previous</a></dd>
+        
+          <dd><a href="../../latest/api/">Latest</a></dd>
+        
+          <dd><a href="../../dev/api/">Develop</a></dd>
+        
+      </dl>
+      <dl>
+        <dt>Biopython Project</dt>
+          <dd>
+            <a href="https://biopython.org" class="icon icon-home">  Homepage</a>
+          </dd>
+          <dd>
+            <a href="https://github.com/biopython/biopython" class="fa fa-github">  On GitHub</a>
+          </dd>
+      </dl>
+    </div>
+  </div>
+<script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
