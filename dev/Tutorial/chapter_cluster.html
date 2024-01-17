@@ -1,21 +1,24 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cluster analysis &mdash; Biopython 1.84.dev0 documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/biopython.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/biopython.css?v=d1305275" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/doctools.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=49cfa8a4"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -156,7 +159,7 @@
            <div itemprop="articleBody">
              
   <section id="cluster-analysis">
-<span id="chapter-cluster"></span><h1>Cluster analysis<a class="headerlink" href="#cluster-analysis" title="Permalink to this headline"></a></h1>
+<span id="chapter-cluster"></span><h1>Cluster analysis<a class="headerlink" href="#cluster-analysis" title="Link to this heading"></a></h1>
 <p>Cluster analysis is the grouping of items into clusters based on the
 similarity of the items to each other. In bioinformatics, clustering is
 widely used in gene expression data analysis to find groups of genes
@@ -178,7 +181,7 @@ average-linkage);</p></li>
 <li><p>Principal Component Analysis.</p></li>
 </ul>
 <section id="data-representation">
-<h2>Data representation<a class="headerlink" href="#data-representation" title="Permalink to this headline"></a></h2>
+<h2>Data representation<a class="headerlink" href="#data-representation" title="Link to this heading"></a></h2>
 <p>The data to be clustered are represented by a <span class="math notranslate nohighlight">\(n \times m\)</span>
 Numerical Python array <code class="docutils literal notranslate"><span class="pre">data</span></code>. Within the context of gene expression
 data clustering, typically the rows correspond to different genes
@@ -187,13 +190,13 @@ clustering algorithms in <code class="docutils literal notranslate"><span class=
 (genes) and to columns (experiments).</p>
 </section>
 <section id="missing-values">
-<h2>Missing values<a class="headerlink" href="#missing-values" title="Permalink to this headline"></a></h2>
+<h2>Missing values<a class="headerlink" href="#missing-values" title="Link to this heading"></a></h2>
 <p>The <span class="math notranslate nohighlight">\(n \times m\)</span> Numerical Python integer array <code class="docutils literal notranslate"><span class="pre">mask</span></code> indicates
 if any of the values in <code class="docutils literal notranslate"><span class="pre">data</span></code> are missing. If <code class="docutils literal notranslate"><span class="pre">mask[i,</span> <span class="pre">j]</span> <span class="pre">==</span> <span class="pre">0</span></code>,
 then <code class="docutils literal notranslate"><span class="pre">data[i,</span> <span class="pre">j]</span></code> is missing and is ignored in the analysis.</p>
 </section>
 <section id="random-number-generator">
-<h2>Random number generator<a class="headerlink" href="#random-number-generator" title="Permalink to this headline"></a></h2>
+<h2>Random number generator<a class="headerlink" href="#random-number-generator" title="Link to this heading"></a></h2>
 <p>The <span class="math notranslate nohighlight">\(k\)</span>-means/medians/medoids clustering algorithms and
 Self-Organizing Maps (SOMs) include the use of a random number
 generator. The uniform random number generator in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> is
@@ -210,7 +213,7 @@ generator by calling <code class="docutils literal notranslate"><span class="pre
 the first two random numbers generated by <code class="docutils literal notranslate"><span class="pre">rand</span></code> as seeds for the
 uniform random number generator in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>.</p>
 <section id="distance-functions">
-<span id="sec-distancefunctions"></span><h3>Distance functions<a class="headerlink" href="#distance-functions" title="Permalink to this headline"></a></h3>
+<span id="sec-distancefunctions"></span><h3>Distance functions<a class="headerlink" href="#distance-functions" title="Link to this heading"></a></h3>
 <p>In order to cluster items into groups based on their similarity, we
 should first define what exactly we mean by <em>similar</em>. <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>
 provides eight distance functions, indicated by a single character, to
@@ -249,7 +252,7 @@ inequality. For example, for</p>
 </section>
 </section>
 <section id="euclidean-distance">
-<h2>Euclidean distance<a class="headerlink" href="#euclidean-distance" title="Permalink to this headline"></a></h2>
+<h2>Euclidean distance<a class="headerlink" href="#euclidean-distance" title="Link to this heading"></a></h2>
 <p>In <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>, we define the Euclidean distance as</p>
 <div class="math notranslate nohighlight">
 \[d = {1 \over n} \sum_{i=1}^{n} \left(x_i-y_i\right)^{2}.\]</div>
@@ -261,7 +264,7 @@ that the expression data are properly normalized when using the
 Euclidean distance.</p>
 </section>
 <section id="city-block-distance">
-<h2>City-block distance<a class="headerlink" href="#city-block-distance" title="Permalink to this headline"></a></h2>
+<h2>City-block distance<a class="headerlink" href="#city-block-distance" title="Link to this heading"></a></h2>
 <p>The city-block distance, alternatively known as the Manhattan distance,
 is related to the Euclidean distance. Whereas the Euclidean distance
 corresponds to the length of the shortest path between two points, the
@@ -278,7 +281,7 @@ each other, and we should therefore make sure that they are properly
 normalized.</p>
 </section>
 <section id="the-pearson-correlation-coefficient">
-<h2>The Pearson correlation coefficient<a class="headerlink" href="#the-pearson-correlation-coefficient" title="Permalink to this headline"></a></h2>
+<h2>The Pearson correlation coefficient<a class="headerlink" href="#the-pearson-correlation-coefficient" title="Link to this heading"></a></h2>
 <p>The Pearson correlation coefficient is defined as</p>
 <div class="math notranslate nohighlight">
 \[r = \frac{1}{n} \sum_{i=1}^n \left( \frac{x_i -\bar{x}}{\sigma_x} \right) \left(\frac{y_i -\bar{y}}{\sigma_y} \right),\]</div>
@@ -298,7 +301,7 @@ there is no correlation between <span class="math notranslate nohighlight">\(x\)
 Pearson distance lies between 0 and 2.</p>
 </section>
 <section id="absolute-pearson-correlation">
-<h2>Absolute Pearson correlation<a class="headerlink" href="#absolute-pearson-correlation" title="Permalink to this headline"></a></h2>
+<h2>Absolute Pearson correlation<a class="headerlink" href="#absolute-pearson-correlation" title="Link to this heading"></a></h2>
 <p>By taking the absolute value of the Pearson correlation, we find a
 number between 0 and 1. If the absolute value is 1, all the points in
 the scatter plot lie on a straight line with either a positive or a
@@ -316,7 +319,7 @@ exactly the same or exactly opposite. The absolute correlation
 coefficient should therefore be used with care.</p>
 </section>
 <section id="uncentered-correlation-cosine-of-the-angle">
-<h2>Uncentered correlation (cosine of the angle)<a class="headerlink" href="#uncentered-correlation-cosine-of-the-angle" title="Permalink to this headline"></a></h2>
+<h2>Uncentered correlation (cosine of the angle)<a class="headerlink" href="#uncentered-correlation-cosine-of-the-angle" title="Link to this heading"></a></h2>
 <p>In some cases, it may be preferable to use the <em>uncentered correlation</em>
 instead of the regular Pearson correlation coefficient. The uncentered
 correlation is defined as</p>
@@ -347,7 +350,7 @@ two data vectors in <span class="math notranslate nohighlight">\(n\)</span>-dime
 to as such.</p>
 </section>
 <section id="absolute-uncentered-correlation">
-<h2>Absolute uncentered correlation<a class="headerlink" href="#absolute-uncentered-correlation" title="Permalink to this headline"></a></h2>
+<h2>Absolute uncentered correlation<a class="headerlink" href="#absolute-uncentered-correlation" title="Link to this heading"></a></h2>
 <p>As for the regular Pearson correlation, we can define a distance measure
 using the absolute value of the uncentered correlation:</p>
 <div class="math notranslate nohighlight">
@@ -362,7 +365,7 @@ to the cosine between the supporting lines of the two data vectors
 consideration).</p>
 </section>
 <section id="spearman-rank-correlation">
-<h2>Spearman rank correlation<a class="headerlink" href="#spearman-rank-correlation" title="Permalink to this headline"></a></h2>
+<h2>Spearman rank correlation<a class="headerlink" href="#spearman-rank-correlation" title="Link to this heading"></a></h2>
 <p>The Spearman rank correlation is an example of a non-parametric
 similarity measure, and tends to be more robust against outliers than
 the Pearson correlation.</p>
@@ -377,7 +380,7 @@ measure corresponding to the Spearman rank correlation as</p>
 <p>where <span class="math notranslate nohighlight">\(r_{\mbox{S}}\)</span> is the Spearman rank correlation.</p>
 </section>
 <section id="kendalls-tau">
-<h2>Kendall’s <span class="math notranslate nohighlight">\(\tau\)</span><a class="headerlink" href="#kendalls-tau" title="Permalink to this headline"></a></h2>
+<h2>Kendall’s <span class="math notranslate nohighlight">\(\tau\)</span><a class="headerlink" href="#kendalls-tau" title="Link to this heading"></a></h2>
 <p>Kendall’s <span class="math notranslate nohighlight">\(\tau\)</span> is another example of a non-parametric similarity
 measure. It is similar to the Spearman rank correlation, but instead of
 the ranks themselves only the relative ranks are used to calculate
@@ -390,7 +393,7 @@ as</p>
 distance will be between 0 and 2.</p>
 </section>
 <section id="weighting">
-<h2>Weighting<a class="headerlink" href="#weighting" title="Permalink to this headline"></a></h2>
+<h2>Weighting<a class="headerlink" href="#weighting" title="Link to this heading"></a></h2>
 <p>For most of the distance functions available in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>, a
 weight vector can be applied. The weight vector contains weights for the
 items in the data vector. If the weight for item <span class="math notranslate nohighlight">\(i\)</span> is
@@ -398,7 +401,7 @@ items in the data vector. If the weight for item <span class="math notranslate n
 times in the data. The weight do not have to be integers.</p>
 </section>
 <section id="calculating-the-distance-matrix">
-<span id="sec-distancematrix"></span><h2>Calculating the distance matrix<a class="headerlink" href="#calculating-the-distance-matrix" title="Permalink to this headline"></a></h2>
+<span id="sec-distancematrix"></span><h2>Calculating the distance matrix<a class="headerlink" href="#calculating-the-distance-matrix" title="Link to this heading"></a></h2>
 <p>The distance matrix is a square matrix with all pairwise distances
 between the items in <code class="docutils literal notranslate"><span class="pre">data</span></code>, and can be calculated by the function
 <code class="docutils literal notranslate"><span class="pre">distancematrix</span></code> in the <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> module:</p>
@@ -473,11 +476,11 @@ first row has zero elements. For example,</p>
 \end{array}
 \right).\end{split}\]</div>
 <section id="calculating-cluster-properties">
-<h3>Calculating cluster properties<a class="headerlink" href="#calculating-cluster-properties" title="Permalink to this headline"></a></h3>
+<h3>Calculating cluster properties<a class="headerlink" href="#calculating-cluster-properties" title="Link to this heading"></a></h3>
 </section>
 </section>
 <section id="calculating-the-cluster-centroids">
-<span id="sec-clustercentroids"></span><h2>Calculating the cluster centroids<a class="headerlink" href="#calculating-the-cluster-centroids" title="Permalink to this headline"></a></h2>
+<span id="sec-clustercentroids"></span><h2>Calculating the cluster centroids<a class="headerlink" href="#calculating-the-cluster-centroids" title="Link to this heading"></a></h2>
 <p>The centroid of a cluster can be defined either as the mean or as the
 median of each dimension over all cluster items. The function
 <code class="docutils literal notranslate"><span class="pre">clustercentroids</span></code> in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code> can be used to calculate either:</p>
@@ -532,7 +535,7 @@ column (if <code class="docutils literal notranslate"><span class="pre">transpos
 corresponding to the centroid of each cluster.</p>
 </section>
 <section id="calculating-the-distance-between-clusters">
-<h2>Calculating the distance between clusters<a class="headerlink" href="#calculating-the-distance-between-clusters" title="Permalink to this headline"></a></h2>
+<h2>Calculating the distance between clusters<a class="headerlink" href="#calculating-the-distance-between-clusters" title="Link to this heading"></a></h2>
 <p>Given a distance function between <em>items</em>, we can define the distance
 between two <em>clusters</em> in several ways. The distance between the
 arithmetic means of the two clusters is used in pairwise
@@ -613,7 +616,7 @@ distance between the columns of <code class="docutils literal notranslate"><span
 </li>
 </ul>
 <section id="partitioning-algorithms">
-<h3>Partitioning algorithms<a class="headerlink" href="#partitioning-algorithms" title="Permalink to this headline"></a></h3>
+<h3>Partitioning algorithms<a class="headerlink" href="#partitioning-algorithms" title="Link to this heading"></a></h3>
 <p>Partitioning algorithms divide items into <span class="math notranslate nohighlight">\(k\)</span> clusters such that
 the sum of distances over the items to their cluster centers is minimal.
 The number of clusters <span class="math notranslate nohighlight">\(k\)</span> is specified by the user. Three
@@ -691,7 +694,7 @@ ensure that periodic behavior with longer periods can also be detected.</p>
 </section>
 </section>
 <section id="k-means-and-k-medians">
-<h2><span class="math notranslate nohighlight">\(k\)</span>-means and <span class="math notranslate nohighlight">\(k\)</span>-medians<a class="headerlink" href="#k-means-and-k-medians" title="Permalink to this headline"></a></h2>
+<h2><span class="math notranslate nohighlight">\(k\)</span>-means and <span class="math notranslate nohighlight">\(k\)</span>-medians<a class="headerlink" href="#k-means-and-k-medians" title="Link to this heading"></a></h2>
 <p>The <span class="math notranslate nohighlight">\(k\)</span>-means and <span class="math notranslate nohighlight">\(k\)</span>-medians algorithms are implemented as
 the function <code class="docutils literal notranslate"><span class="pre">kcluster</span></code> in <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">kcluster</span>
@@ -777,7 +780,7 @@ within-cluster sum of distances for the optimal clustering solution, and
 <code class="docutils literal notranslate"><span class="pre">nfound</span></code> is the number of times this optimal solution was found.</p>
 </section>
 <section id="k-medoids-clustering">
-<h2><span class="math notranslate nohighlight">\(k\)</span>-medoids clustering<a class="headerlink" href="#k-medoids-clustering" title="Permalink to this headline"></a></h2>
+<h2><span class="math notranslate nohighlight">\(k\)</span>-medoids clustering<a class="headerlink" href="#k-medoids-clustering" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">kmedoids</span></code> routine performs <span class="math notranslate nohighlight">\(k\)</span>-medoids clustering on a
 given set of items, using the distance matrix and the number of clusters
 passed by the user:</p>
@@ -849,7 +852,7 @@ the number of times the optimal solution was found. Note that the
 cluster number in <code class="docutils literal notranslate"><span class="pre">clusterid</span></code> is defined as the item number of the
 item representing the cluster centroid.</p>
 <section id="hierarchical-clustering">
-<h3>Hierarchical clustering<a class="headerlink" href="#hierarchical-clustering" title="Permalink to this headline"></a></h3>
+<h3>Hierarchical clustering<a class="headerlink" href="#hierarchical-clustering" title="Link to this heading"></a></h3>
 <p>Hierarchical clustering methods are inherently different from the
 <span class="math notranslate nohighlight">\(k\)</span>-means clustering method. In hierarchical clustering, the
 similarity in the expression profile between genes or experimental
@@ -917,7 +920,7 @@ excessive memory requirements and running time.</p>
 </section>
 </section>
 <section id="representing-a-hierarchical-clustering-solution">
-<h2>Representing a hierarchical clustering solution<a class="headerlink" href="#representing-a-hierarchical-clustering-solution" title="Permalink to this headline"></a></h2>
+<h2>Representing a hierarchical clustering solution<a class="headerlink" href="#representing-a-hierarchical-clustering-solution" title="Link to this heading"></a></h2>
 <p>The result of hierarchical clustering consists of a tree of nodes, in
 which each node joins two items or subnodes. Usually, we are not only
 interested in which items or subnodes are joined at each node, but also
@@ -1050,7 +1053,7 @@ assigned. Clusters are numbered <span class="math notranslate nohighlight">\(0\)
 left-to-right order in the dendrogram.</p>
 </section>
 <section id="performing-hierarchical-clustering">
-<h2>Performing hierarchical clustering<a class="headerlink" href="#performing-hierarchical-clustering" title="Permalink to this headline"></a></h2>
+<h2>Performing hierarchical clustering<a class="headerlink" href="#performing-hierarchical-clustering" title="Link to this heading"></a></h2>
 <p>To perform hierarchical clustering, use the <code class="docutils literal notranslate"><span class="pre">treecluster</span></code> function in
 <code class="docutils literal notranslate"><span class="pre">Bio.Cluster</span></code>.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Cluster</span> <span class="kn">import</span> <span class="n">treecluster</span>
@@ -1168,7 +1171,7 @@ distance between them. Items are numbered from 0 to
 <span class="math notranslate nohighlight">\(\left(\textrm{number of items} - 1\right)\)</span>, while clusters are
 numbered -1 to <span class="math notranslate nohighlight">\(-\left(\textrm{number of items}-1\right)\)</span>.</p>
 <section id="self-organizing-maps">
-<h3>Self-Organizing Maps<a class="headerlink" href="#self-organizing-maps" title="Permalink to this headline"></a></h3>
+<h3>Self-Organizing Maps<a class="headerlink" href="#self-organizing-maps" title="Link to this heading"></a></h3>
 <p>Self-Organizing Maps (SOMs) were invented by Kohonen to describe neural
 networks (see for instance Kohonen, 1997
 <a class="reference internal" href="chapter_bibliography.html#kohonen1997" id="id6"><span>[Kohonen1997]</span></a>). Tamayo (1999) first applied
@@ -1295,7 +1298,7 @@ centroid of the cluster in the grid cell with coordinates
 </ul>
 </section>
 <section id="principal-component-analysis">
-<h3>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Permalink to this headline"></a></h3>
+<h3>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Link to this heading"></a></h3>
 <p>Principal Component Analysis (PCA) is a widely used technique for
 analyzing multivariate data. A practical example of applying Principal
 Component Analysis to gene expression data is presented by Yeung and
@@ -1369,7 +1372,7 @@ principal components.</div>
 <code class="docutils literal notranslate"><span class="pre">columnmean</span> <span class="pre">+</span>&#160; <span class="pre">dot(coordinates,</span> <span class="pre">components)</span></code>.</p>
 </section>
 <section id="handling-cluster-treeview-type-files">
-<h3>Handling Cluster/TreeView-type files<a class="headerlink" href="#handling-cluster-treeview-type-files" title="Permalink to this headline"></a></h3>
+<h3>Handling Cluster/TreeView-type files<a class="headerlink" href="#handling-cluster-treeview-type-files" title="Link to this heading"></a></h3>
 <p>Cluster/TreeView are GUI-based codes for clustering gene expression
 data. They were originally written by <a class="reference external" href="http://rana.lbl.gov">Michael
 Eisen</a> while at Stanford University
@@ -1413,14 +1416,6 @@ observations. For a simple time course, a minimal input file would look
 like this:</p>
 <div class="center docutils container">
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 20%" />
-<col style="width: 22%" />
-<col style="width: 13%" />
-<col style="width: 15%" />
-<col style="width: 15%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>YORF</p></td>
 <td><p>0 minutes</p></td>
@@ -1482,17 +1477,6 @@ designated by empty cells (e.g. YAL004C at 2 hours).</p>
 would look like this:</p>
 <div class="center docutils container">
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 11%" />
-<col style="width: 41%" />
-<col style="width: 11%" />
-<col style="width: 10%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 5%" />
-<col style="width: 6%" />
-<col style="width: 6%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p>YORF</p></td>
 <td><p>NAME</p></td>
@@ -1644,7 +1628,7 @@ log-transformed by taking the logarithm of <code class="docutils literal notrans
 </section>
 </section>
 <section id="id12">
-<h2>Calculating the distance matrix<a class="headerlink" href="#id12" title="Permalink to this headline"></a></h2>
+<h2>Calculating the distance matrix<a class="headerlink" href="#id12" title="Link to this heading"></a></h2>
 <p>To calculate the distance matrix between the items stored in the record,
 use</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">distancematrix</span><span class="p">()</span>
@@ -1671,7 +1655,7 @@ number of columns of each row is equal to the row number (see section
 <a class="reference internal" href="#sec-distancematrix"><span class="std std-ref">Calculating the distance matrix</span></a>).</p>
 </section>
 <section id="id13">
-<h2>Calculating the cluster centroids<a class="headerlink" href="#id13" title="Permalink to this headline"></a></h2>
+<h2>Calculating the cluster centroids<a class="headerlink" href="#id13" title="Link to this heading"></a></h2>
 <p>To calculate the centroids of clusters of items stored in the record,
 use</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cdata</span><span class="p">,</span> <span class="n">cmask</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">clustercentroids</span><span class="p">()</span>
@@ -1703,7 +1687,7 @@ columns of <code class="docutils literal notranslate"><span class="pre">data</sp
 <a class="reference internal" href="#sec-clustercentroids"><span class="std std-ref">Calculating the cluster centroids</span></a> for a description.</p>
 </section>
 <section id="calculating-the-distance-between-clusters-1">
-<span id="id14"></span><h2>Calculating the distance between clusters<a class="headerlink" href="#calculating-the-distance-between-clusters-1" title="Permalink to this headline"></a></h2>
+<span id="id14"></span><h2>Calculating the distance between clusters<a class="headerlink" href="#calculating-the-distance-between-clusters-1" title="Link to this heading"></a></h2>
 <p>To calculate the distance between clusters of items stored in the
 record, use</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">distance</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">clusterdistance</span><span class="p">()</span>
@@ -1757,7 +1741,7 @@ distance between the columns of <code class="docutils literal notranslate"><span
 </ul>
 </section>
 <section id="performing-hierarchical-clustering-1">
-<span id="id15"></span><h2>Performing hierarchical clustering<a class="headerlink" href="#performing-hierarchical-clustering-1" title="Permalink to this headline"></a></h2>
+<span id="id15"></span><h2>Performing hierarchical clustering<a class="headerlink" href="#performing-hierarchical-clustering-1" title="Link to this heading"></a></h2>
 <p>To perform hierarchical clustering on the items stored in the record,
 use</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">treecluster</span><span class="p">()</span>
@@ -1808,7 +1792,7 @@ distance between them. Items are numbered from 0 to
 numbered -1 to <span class="math notranslate nohighlight">\(-\left(\textrm{number of items}-1\right)\)</span>.</p>
 </section>
 <section id="performing-k-means-or-k-medians-clustering">
-<h2>Performing <span class="math notranslate nohighlight">\(k\)</span>-means or <span class="math notranslate nohighlight">\(k\)</span>-medians clustering<a class="headerlink" href="#performing-k-means-or-k-medians-clustering" title="Permalink to this headline"></a></h2>
+<h2>Performing <span class="math notranslate nohighlight">\(k\)</span>-means or <span class="math notranslate nohighlight">\(k\)</span>-medians clustering<a class="headerlink" href="#performing-k-means-or-k-medians-clustering" title="Link to this heading"></a></h2>
 <p>To perform <span class="math notranslate nohighlight">\(k\)</span>-means or <span class="math notranslate nohighlight">\(k\)</span>-medians clustering on the items
 stored in the record, use</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clusterid</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">nfound</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">kcluster</span><span class="p">()</span>
@@ -1860,7 +1844,7 @@ within-cluster sum of distances for the optimal clustering solution, and
 <code class="docutils literal notranslate"><span class="pre">nfound</span></code> is the number of times this optimal solution was found.</p>
 </section>
 <section id="calculating-a-self-organizing-map">
-<h2>Calculating a Self-Organizing Map<a class="headerlink" href="#calculating-a-self-organizing-map" title="Permalink to this headline"></a></h2>
+<h2>Calculating a Self-Organizing Map<a class="headerlink" href="#calculating-a-self-organizing-map" title="Link to this heading"></a></h2>
 <p>To calculate a Self-Organizing Map of the items stored in the record,
 use</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clusterid</span><span class="p">,</span> <span class="n">celldata</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">somcluster</span><span class="p">()</span>
@@ -1924,7 +1908,7 @@ centroid of the cluster in the grid cell with coordinates
 </ul>
 </section>
 <section id="saving-the-clustering-result">
-<h2>Saving the clustering result<a class="headerlink" href="#saving-the-clustering-result" title="Permalink to this headline"></a></h2>
+<h2>Saving the clustering result<a class="headerlink" href="#saving-the-clustering-result" title="Link to this heading"></a></h2>
 <p>To save the clustering result, use</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">jobname</span><span class="p">,</span> <span class="n">geneclusters</span><span class="p">,</span> <span class="n">expclusters</span><span class="p">)</span>
 </pre></div>
@@ -1964,7 +1948,7 @@ subsequent reading by the Java TreeView program. If <code class="docutils litera
 <code class="docutils literal notranslate"><span class="pre">jobname.cdt</span></code>; this file can subsequently be read into a new
 <code class="docutils literal notranslate"><span class="pre">Record</span></code> object.</p>
 <section id="example-calculation">
-<h3>Example calculation<a class="headerlink" href="#example-calculation" title="Permalink to this headline"></a></h3>
+<h3>Example calculation<a class="headerlink" href="#example-calculation" title="Link to this heading"></a></h3>
 <p>This is an example of a hierarchical clustering calculation, using
 single linkage clustering for genes and maximum linkage clustering for
 experimental conditions. As the Euclidean distance is being used for
