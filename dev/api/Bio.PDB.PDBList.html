@@ -281,37 +281,30 @@ You can call this module as a weekly cron job.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.PDBList.PDBList.download_pdb_files">
-<span class="sig-name descname"><span class="pre">download_pdb_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_codes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obsolete</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_pdb_files" title="Link to this definition"></a></dt>
-<dd><p>Fetch set of PDB structure files from the PDB server and stores them locally.</p>
-<p>The PDB structure’s file name is returned as a single string.
-If obsolete <code class="docutils literal notranslate"><span class="pre">==</span></code> True, the files will be saved in a special file tree.</p>
+<span class="sig-name descname"><span class="pre">download_pdb_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdb_codes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obsolete</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pdir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_pdb_files" title="Link to this definition"></a></dt>
+<dd><p>Fetch set of PDB structure files from the PDB server and store them locally.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pdb_codes</strong> (<em>list</em><em> of </em><em>strings</em>) – a list of 4-symbols structure Ids from PDB</p></li>
+<li><p><strong>pdb_codes</strong> – A list of 4-symbol PDB structure IDs</p></li>
+<li><p><strong>obsolete</strong> – Has a meaning only for obsolete structures.
+If True, download the obsolete structure to ‘obsolete’ folder.
+Otherwise, the download won’t be performed.
+This option doesn’t work for mmtf format as obsolete structures are not available as mmtf.
+(default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></li>
+<li><p><strong>pdir</strong> – Put the file in this directory. By default, create a PDB-style directory tree.</p></li>
 <li><p><strong>file_format</strong> – <p>File format. Available options:</p>
 <ul>
 <li><p>”mmCif” (default, PDBx/mmCif file),</p></li>
 <li><p>”pdb” (format PDB),</p></li>
 <li><p>”xml” (PMDML/XML format),</p></li>
 <li><p>”mmtf” (highly compressed),</p></li>
-<li><p>”bundle” (PDB formatted archive for large structure)</p></li>
+<li><p>”bundle” (PDB formatted archive for large structure).</p></li>
 </ul>
 </p></li>
-<li><p><strong>overwrite</strong> (<em>bool</em>) – if set to True, existing structure files will be overwritten. Default: False</p></li>
-<li><p><strong>obsolete</strong> (<em>bool</em>) – Has a meaning only for obsolete structures.
-If True, download the obsolete structure
-to ‘obsolete’ folder, otherwise download won’t be performed.
-This option doesn’t work for mmtf format as obsoleted structures are not available as mmtf.
-(default: False)</p></li>
-<li><p><strong>pdir</strong> (<em>string</em>) – put the file in this directory (default: create a PDB-style directory tree)</p></li>
+<li><p><strong>overwrite</strong> – If set to true, existing structure files will be overwritten. (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)</p></li>
+<li><p><strong>max_num_threads</strong> – The maximum number of threads to use when downloading files</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>filenames</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>string</p>
 </dd>
 </dl>
 </dd></dl>
@@ -350,14 +343,15 @@ This option doesn’t work for mmtf format as obsoleted structures are not avail
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.PDBList.PDBList.download_all_assemblies">
-<span class="sig-name descname"><span class="pre">download_all_assemblies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_all_assemblies" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_all_assemblies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_all_assemblies" title="Link to this definition"></a></dt>
 <dd><p>Retrieve all biological assemblies not in the local PDB copy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>listfile</strong> (<em>str</em><em>, </em><em>optional</em>) – file name to which all assembly codes will be written</p></li>
-<li><p><strong>file_format</strong> (<em>str</em><em>, </em><em>optional</em>) – format in which to download the entries. Available
-options are “mmCif” or “pdb”. Defaults to mmCif.</p></li>
+<li><p><strong>listfile</strong> – File name to which all assembly codes will be written</p></li>
+<li><p><strong>file_format</strong> – Format in which to download the entries.
+Available options are “mmCif” or “pdb”. Defaults to “mmCif”.</p></li>
+<li><p><strong>max_num_threads</strong> – The maximum number of threads to use while downloading the assemblies</p></li>
 </ul>
 </dd>
 </dl>
@@ -365,12 +359,13 @@ options are “mmCif” or “pdb”. Defaults to mmCif.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.PDBList.PDBList.download_entire_pdb">
-<span class="sig-name descname"><span class="pre">download_entire_pdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_entire_pdb" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_entire_pdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_entire_pdb" title="Link to this definition"></a></dt>
 <dd><p>Retrieve all PDB entries not present in the local PDB copy.</p>
+<p>NOTE: The default download format has changed from PDB to PDBx/mmCif.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>listfile</strong> – filename to which all PDB codes will be written (optional)</p></li>
+<li><p><strong>listfile</strong> – Filename to which all PDB codes will be written</p></li>
 <li><p><strong>file_format</strong> – <p>File format. Available options:</p>
 <ul>
 <li><p>”mmCif” (default, PDBx/mmCif file),</p></li>
@@ -380,28 +375,32 @@ options are “mmCif” or “pdb”. Defaults to mmCif.</p></li>
 <li><p>”bundle” (PDB formatted archive for large structure)</p></li>
 </ul>
 </p></li>
+<li><p><strong>max_num_threads</strong> – The maximum number of threads to use while downloading PDB entries</p></li>
 </ul>
 </dd>
 </dl>
-<p>NOTE. The default download format has changed from PDB to PDBx/mmCif</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.PDBList.PDBList.download_obsolete_entries">
-<span class="sig-name descname"><span class="pre">download_obsolete_entries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listfile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_obsolete_entries" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">download_obsolete_entries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">listfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.PDBList.PDBList.download_obsolete_entries" title="Link to this definition"></a></dt>
 <dd><p>Retrieve all obsolete PDB entries not present in local obsolete PDB copy.</p>
+<p>NOTE: The default download format has changed from PDB to PDBx/mmCif.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>listfile</strong> – filename to which all PDB codes will be written (optional)</p></li>
-<li><p><strong>file_format</strong> – file format. Available options:
-“mmCif” (default, PDBx/mmCif file),
-“pdb” (format PDB),
-“xml” (PMDML/XML format),</p></li>
+<li><p><strong>listfile</strong> – Filename to which all PDB codes will be written</p></li>
+<li><p><strong>file_format</strong> – <p>File format. Available options:</p>
+<ul>
+<li><p>”mmCif” (default, PDBx/mmCif file),</p></li>
+<li><p>”pdb” (PDB format),</p></li>
+<li><p>”xml” (PMDML/XML format).</p></li>
+</ul>
+</p></li>
+<li><p><strong>max_num_threads</strong> – The maximum number of threads to use while downloading PDB entries</p></li>
 </ul>
 </dd>
 </dl>
-<p>NOTE. The default download format has changed from PDB to PDBx/mmCif</p>
 </dd></dl>
 
 <dl class="py method">
