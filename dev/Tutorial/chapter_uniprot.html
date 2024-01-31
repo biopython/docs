@@ -73,7 +73,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#parsing-enzyme-records">Parsing Enzyme records</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#accessing-the-expasy-server">Accessing the ExPASy server</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#retrieving-a-swiss-prot-record">Retrieving a Swiss-Prot record</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#searching-swiss-prot">Searching Swiss-Prot</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#searching-with-uniprot">Searching with UniProt</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#retrieving-prosite-and-prosite-documentation-records">Retrieving Prosite and Prosite documentation records</a></li>
 </ul>
 </li>
@@ -560,13 +560,45 @@ numbers:</p>
 </pre></div>
 </div>
 </section>
-<section id="searching-swiss-prot">
-<h3>Searching Swiss-Prot<a class="headerlink" href="#searching-swiss-prot" title="Link to this heading"></a></h3>
+<section id="searching-with-uniprot">
+<h3>Searching with UniProt<a class="headerlink" href="#searching-with-uniprot" title="Link to this heading"></a></h3>
 <p>Now, you may remark that I knew the records’ accession numbers
 beforehand. Indeed, <code class="docutils literal notranslate"><span class="pre">get_sprot_raw()</span></code> needs either the entry name or
-an accession number. When you don’t have them handy, right now you could
-use <a class="reference external" href="https://www.uniprot.org/">https://www.uniprot.org/</a> but we do not have a Python wrapper for
-searching this from a script. Perhaps you could contribute here?</p>
+an accession number. When you don’t have them handy, you can use
+<a class="reference external" href="https://www.uniprot.org/">UniProt</a> to search for them.
+You can also use the UniProt package to programmatically search for proteins.</p>
+<p>For example, let’s search for proteins from a specific organism (organism ID: 2697049)
+that have been reviewed. We can do this with the following code:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">UniProt</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;(organism_id:2697049) AND (reviewed:true)&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">UniProt</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">UniProt.search</span></code> method returns an iterator over the search results.
+The iterator returns one result at a time, fetching more results from UniProt as needed until all results are returned.
+We can efficiently create a list from this iterator for this specific query
+because this query only returns a few results (17 at the time of writing).</p>
+<p>Let’s try a search that returns more results.
+At the time of writing, there are 5,147 results for the query “Insulin AND (reviewed:true)”.
+We can use slicing to get a list of the first 50 results.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">UniProt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;Insulin AND (reviewed:true)&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">UniProt</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">50</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>You can get the total number of search results (regardless of the batch size)
+with the <code class="docutils literal notranslate"><span class="pre">len</span></code> method:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">UniProt</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;Insulin AND (reviewed:true)&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result_iterator</span> <span class="o">=</span> <span class="n">UniProt</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">result_iterator</span><span class="p">)</span>
+<span class="go">5147</span>
+</pre></div>
+</div>
 </section>
 <section id="retrieving-prosite-and-prosite-documentation-records">
 <h3>Retrieving Prosite and Prosite documentation records<a class="headerlink" href="#retrieving-prosite-and-prosite-documentation-records" title="Link to this heading"></a></h3>

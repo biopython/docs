@@ -152,13 +152,43 @@
 </section>
 <section id="module-Bio.UniProt">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Bio.UniProt" title="Link to this heading"></a></h2>
-<p>Code for dealing with assorted UniProt file formats.</p>
+<p>Code for dealing with assorted UniProt file formats and interacting with the UniProt database.</p>
 <p>This currently include parsers for the GAF, GPA and GPI formats
 from UniProt-GOA as the module Bio.UniProt.GOA.</p>
 <p>See also Bio.SwissProt and the “swiss” support in Bio.SeqIO for
 the legacy plain text sequence format still used in UniProt.</p>
 <p>See also Bio.SeqIO.SwissIO for the “uniprot-xml” support in
 Bio.SeqIO.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.UniProt.search">
+<span class="sig-prename descclassname"><span class="pre">Bio.UniProt.</span></span><span class="sig-name descname"><span class="pre">search</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">_UniProtSearchResults</span></span></span><a class="headerlink" href="#Bio.UniProt.search" title="Link to this definition"></a></dt>
+<dd><p>Search the UniProt database.</p>
+<p>Consider using <a class="reference external" href="https://www.uniprot.org/help/text-search">query syntax</a> and
+<a class="reference external" href="https://www.uniprot.org/help/query-fields">query fields</a> to refine your search.</p>
+<p>See the API details <a class="reference external" href="https://www.uniprot.org/help/api_queries">here</a>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">UniProt</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get the first 10 results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">UniProt</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;(organism_id:2697049) AND (reviewed:true)&quot;</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – The query string to search UniProt with</p></li>
+<li><p><strong>fields</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – The columns to retrieve in the results, defaults to all fields</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – The number of results to retrieve in each batch, defaults to 500</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An iterator over the search results</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_UniProtSearchResults</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 </section>
 
