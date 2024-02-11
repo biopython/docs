@@ -73,9 +73,12 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#parsing-blast-output">Parsing BLAST output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#the-blast-records-and-record-classes">The BLAST Records and Record classes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-blast-records-record-and-hit-classes">The BLAST Records, Record, and Hit classes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#the-blast-records-class">The BLAST Records class</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#the-blast-record-class">The BLAST Record class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-blast-hit-class">The BLAST Hit class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-blast-hsp-class">The BLAST HSP class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sorting-and-filtering-blast-output">Sorting and filtering BLAST output</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#dealing-with-psi-blast">Dealing with PSI-BLAST</a></li>
@@ -687,7 +690,7 @@ wasting resources).</p>
 need to do is to pick up the first (and only) BLAST record in
 <code class="docutils literal notranslate"><span class="pre">blast_records</span></code>:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">result_stream</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;my_blast.xml&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -705,8 +708,8 @@ need to do is to pick up the first (and only) BLAST record in
 read the whole file and close it immediately afterwards).</p>
 <p>I guess by now you’re wondering what is in a BLAST record.</p>
 </section>
-<section id="the-blast-records-and-record-classes">
-<h2>The BLAST Records and Record classes<a class="headerlink" href="#the-blast-records-and-record-classes" title="Link to this heading"></a></h2>
+<section id="the-blast-records-record-and-hit-classes">
+<h2>The BLAST Records, Record, and Hit classes<a class="headerlink" href="#the-blast-records-record-and-hit-classes" title="Link to this heading"></a></h2>
 <section id="the-blast-records-class">
 <span id="subsec-blast-records"></span><h3>The BLAST Records class<a class="headerlink" href="#the-blast-records-class" title="Link to this heading"></a></h3>
 <p>A single BLAST output file can contain output from multiple BLAST queries. In
@@ -761,8 +764,10 @@ completely (by iterating over the records until a <code class="docutils literal 
 is issued).</p></li>
 </ul>
 <p>For our example, we find:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">source</span>
-<span class="go">&lt;_io.BufferedReader name=&#39;my_blast.xml&#39;&gt;</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span>
+<span class="go">&lt;Bio.Blast.Records source=&#39;my_blast.xml&#39; program=&#39;blastn&#39; version=&#39;BLASTN 2.2.27+&#39; db=&#39;refseq_rna&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">source</span>
+<span class="go">&#39;my_blast.xml&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">program</span>
 <span class="go">&#39;blastn&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">version</span>
@@ -773,16 +778,30 @@ is issued).</p></li>
 <span class="go">&#39;refseq_rna&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">blast_records</span><span class="o">.</span><span class="n">param</span>
 <span class="go">{&#39;expect&#39;: 10.0, &#39;sc-match&#39;: 2, &#39;sc-mismatch&#39;: -3, &#39;gap-open&#39;: 5, &#39;gap-extend&#39;: 2, &#39;filter&#39;: &#39;L;m;&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">blast_records</span><span class="p">)</span>  
+<span class="go">Program: BLASTN 2.2.27+</span>
+<span class="go">     db: refseq_rna</span>
+
+<span class="go">  Query: 42291 (length=61)</span>
+<span class="go">         mystery_seq</span>
+<span class="go">   Hits: ----  -----  ----------------------------------------------------------</span>
+<span class="go">            #  # HSP  ID + description</span>
+<span class="go">         ----  -----  ----------------------------------------------------------</span>
+<span class="go">            0      1  gi|262205317|ref|NR_030195.1|  Homo sapiens microRNA 52...</span>
+<span class="go">            1      1  gi|301171311|ref|NR_035856.1|  Pan troglodytes microRNA...</span>
+<span class="go">            2      1  gi|270133242|ref|NR_032573.1|  Macaca mulatta microRNA ...</span>
+<span class="go">            3      2  gi|301171322|ref|NR_035857.1|  Pan troglodytes microRNA...</span>
+<span class="go">...</span>
 </pre></div>
 </div>
 </section>
 <section id="the-blast-record-class">
 <span id="subsec-blast-record"></span><h3>The BLAST Record class<a class="headerlink" href="#the-blast-record-class" title="Link to this heading"></a></h3>
-<p>A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object stores the information provided by BLAST
-for a single query. The <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> class inherits from
-<code class="docutils literal notranslate"><span class="pre">list</span></code>, and is essentially a list of <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> objects
-(see <a class="reference internal" href="chapter_align.html#sec-alignments"><span class="std std-ref">The Alignments class</span></a>). A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code>
-object has the following two attributes:</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object stores the information provided by BLAST for a
+single query. The <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> class inherits from <code class="docutils literal notranslate"><span class="pre">list</span></code>, and is
+essentially a list of <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> objects (see section
+<a class="reference internal" href="#subsec-blast-hit"><span class="std std-ref">The BLAST Hit class</span></a>).
+A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object has the following two attributes:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">query</span></code>: A <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object which may contain some or all of
 the following information:</p>
@@ -807,42 +826,179 @@ may find the following keys in this dictionary:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">message</span></code>: Some (error?) information.</p></li>
 </ul>
 <p>Continuing with our example,</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="o">.</span><span class="n">query</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span>
+<span class="go">&lt;Bio.Blast.Record query.id=&#39;42291&#39;; 100 hits&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="o">.</span><span class="n">query</span>
 <span class="go">SeqRecord(seq=Seq(None, length=61), id=&#39;42291&#39;, name=&#39;&lt;unknown name&gt;&#39;, description=&#39;mystery_seq&#39;, dbxrefs=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="o">.</span><span class="n">stat</span>
 <span class="go">{&#39;db-num&#39;: 3056429, &#39;db-len&#39;: 673143725, &#39;hsp-len&#39;: 0, &#39;eff-space&#39;: 0.0, &#39;kappa&#39;: 0.41, &#39;lambda&#39;: 0.625, &#39;entropy&#39;: 0.78}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">blast_record</span><span class="p">)</span>  
+<span class="go">  Query: 42291 (length=61)</span>
+<span class="go">         mystery_seq</span>
+<span class="go">   Hits: ----  -----  ----------------------------------------------------------</span>
+<span class="go">            #  # HSP  ID + description</span>
+<span class="go">         ----  -----  ----------------------------------------------------------</span>
+<span class="go">            0      1  gi|262205317|ref|NR_030195.1|  Homo sapiens microRNA 52...</span>
+<span class="go">            1      1  gi|301171311|ref|NR_035856.1|  Pan troglodytes microRNA...</span>
+<span class="go">            2      1  gi|270133242|ref|NR_032573.1|  Macaca mulatta microRNA ...</span>
+<span class="go">            3      2  gi|301171322|ref|NR_035857.1|  Pan troglodytes microRNA...</span>
+<span class="go">...</span>
 </pre></div>
 </div>
-<p>Each <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> object in the <code class="docutils literal notranslate"><span class="pre">blast_record</span></code> list
-represents one BLAST hit of the query against a target:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">blast_record</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="go">&lt;class &#39;Bio.Align.Alignments&#39;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">target</span>
+<p>As the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> class inherits from <code class="docutils literal notranslate"><span class="pre">list</span></code>, you can use it as
+such. For example, you can iterate over the record:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">blast_record</span><span class="p">:</span>  
+<span class="gp">... </span>    <span class="n">hit</span>
+<span class="gp">...</span>
+<span class="go">&lt;Bio.Blast.Hit target.id=&#39;gi|262205317|ref|NR_030195.1|&#39; query.id=&#39;42291&#39;; 1 HSP&gt;</span>
+<span class="go">&lt;Bio.Blast.Hit target.id=&#39;gi|301171311|ref|NR_035856.1|&#39; query.id=&#39;42291&#39;; 1 HSP&gt;</span>
+<span class="go">&lt;Bio.Blast.Hit target.id=&#39;gi|270133242|ref|NR_032573.1|&#39; query.id=&#39;42291&#39;; 1 HSP&gt;</span>
+<span class="go">&lt;Bio.Blast.Hit target.id=&#39;gi|301171322|ref|NR_035857.1|&#39; query.id=&#39;42291&#39;; 2 HSPs&gt;</span>
+<span class="go">&lt;Bio.Blast.Hit target.id=&#39;gi|301171267|ref|NR_035851.1|&#39; query.id=&#39;42291&#39;; 1 HSP&gt;</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>To check how many hits the <code class="docutils literal notranslate"><span class="pre">blast_record</span></code> has, you can simply invoke Python’s
+<code class="docutils literal notranslate"><span class="pre">len</span></code> function:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">blast_record</span><span class="p">)</span>
+<span class="go">100</span>
+</pre></div>
+</div>
+<p>Like Python lists, you can retrieve hits from a <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> using
+indices:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># retrieves the top hit</span>
+<span class="go">&lt;Bio.Blast.Hit target.id=&#39;gi|262205317|ref|NR_030195.1|&#39; query.id=&#39;42291&#39;; 1 HSP&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># retrieves the last hit</span>
+<span class="go">&lt;Bio.Blast.Hit target.id=&#39;gi|397513516|ref|XM_003827011.1|&#39; query.id=&#39;42291&#39;; 1 HSP&gt;</span>
+</pre></div>
+</div>
+<p>To retrieve multiple hits from a <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code>, you can use the slice
+notation. This will return a new <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object containing only
+the sliced hits:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_slice</span> <span class="o">=</span> <span class="n">blast_record</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># slices the first three hits</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">blast_slice</span><span class="p">)</span>
+<span class="go">  Query: 42291 (length=61)</span>
+<span class="go">         mystery_seq</span>
+<span class="go">   Hits: ----  -----  ----------------------------------------------------------</span>
+<span class="go">            #  # HSP  ID + description</span>
+<span class="go">         ----  -----  ----------------------------------------------------------</span>
+<span class="go">            0      1  gi|262205317|ref|NR_030195.1|  Homo sapiens microRNA 52...</span>
+<span class="go">            1      1  gi|301171311|ref|NR_035856.1|  Pan troglodytes microRNA...</span>
+<span class="go">            2      1  gi|270133242|ref|NR_032573.1|  Macaca mulatta microRNA ...</span>
+</pre></div>
+</div>
+<p>To create a copy of the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code>, take the full slice:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record_copy</span> <span class="o">=</span> <span class="n">blast_record</span><span class="p">[:]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">blast_record_copy</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Blast.Record&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record_copy</span>  <span class="c1"># list of all hits</span>
+<span class="go">&lt;Bio.Blast.Record query.id=&#39;42291&#39;; 100 hits&gt;</span>
+</pre></div>
+</div>
+<p>This is particularly useful if you want to sort or filter the BLAST record
+(see <a class="reference internal" href="#subsec-blast-sorting-filtering"><span class="std std-ref">Sorting and filtering BLAST output</span></a>), but want to retain a copy of the original BLAST output.</p>
+<p>You can also access <code class="docutils literal notranslate"><span class="pre">blast_record</span></code> as a Python dictionary and retrieve hits
+using the hit’s ID as key:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="p">[</span><span class="s2">&quot;gi|262205317|ref|NR_030195.1|&quot;</span><span class="p">]</span>
+<span class="go">&lt;Bio.Blast.Hit target.id=&#39;gi|262205317|ref|NR_030195.1|&#39; query.id=&#39;42291&#39;; 1 HSP&gt;</span>
+</pre></div>
+</div>
+<p>If the ID is not found in the <code class="docutils literal notranslate"><span class="pre">blast_record</span></code>, a <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> is raised:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="p">[</span><span class="s2">&quot;unicorn_gene&quot;</span><span class="p">]</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">KeyError</span>: <span class="n">&#39;unicorn_gene&#39;</span>
+</pre></div>
+</div>
+<p>You can get the full list of keys by using <code class="docutils literal notranslate"><span class="pre">.keys()</span></code> as usual:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  
+<span class="go">[&#39;gi|262205317|ref|NR_030195.1|&#39;, &#39;gi|301171311|ref|NR_035856.1|&#39;, &#39;gi|270133242|ref|NR_032573.1|&#39;, ...]</span>
+</pre></div>
+</div>
+<p>What if you just want to check whether a particular hit is present in the query
+results? You can do a simple Python membership test using the <code class="docutils literal notranslate"><span class="pre">in</span></code> keyword:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;gi|262205317|ref|NR_030195.1|&quot;</span> <span class="ow">in</span> <span class="n">blast_record</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s2">&quot;gi|262205317|ref|NR_030194.1|&quot;</span> <span class="ow">in</span> <span class="n">blast_record</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>Sometimes, knowing whether a hit is present is not enough; you also want to
+know the rank of the hit. Here, the <code class="docutils literal notranslate"><span class="pre">index</span></code> method comes to the rescue:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;gi|301171437|ref|NR_035870.1|&quot;</span><span class="p">)</span>
+<span class="go">22</span>
+</pre></div>
+</div>
+<p>Remember that Python uses zero-based indexing, so the first hit will be at
+index 0.</p>
+</section>
+<section id="the-blast-hit-class">
+<span id="subsec-blast-hit"></span><h3>The BLAST Hit class<a class="headerlink" href="#the-blast-hit-class" title="Link to this heading"></a></h3>
+<p>Each <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> object in the <code class="docutils literal notranslate"><span class="pre">blast_record</span></code> list represents one BLAST
+hit of the query against a target.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span> <span class="o">=</span> <span class="n">blast_record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span>
+<span class="go">&lt;Bio.Blast.Hit target.id=&#39;gi|262205317|ref|NR_030195.1|&#39; query.id=&#39;42291&#39;; 1 HSP&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span><span class="o">.</span><span class="n">target</span>
 <span class="go">SeqRecord(seq=Seq(None, length=61), id=&#39;gi|262205317|ref|NR_030195.1|&#39;, name=&#39;NR_030195&#39;, description=&#39;Homo sapiens microRNA 520b (MIR520B), microRNA&#39;, dbxrefs=[])</span>
 </pre></div>
 </div>
-<p>Each hit is represented by a <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> (plural) object,
-as the target and the query can align to each other in multiple but
-distinct regions. However, typically a hit consists of only one or a few
-alignments, especially for alignments of highly homologous sequences.
-Each alignment is represented by a <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> (singular)
-object (see Section <a class="reference internal" href="chapter_align.html#sec-alignmentobject"><span class="std std-ref">Alignment objects</span></a>).</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">blast_record</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">blast_record</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
-<span class="go">&lt;class &#39;Bio.Align.Alignment&#39;&gt;</span>
+<p>We can get a summary of the <code class="docutils literal notranslate"><span class="pre">hit</span></code> by printing it:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">blast_record</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">Query: 42291</span>
+<span class="go">       mystery_seq</span>
+<span class="go">  Hit: gi|301171322|ref|NR_035857.1| (length=86)</span>
+<span class="go">       Pan troglodytes microRNA mir-520c (MIR520C), microRNA</span>
+<span class="go"> HSPs: ----  --------  ---------  ------  ---------------  ---------------------</span>
+<span class="go">          #   E-value  Bit score    Span      Query range              Hit range</span>
+<span class="go">       ----  --------  ---------  ------  ---------------  ---------------------</span>
+<span class="go">          0   8.9e-20     100.47      60           [1:61]                [13:73]</span>
+<span class="go">          1   3.3e-06      55.39      60           [0:60]                [73:13]</span>
 </pre></div>
 </div>
+<p>You see that we’ve got the essentials covered here:</p>
+<ul class="simple">
+<li><p>A hit is always for one query; the query ID and description are shown at the
+top of the summary.</p></li>
+<li><p>A hit consists of one or more alignments of the query against one target
+sequence. The target information is shown next is the summary. As shown
+above, the target can be accessed via the <code class="docutils literal notranslate"><span class="pre">target</span></code> attribute of the hit.</p></li>
+<li><p>Finally, there’s a table containing quick information about the alignments
+each hit contains. In BLAST parlance, these alignments are called
+“High-scoring Segment Pairs”, or HSPs (see section <a class="reference internal" href="#subsec-blast-hsp"><span class="std std-ref">The BLAST HSP class</span></a>).
+Each row in the table summarizes one HSP, including the HSP index, e-value,
+bit score, span (the alignment length including gaps), query coordinates,
+and target coordinates.</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> class is a subclass of <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> (plural;
+see Section <a class="reference internal" href="chapter_align.html#sec-alignments"><span class="std std-ref">The Alignments class</span></a>), and therefore in essence is a list of
+<code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> (singular; see Section <a class="reference internal" href="chapter_align.html#sec-alignmentobject"><span class="std std-ref">Alignment objects</span></a>)
+objects. In particular when aligning nucleotide sequences against the genome,
+the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> object will consist of more than one
+<code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> if a particular query aligns to more than one region of
+a chromosome. For protein alignments, usually a hit consists of only one
+alignment, especially for alignments of highly homologous sequences.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">hit</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Blast.Hit&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">Alignments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">hit</span><span class="p">,</span> <span class="n">Alignments</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">hit</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</section>
+<section id="the-blast-hsp-class">
+<span id="subsec-blast-hsp"></span><h3>The BLAST HSP class<a class="headerlink" href="#the-blast-hsp-class" title="Link to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">alignment</span></code> object has attributes pointing to the target and query
-sequences, as well as a <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> attribute describing the
-sequence alignment.</p>
-<p>For translated BLAST searches, the <code class="docutils literal notranslate"><span class="pre">features</span></code> attribute of the target
-or query may contain a <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> of type CDS that stores the amino
-acid sequence region. The <code class="docutils literal notranslate"><span class="pre">qualifiers</span></code> attribute of such a feature is
-a dictionary with a single key <code class="docutils literal notranslate"><span class="pre">'coded_by'</span></code>; the corresponding value
-specifies the nucleotide sequence region, in a GenBank-style string with
-1-based coordinates, that encodes the amino acid sequence.</p>
+sequences, as well as a <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> attribute describing the sequence
+alignment.</p>
+<p>For translated BLAST searches, the <code class="docutils literal notranslate"><span class="pre">features</span></code> attribute of the target or
+query may contain a <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> of type CDS that stores the amino acid
+sequence region. The <code class="docutils literal notranslate"><span class="pre">qualifiers</span></code> attribute of such a feature is a
+dictionary with a single key <code class="docutils literal notranslate"><span class="pre">'coded_by'</span></code>; the corresponding value specifies
+the nucleotide sequence region, in a GenBank-style string with 1-based
+coordinates, that encodes the amino acid sequence.</p>
 <p>Each <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> object has the following additional attributes:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">score</span></code>: score of the High Scoring Pair (HSP);</p></li>
@@ -857,14 +1013,29 @@ specifies the nucleotide sequence region, in a GenBank-style string with
 </ul>
 </li>
 </ul>
-<p>The usual <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> methods (see Section
-<a class="reference internal" href="chapter_align.html#sec-alignmentobject"><span class="std std-ref">Alignment objects</span></a>) can therefore be
-applied to <code class="docutils literal notranslate"><span class="pre">alignment</span></code>. For example, we can print the alignment:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">target</span>
+<p>The usual <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> methods (see Section <a class="reference internal" href="chapter_align.html#sec-alignmentobject"><span class="std std-ref">Alignment objects</span></a>) can be
+applied to the <code class="docutils literal notranslate"><span class="pre">alignment</span></code>. For example, we can print the alignment:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">hit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span>
+<span class="go">&lt;Bio.Blast.HSP target.id=&#39;gi|262205317|ref|NR_030195.1|&#39; query.id=&#39;42291&#39;; 2 rows x 61 columns&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Blast.HSP&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">Alignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="n">Alignment</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">target</span>
 <span class="go">SeqRecord(seq=Seq(&#39;CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCCTTT...GGG&#39;), id=&#39;gi|262205317|ref|NR_030195.1|&#39;, name=&#39;NR_030195&#39;, description=&#39;Homo sapiens microRNA 520b (MIR520B), microRNA&#39;, dbxrefs=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">query</span>
 <span class="go">SeqRecord(seq=Seq(&#39;CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCCTTT...GGG&#39;), id=&#39;42291&#39;, name=&#39;&lt;unknown name&gt;&#39;, description=&#39;mystery_seq&#39;, dbxrefs=[])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">Query : 42291 Length: 61 Strand: Plus</span>
+<span class="go">        mystery_seq</span>
+<span class="go">Target: gi|262205317|ref|NR_030195.1| Length: 61 Strand: Plus</span>
+<span class="go">        Homo sapiens microRNA 520b (MIR520B), microRNA</span>
+
+<span class="go">Score:111 bits(122), Expect:5e-23,</span>
+<span class="go">Identities:61/61(100%),  Positives:61/61(100%),  Gaps:0.61(0%)</span>
+
 <span class="go">gi|262205         0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCCTTTTAGAGG</span>
 <span class="go">                  0 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||</span>
 <span class="go">42291             0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCCTTTTAGAGG</span>
@@ -873,18 +1044,18 @@ applied to <code class="docutils literal notranslate"><span class="pre">alignmen
 <span class="go">                 60 | 61</span>
 <span class="go">42291            60 G 61</span>
 
+
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>
 <span class="go">array([[ 0, 61],</span>
 <span class="go">       [ 0, 61]])</span>
 </pre></div>
 </div>
-<p>Let’s just print out some summary info about all hits in our blast
-report greater than a particular threshold. The following code does
-this:</p>
+<p>Let’s just print out some summary info about all hits in our BLAST record
+greater than a particular threshold:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">E_VALUE_THRESH</span> <span class="o">=</span> <span class="mf">0.04</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignments</span> <span class="ow">in</span> <span class="n">blast_record</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignments</span> <span class="ow">in</span> <span class="n">blast_record</span><span class="p">:</span>  
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="k">if</span> <span class="n">alignment</span><span class="o">.</span><span class="n">evalue</span> <span class="o">&lt;</span> <span class="n">E_VALUE_THRESH</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="k">if</span> <span class="n">alignment</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;evalue&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">E_VALUE_THRESH</span><span class="p">:</span>
 <span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;****Alignment****&quot;</span><span class="p">)</span>
 <span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sequence:&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
 <span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;length:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">target</span><span class="p">))</span>
@@ -892,36 +1063,147 @@ this:</p>
 <span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;e value:&quot;</span><span class="p">,</span> <span class="n">alignment</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;evalue&quot;</span><span class="p">])</span>
 <span class="gp">... </span>            <span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">50</span><span class="p">])</span>
 <span class="gp">...</span>
+<span class="go">****Alignment****</span>
+<span class="go">sequence: gi|262205317|ref|NR_030195.1| Homo sapiens microRNA 520b (MIR520B), microRNA</span>
+<span class="go">length: 61</span>
+<span class="go">score: 122.0</span>
+<span class="go">e value: 4.91307e-23</span>
+<span class="go">gi|262205         0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTC 50</span>
+<span class="go">                  0 |||||||||||||||||||||||||||||||||||||||||||||||||| 50</span>
+<span class="go">42291             0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTC 50</span>
+
+<span class="go">****Alignment****</span>
+<span class="go">sequence: gi|301171311|ref|NR_035856.1| Pan troglodytes microRNA mir-520b (MIR520B), microRNA</span>
+<span class="go">length: 60</span>
+<span class="go">score: 120.0</span>
+<span class="go">e value: 1.71483e-22</span>
+<span class="go">gi|301171         0 CCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCC 50</span>
+<span class="go">                  0 |||||||||||||||||||||||||||||||||||||||||||||||||| 50</span>
+<span class="go">42291             1 CCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCC 51</span>
+
+<span class="go">****Alignment****</span>
+<span class="go">sequence: gi|270133242|ref|NR_032573.1| Macaca mulatta microRNA mir-519a (MIR519A), microRNA</span>
+<span class="go">length: 85</span>
+<span class="go">score: 112.0</span>
+<span class="go">e value: 2.54503e-20</span>
+<span class="go">gi|270133        12 CCCTCTAGAGGGAAGCGCTTTCTGTGGTCTGAAAGAAAAGAAAGTGCTTC 62</span>
+<span class="go">                  0 |||||||.|||||||||||||||||.|||||||||||||||||||||||| 50</span>
+<span class="go">42291             0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTC 50</span>
+<span class="go">...</span>
 </pre></div>
 </div>
-<p>This will print out summary reports like the following:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>****Alignment****
-sequence: gi|262205317|ref|NR_030195.1| Homo sapiens microRNA 520b (MIR520B), microRNA
-length: 61
-score: 122.0
-gi|262205         0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTC 50
-                  0 |||||||||||||||||||||||||||||||||||||||||||||||||| 50
-42291             0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTC 50
+</section>
+<section id="sorting-and-filtering-blast-output">
+<span id="subsec-blast-sorting-filtering"></span><h3>Sorting and filtering BLAST output<a class="headerlink" href="#sorting-and-filtering-blast-output" title="Link to this heading"></a></h3>
+<p>If the ordering of hits in the BLAST output file doesn’t suit your taste, you
+can use the <code class="docutils literal notranslate"><span class="pre">sort</span></code> method to resort the hits in the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code>
+object. As an example, here we sort the hits based on the sequence length of
+each target, setting the <code class="docutils literal notranslate"><span class="pre">reverse</span></code> flag to <code class="docutils literal notranslate"><span class="pre">True</span></code> so that we sort in
+descending order.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">blast_record</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">gi|262205317|ref|NR_030195.1| 61</span>
+<span class="go">gi|301171311|ref|NR_035856.1| 60</span>
+<span class="go">gi|270133242|ref|NR_032573.1| 85</span>
+<span class="go">gi|301171322|ref|NR_035857.1| 86</span>
+<span class="go">gi|301171267|ref|NR_035851.1| 80</span>
 
-****Alignment****
-sequence: gi|301171311|ref|NR_035856.1| Pan troglodytes microRNA mir-520b (MIR520B), microRNA
-length: 60
-score: 120.0
-gi|301171         0 CCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCC 50
-                  0 |||||||||||||||||||||||||||||||||||||||||||||||||| 50
-42291             1 CCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTCC 51
-
-****Alignment****
-sequence: gi|270133242|ref|NR_032573.1| Macaca mulatta microRNA mir-519a (MIR519A), microRNA
-length: 85
-score: 112.0
-gi|270133        12 CCCTCTAGAGGGAAGCGCTTTCTGTGGTCTGAAAGAAAAGAAAGTGCTTC 62
-                  0 |||||||.|||||||||||||||||.|||||||||||||||||||||||| 50
-42291             0 CCCTCTACAGGGAAGCGCTTTCTGTTGTCTGAAAGAAAAGAAAGTGCTTC 50
-
-...
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sort_key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">hit</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">sort_key</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">blast_recordt</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">gi|397513516|ref|XM_003827011.1| 6002</span>
+<span class="go">gi|390332045|ref|XM_776818.2| 4082</span>
+<span class="go">gi|390332043|ref|XM_003723358.1| 4079</span>
+<span class="go">gi|356517317|ref|XM_003527287.1| 3251</span>
+<span class="go">gi|356543101|ref|XM_003539954.1| 2936</span>
 </pre></div>
 </div>
+<p>This will sort <code class="docutils literal notranslate"><span class="pre">blast_record</span></code> in place.
+Use <code class="docutils literal notranslate"><span class="pre">original_blast_record</span> <span class="pre">=</span> <span class="pre">blast_record[:]</span></code> before sorting if you want to
+retain a copy of the original, unsorted BLAST output.</p>
+<p>To filter BLAST hits based on their properties, you can use Python’s built-in
+<code class="docutils literal notranslate"><span class="pre">filter</span></code> with the approciate callback function to evaluate each hit. The
+callback function must accept as its argument a single <code class="docutils literal notranslate"><span class="pre">Hit</span></code> object and
+return <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code>.  Here is an example in which we filter out
+<code class="docutils literal notranslate"><span class="pre">Hit</span></code> objects that only have one HSP:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filter_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">hit</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">hit</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>  <span class="c1"># the callback function</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">blast_record</span><span class="p">)</span>  <span class="c1"># no. of hits before filtering</span>
+<span class="go">100</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="p">[:]</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">filter_func</span><span class="p">,</span> <span class="n">blast_record</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">blast_record</span><span class="p">)</span>  <span class="c1"># no. of hits after filtering</span>
+<span class="go">37</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">blast_record</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>  <span class="c1"># quick check for the hit lengths</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">hit</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">gi|301171322|ref|NR_035857.1| 2</span>
+<span class="go">gi|262205330|ref|NR_030198.1| 2</span>
+<span class="go">gi|301171447|ref|NR_035871.1| 2</span>
+<span class="go">gi|262205298|ref|NR_030190.1| 2</span>
+<span class="go">gi|270132717|ref|NR_032716.1| 2</span>
+</pre></div>
+</div>
+<p>Similarly, you can filter HSPs in each hit, for example on their e-value:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filter_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">hsp</span><span class="p">:</span> <span class="n">hsp</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;evalue&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">1.0e-12</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">blast_record</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">hit</span><span class="p">[:]</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">filter_func</span><span class="p">,</span> <span class="n">hit</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>Probably you’d want to follow this up by removing all hits with no HSPs
+remaining:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filter_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">hit</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">hit</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="p">[:]</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">filter_func</span><span class="p">,</span> <span class="n">blast_record</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">blast_record</span><span class="p">)</span>
+<span class="go">16</span>
+</pre></div>
+</div>
+<p>Use Python’s built-in <code class="docutils literal notranslate"><span class="pre">map</span></code> function to modify hits or HSPs in the BLAST
+record. The <code class="docutils literal notranslate"><span class="pre">map</span></code> function accepts a callback function returning the modified
+hit object. For example, we can use <code class="docutils literal notranslate"><span class="pre">map</span></code> to rename the hit IDs:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">blast_record</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">gi|301171322|ref|NR_035857.1|</span>
+<span class="go">gi|262205330|ref|NR_030198.1|</span>
+<span class="go">gi|301171447|ref|NR_035871.1|</span>
+<span class="go">gi|262205298|ref|NR_030190.1|</span>
+<span class="go">gi|270132717|ref|NR_032716.1|</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">original_blast_record</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">blast_record</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">map_func</span><span class="p">(</span><span class="n">hit</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># renames &quot;gi|301171322|ref|NR_035857.1|&quot; to &quot;NR_035857.1&quot;</span>
+<span class="gp">... </span>    <span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)[</span><span class="mi">3</span><span class="p">]</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="n">hit</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blast_record</span><span class="p">[:]</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">map_func</span><span class="p">,</span> <span class="n">blast_record</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">blast_record</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">NR_035857.1</span>
+<span class="go">NR_030198.1</span>
+<span class="go">NR_035871.1</span>
+<span class="go">NR_030190.1</span>
+<span class="go">NR_032716.1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">original_blast_record</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">hit</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">gi|301171322|ref|NR_035857.1|</span>
+<span class="go">gi|262205330|ref|NR_030198.1|</span>
+<span class="go">gi|301171447|ref|NR_035871.1|</span>
+<span class="go">gi|262205298|ref|NR_030190.1|</span>
+<span class="go">gi|270132717|ref|NR_032716.1|</span>
+</pre></div>
+</div>
+<p>Note that in this example, <code class="docutils literal notranslate"><span class="pre">map_func</span></code> modifies the hit in-place.
+In contrast to sorting and filtering (see above), using
+<code class="docutils literal notranslate"><span class="pre">original_blast_record</span> <span class="pre">=</span> <span class="pre">blast_record[:]</span></code> is not sufficient to retain a copy
+of the unmodified BLAST record, as it creates a shallow copy of the BLAST
+record, consisting of pointers to the same <code class="docutils literal notranslate"><span class="pre">Hit</span></code> objects. Instead, we use
+<code class="docutils literal notranslate"><span class="pre">copy.deepcopy</span></code> to create a copy of the BLAST record in which each <code class="docutils literal notranslate"><span class="pre">Hit</span></code>
+object is duplicated.</p>
 </section>
 </section>
 <section id="dealing-with-psi-blast">

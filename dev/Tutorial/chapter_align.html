@@ -1136,56 +1136,77 @@ for details).</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Alignments</span></code> (plural) class inherits from
 <code class="docutils literal notranslate"><span class="pre">AlignmentsAbstractBaseClass</span></code> and from <code class="docutils literal notranslate"><span class="pre">list</span></code>, and can be used as a
 list to store <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> objects. The behavior of <code class="docutils literal notranslate"><span class="pre">Alignments</span></code>
-objects is different from that of <code class="docutils literal notranslate"><span class="pre">list</span></code> objects in three important
+objects is different from that of <code class="docutils literal notranslate"><span class="pre">list</span></code> objects in two important
 ways:</p>
 <ul>
-<li><p>An <code class="docutils literal notranslate"><span class="pre">Alignments</span></code> object is its own iterator, whereas calling
-<code class="docutils literal notranslate"><span class="pre">iter</span></code> on a list object creates a new iterator each time. An
-<code class="docutils literal notranslate"><span class="pre">Alignments</span></code> object iterator will therefore behave the same as an
-iterator returned by <code class="docutils literal notranslate"><span class="pre">Bio.Align.parse</span></code> (see
-section <a class="reference internal" href="#subsec-align-reading"><span class="std std-ref">Reading alignments</span></a>) or an iterator returned by
-the pairwise aligner (see
-Section <a class="reference internal" href="chapter_pairwise.html#chapter-pairwise"><span class="std std-ref">Pairwise sequence alignment</span></a>).</p>
+<li><p>An <code class="docutils literal notranslate"><span class="pre">Alignments</span></code> object is its own iterator, consistent with iterators
+returned by <code class="docutils literal notranslate"><span class="pre">Bio.Align.parse</span></code> (see section <a class="reference internal" href="#subsec-align-reading"><span class="std std-ref">Reading alignments</span></a>) or
+iterators returned by the pairwise aligner (see Section
+<a class="reference internal" href="chapter_pairwise.html#chapter-pairwise"><span class="std std-ref">Pairwise sequence alignment</span></a>). Calling <code class="docutils literal notranslate"><span class="pre">iter</span></code> on the iterator will
+always return the <code class="docutils literal notranslate"><span class="pre">Alignments</span></code> object itself. In contrast, calling
+<code class="docutils literal notranslate"><span class="pre">iter</span></code> on a list object creates a new iterator each time, allowing you to
+have multiple independent iterators for a given list.</p>
+<p>In this example, <code class="docutils literal notranslate"><span class="pre">alignment_iterator1</span></code> and <code class="docutils literal notranslate"><span class="pre">alignment_iterator2</span></code> are
+obtained from a list and act independently of each other:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">alignment1</span><span class="p">,</span> <span class="n">alignment2</span><span class="p">,</span> <span class="n">alignment3</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_iterator1</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">alignment_list</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_iterator2</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">alignment_list</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">alignment_iterator1</span><span class="p">)</span>  
+<span class="go">&lt;Alignment object (2 rows x 24 columns) at ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">alignment_iterator2</span><span class="p">)</span>  
+<span class="go">&lt;Alignment object (2 rows x 24 columns) at ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">alignment_iterator1</span><span class="p">)</span>  
+<span class="go">&lt;Alignment object (2 rows x 8 columns) at ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">alignment_iterator1</span><span class="p">)</span>  
+<span class="go">&lt;Alignment object (2 rows x 19 columns) at ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">alignment_iterator2</span><span class="p">)</span>  
+<span class="go">&lt;Alignment object (2 rows x 8 columns) at ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">alignment_iterator2</span><span class="p">)</span>  
+<span class="go">&lt;Alignment object (2 rows x 19 columns) at ...&gt;</span>
+</pre></div>
+</div>
+<p>In contrast, <code class="docutils literal notranslate"><span class="pre">alignment_iterator1</span></code> and <code class="docutils literal notranslate"><span class="pre">alignment_iterator2</span></code> obtained
+by calling <code class="docutils literal notranslate"><span class="pre">iter</span></code> on an <code class="docutils literal notranslate"><span class="pre">Alignments</span></code> object are identical to each other:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">Alignments</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">alignment1</span><span class="p">,</span> <span class="n">alignment2</span><span class="p">,</span> <span class="n">alignment3</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">alignment_list</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>  
-<span class="gp">...</span>
-<span class="go">&lt;Alignment object (2 rows x 24 columns) at ...&gt;</span>
-<span class="go">&lt;Alignment object (2 rows x 8 columns) at ...&gt;</span>
-<span class="go">&lt;Alignment object (2 rows x 19 columns) at ...&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">alignment_list</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>  
-<span class="gp">...</span>
-<span class="go">&lt;Alignment object (2 rows x 24 columns) at ...&gt;</span>
-<span class="go">&lt;Alignment object (2 rows x 8 columns) at ...&gt;</span>
-<span class="go">&lt;Alignment object (2 rows x 19 columns) at ...&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">Alignments</span><span class="p">([</span><span class="n">alignment1</span><span class="p">,</span> <span class="n">alignment2</span><span class="p">,</span> <span class="n">alignment3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_iterator1</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_iterator2</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_iterator1</span> <span class="ow">is</span> <span class="n">alignment_iterator2</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">alignment_iterator1</span><span class="p">)</span>  
+<span class="go">&lt;Alignment object (2 rows x 24 columns) at ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">alignment_iterator2</span><span class="p">)</span>  
+<span class="go">&lt;Alignment object (2 rows x 8 columns) at ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">alignment_iterator1</span><span class="p">)</span>  
+<span class="go">&lt;Alignment object (2 rows x 19 columns) at ...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">next</span><span class="p">(</span><span class="n">alignment_iterator2</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+  File <span class="nb">&quot;&lt;stdin&gt;&quot;</span>, line <span class="m">1</span>, in <span class="n">&lt;module&gt;</span>
+<span class="gr">StopIteration</span>
+</pre></div>
+</div>
+<p>Calling <code class="docutils literal notranslate"><span class="pre">iter</span></code> on an <code class="docutils literal notranslate"><span class="pre">Alignments</span></code> object resets the iterator to its
+first item, so you can loop over it again. You can also iterate over the
+alignments multiple times using a <code class="docutils literal notranslate"><span class="pre">for</span></code>-loop, which implicitly calls
+<code class="docutils literal notranslate"><span class="pre">iter</span></code> on the iterator:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>  
+<span class="gp">...</span>
+<span class="go">&lt;Alignment object (2 rows x 24 columns) at ...&gt;</span>
+<span class="go">&lt;Alignment object (2 rows x 8 columns) at ...&gt;</span>
+<span class="go">&lt;Alignment object (2 rows x 19 columns) at ...&gt;</span>
+
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>  
 <span class="gp">...</span>
 <span class="go">&lt;Alignment object (2 rows x 24 columns) at ...&gt;</span>
 <span class="go">&lt;Alignment object (2 rows x 8 columns) at ...&gt;</span>
 <span class="go">&lt;Alignment object (2 rows x 19 columns) at ...&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>  
-<span class="gp">...</span>
 </pre></div>
 </div>
-<p>The last loop does not print anything because the iterator is already
-exhausted.</p>
-</li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">Alignments</span></code> class defines a <code class="docutils literal notranslate"><span class="pre">rewind</span></code> method that resets the
-iterator to its first item, allowing us to loop over it again:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>  
-<span class="gp">...</span>
-<span class="go">&lt;Alignment object (2 rows x 24 columns) at ...&gt;</span>
-<span class="go">&lt;Alignment object (2 rows x 8 columns) at ...&gt;</span>
-<span class="go">&lt;Alignment object (2 rows x 19 columns) at ...&gt;</span>
-</pre></div>
-</div>
+<p>This behavior is consistent with regular Python lists, and with iterators
+returned by <code class="docutils literal notranslate"><span class="pre">Bio.Align.parse</span></code> (see section <a class="reference internal" href="#subsec-align-reading"><span class="std std-ref">Reading alignments</span></a>) or
+by the pairwise aligner (see Section <a class="reference internal" href="chapter_pairwise.html#chapter-pairwise"><span class="std std-ref">Pairwise sequence alignment</span></a>).</p>
 </li>
 <li><p>Metadata can be stored as attributes on an <code class="docutils literal notranslate"><span class="pre">Alignments</span></code> object,
 whereas a plain <code class="docutils literal notranslate"><span class="pre">list</span></code> does not accept attributes:</p>
@@ -1257,33 +1278,6 @@ alignment:</p>
 <span class="go">6</span>
 </pre></div>
 </div>
-<p>At this point, the iterator is exhausted, meaning that it has reached
-the end of the file and cannot retrieve any further alignments. Running
-the <code class="docutils literal notranslate"><span class="pre">for</span></code>-loop again will therefore not print anything:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">sequences</span><span class="p">))</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt;</span>
-</pre></div>
-</div>
-<p>However, you can use the <code class="docutils literal notranslate"><span class="pre">rewind</span></code> method to reset the iterator to the
-beginning of the file, letting you to loop over the alignments from the
-beginning:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">sequences</span><span class="p">))</span>  
-<span class="gp">...</span>
-<span class="go">2</span>
-<span class="go">4</span>
-<span class="go">5</span>
-<span class="go">6</span>
-<span class="go">...</span>
-<span class="go">15</span>
-<span class="go">14</span>
-<span class="go">7</span>
-<span class="go">6</span>
-</pre></div>
-</div>
 <p>You can also call <code class="docutils literal notranslate"><span class="pre">len</span></code> on the alignments to obtain the number of
 alignments.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
@@ -1299,10 +1293,8 @@ amount of time for <code class="docutils literal notranslate"><span class="pre">
 alignments is cached, subsequent calls to <code class="docutils literal notranslate"><span class="pre">len</span></code> will return quickly.</p>
 <p>If the number of alignments is not excessively large and will fit in
 memory, you can convert the alignments iterator to a list of alignments.
-To do so, you could call <code class="docutils literal notranslate"><span class="pre">list</span></code> on the <code class="docutils literal notranslate"><span class="pre">alignments</span></code> (after rewinding
-if needed):</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+To do so, you could call <code class="docutils literal notranslate"><span class="pre">list</span></code> on the <code class="docutils literal notranslate"><span class="pre">alignments</span></code>:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignment_list</span><span class="p">)</span>
 <span class="go">48</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_list</span><span class="p">[</span><span class="mi">27</span><span class="p">]</span>  
@@ -1821,7 +1813,6 @@ alignment, but does not include the metadata:</p>
 metadata and the sequence alignment:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">StringIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Align</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">alignments</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="s2">&quot;clustal&quot;</span><span class="p">)</span>
 <span class="go">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span>  
@@ -2874,7 +2865,7 @@ of <code class="docutils literal notranslate"><span class="pre">alignments</span
 </pre></div>
 </div>
 <p>Let’s look at the first alignment in more detail:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span>  
 <span class="go">&lt;Alignment object (2 rows x 171 columns) at ...&gt;</span>
@@ -3666,13 +3657,10 @@ keyword argument:</p>
 </pre></div>
 </div>
 <p>The same keyword argument can be used with <code class="docutils literal notranslate"><span class="pre">Align.write</span></code>:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Align</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">alignments</span><span class="p">,</span> <span class="s2">&quot;mybed3file.bed&quot;</span><span class="p">,</span> <span class="s2">&quot;bed&quot;</span><span class="p">,</span> <span class="n">bedN</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Align</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">alignments</span><span class="p">,</span> <span class="s2">&quot;mybed3file.bed&quot;</span><span class="p">,</span> <span class="s2">&quot;bed&quot;</span><span class="p">,</span> <span class="n">bedN</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Align</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">alignments</span><span class="p">,</span> <span class="s2">&quot;mybed6file.bed&quot;</span><span class="p">,</span> <span class="s2">&quot;bed&quot;</span><span class="p">,</span> <span class="n">bedN</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 <span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Align</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">alignments</span><span class="p">,</span> <span class="s2">&quot;mybed12file.bed&quot;</span><span class="p">,</span> <span class="s2">&quot;bed&quot;</span><span class="p">)</span>
 <span class="go">2</span>
 </pre></div>
@@ -3769,8 +3757,7 @@ distribution gives some examples on how to do that.</p>
 <p>Now let’s see how to search for a sequence region. These are the
 sequences stored in the bigBed file, printed in BED format (see section
 <a class="reference internal" href="#subsec-align-bed"><span class="std std-ref">Browser Extensible Data (BED)</span></a>):</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="s2">&quot;bed&quot;</span><span class="p">))</span>  
 <span class="gp">...</span>
 <span class="go">chr3    42530895    42532606    NR_046654.1 1000    -   42530895    42532606    0   3   63,75,43,   0,1125,1668,</span>
@@ -4574,9 +4561,8 @@ rule.</p>
 <span class="go">chr1 hg19_dna</span>
 </pre></div>
 </div>
-<p>Rewind the alignments, and iterate from the start until we reach the
-seventh alignment:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">rewind</span><span class="p">()</span>
+<p>Iterate from the start until we reach the seventh alignment:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="n">alignment</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
 <span class="gp">...</span>

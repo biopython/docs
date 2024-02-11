@@ -857,12 +857,179 @@ definition in the associated BLAST XML DTD file:
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.HSP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.</span></span><span class="sig-name descname"><span class="pre">HSP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequences</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.HSP" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.Align.html#Bio.Align.Alignment" title="Bio.Align.Alignment"><code class="xref py py-class docutils literal notranslate"><span class="pre">Alignment</span></code></a></p>
+<p>Stores an alignment of one query sequence against a target sequence.</p>
+<p>An HSP (High-scoring Segment Pair) stores the alignment of one query
+sequence segment against one target (hit) sequence segment. The
+<code class="docutils literal notranslate"><span class="pre">Bio.Blast.HSP</span></code> class inherits from the <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> class.</p>
+<p>In addition to the <code class="docutils literal notranslate"><span class="pre">target</span></code> and <code class="docutils literal notranslate"><span class="pre">query</span></code> attributes of a
+<code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code>, a <code class="docutils literal notranslate"><span class="pre">Bio.Blast.HSP</span></code> object has the following
+attributes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>score:       score of HSP;</p></li>
+<li><dl class="simple">
+<dt>annotations: a dictionary that may contain the following keys:</dt><dd><ul>
+<li><p>‘bit score’: score (in bits) of HSP (float);</p></li>
+<li><p>‘evalue’:    e-value of HSP (float);</p></li>
+<li><p>‘identity’:  number of identities in HSP (integer);</p></li>
+<li><p>‘positive’:  number of positives in HSP (integer);</p></li>
+<li><p>‘gaps’:      number of gaps in HSP (integer);</p></li>
+<li><p>‘midline’:   formating middle line.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.HSP</span></code> object behaves the same as a <cite>Bio.Align.Alignment`</cite>
+object and can be used as such. However, when printing a <code class="docutils literal notranslate"><span class="pre">Bio.Blast.HSP</span></code>
+object, the BLAST e-value and bit score are included in the output (in
+addition to the alignment itself).</p>
+<p>See the documentation of <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> for a more detailed
+explanation of how the information in BLAST records is stored in
+Biopython.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.HSP.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.HSP.__repr__" title="Link to this definition"></a></dt>
+<dd><p>Return a representation of the alignment, including its shape.</p>
+<p>The representation cannot be used with eval() to recreate the object,
+which is usually possible with simple python objects.  For example:</p>
+<p>&lt;Alignment object (2 rows x 14 columns) at 0x10403d850&gt;</p>
+<p>The hex string is the memory address of the object and can be used to
+distinguish different Alignment objects.  See help(id) for more
+information.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">Alignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">((</span><span class="s2">&quot;ACCGT&quot;</span><span class="p">,</span> <span class="s2">&quot;ACGT&quot;</span><span class="p">),</span>
+<span class="gp">... </span>                      <span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<span class="gp">... </span>                                              <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+<span class="gp">... </span>                                             <span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">target            0 ACCGT 5</span>
+<span class="go">                  0 ||-|| 5</span>
+<span class="go">query             0 AC-GT 4</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span>  
+<span class="go">&lt;Alignment object (2 rows x 5 columns) at 0x...&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.HSP.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.HSP.__str__" title="Link to this definition"></a></dt>
+<dd><p>Return a human-readable string representation of the alignment.</p>
+<p>For sequence alignments, each line has at most 80 columns.
+The first 10 columns show the (possibly truncated) sequence name,
+which may be the id attribute of a SeqRecord, or otherwise ‘target’
+or ‘query’ for pairwise alignments.
+The next 10 columns show the sequence coordinate, using zero-based
+counting as usual in Python.
+The remaining 60 columns shown the sequence, using dashes to represent
+gaps.
+At the end of the alignment, the end coordinates are shown on the right
+of the sequence, again in zero-based coordinates.</p>
+<p>Pairwise alignments have an additional line between the two sequences
+showing whether the sequences match (‘|’) or mismatch (‘.’), or if
+there is a gap (‘-‘).
+The coordinates shown for this line are the column indices, which can
+be useful when extracting a subalignment.</p>
+<p>For example,</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">PairwiseAligner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">seqA</span> <span class="o">=</span> <span class="s2">&quot;TTAACCCCATTTG&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seqB</span> <span class="o">=</span> <span class="s2">&quot;AAGCCCCTTT&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seqC</span> <span class="o">=</span> <span class="s2">&quot;AAAGGGGCTT&quot;</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">seqA</span><span class="p">,</span> <span class="n">seqB</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">target            0 TTAA-CCCCATTTG 13</span>
+<span class="go">                  0 --||-||||-|||- 14</span>
+<span class="go">query             0 --AAGCCCC-TTT- 10</span>
+</pre></div>
+</div>
+<p>Note that seqC is the reverse complement of seqB. Aligning it to the
+reverse strand gives the same alignment, but the query coordinates are
+switched:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">seqA</span><span class="p">,</span> <span class="n">seqC</span><span class="p">,</span> <span class="n">strand</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">target            0 TTAA-CCCCATTTG 13</span>
+<span class="go">                  0 --||-||||-|||- 14</span>
+<span class="go">query            10 --AAGCCCC-TTT-  0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.Blast.Hit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.</span></span><span class="sig-name descname"><span class="pre">Hit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Hit" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.Align.html#Bio.Align.Alignments" title="Bio.Align.Alignments"><code class="xref py py-class docutils literal notranslate"><span class="pre">Alignments</span></code></a></p>
+<p>Stores a single BLAST hit of one single query against one target.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> class inherits from the <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code>
+class, which is a subclass of a Python list. The <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> class
+stores <code class="docutils literal notranslate"><span class="pre">Bio.Blast.HSP</span></code> objwcts, which inherit from
+<code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code>. A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> object is therefore
+effectively a list of <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> objects. Most hits consist of
+only 1 or a few Alignment objects.</p>
+<p>Each <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> object has a <code class="docutils literal notranslate"><span class="pre">target</span></code> attribute containing the
+following information:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>target.id:          seqId of subject;</p></li>
+<li><p>target.description: definition line of subject;</p></li>
+<li><p>target.name:        accession of subject;</p></li>
+<li><p>len(target.seq):    sequence length of subject.</p></li>
+</ul>
+</div></blockquote>
+<p>See the documentation of <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> for a more detailed
+explanation of the information stored in the alignments contained in the
+<code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> object.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Hit.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Hit.__getitem__" title="Link to this definition"></a></dt>
+<dd><p>x.__getitem__(y) &lt;==&gt; x[y]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Hit.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Hit.__repr__" title="Link to this definition"></a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Hit.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Hit.__str__" title="Link to this definition"></a></dt>
+<dd><p>Return a human readable summary of the Hit object.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.Blast.Hit.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.Blast.Hit.__abstractmethods__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="Bio.Blast.Record">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Blast.</span></span><span class="sig-name descname"><span class="pre">Record</span></span><a class="headerlink" href="#Bio.Blast.Record" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></p>
 <p>Stores the BLAST results for a single query.</p>
-<p>A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object is a list of <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> objects,
-each corresponding to one hit for the query in the BLAST output.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object is a list of <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> objects, each
+corresponding to one hit for the query in the BLAST output.</p>
 <dl class="simple">
 <dt>The <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Record</span></code> object may have the following attributes:</dt><dd><ul class="simple">
 <li><dl class="simple">
@@ -897,8 +1064,8 @@ each corresponding to one hit for the query in the BLAST output.</p>
 </ul>
 </dd>
 </dl>
-<p>Each <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> object has a <code class="docutils literal notranslate"><span class="pre">target</span></code> attribute containing
-the following information:</p>
+<p>Each <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> object has a <code class="docutils literal notranslate"><span class="pre">target</span></code> attribute containing the
+following information:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>target.id:          seqId of subject;</p></li>
@@ -907,17 +1074,22 @@ the following information:</p>
 <li><p>len(target.seq):    sequence length of subject.</p></li>
 </ul>
 </div></blockquote>
-<p>The <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code> class inherits from a list storing
-<code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> objects.  The <code class="docutils literal notranslate"><span class="pre">target</span></code> and <code class="docutils literal notranslate"><span class="pre">query</span></code> attributes
-of a <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> object point to a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object
+<p>The <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> class inherits from the <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignments</span></code>
+class, which inherits from a Python list. In this list, the
+<code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> object stores <code class="docutils literal notranslate"><span class="pre">Bio.Blast.HSP</span></code> objects, which inherit
+from the <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> class.  A <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> object is
+therefore effectively a list of alignment objects.</p>
+<p>Each HSP in a <code class="docutils literal notranslate"><span class="pre">Bio.Blast.Hit</span></code> object has the attributes <code class="docutils literal notranslate"><span class="pre">target</span></code> and
+<code class="docutils literal notranslate"><span class="pre">query</span></code> attributes, as usual for of a <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> object
+storing a pairwise alignment, pointing to a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object
 representing the target and query, respectively.  For translated BLAST
-searches, The <code class="docutils literal notranslate"><span class="pre">features</span></code> attribute of the target or query may contain a
+searches, the <code class="docutils literal notranslate"><span class="pre">features</span></code> attribute of the target or query may contain a
 <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> of type CDS that stores the amino acid sequence region.  The
 <code class="docutils literal notranslate"><span class="pre">qualifiers</span></code> attribute of such a feature is a dictionary with  a single
 key ‘coded_by’; the corresponding value specifies the nucleotide sequence
 region, in a GenBank-style string with 1-based coordinates, that encodes
 the amino acid sequence.</p>
-<p>Each <code class="docutils literal notranslate"><span class="pre">Bio.Align.Alignment</span></code> object has the following additional attributes:</p>
+<p>Each <code class="docutils literal notranslate"><span class="pre">Bio.Blast.HSP</span></code> object has the following additional attributes:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>score:       score of HSP;</p></li>
@@ -943,19 +1115,22 @@ the amino acid sequence.</p>
 <span class="go">{&#39;db-num&#39;: 2934173, &#39;db-len&#39;: 1011751523, &#39;hsp-len&#39;: 0, &#39;eff-space&#39;: 0.0, &#39;kappa&#39;: 0.041, &#39;lambda&#39;: 0.267, &#39;entropy&#39;: 0.14}</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 <span class="go">78</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
-<span class="go">&lt;class &#39;Bio.Align.Alignments&#39;&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">target</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span> <span class="o">=</span> <span class="n">record</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">hit</span><span class="p">)</span>
+<span class="go">&lt;class &#39;Bio.Blast.Hit&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">Alignments</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">isinstance</span><span class="p">(</span><span class="n">hit</span><span class="p">,</span> <span class="n">Alignments</span><span class="p">)</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">hit</span><span class="o">.</span><span class="n">target</span>
 <span class="go">SeqRecord(seq=Seq(None, length=319), id=&#39;gi|12654095|gb|AAH00859.1|&#39;, name=&#39;AAH00859&#39;, description=&#39;Unknown (protein for IMAGE:3459481) [Homo sapiens]&#39;, dbxrefs=[])</span>
 </pre></div>
 </div>
-<p>Most alignments consist of only 1 or a few Alignment objects:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<p>Most hits consist of only 1 or a few Alignment objects:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">hit</span><span class="p">)</span>
 <span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">hit</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
-<span class="go">&lt;class &#39;Bio.Align.Alignment&#39;&gt;</span>
+<span class="go">&lt;class &#39;Bio.Blast.HSP&#39;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">score</span>
 <span class="go">630.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">annotations</span>
@@ -997,9 +1172,39 @@ is shown as in this example:</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Record.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Record.__repr__" title="Link to this definition"></a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Bio.Blast.Record.__str__">
 <span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Record.__str__" title="Link to this definition"></a></dt>
 <dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Record.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Record.__getitem__" title="Link to this definition"></a></dt>
+<dd><p>x.__getitem__(y) &lt;==&gt; x[y]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Record.keys">
+<span class="sig-name descname"><span class="pre">keys</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Record.keys" title="Link to this definition"></a></dt>
+<dd><p>Return a list of the target.id of each hit.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Record.__contains__">
+<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Record.__contains__" title="Link to this definition"></a></dt>
+<dd><p>Return key in self.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Record.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Record.index" title="Link to this definition"></a></dt>
+<dd><p>Return the index of the hit for which the target.id is equal to the key.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1202,6 +1407,12 @@ will then automatically iterate over the records and store them:</p>
 <dt class="sig sig-object py" id="Bio.Blast.Records.data">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><a class="headerlink" href="#Bio.Blast.Records.data" title="Link to this definition"></a></dt>
 <dd><p>Overrides the data attribute of UserList.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Blast.Records.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Blast.Records.__repr__" title="Link to this definition"></a></dt>
+<dd><p>Return repr(self).</p>
 </dd></dl>
 
 <dl class="py method">
