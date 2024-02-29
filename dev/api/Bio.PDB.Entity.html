@@ -139,15 +139,35 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.PDB.Entity.Entity">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.PDB.Entity.</span></span><span class="sig-name descname"><span class="pre">Entity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">_Parent</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">_Child</span></code>]</p>
 <p>Basic container object for PDB hierarchy.</p>
 <p>Structure, Model, Chain and Residue are subclasses of Entity.
 It deals with storage and lookup.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.level">
+<span class="sig-name descname"><span class="pre">level</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#Bio.PDB.Entity.Entity.level" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initialize the class.</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.parent">
+<span class="sig-name descname"><span class="pre">parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">_Parent</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#Bio.PDB.Entity.Entity.parent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.child_list">
+<span class="sig-name descname"><span class="pre">child_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">_Child</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#Bio.PDB.Entity.Entity.child_list" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.child_dict">
+<span class="sig-name descname"><span class="pre">child_dict</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">_Child</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#Bio.PDB.Entity.Entity.child_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.__len__">
@@ -240,7 +260,7 @@ S - structure</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.set_parent">
-<span class="sig-name descname"><span class="pre">set_parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.set_parent" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_parent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Parent</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.set_parent" title="Link to this definition"></a></dt>
 <dd><p>Set the parent Entity object.</p>
 </dd></dl>
 
@@ -258,13 +278,13 @@ S - structure</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.add">
-<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.add" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Child</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.add" title="Link to this definition"></a></dt>
 <dd><p>Add a child to the Entity.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.insert">
-<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.insert" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">insert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_Child</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.insert" title="Link to this definition"></a></dt>
 <dd><p>Add a child to the Entity at a specified position.</p>
 </dd></dl>
 
@@ -351,6 +371,21 @@ identifier is 10 and its insertion code “A”.</p>
 <span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.PDB.Entity.Entity.copy" title="Link to this definition"></a></dt>
 <dd><p>Copy entity recursively.</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.__annotations__">
+<span class="sig-name descname"><span class="pre">__annotations__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'child_dict':</span> <span class="pre">typing.Dict[typing.Any,</span> <span class="pre">~_Child],</span> <span class="pre">'child_list':</span> <span class="pre">typing.List[~_Child],</span> <span class="pre">'level':</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">'parent':</span> <span class="pre">typing.Optional[~_Parent]}</span></em><a class="headerlink" href="#Bio.PDB.Entity.Entity.__annotations__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.__orig_bases__">
+<span class="sig-name descname"><span class="pre">__orig_bases__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(typing.Generic[~_Parent,</span> <span class="pre">~_Child],)</span></em><a class="headerlink" href="#Bio.PDB.Entity.Entity.__orig_bases__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.PDB.Entity.Entity.__parameters__">
+<span class="sig-name descname"><span class="pre">__parameters__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(~_Parent,</span> <span class="pre">~_Child)</span></em><a class="headerlink" href="#Bio.PDB.Entity.Entity.__parameters__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
