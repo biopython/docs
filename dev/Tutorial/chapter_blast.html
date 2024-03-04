@@ -81,6 +81,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#sorting-and-filtering-blast-output">Sorting and filtering BLAST output</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-blast-records">Writing BLAST records</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dealing-with-psi-blast">Dealing with PSI-BLAST</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dealing-with-rps-blast">Dealing with RPS-BLAST</a></li>
 </ul>
@@ -1205,6 +1206,37 @@ record, consisting of pointers to the same <code class="docutils literal notrans
 <code class="docutils literal notranslate"><span class="pre">copy.deepcopy</span></code> to create a copy of the BLAST record in which each <code class="docutils literal notranslate"><span class="pre">Hit</span></code>
 object is duplicated.</p>
 </section>
+</section>
+<section id="writing-blast-records">
+<h2>Writing BLAST records<a class="headerlink" href="#writing-blast-records" title="Link to this heading"></a></h2>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">write</span></code> function in <code class="docutils literal notranslate"><span class="pre">Bio.Blast</span></code> to save BLAST records as an XML
+file:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="s2">&quot;8332116&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Blast</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="s2">&quot;my_qblast_output.xml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this example, we could have saved the data returned by <code class="docutils literal notranslate"><span class="pre">Blast.qblast</span></code>
+directly to an XML file (see section <a class="reference internal" href="#subsec-saving-blast-results"><span class="std std-ref">Saving BLAST results</span></a>).
+However, by parsing the data returned by qblast into records, we can sort or
+filter the BLAST records before saving them. For example, we may be interested
+only in BLAST HSPs with a positive score of at least 400:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filter_func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">hsp</span><span class="p">:</span> <span class="n">hsp</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;positive&quot;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">400</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">records</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="n">hit</span><span class="p">[:]</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">filter_func</span><span class="p">,</span> <span class="n">hit</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Blast</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="s2">&quot;my_qblast_output_selected.xml&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Instead of a file name, the second argument to <code class="docutils literal notranslate"><span class="pre">Blast.write</span></code> can also be a
+file stream. In that case, the stream must be opened in binary format for
+writing:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;my_qblast_output.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">Blast</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">stream</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
 </section>
 <section id="dealing-with-psi-blast">
 <h2>Dealing with PSI-BLAST<a class="headerlink" href="#dealing-with-psi-blast" title="Link to this heading"></a></h2>
