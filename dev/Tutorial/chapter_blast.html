@@ -509,9 +509,11 @@ These parsers have now been removed from Biopython, as the BLAST output in
 these formats kept changing, each time breaking the Biopython parsers.
 Nowadays, Biopython can parse BLAST output in the XML format, the XML2 format,
 and tabular format. This chapter describes the parser for BLAST output in the
-XML format; parsing XML2 output is done in exactly the same way as parsing XML.
-BLAST output in tabular format can be parsed as alignments (see the section
-<a class="reference internal" href="chapter_align.html#subsec-align-tabular"><span class="std std-ref">Tabular output from BLAST or FASTA</span></a>).</p>
+XML and XML2 formats using the <code class="docutils literal notranslate"><span class="pre">Bio.Blast.parse</span></code> function. This function
+automatically detects if the XML file is in the XML format or in the XML2
+format.
+BLAST output in tabular format can be parsed as alignments using the
+<code class="docutils literal notranslate"><span class="pre">Bio.Align.parse</span></code> function (see the section <a class="reference internal" href="chapter_align.html#subsec-align-tabular"><span class="std std-ref">Tabular output from BLAST or FASTA</span></a>).</p>
 <p>You can get BLAST output in XML format in various ways. For the parser,
 it doesn’t matter how the output was generated, as long as it is in the
 XML format.</p>
@@ -1267,11 +1269,18 @@ object is duplicated.</p>
 <section id="writing-blast-records">
 <h2>Writing BLAST records<a class="headerlink" href="#writing-blast-records" title="Link to this heading"></a></h2>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">write</span></code> function in <code class="docutils literal notranslate"><span class="pre">Bio.Blast</span></code> to save BLAST records as an XML
-file:</p>
+file. By default, the (DTD-based) XML format is used; you can also save the
+BLAST records in the (schema-based) XML2 format by using the <code class="docutils literal notranslate"><span class="pre">fmt=&quot;XML2&quot;</span></code>
+argument to the <code class="docutils literal notranslate"><span class="pre">write</span></code> function.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">Blast</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">qblast</span><span class="p">(</span><span class="s2">&quot;blastn&quot;</span><span class="p">,</span> <span class="s2">&quot;nt&quot;</span><span class="p">,</span> <span class="s2">&quot;8332116&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Blast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Blast</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="s2">&quot;my_qblast_output.xml&quot;</span><span class="p">)</span>
+
+<span class="go">or</span>
+</pre></div>
+</div>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Blast</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="s2">&quot;my_qblast_output.xml&quot;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;XML2&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In this example, we could have saved the data returned by <code class="docutils literal notranslate"><span class="pre">Blast.qblast</span></code>
