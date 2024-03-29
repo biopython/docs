@@ -1714,7 +1714,7 @@ alignment as a NumPy array.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.Alignment.infer_coordinates">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">infer_coordinates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.infer_coordinates" title="Link to this definition"></a></dt>
-<dd><p>Infer the coordinates from a printed alignment.</p>
+<dd><p>Infer the coordinates from a printed alignment (DEPRECATED).</p>
 <p>This method is primarily employed in Biopython’s alignment parsers,
 though it may be useful for other purposes.</p>
 <p>For an alignment consisting of N sequences, printed as N lines with
@@ -1738,6 +1738,42 @@ AACGTACGT, and ACGCATACTTG, with gaps in the second and third sequence:</p>
 <span class="go">       [ 0,  1,  4,  4,  9,  9],</span>
 <span class="go">       [ 0,  0,  3,  5, 10, 11]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.Alignment.parse_printed_alignment">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_printed_alignment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.parse_printed_alignment" title="Link to this definition"></a></dt>
+<dd><p>Infer the sequences and coordinates from a printed alignment.</p>
+<p>This method is primarily employed in Biopython’s alignment parsers,
+though it may be useful for other purposes.</p>
+<p>For an alignment consisting of N sequences, printed as N lines with
+the same number of columns, where gaps are represented by dashes,
+this method will calculate the sequence coordinates that define the
+alignment. It returns the tuple (sequences, coordinates), where
+sequences is the list of N sequences after removing the gaps, and
+the coordinates is a 2D NumPy array of integers. Together, the
+sequences and coordinates can be used to create an Alignment object.</p>
+<p>This is an example for the alignment of three sequences TAGGCATACGTG,
+AACGTACGT, and ACGCATACTTG, with gaps in the second and third sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">Alignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TAGGCATACGTG&quot;</span><span class="p">,</span>
+<span class="gp">... </span>         <span class="s2">&quot;AACG--TACGT-&quot;</span><span class="p">,</span>
+<span class="gp">... </span>         <span class="s2">&quot;-ACGCATACTTG&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span><span class="p">,</span> <span class="n">coordinates</span> <span class="o">=</span> <span class="n">Alignment</span><span class="o">.</span><span class="n">parse_printed_alignment</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span>
+<span class="go">[&#39;TAGGCATACGTG&#39;, &#39;AACGTACGT&#39;, &#39;ACGCATACTTG&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span>
+<span class="go">array([[ 0,  1,  4,  6, 11, 12],</span>
+<span class="go">       [ 0,  1,  4,  4,  9,  9],</span>
+<span class="go">       [ 0,  0,  3,  5, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">                  0 TAGGCATACGTG 12</span>
+<span class="go">                  0 AACG--TACGT-  9</span>
+<span class="go">                  0 -ACGCATACTTG 11</span>
 </pre></div>
 </div>
 </dd></dl>

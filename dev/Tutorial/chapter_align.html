@@ -254,21 +254,24 @@ sequences included in this alignment:</p>
 left and right, respectively, of the alignment.</p>
 </section>
 <section id="creating-an-alignment-object-from-aligned-sequences">
-<span id="subsec-align-infer-coordinates"></span><h3>Creating an Alignment object from aligned sequences<a class="headerlink" href="#creating-an-alignment-object-from-aligned-sequences" title="Link to this heading"></a></h3>
+<span id="subsec-align-parse-printed-alignment"></span><h3>Creating an Alignment object from aligned sequences<a class="headerlink" href="#creating-an-alignment-object-from-aligned-sequences" title="Link to this heading"></a></h3>
 <p>If you start out with the aligned sequences, with dashes representing
 gaps, then you can calculate the coordinates using the
-<code class="docutils literal notranslate"><span class="pre">infer_coordinates</span></code> class method. This method is primarily employed in
+<code class="docutils literal notranslate"><span class="pre">parse_printed_alignment</span></code> class method. This method is primarily employed in
 Biopython’s alignment parsers (see
 Section <a class="reference internal" href="#sec-alignmentparsers"><span class="std std-ref">Reading and writing alignments</span></a>), but it may be useful for other
 purposes. For example, you can construct the <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> object from
 aligned sequences as follows:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligned_sequences</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CGGTTTTT&quot;</span><span class="p">,</span> <span class="s2">&quot;AG-TTT--&quot;</span><span class="p">,</span> <span class="s2">&quot;AGGTTT--&quot;</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">aligned_sequence</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="gp">... </span>             <span class="k">for</span> <span class="n">aligned_sequence</span> <span class="ow">in</span> <span class="n">aligned_sequences</span><span class="p">]</span>  <span class="c1"># fmt: skip</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CGGTTTTT&quot;</span><span class="p">,</span> <span class="s2">&quot;AG-TTT--&quot;</span><span class="p">,</span> <span class="s2">&quot;AGGTTT--&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 <span class="gp">...</span>
+<span class="go">CGGTTTTT</span>
+<span class="go">AG-TTT--</span>
+<span class="go">AGGTTT--</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span><span class="p">,</span> <span class="n">coordinates</span> <span class="o">=</span> <span class="n">Alignment</span><span class="o">.</span><span class="n">parse_printed_alignment</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span>
 <span class="go">[&#39;CGGTTTTT&#39;, &#39;AGTTT&#39;, &#39;AGGTTT&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span> <span class="o">=</span> <span class="n">Alignment</span><span class="o">.</span><span class="n">infer_coordinates</span><span class="p">(</span><span class="n">aligned_sequences</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span>
 <span class="go">array([[0, 2, 3, 6, 8],</span>
 <span class="go">       [0, 2, 2, 5, 5],</span>
@@ -278,7 +281,8 @@ aligned sequences as follows:</p>
 <p>The initial <code class="docutils literal notranslate"><span class="pre">G</span></code> nucleotide of <code class="docutils literal notranslate"><span class="pre">seqA</span></code> and the final <code class="docutils literal notranslate"><span class="pre">CC</span></code>
 nucleotides of <code class="docutils literal notranslate"><span class="pre">seqB</span></code> were not included in the alignment and is
 therefore missing here. But this is easy to fix:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span> <span class="o">+</span> <span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;C&quot;</span> <span class="o">+</span> <span class="n">sequences</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sequences</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;AA&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span>
 <span class="go">[&#39;CCGGTTTTT&#39;, &#39;AGTTTAA&#39;, &#39;AGGTTT&#39;]</span>
