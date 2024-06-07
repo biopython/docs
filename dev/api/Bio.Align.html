@@ -1756,19 +1756,24 @@ sequences is the list of N sequences after removing the gaps, and
 the coordinates is a 2D NumPy array of integers. Together, the
 sequences and coordinates can be used to create an Alignment object.</p>
 <p>This is an example for the alignment of three sequences TAGGCATACGTG,
-AACGTACGT, and ACGCATACTTG, with gaps in the second and third sequence:</p>
+AACGTACGT, and ACGCATACTTG, with gaps in the second and third sequence.
+Note that the input sequences are bytes objects.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Align</span> <span class="kn">import</span> <span class="n">Alignment</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;TAGGCATACGTG&quot;</span><span class="p">,</span>
-<span class="gp">... </span>         <span class="s2">&quot;AACG--TACGT-&quot;</span><span class="p">,</span>
-<span class="gp">... </span>         <span class="s2">&quot;-ACGCATACTTG&quot;</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="sa">b</span><span class="s2">&quot;TAGGCATACGTG&quot;</span><span class="p">,</span>
+<span class="gp">... </span>         <span class="sa">b</span><span class="s2">&quot;AACG--TACGT-&quot;</span><span class="p">,</span>
+<span class="gp">... </span>         <span class="sa">b</span><span class="s2">&quot;-ACGCATACTTG&quot;</span><span class="p">,</span>
 <span class="gp">... </span>        <span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span><span class="p">,</span> <span class="n">coordinates</span> <span class="o">=</span> <span class="n">Alignment</span><span class="o">.</span><span class="n">parse_printed_alignment</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span>
-<span class="go">[&#39;TAGGCATACGTG&#39;, &#39;AACGTACGT&#39;, &#39;ACGCATACTTG&#39;]</span>
+<span class="go">[b&#39;TAGGCATACGTG&#39;, b&#39;AACGTACGT&#39;, b&#39;ACGCATACTTG&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span>
 <span class="go">array([[ 0,  1,  4,  6, 11, 12],</span>
 <span class="go">       [ 0,  1,  4,  4,  9,  9],</span>
 <span class="go">       [ 0,  0,  3,  5, 10, 11]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">Seq</span><span class="p">(</span><span class="n">sequence</span><span class="p">)</span> <span class="k">for</span> <span class="n">sequence</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span>
+<span class="go">[Seq(&#39;TAGGCATACGTG&#39;), Seq(&#39;AACGTACGT&#39;), Seq(&#39;ACGCATACTTG&#39;)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">(</span><span class="n">sequences</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
 <span class="go">                  0 TAGGCATACGTG 12</span>

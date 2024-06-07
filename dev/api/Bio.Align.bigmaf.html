@@ -141,7 +141,7 @@ indexed as a bigBed file.</p>
 <p>See <a class="reference external" href="https://genome.ucsc.edu/goldenPath/help/bigMaf.html">https://genome.ucsc.edu/goldenPath/help/bigMaf.html</a></p>
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.Align.bigmaf.AlignmentWriter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.bigmaf.</span></span><span class="sig-name descname"><span class="pre">AlignmentWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.bigmaf.AlignmentWriter" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.bigmaf.</span></span><span class="sig-name descname"><span class="pre">AlignmentWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blockSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">itemsPerSlot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.bigmaf.AlignmentWriter" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.Align.bigbed.html#Bio.Align.bigbed.AlignmentWriter" title="Bio.Align.bigbed.AlignmentWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">AlignmentWriter</span></code></a></p>
 <p>Alignment file writer for the bigMaf file format.</p>
 <dl class="py attribute">
@@ -151,15 +151,16 @@ indexed as a bigBed file.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.bigmaf.AlignmentWriter.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.bigmaf.AlignmentWriter.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">targets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blockSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">256</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">itemsPerSlot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">512</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.bigmaf.AlignmentWriter.__init__" title="Link to this definition"></a></dt>
 <dd><p>Create an AlignmentWriter object.</p>
 <dl>
 <dt>Arguments:</dt><dd><ul>
-<li><p>target      - output stream or file name.</p></li>
+<li><p>target       - output stream or file name.</p></li>
 <li><dl>
-<dt>targets     - A list of SeqRecord objects with the chromosomes in the</dt><dd><p>order as they appear in the alignments. The sequence
-contents in each SeqRecord may be undefined, but the
-sequence length must be defined, as in this example:</p>
+<dt>targets      - A list of SeqRecord objects with the chromosomes in</dt><dd><p>the order as they appear in the alignments. The
+sequence contents in each SeqRecord may be undefined,
+but the sequence length must be defined, as in this
+example:</p>
 <p>SeqRecord(Seq(None, length=248956422), id=”chr1”)</p>
 <p>If targets is None (the default value), the alignments
 must have an attribute .targets providing the list of
@@ -168,7 +169,21 @@ SeqRecord objects.</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>compress    - If True (default), compress data using zlib.</dt><dd><p>If False, do not compress data.</p>
+<dt>compress     - If True (default), compress data using zlib.</dt><dd><p>If False, do not compress data.
+Use compress=False for faster searching.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>blockSize    - Number of items to bundle in r-tree.</dt><dd><p>See UCSC’s bedToBigBed program for more information.
+Default value is 256.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>itemsPerSlot - Number of data points bundled at lowest level.</dt><dd><p>See UCSC’s bedToBigBed program for more information.
+Use itemsPerSlot=1 for faster searching.
+Default value is 512.</p>
 </dd>
 </dl>
 </li>

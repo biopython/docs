@@ -269,7 +269,13 @@ aligned sequences as follows:</p>
 <span class="go">CGGTTTTT</span>
 <span class="go">AG-TTT--</span>
 <span class="go">AGGTTT--</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">]</span>  <span class="c1"># convert to bytes</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lines</span>
+<span class="go">[b&#39;CGGTTTTT&#39;, b&#39;AG-TTT--&#39;, b&#39;AGGTTT--&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span><span class="p">,</span> <span class="n">coordinates</span> <span class="o">=</span> <span class="n">Alignment</span><span class="o">.</span><span class="n">parse_printed_alignment</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span>
+<span class="go">[b&#39;CGGTTTTT&#39;, b&#39;AGTTT&#39;, b&#39;AGGTTT&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">sequence</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="k">for</span> <span class="n">sequence</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span>
 <span class="go">[&#39;CGGTTTTT&#39;, &#39;AGTTT&#39;, &#39;AGGTTT&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span>
@@ -3850,6 +3856,11 @@ the keys <code class="docutils literal notranslate"><span class="pre">geneSymbol
 dictionary. Please refer to the test script <code class="docutils literal notranslate"><span class="pre">test_Align_bigbed.py</span></code> in
 the <code class="docutils literal notranslate"><span class="pre">Tests</span></code> subdirectory in the Biopython distribution for more
 examples of writing alignment files in the bigBed format.</p>
+<p>Optional arguments are <code class="docutils literal notranslate"><span class="pre">compress</span></code> (default value is <code class="docutils literal notranslate"><span class="pre">True</span></code>), <code class="docutils literal notranslate"><span class="pre">blockSize</span></code>
+(default value is 256), and <code class="docutils literal notranslate"><span class="pre">itemsPerSlot</span></code> (default value is 512). See the
+documentation of UCSC’s <code class="docutils literal notranslate"><span class="pre">bedToBigBed</span></code> program for a description of these
+arguments.  Searching a <code class="docutils literal notranslate"><span class="pre">bigBed</span></code> file can be faster by using
+<code class="docutils literal notranslate"><span class="pre">compress=False</span></code> and <code class="docutils literal notranslate"><span class="pre">itemsPerSlot=1</span></code> when creating the bigBed file.</p>
 </section>
 <section id="pattern-space-layout-psl">
 <span id="subsec-align-psl"></span><h3>Pattern Space Layout (PSL)<a class="headerlink" href="#pattern-space-layout-psl" title="Link to this heading"></a></h3>
@@ -4136,6 +4147,11 @@ or <code class="docutils literal notranslate"><span class="pre">repMatches</span
 <p>See section <a class="reference internal" href="#subsec-align-psl"><span class="std std-ref">Pattern Space Layout (PSL)</span></a> for an explanation on how the
 number of matches, mismatches, repeat region matches, and matches to
 unknown nucleotides are obtained.</p>
+<p>Further optional arguments are <code class="docutils literal notranslate"><span class="pre">blockSize</span></code> (default value is 256), and
+<code class="docutils literal notranslate"><span class="pre">itemsPerSlot</span></code> (default value is 512). See the documentation of UCSC’s
+<code class="docutils literal notranslate"><span class="pre">bedToBigBed</span></code> program for a description of these arguments.  Searching a
+<code class="docutils literal notranslate"><span class="pre">bigPsl</span></code> file can be faster by using <code class="docutils literal notranslate"><span class="pre">compress=False</span></code> and
+<code class="docutils literal notranslate"><span class="pre">itemsPerSlot=1</span></code> when creating the bigPsl file.</p>
 </section>
 <section id="multiple-alignment-format-maf">
 <span id="subsec-align-maf"></span><h3>Multiple Alignment Format (MAF)<a class="headerlink" href="#multiple-alignment-format-maf" title="Link to this heading"></a></h3>
@@ -4346,8 +4362,8 @@ object (see Section <a class="reference internal" href="#sec-alignments"><span 
 <span id="subsec-align-bigmaf"></span><h3>bigMaf<a class="headerlink" href="#bigmaf" title="Link to this heading"></a></h3>
 <p>A bigMaf file is a bigBed file with a BED3+1 format consisting of the 3
 required BED fields plus a custom field that stores a MAF alignment
-block as a string, crearing an indexed binary version of a MAF file (see
-section <a class="reference internal" href="#subsec-align-bigmaf"><span class="std std-ref">bigMaf</span></a>). The associated AutoSql file
+block as a string, creating an indexed binary version of a MAF file (see
+section <a class="reference internal" href="#subsec-align-maf"><span class="std std-ref">Multiple Alignment Format (MAF)</span></a>). The associated AutoSql file
 <a class="reference external" href="https://genome.ucsc.edu/goldenPath/help/examples/bigMaf.as">bigMaf.as</a>
 is provided by UCSC. To create a bigMaf file, you can either use the
 <code class="docutils literal notranslate"><span class="pre">mafToBigMaf</span></code> and <code class="docutils literal notranslate"><span class="pre">bedToBigBed</span></code> programs from UCSC. or you can use
@@ -4484,7 +4500,10 @@ when calling <code class="docutils literal notranslate"><span class="pre">Bio.Al
 be of the form <code class="docutils literal notranslate"><span class="pre">reference.chromosome</span></code>, where <code class="docutils literal notranslate"><span class="pre">reference</span></code> refers to
 the reference species. <code class="docutils literal notranslate"><span class="pre">Bio.Align.write</span></code> has the additional keyword
 argument <code class="docutils literal notranslate"><span class="pre">compress</span></code> (<code class="docutils literal notranslate"><span class="pre">True</span></code> by default) specifying whether the data
-should be compressed using zlib.</p>
+should be compressed using zlib.
+Further optional arguments are <code class="docutils literal notranslate"><span class="pre">blockSize</span></code> (default value is 256), and
+<code class="docutils literal notranslate"><span class="pre">itemsPerSlot</span></code> (default value is 512). See the documentation of UCSC’s
+<code class="docutils literal notranslate"><span class="pre">bedToBigBed</span></code> program for a description of these arguments.</p>
 <p>As a bigMaf file is a special case of a bigBed file, you can use the
 <code class="docutils literal notranslate"><span class="pre">search</span></code> method on the <code class="docutils literal notranslate"><span class="pre">alignments</span></code> object to find alignments to
 specific regions of the reference species. For example, we can look for
@@ -4509,6 +4528,8 @@ start and end positions may be <code class="docutils literal notranslate"><span 
 0 or to continue searching until the end of the chromosome,
 respectively. Note that we can search on genomic position for the
 reference species only.</p>
+<p>Searching a <code class="docutils literal notranslate"><span class="pre">bigMaf</span></code> file can be faster by using <code class="docutils literal notranslate"><span class="pre">compress=False</span></code> and
+<code class="docutils literal notranslate"><span class="pre">itemsPerSlot=1</span></code> when creating the bigMaf file.</p>
 </section>
 <section id="ucsc-chain-file-format">
 <span id="subsec-align-chain"></span><h3>UCSC chain file format<a class="headerlink" href="#ucsc-chain-file-format" title="Link to this heading"></a></h3>
