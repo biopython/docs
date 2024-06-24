@@ -278,10 +278,10 @@ aligned sequences as follows:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span> <span class="o">=</span> <span class="p">[</span><span class="n">sequence</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="k">for</span> <span class="n">sequence</span> <span class="ow">in</span> <span class="n">sequences</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span>
 <span class="go">[&#39;CGGTTTTT&#39;, &#39;AGTTT&#39;, &#39;AGGTTT&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span>
-<span class="go">array([[0, 2, 3, 6, 8],</span>
-<span class="go">       [0, 2, 2, 5, 5],</span>
-<span class="go">       [0, 2, 3, 6, 6]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[0 2 3 6 8]</span>
+<span class="go"> [0 2 2 5 5]</span>
+<span class="go"> [0 2 3 6 6]]</span>
 </pre></div>
 </div>
 <p>The initial <code class="docutils literal notranslate"><span class="pre">G</span></code> nucleotide of <code class="docutils literal notranslate"><span class="pre">seqA</span></code> and the final <code class="docutils literal notranslate"><span class="pre">CC</span></code>
@@ -293,10 +293,10 @@ therefore missing here. But this is easy to fix:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sequences</span>
 <span class="go">[&#39;CCGGTTTTT&#39;, &#39;AGTTTAA&#39;, &#39;AGGTTT&#39;]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+=</span> <span class="mi">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">coordinates</span>
-<span class="go">array([[1, 3, 4, 7, 9],</span>
-<span class="go">       [0, 2, 2, 5, 5],</span>
-<span class="go">       [0, 2, 3, 6, 6]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[1 3 4 7 9]</span>
+<span class="go"> [0 2 2 5 5]</span>
+<span class="go"> [0 2 3 6 6]]</span>
 </pre></div>
 </div>
 <p>Now we can create the <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> object:</p>
@@ -318,10 +318,10 @@ initializer will fill in the <code class="docutils literal notranslate"><span cl
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ungapped_alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">([</span><span class="s2">&quot;ACGTACGT&quot;</span><span class="p">,</span> <span class="s2">&quot;AAGTACGT&quot;</span><span class="p">,</span> <span class="s2">&quot;ACGTACCT&quot;</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ungapped_alignment</span>  
 <span class="go">&lt;Alignment object (3 rows x 8 columns) at ...&gt;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ungapped_alignment</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[0, 8],</span>
-<span class="go">       [0, 8],</span>
-<span class="go">       [0, 8]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ungapped_alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[0 8]</span>
+<span class="go"> [0 8]</span>
+<span class="go"> [0 8]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">ungapped_alignment</span><span class="p">)</span>
 <span class="go">                  0 ACGTACGT 8</span>
 <span class="go">                  0 AAGTACGT 8</span>
@@ -527,12 +527,12 @@ tuples of length <span class="math notranslate nohighlight">\(N\)</span>:</p>
 <span class="go">                  0 .|-|||-- 8</span>
 <span class="go">query             0 AG-TTT-- 5</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pairwise_alignment</span><span class="o">.</span><span class="n">aligned</span>
-<span class="go">array([[[1, 3],</span>
-<span class="go">        [4, 7]],</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pairwise_alignment</span><span class="o">.</span><span class="n">aligned</span><span class="p">)</span>
+<span class="go">[[[1 3]</span>
+<span class="go">  [4 7]]</span>
 
-<span class="go">       [[0, 2],</span>
-<span class="go">        [2, 5]]])</span>
+<span class="go"> [[0 2]</span>
+<span class="go">  [2 5]]]</span>
 </pre></div>
 </div>
 <p>Note that different alignments may have the same subsequences aligned to
@@ -894,9 +894,9 @@ argument, to find the alignment of the RNA-sequence to the genome:</p>
 <span class="go">                  0 ||||-----------|||| 19</span>
 <span class="go">query             0 CCCC-----------GGGG  8</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment3</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[11, 15, 26, 30],</span>
-<span class="go">       [ 0,  4,  4,  8]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment3</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[11 15 26 30]</span>
+<span class="go"> [ 0  4  4  8]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">format</span><span class="p">(</span><span class="n">alignment3</span><span class="p">,</span> <span class="s2">&quot;psl&quot;</span><span class="p">)</span>
 <span class="go">&#39;8\t0\t0\t0\t0\t0\t1\t11\t+\tquery\t8\t0\t8\ttarget\t40\t11\t30\t2\t4,4,\t0,4,\t11,26,\n&#39;</span>
 </pre></div>
@@ -1011,19 +1011,19 @@ macaque, marmoset, mouse, and rat:</p>
 <span class="go">calJac3.chr18 47448759</span>
 <span class="go">mm10.chr3 160039680</span>
 <span class="go">rn6.chr2 266435125</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">genome_alignment</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[133922962, 133922962, 133922970, 133922970, 133922972, 133922972,</span>
-<span class="go">        133922995, 133922998, 133923010],</span>
-<span class="go">       [155784573, 155784573, 155784581, 155784581, 155784583, 155784583,</span>
-<span class="go">        155784606, 155784609, 155784621],</span>
-<span class="go">       [130383910, 130383910, 130383918, 130383918, 130383920, 130383920,</span>
-<span class="go">        130383943, 130383946, 130383958],</span>
-<span class="go">       [  9790455,   9790455,   9790463,   9790463,   9790465,   9790465,</span>
-<span class="go">          9790488,   9790491,   9790503],</span>
-<span class="go">       [ 88858039,  88858036,  88858028,  88858026,  88858024,  88858020,</span>
-<span class="go">         88857997,  88857997,  88857985],</span>
-<span class="go">       [188162970, 188162967, 188162959, 188162959, 188162957, 188162953,</span>
-<span class="go">        188162930, 188162930, 188162918]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">genome_alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[133922962 133922962 133922970 133922970 133922972 133922972 133922995</span>
+<span class="go">  133922998 133923010]</span>
+<span class="go"> [155784573 155784573 155784581 155784581 155784583 155784583 155784606</span>
+<span class="go">  155784609 155784621]</span>
+<span class="go"> [130383910 130383910 130383918 130383918 130383920 130383920 130383943</span>
+<span class="go">  130383946 130383958]</span>
+<span class="go"> [  9790455   9790455   9790463   9790463   9790465   9790465   9790488</span>
+<span class="go">    9790491   9790503]</span>
+<span class="go"> [ 88858039  88858036  88858028  88858026  88858024  88858020  88857997</span>
+<span class="go">   88857997  88857985]</span>
+<span class="go"> [188162970 188162967 188162959 188162959 188162957 188162953 188162930</span>
+<span class="go">  188162930 188162918]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">genome_alignment</span><span class="p">)</span>
 <span class="go">panTro5.c 133922962 ---ACTAGTTA--CA----GTAACAGAAAATAAAATTTAAATAGAAACTTAAAggcc</span>
 <span class="go">hg19.chr1 155784573 ---ACTAGTTA--CA----GTAACAGAAAATAAAATTTAAATAGAAACTTAAAggcc</span>
@@ -1093,19 +1093,19 @@ sequence alignment to the new genome assembly versions:</p>
 <span class="go">chr18 47031477</span>
 <span class="go">chr3 159745316</span>
 <span class="go">chr2 249053267</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">genome_alignment</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[130611000, 130611000, 130611008, 130611008, 130611010, 130611010,</span>
-<span class="go">        130611033, 130611036, 130611048],</span>
-<span class="go">       [155814782, 155814782, 155814790, 155814790, 155814792, 155814792,</span>
-<span class="go">        155814815, 155814818, 155814830],</span>
-<span class="go">       [ 95186253,  95186253,  95186245,  95186245,  95186243,  95186243,</span>
-<span class="go">         95186220,  95186217,  95186205],</span>
-<span class="go">       [  9758318,   9758318,   9758326,   9758326,   9758328,   9758328,</span>
-<span class="go">          9758351,   9758354,   9758366],</span>
-<span class="go">       [ 88765346,  88765343,  88765335,  88765333,  88765331,  88765327,</span>
-<span class="go">         88765304,  88765304,  88765292],</span>
-<span class="go">       [174256702, 174256699, 174256691, 174256691, 174256689, 174256685,</span>
-<span class="go">        174256662, 174256662, 174256650]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">genome_alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[130611000 130611000 130611008 130611008 130611010 130611010 130611033</span>
+<span class="go">  130611036 130611048]</span>
+<span class="go"> [155814782 155814782 155814790 155814790 155814792 155814792 155814815</span>
+<span class="go">  155814818 155814830]</span>
+<span class="go"> [ 95186253  95186253  95186245  95186245  95186243  95186243  95186220</span>
+<span class="go">   95186217  95186205]</span>
+<span class="go"> [  9758318   9758318   9758326   9758326   9758328   9758328   9758351</span>
+<span class="go">    9758354   9758366]</span>
+<span class="go"> [ 88765346  88765343  88765335  88765333  88765331  88765327  88765304</span>
+<span class="go">   88765304  88765292]</span>
+<span class="go"> [174256702 174256699 174256691 174256691 174256689 174256685 174256662</span>
+<span class="go">  174256662 174256650]]</span>
 </pre></div>
 </div>
 <p>As the <code class="docutils literal notranslate"><span class="pre">.chain</span></code> files do not include the sequence contents, we cannot
@@ -1719,12 +1719,12 @@ section <a class="reference internal" href="#subsec-align-clustal"><span class=
 <p>Note that these sequences do not contain gaps (”<code class="docutils literal notranslate"><span class="pre">-</span></code>” characters), as
 the alignment information is stored in the <code class="docutils literal notranslate"><span class="pre">coordinates</span></code> attribute
 instead:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[ 0,  1,  1, 33, 34, 42, 44, 48, 48, 50, 50, 51, 58, 73, 73, 95],</span>
-<span class="go">       [ 0,  0,  0, 32, 33, 41, 43, 47, 47, 49, 49, 50, 57, 72, 72, 94],</span>
-<span class="go">       [ 0,  0,  0, 32, 33, 41, 43, 47, 48, 50, 51, 52, 59, 74, 77, 99],</span>
-<span class="go">       [ 0,  1,  2, 34, 35, 43, 43, 47, 47, 49, 49, 50, 57, 72, 72, 94],</span>
-<span class="go">       [ 0,  1,  2, 34, 34, 42, 44, 48, 48, 50, 50, 51, 51, 66, 66, 88]])</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[ 0  1  1 33 34 42 44 48 48 50 50 51 58 73 73 95]</span>
+<span class="go"> [ 0  0  0 32 33 41 43 47 47 49 49 50 57 72 72 94]</span>
+<span class="go"> [ 0  0  0 32 33 41 43 47 48 50 51 52 59 74 77 99]</span>
+<span class="go"> [ 0  1  2 34 35 43 43 47 47 49 49 50 57 72 72 94]</span>
+<span class="go"> [ 0  1  2 34 34 42 44 48 48 50 50 51 51 66 66 88]]</span>
 </pre></div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">Align.write</span></code> to write this alignment to a file (here, we’ll use a
@@ -2250,9 +2250,9 @@ and the specific alignment file format that was used (assumed to be
 <span class="go">                120 ||||||||||| 131</span>
 <span class="go">IXI_235         101 PPAWAGDRSHE 112</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[  0,  15,  24,  74,  84, 131],</span>
-<span class="go">       [  0,  15,  15,  65,  65, 112]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[  0  15  24  74  84 131]</span>
+<span class="go"> [  0  15  15  65  65 112]]</span>
 </pre></div>
 </div>
 <p>We can use indices to extract specific parts of the alignment:</p>
@@ -2405,18 +2405,18 @@ attribute:</p>
 </div>
 <p>The alignment coordinates are stored in the <code class="docutils literal notranslate"><span class="pre">alignment.coordinates</span></code>
 attribute:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[ 0, 93, 99],</span>
-<span class="go">       [ 0, 93, 99],</span>
-<span class="go">       [ 0, 93, 99],</span>
-<span class="go">       [ 0, 93, 99],</span>
-<span class="go">       [ 0, 93, 99],</span>
-<span class="go">       [ 0, 93, 99],</span>
-<span class="go">       [ 0, 93, 93],</span>
-<span class="go">       [ 0, 93, 93],</span>
-<span class="go">       [ 0, 93, 93],</span>
-<span class="go">       [ 0, 93, 93],</span>
-<span class="go">       [ 0, 93, 99]])</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[ 0 93 99]</span>
+<span class="go"> [ 0 93 99]</span>
+<span class="go"> [ 0 93 99]</span>
+<span class="go"> [ 0 93 99]</span>
+<span class="go"> [ 0 93 99]</span>
+<span class="go"> [ 0 93 99]</span>
+<span class="go"> [ 0 93 93]</span>
+<span class="go"> [ 0 93 93]</span>
+<span class="go"> [ 0 93 93]</span>
+<span class="go"> [ 0 93 93]</span>
+<span class="go"> [ 0 93 99]]</span>
 </pre></div>
 </div>
 <p>Currently, Biopython does not support writing sequence alignments in the
@@ -2462,9 +2462,9 @@ alignment score 6146.0, has no gaps:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">score</span>
 <span class="go">6146.0</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[1319275, 1319274, 1319271, 1318045],</span>
-<span class="go">       [      0,       1,       4,    1230]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[1319275 1319274 1319271 1318045]</span>
+<span class="go"> [      0       1       4    1230]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>  
 <span class="go">gi|330443   1319275 ????????????????????????????????????????????????????????????</span>
 <span class="go">                  0 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||</span>
@@ -2708,9 +2708,9 @@ example, let’s go to the fourth alignment:</p>
 <span class="go">                120 ||||||-|||||||| 135</span>
 <span class="go">pGT875          274 ??????????????? 289</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>  
-<span class="go">array([[156, 171, 173, 190, 190, 201, 202, 260, 261, 272, 272, 279, 279, 287],</span>
-<span class="go">       [158, 173, 173, 190, 192, 203, 203, 261, 261, 272, 273, 280, 281, 289]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[156 171 173 190 190 201 202 260 261 272 272 279 279 287]</span>
+<span class="go"> [158 173 173 190 192 203 203 261 261 272 273 280 281 289]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">aligned</span>
 <span class="go">array([[[156, 171],</span>
 <span class="go">        [173, 190],</span>
@@ -3525,9 +3525,9 @@ example:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="s2">&quot;SAM&quot;</span><span class="p">))</span>  
 <span class="go">NR_111921.1 0   chr3    48663768    0   46M1827N82M3376N76M12H  *   0   0   CACGAGAGGAGCGGAGGCGAGGGGTGAACGCGGAGCACTCCAATCGCTCCCAACTAGAGGTCCACCCAGGACCCAGAGACCTGGATTTGAGGCTGCTGGGCGGCAGATGGAGCGATCAGAAGACCAGGAGACGGGAGCTGGAGTGCAGTGGCTGTTCACAAGCGTGAAAGCAAAGATTAAAAAATTTGTTTTTATATTAAAAAA    *   AS:i:1000   NM:i:0</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[48663767, 48663813, 48665640, 48665722, 48669098, 48669174],</span>
-<span class="go">       [       0,       46,       46,      128,      128,      204]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[48663767 48663813 48665640 48665722 48669098 48669174]</span>
+<span class="go"> [       0       46       46      128      128      204]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">operations</span>
 <span class="go">bytearray(b&#39;MNMNM&#39;)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;hard_clip_right&quot;</span><span class="p">]</span>
@@ -4222,12 +4222,12 @@ for each alignment block in the MAF file:</p>
 <span class="go"> &#39;baboon&#39;: 4622798,</span>
 <span class="go"> &#39;mm4.chr6&#39;: 151104725,</span>
 <span class="go"> &#39;rn3.chr4&#39;: 187371129}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>  
-<span class="go">array([[27578828, 27578829, 27578831, 27578831, 27578850, 27578850, 27578866],</span>
-<span class="go">       [28741140, 28741141, 28741143, 28741143, 28741162, 28741162, 28741178],</span>
-<span class="go">       [  116834,   116835,   116837,   116837,   116856,   116856, 116872],</span>
-<span class="go">       [53215344, 53215344, 53215346, 53215347, 53215366, 53215366, 53215382],</span>
-<span class="go">       [81344243, 81344243, 81344245, 81344245, 81344264, 81344267, 81344283]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[27578828 27578829 27578831 27578831 27578850 27578850 27578866]</span>
+<span class="go"> [28741140 28741141 28741143 28741143 28741162 28741162 28741178]</span>
+<span class="go"> [  116834   116835   116837   116837   116856   116856   116872]</span>
+<span class="go"> [53215344 53215344 53215346 53215347 53215366 53215366 53215382]</span>
+<span class="go"> [81344243 81344243 81344245 81344245 81344264 81344267 81344283]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
 <span class="go">hg16.chr7  27578828 AAA-GGGAATGTTAACCAAATGA---ATTGTCTCTTACGGTG 27578866</span>
 <span class="go">panTro1.c  28741140 AAA-GGGAATGTTAACCAAATGA---ATTGTCTCTTACGGTG 28741178</span>
@@ -4415,12 +4415,12 @@ for each alignment block in the bigMaf file:</p>
 <span class="go"> &#39;baboon&#39;: 4622798,</span>
 <span class="go"> &#39;mm4.chr6&#39;: 151104725,</span>
 <span class="go"> &#39;rn3.chr4&#39;: 187371129}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>  
-<span class="go">array([[27578828, 27578829, 27578831, 27578831, 27578850, 27578850, 27578866],</span>
-<span class="go">       [28741140, 28741141, 28741143, 28741143, 28741162, 28741162, 28741178],</span>
-<span class="go">       [  116834,   116835,   116837,   116837,   116856,   116856, 116872],</span>
-<span class="go">       [53215344, 53215344, 53215346, 53215347, 53215366, 53215366, 53215382],</span>
-<span class="go">       [81344243, 81344243, 81344245, 81344245, 81344264, 81344267, 81344283]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+<span class="go">[[27578828 27578829 27578831 27578831 27578850 27578850 27578866]</span>
+<span class="go"> [28741140 28741141 28741143 28741143 28741162 28741162 28741178]</span>
+<span class="go"> [  116834   116835   116837   116837   116856   116856   116872]</span>
+<span class="go"> [53215344 53215344 53215346 53215347 53215366 53215366 53215382]</span>
+<span class="go"> [81344243 81344243 81344245 81344245 81344264 81344267 81344283]]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
 <span class="go">hg16.chr7  27578828 AAA-GGGAATGTTAACCAAATGA---ATTGTCTCTTACGGTG 27578866</span>
 <span class="go">panTro1.c  28741140 AAA-GGGAATGTTAACCAAATGA---ATTGTCTCTTACGGTG 28741178</span>
