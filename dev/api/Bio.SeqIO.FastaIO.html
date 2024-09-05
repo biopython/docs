@@ -205,7 +205,7 @@ as the second line of a record).</p>
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaIterator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.FastaIO.</span></span><span class="sig-name descname"><span class="pre">FastaIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaIterator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequenceIterator</span></code></a></p>
-<p>Parser for Fasta files.</p>
+<p>Parser for plain Fasta files without comments.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaIterator.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaIterator.__init__" title="Link to this definition"></a></dt>
@@ -217,6 +217,8 @@ as the second line of a record).</p>
 </ul>
 </dd>
 </dl>
+<p>This parser expects a plain Fasta format without comments or header
+lines.</p>
 <p>By default this will act like calling Bio.SeqIO.parse(handle, “fasta”)
 with no custom handling of the title lines:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/dups.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
@@ -315,6 +317,157 @@ by the relaxed FASTA parser is offered.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaTwoLineIterator.__parameters__">
 <span class="sig-name descname"><span class="pre">__parameters__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineIterator.__parameters__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaBlastIterator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.FastaIO.</span></span><span class="sig-name descname"><span class="pre">FastaBlastIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaBlastIterator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequenceIterator</span></code></a></p>
+<p>Parser for Fasta files, allowing for comments as in BLAST.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaBlastIterator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaBlastIterator.__init__" title="Link to this definition"></a></dt>
+<dd><p>Iterate over Fasta records as SeqRecord objects.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>source - input stream opened in text mode, or a path to a file</p></li>
+<li><p>alphabet - optional alphabet, not used. Leave as None.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This parser expects the data to be in FASTA format. As in BLAST, lines
+starting with ‘#’, ‘!’, or ‘;’ are interpreted as comments and ignored.</p>
+<p>This iterator acts like calling Bio.SeqIO.parse(handle, “fasta-blast”)
+with no custom handling of the title lines:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/dups.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">alpha</span>
+<span class="go">beta</span>
+<span class="go">gamma</span>
+<span class="go">alpha</span>
+<span class="go">delta</span>
+</pre></div>
+</div>
+<p>If you want to modify the records before writing, for example to change
+the ID of each record, you can use a generator function as follows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">modify_records</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">record</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="k">yield</span> <span class="n">record</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;Fasta/dups.fasta&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">modify_records</span><span class="p">(</span><span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">)):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">ALPHA</span>
+<span class="go">BETA</span>
+<span class="go">GAMMA</span>
+<span class="go">ALPHA</span>
+<span class="go">DELTA</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaBlastIterator.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaBlastIterator.parse" title="Link to this definition"></a></dt>
+<dd><p>Start parsing the file, and return a SeqRecord generator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaBlastIterator.iterate">
+<span class="sig-name descname"><span class="pre">iterate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaBlastIterator.iterate" title="Link to this definition"></a></dt>
+<dd><p>Parse the file and generate SeqRecord objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaBlastIterator.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaBlastIterator.__abstractmethods__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaBlastIterator.__parameters__">
+<span class="sig-name descname"><span class="pre">__parameters__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaBlastIterator.__parameters__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaPearsonIterator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.FastaIO.</span></span><span class="sig-name descname"><span class="pre">FastaPearsonIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaPearsonIterator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequenceIterator</span></code></a></p>
+<p>Parser for Fasta files, allowing for comments as in the FASTA aligner.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaPearsonIterator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaPearsonIterator.__init__" title="Link to this definition"></a></dt>
+<dd><p>Iterate over Fasta records as SeqRecord objects.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>source - input stream opened in text mode, or a path to a file</p></li>
+<li><p>alphabet - optional alphabet, not used. Leave as None.</p></li>
+</ul>
+</dd>
+</dl>
+<p>This parser expects a Fasta format allowing for a header (before the
+first sequence record) and comments (lines starting with ‘;’) as in
+William Pearson’s FASTA aligner software.</p>
+<p>This iterator acts as calling Bio.SeqIO.parse(handle, “fasta-pearson”)
+with no custom handling of the title lines:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/dups.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">alpha</span>
+<span class="go">beta</span>
+<span class="go">gamma</span>
+<span class="go">alpha</span>
+<span class="go">delta</span>
+</pre></div>
+</div>
+<p>If you want to modify the records before writing, for example to change
+the ID of each record, you can use a generator function as follows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">modify_records</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
+<span class="gp">... </span>        <span class="n">record</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="gp">... </span>        <span class="k">yield</span> <span class="n">record</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;Fasta/dups.fasta&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">modify_records</span><span class="p">(</span><span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">)):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">ALPHA</span>
+<span class="go">BETA</span>
+<span class="go">GAMMA</span>
+<span class="go">ALPHA</span>
+<span class="go">DELTA</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaPearsonIterator.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaPearsonIterator.parse" title="Link to this definition"></a></dt>
+<dd><p>Start parsing the file, and return a SeqRecord generator.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaPearsonIterator.iterate">
+<span class="sig-name descname"><span class="pre">iterate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaPearsonIterator.iterate" title="Link to this definition"></a></dt>
+<dd><p>Parse the file and generate SeqRecord objects.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaPearsonIterator.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaPearsonIterator.__abstractmethods__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaPearsonIterator.__parameters__">
+<span class="sig-name descname"><span class="pre">__parameters__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaPearsonIterator.__parameters__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
