@@ -142,7 +142,7 @@ use this module.  It provides base classes to try and simplify things.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.Interfaces.</span></span><span class="sig-name descname"><span class="pre">SequenceIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'t'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code></p>
 <p>Base class for building SeqRecord iterators.</p>
-<p>You should write a parse method that returns a SeqRecord generator.  You
+<p>You should write a __next__ method that returns the next SeqRecord.  You
 may wish to redefine the __init__ method as well.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.SeqIO.Interfaces.SequenceIterator.__init__">
@@ -160,8 +160,9 @@ may wish to redefine the __init__ method as well.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.SeqIO.Interfaces.SequenceIterator.__next__">
-<span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.__next__" title="Link to this definition"></a></dt>
-<dd><p>Return the next entry.</p>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.__next__" title="Link to this definition"></a></dt>
+<dd><p>Return the next SeqRecord.</p>
+<p>This method must be implemented by the subclass.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -176,20 +177,12 @@ may wish to redefine the __init__ method as well.</p>
         <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This method SHOULD NOT be overridden by any subclass. It should be
-left as is, which will call the subclass implementation of __next__
-to actually parse the file.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="Bio.SeqIO.Interfaces.SequenceIterator.parse">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="Bio.SeqRecord.html#Bio.SeqRecord.SeqRecord" title="Bio.SeqRecord.SeqRecord"><span class="pre">SeqRecord</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.parse" title="Link to this definition"></a></dt>
-<dd><p>Start parsing the file, and return a SeqRecord iterator.</p>
+<p>This method SHOULD NOT be overridden by any subclass.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.SeqIO.Interfaces.SequenceIterator.__abstractmethods__">
-<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({'parse'})</span></em><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.__abstractmethods__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({'__next__'})</span></em><a class="headerlink" href="#Bio.SeqIO.Interfaces.SequenceIterator.__abstractmethods__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
