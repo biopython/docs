@@ -138,15 +138,26 @@
 <p>You are expected to use this module via the Bio.SeqIO functions.
 See also the Bio.Sequencing.Ace module which offers more than just accessing
 the contig consensus sequences in an ACE file as SeqRecord objects.</p>
-<dl class="py function">
+<dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqIO.AceIO.AceIterator">
-<span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.AceIO.</span></span><span class="sig-name descname"><span class="pre">AceIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.AceIO.AceIterator" title="Link to this definition"></a></dt>
-<dd><p>Return SeqRecord objects from an ACE file.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.AceIO.</span></span><span class="sig-name descname"><span class="pre">AceIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.AceIO.AceIterator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequenceIterator</span></code></a></p>
+<p>Return SeqRecord objects from an ACE file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.AceIO.AceIterator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Bio.SeqIO.AceIO.AceIterator.__init__" title="Link to this definition"></a></dt>
+<dd><p>Iterate over SeqRecord objects read from an ACE file.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>source - input stream opened in text mode, or a path to a file</p></li>
+</ul>
+</dd>
+</dl>
 <p>This uses the Bio.Sequencing.Ace module to do the hard work.  Note that
 by iterating over the file in a single pass, we are forced to ignore any
 WA, CT, RT or WR footer tags.</p>
-<p>Ace files include the base quality for each position, which are taken
-to be PHRED style scores. Just as if you had read in a FASTQ or QUAL file
+<p>Ace files include the base quality for each position, which are taken to
+be PHRED style scores. Just as if you had read in a FASTQ or QUAL file
 using PHRED scores using Bio.SeqIO, these are stored in the SeqRecord’s
 letter_annotations dictionary under the “phred_quality” key.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
@@ -159,11 +170,11 @@ letter_annotations dictionary under the “phred_quality” key.</p>
 </pre></div>
 </div>
 <p>However, ACE files do not include a base quality for any gaps in the
-consensus sequence, and these are represented in Biopython with a quality
+consensus sequence, and these are represented in Biopython with quality
 of zero. Using zero is perhaps misleading as there may be very strong
 evidence to support the gap in the consensus. Previous versions of
-Biopython therefore used None instead, but this complicated usage, and
-prevented output of the gapped sequence as FASTQ format.</p>
+Biopython therefore used None instead, but this complicated usage,
+and prevented output of the gapped sequence as FASTQ format.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Ace/contig1.ace&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;ace&quot;</span><span class="p">):</span>
@@ -178,6 +189,25 @@ prevented output of the gapped sequence as FASTQ format.</p>
 <span class="go">90</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.AceIO.AceIterator.__next__">
+<span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.AceIO.AceIterator.__next__" title="Link to this definition"></a></dt>
+<dd><p>Return the next SeqRecord.</p>
+<p>This method must be implemented by the subclass.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.AceIO.AceIterator.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqIO.AceIO.AceIterator.__abstractmethods__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.AceIO.AceIterator.__parameters__">
+<span class="sig-name descname"><span class="pre">__parameters__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#Bio.SeqIO.AceIO.AceIterator.__parameters__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
