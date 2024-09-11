@@ -780,17 +780,35 @@ description, use</p>
 
 </dd></dl>
 
-<dl class="py function">
+<dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqSolexaIterator">
-<span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.QualityIO.</span></span><span class="sig-name descname"><span class="pre">FastqSolexaIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="Bio.SeqRecord.html#Bio.SeqRecord.SeqRecord" title="Bio.SeqRecord.SeqRecord"><span class="pre">SeqRecord</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator" title="Link to this definition"></a></dt>
-<dd><p>Parse old Solexa/Illumina FASTQ like files (which differ in the quality mapping).</p>
-<p>The optional arguments are the same as those for the FastqPhredIterator.</p>
-<p>For each sequence in Solexa/Illumina FASTQ files there is a matching string
-encoding the Solexa integer qualities using ASCII values with an offset
-of 64.  Solexa scores are scaled differently to PHRED scores, and Biopython
-will NOT perform any automatic conversion when loading.</p>
-<p>NOTE - This file format is used by the OLD versions of the Solexa/Illumina
-pipeline. See also the FastqIlluminaIterator function for the NEW version.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.QualityIO.</span></span><span class="sig-name descname"><span class="pre">FastqSolexaIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequenceIterator</span></code></a></p>
+<p>Parser for old Solexa/Illumina FASTQ like files.</p>
+<p>These files differ in the quality mapping.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqSolexaIterator.q_mapping">
+<span class="sig-name descname"><span class="pre">q_mapping</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{';':</span> <span class="pre">-5,</span> <span class="pre">'&lt;':</span> <span class="pre">-4,</span> <span class="pre">'=':</span> <span class="pre">-3,</span> <span class="pre">'&gt;':</span> <span class="pre">-2,</span> <span class="pre">'?':</span> <span class="pre">-1,</span> <span class="pre">'&#64;':</span> <span class="pre">0,</span> <span class="pre">'A':</span> <span class="pre">1,</span> <span class="pre">'B':</span> <span class="pre">2,</span> <span class="pre">'C':</span> <span class="pre">3,</span> <span class="pre">'D':</span> <span class="pre">4,</span> <span class="pre">'E':</span> <span class="pre">5,</span> <span class="pre">'F':</span> <span class="pre">6,</span> <span class="pre">'G':</span> <span class="pre">7,</span> <span class="pre">'H':</span> <span class="pre">8,</span> <span class="pre">'I':</span> <span class="pre">9,</span> <span class="pre">'J':</span> <span class="pre">10,</span> <span class="pre">'K':</span> <span class="pre">11,</span> <span class="pre">'L':</span> <span class="pre">12,</span> <span class="pre">'M':</span> <span class="pre">13,</span> <span class="pre">'N':</span> <span class="pre">14,</span> <span class="pre">'O':</span> <span class="pre">15,</span> <span class="pre">'P':</span> <span class="pre">16,</span> <span class="pre">'Q':</span> <span class="pre">17,</span> <span class="pre">'R':</span> <span class="pre">18,</span> <span class="pre">'S':</span> <span class="pre">19,</span> <span class="pre">'T':</span> <span class="pre">20,</span> <span class="pre">'U':</span> <span class="pre">21,</span> <span class="pre">'V':</span> <span class="pre">22,</span> <span class="pre">'W':</span> <span class="pre">23,</span> <span class="pre">'X':</span> <span class="pre">24,</span> <span class="pre">'Y':</span> <span class="pre">25,</span> <span class="pre">'Z':</span> <span class="pre">26,</span> <span class="pre">'[':</span> <span class="pre">27,</span> <span class="pre">'\\':</span> <span class="pre">28,</span> <span class="pre">']':</span> <span class="pre">29,</span> <span class="pre">'^':</span> <span class="pre">30,</span> <span class="pre">'_':</span> <span class="pre">31,</span> <span class="pre">'`':</span> <span class="pre">32,</span> <span class="pre">'a':</span> <span class="pre">33,</span> <span class="pre">'b':</span> <span class="pre">34,</span> <span class="pre">'c':</span> <span class="pre">35,</span> <span class="pre">'d':</span> <span class="pre">36,</span> <span class="pre">'e':</span> <span class="pre">37,</span> <span class="pre">'f':</span> <span class="pre">38,</span> <span class="pre">'g':</span> <span class="pre">39,</span> <span class="pre">'h':</span> <span class="pre">40,</span> <span class="pre">'i':</span> <span class="pre">41,</span> <span class="pre">'j':</span> <span class="pre">42,</span> <span class="pre">'k':</span> <span class="pre">43,</span> <span class="pre">'l':</span> <span class="pre">44,</span> <span class="pre">'m':</span> <span class="pre">45,</span> <span class="pre">'n':</span> <span class="pre">46,</span> <span class="pre">'o':</span> <span class="pre">47,</span> <span class="pre">'p':</span> <span class="pre">48,</span> <span class="pre">'q':</span> <span class="pre">49,</span> <span class="pre">'r':</span> <span class="pre">50,</span> <span class="pre">'s':</span> <span class="pre">51,</span> <span class="pre">'t':</span> <span class="pre">52,</span> <span class="pre">'u':</span> <span class="pre">53,</span> <span class="pre">'v':</span> <span class="pre">54,</span> <span class="pre">'w':</span> <span class="pre">55,</span> <span class="pre">'x':</span> <span class="pre">56,</span> <span class="pre">'y':</span> <span class="pre">57,</span> <span class="pre">'z':</span> <span class="pre">58,</span> <span class="pre">'{':</span> <span class="pre">59,</span> <span class="pre">'|':</span> <span class="pre">60,</span> <span class="pre">'}':</span> <span class="pre">61,</span> <span class="pre">'~':</span> <span class="pre">62}</span></em><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator.q_mapping" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqSolexaIterator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator.__init__" title="Link to this definition"></a></dt>
+<dd><p>Iterate over FASTQ records as SeqRecord objects.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>source - input stream opened in text mode, or a path to a file</p></li>
+<li><p>alphabet - optional alphabet, no longer used. Leave as None.</p></li>
+</ul>
+</dd>
+</dl>
+<p>For each sequence in Solexa/Illumina FASTQ files there is a matching
+string encoding the Solexa integer qualities using ASCII values with an
+offset of 64.  Solexa scores are scaled differently to PHRED scores,
+and Biopython will NOT perform any automatic conversion when loading.</p>
+<p>NOTE - This file format is used by the OLD versions of the Solexa/
+Illumina pipeline. See also the FastqIlluminaIterator function for the
+NEW version.</p>
 <p>For example, consider a file containing these five records:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@SLXA</span><span class="o">-</span><span class="n">B3_649_FC8437_R1_1_1_610_79</span>
 <span class="n">GATGTGCAATACCTTTGTAGAGGAA</span>
@@ -838,8 +856,8 @@ pipeline. See also the FastqIlluminaIterator function for the NEW version.</p>
 <span class="go">SLXA-B3_649_FC8437_R1_1_1_183_714 GTATTATTTAATGGCATACACTCAA</span>
 </pre></div>
 </div>
-<p>If you want to look at the qualities, they are recorded in each record’s
-per-letter-annotation dictionary as a simple list of integers:</p>
+<p>The qualities are recorded in each record’s per-letter-annotation
+dictionary as a simple list of integers:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;solexa_quality&quot;</span><span class="p">])</span>
 <span class="go">[25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 23, 25, 25, 25, 25, 23, 25, 23, 23, 21, 23, 23, 23, 17, 17]</span>
 </pre></div>
@@ -858,11 +876,11 @@ ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTNNNNNN
 hgfedcba`_^]\[ZYXWVUTSRQPONMLKJIHGFEDCBA@?&gt;=&lt;;
 </pre></div>
 </div>
-<p>Again, you would typically use Bio.SeqIO to read this file in (rather than
-calling the Bio.SeqIO.QualtityIO module directly).  Most FASTQ files will
-contain thousands of reads, so you would normally use Bio.SeqIO.parse()
-as shown above.  This example has only as one entry, so instead we can
-use the Bio.SeqIO.read() function:</p>
+<p>Again, you would typically use Bio.SeqIO to read this file in (rather
+than calling the Bio.SeqIO.QualtityIO module directly).  Most FASTQ
+files will contain thousands of reads, so you would normally use
+Bio.SeqIO.parse() as shown above.  This example has only as one entry,
+so instead we can use the Bio.SeqIO.read() function:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_faked.fastq&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">)</span>
@@ -872,16 +890,16 @@ use the Bio.SeqIO.read() function:</p>
 <span class="go">[40, 39, 38, 37, 36, 35, 34, 33, 32, 31, 30, 29, 28, 27, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5]</span>
 </pre></div>
 </div>
-<p>These quality scores are so low that when converted from the Solexa scheme
-into PHRED scores they look quite different:</p>
+<p>These quality scores are so low that when converted from the Solexa
+scheme into PHRED scores they look quite different:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 <span class="go">2.54</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%0.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">phred_quality_from_solexa</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">))</span>
 <span class="go">1.19</span>
 </pre></div>
 </div>
-<p>Note you can use the Bio.SeqIO.write() function or the SeqRecord’s format
-method to output the record(s):</p>
+<p>Note you can use the Bio.SeqIO.write() function or the SeqRecord’s
+format method to output the record(s):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fastq-solexa&quot;</span><span class="p">))</span>
 <span class="go">@slxa_0001_1_0001_01</span>
 <span class="go">ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTNNNNNN</span>
@@ -890,9 +908,10 @@ method to output the record(s):</p>
 </pre></div>
 </div>
 <p>Note this output is slightly different from the input file as Biopython
-has left out the optional repetition of the sequence identifier on the “+”
-line.  If you want the to use PHRED scores, use “fastq” or “qual” as the
-output format instead, and Biopython will do the conversion for you:</p>
+has left out the optional repetition of the sequence identifier on the
+“+” line.  If you want the to use PHRED scores, use “fastq” or “qual”
+as the output format instead, and Biopython will do the conversion for
+you:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;fastq&quot;</span><span class="p">))</span>
 <span class="go">@slxa_0001_1_0001_01</span>
 <span class="go">ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTNNNNNN</span>
@@ -911,13 +930,50 @@ output format instead, and Biopython will do the conversion for you:</p>
 equivalent PHRED score (e.g. -5 to 1 as shown earlier).</p>
 </dd></dl>
 
-<dl class="py function">
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqSolexaIterator.__next__">
+<span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator.__next__" title="Link to this definition"></a></dt>
+<dd><p>Return the next SeqRecord.</p>
+<p>This method must be implemented by the subclass.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqSolexaIterator.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator.__abstractmethods__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqSolexaIterator.__parameters__">
+<span class="sig-name descname"><span class="pre">__parameters__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqSolexaIterator.__parameters__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqIlluminaIterator">
-<span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.QualityIO.</span></span><span class="sig-name descname"><span class="pre">FastqIlluminaIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="Bio.SeqRecord.html#Bio.SeqRecord.SeqRecord" title="Bio.SeqRecord.SeqRecord"><span class="pre">SeqRecord</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator" title="Link to this definition"></a></dt>
-<dd><p>Parse Illumina 1.3 to 1.7 FASTQ like files (which differ in the quality mapping).</p>
-<p>The optional arguments are the same as those for the FastqPhredIterator.</p>
-<p>For each sequence in Illumina 1.3+ FASTQ files there is a matching string
-encoding PHRED integer qualities using ASCII values with an offset of 64.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.QualityIO.</span></span><span class="sig-name descname"><span class="pre">FastqIlluminaIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequenceIterator</span></code></a></p>
+<p>Parser for Illumina 1.3 to 1.7 FASTQ like files.</p>
+<p>These files differ in the quality mapping.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqIlluminaIterator.q_mapping">
+<span class="sig-name descname"><span class="pre">q_mapping</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'&#64;':</span> <span class="pre">0,</span> <span class="pre">'A':</span> <span class="pre">1,</span> <span class="pre">'B':</span> <span class="pre">2,</span> <span class="pre">'C':</span> <span class="pre">3,</span> <span class="pre">'D':</span> <span class="pre">4,</span> <span class="pre">'E':</span> <span class="pre">5,</span> <span class="pre">'F':</span> <span class="pre">6,</span> <span class="pre">'G':</span> <span class="pre">7,</span> <span class="pre">'H':</span> <span class="pre">8,</span> <span class="pre">'I':</span> <span class="pre">9,</span> <span class="pre">'J':</span> <span class="pre">10,</span> <span class="pre">'K':</span> <span class="pre">11,</span> <span class="pre">'L':</span> <span class="pre">12,</span> <span class="pre">'M':</span> <span class="pre">13,</span> <span class="pre">'N':</span> <span class="pre">14,</span> <span class="pre">'O':</span> <span class="pre">15,</span> <span class="pre">'P':</span> <span class="pre">16,</span> <span class="pre">'Q':</span> <span class="pre">17,</span> <span class="pre">'R':</span> <span class="pre">18,</span> <span class="pre">'S':</span> <span class="pre">19,</span> <span class="pre">'T':</span> <span class="pre">20,</span> <span class="pre">'U':</span> <span class="pre">21,</span> <span class="pre">'V':</span> <span class="pre">22,</span> <span class="pre">'W':</span> <span class="pre">23,</span> <span class="pre">'X':</span> <span class="pre">24,</span> <span class="pre">'Y':</span> <span class="pre">25,</span> <span class="pre">'Z':</span> <span class="pre">26,</span> <span class="pre">'[':</span> <span class="pre">27,</span> <span class="pre">'\\':</span> <span class="pre">28,</span> <span class="pre">']':</span> <span class="pre">29,</span> <span class="pre">'^':</span> <span class="pre">30,</span> <span class="pre">'_':</span> <span class="pre">31,</span> <span class="pre">'`':</span> <span class="pre">32,</span> <span class="pre">'a':</span> <span class="pre">33,</span> <span class="pre">'b':</span> <span class="pre">34,</span> <span class="pre">'c':</span> <span class="pre">35,</span> <span class="pre">'d':</span> <span class="pre">36,</span> <span class="pre">'e':</span> <span class="pre">37,</span> <span class="pre">'f':</span> <span class="pre">38,</span> <span class="pre">'g':</span> <span class="pre">39,</span> <span class="pre">'h':</span> <span class="pre">40,</span> <span class="pre">'i':</span> <span class="pre">41,</span> <span class="pre">'j':</span> <span class="pre">42,</span> <span class="pre">'k':</span> <span class="pre">43,</span> <span class="pre">'l':</span> <span class="pre">44,</span> <span class="pre">'m':</span> <span class="pre">45,</span> <span class="pre">'n':</span> <span class="pre">46,</span> <span class="pre">'o':</span> <span class="pre">47,</span> <span class="pre">'p':</span> <span class="pre">48,</span> <span class="pre">'q':</span> <span class="pre">49,</span> <span class="pre">'r':</span> <span class="pre">50,</span> <span class="pre">'s':</span> <span class="pre">51,</span> <span class="pre">'t':</span> <span class="pre">52,</span> <span class="pre">'u':</span> <span class="pre">53,</span> <span class="pre">'v':</span> <span class="pre">54,</span> <span class="pre">'w':</span> <span class="pre">55,</span> <span class="pre">'x':</span> <span class="pre">56,</span> <span class="pre">'y':</span> <span class="pre">57,</span> <span class="pre">'z':</span> <span class="pre">58,</span> <span class="pre">'{':</span> <span class="pre">59,</span> <span class="pre">'|':</span> <span class="pre">60,</span> <span class="pre">'}':</span> <span class="pre">61,</span> <span class="pre">'~':</span> <span class="pre">62}</span></em><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator.q_mapping" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqIlluminaIterator.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator.__init__" title="Link to this definition"></a></dt>
+<dd><p>Iterate over FASTQ records as SeqRecord objects.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>source - input stream opened in text mode, or a path to a file</p></li>
+<li><p>alphabet - optional alphabet, no longer used. Leave as None.</p></li>
+</ul>
+</dd>
+</dl>
+<p>For each sequence in Illumina 1.3+ FASTQ files there is a matching
+string encoding PHRED integer qualities using ASCII values with an
+offset of 64.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/illumina_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-illumina&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">))</span>
@@ -928,17 +984,38 @@ encoding PHRED integer qualities using ASCII values with an offset of 64.</p>
 <span class="go">0</span>
 </pre></div>
 </div>
-<p>NOTE - Older versions of the Solexa/Illumina pipeline encoded Solexa scores
-with an ASCII offset of 64. They are approximately equal but only for high
-quality reads. If you have an old Solexa/Illumina file with negative
-Solexa scores, and try and read this as an Illumina 1.3+ file it will fail:</p>
+<p>NOTE - Older versions of the Solexa/Illumina pipeline encoded Solexa
+scores with an ASCII offset of 64. They are approximately equal but
+only for high quality reads. If you have an old Solexa/Illumina file
+with negative Solexa scores, and try and read this as an Illumina 1.3+
+file it will fail:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record2</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;Quality/solexa_faked.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-illumina&quot;</span><span class="p">)</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="w">   </span><span class="c">...</span>
 <span class="gr">ValueError</span>: <span class="n">Invalid character in quality string</span>
 </pre></div>
 </div>
-<p>NOTE - True Sanger style FASTQ files use PHRED scores with an offset of 33.</p>
+<p>NOTE - True Sanger style FASTQ files use PHRED scores with an offset
+of 33.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqIlluminaIterator.__next__">
+<span class="sig-name descname"><span class="pre">__next__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator.__next__" title="Link to this definition"></a></dt>
+<dd><p>Return the next SeqRecord.</p>
+<p>This method must be implemented by the subclass.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqIlluminaIterator.__abstractmethods__">
+<span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator.__abstractmethods__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Bio.SeqIO.QualityIO.FastqIlluminaIterator.__parameters__">
+<span class="sig-name descname"><span class="pre">__parameters__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#Bio.SeqIO.QualityIO.FastqIlluminaIterator.__parameters__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
