@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cookbook – Cool things to do with it &mdash; Biopython 1.85.dev0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/biopython.css?v=d1305275" />
 
@@ -163,7 +163,7 @@ sequence file for this subset.</p>
 <p>Let’s say the list of IDs is in a simple text file, as the first word on
 each line. This could be a tabular file where the first column is the
 ID. Try something like this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">input_file</span> <span class="o">=</span> <span class="s2">&quot;big_file.sff&quot;</span>
 <span class="n">id_file</span> <span class="o">=</span> <span class="s2">&quot;short_list.txt&quot;</span>
@@ -188,7 +188,7 @@ for a large FASTA or FASTQ file for speed you would be better off not
 using the high-level <code class="docutils literal notranslate"><span class="pre">SeqIO</span></code> interface, but working directly with
 strings. This next example shows how to do this with FASTQ files – it is
 more complicated:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.SeqIO.QualityIO</span> <span class="kn">import</span> <span class="n">FastqGeneralIterator</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqIO.QualityIO</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastqGeneralIterator</span>
 
 <span class="n">input_file</span> <span class="o">=</span> <span class="s2">&quot;big_file.fastq&quot;</span>
 <span class="n">id_file</span> <span class="o">=</span> <span class="s2">&quot;short_list.txt&quot;</span>
@@ -228,7 +228,7 @@ our website,
 <a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Tests/GenBank/NC_005816.gb">NC_005816.gb</a>.
 This file contains one and only one record, so we can read it in as a
 <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> using the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.read()</span></code> function:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">original_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -237,7 +237,7 @@ would use the built-in Python <code class="docutils literal notranslate"><span c
 the function <code class="docutils literal notranslate"><span class="pre">random.shuffle</span></code> – but this works on a Python list. Our
 sequence is a <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object, so in order to shuffle it we need to turn
 it into a list:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">nuc_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">original_rec</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">nuc_list</span><span class="p">)</span>  <span class="c1"># acts in situ!</span>
 </pre></div>
@@ -247,8 +247,8 @@ need to construct a new <code class="docutils literal notranslate"><span class="
 this shuffled list. In order to do this, we need to turn the list of
 nucleotides (single letter strings) into a long string – the standard
 Python way to do this is with the string object’s join method.</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Seq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqRecord</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqRecord</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">shuffled_rec</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nuc_list</span><span class="p">)),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;Shuffled&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Based on </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">original_rec</span><span class="o">.</span><span class="n">id</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -260,10 +260,10 @@ versions of the original sequence.</p>
 <p>This first version just uses a big for loop and writes out the records
 one by one (using the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code>’s format method described in
 Section <a class="reference internal" href="chapter_seqio.html#sec-bio-seqio-and-stringio"><span class="std std-ref">Getting your SeqRecord objects as formatted strings</span></a>):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
-<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Seq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Seq</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqRecord</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">original_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
 
@@ -281,13 +281,13 @@ Section <a class="reference internal" href="chapter_seqio.html#sec-bio-seqio-an
 </div>
 <p>Personally I prefer the following version using a function to shuffle
 the record and a generator expression instead of the for loop:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">Bio.Seq</span> <span class="kn">import</span> <span class="n">Seq</span>
-<span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
-<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Seq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Seq</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqRecord</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 
-<span class="k">def</span> <span class="nf">make_shuffle_record</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">new_id</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_shuffle_record</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">new_id</span><span class="p">):</span>
     <span class="n">nuc_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
     <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">nuc_list</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">SeqRecord</span><span class="p">(</span>
@@ -324,10 +324,10 @@ create a protein <code class="docutils literal notranslate"><span class="pre">Se
 identifiers for your sequences, and the appropriate genetic code. In
 this example we just use the default table and add a prefix to the
 identifier:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.SeqRecord</span> <span class="kn">import</span> <span class="n">SeqRecord</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqRecord</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqRecord</span>
 
 
-<span class="k">def</span> <span class="nf">make_protein_record</span><span class="p">(</span><span class="n">nuc_record</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_protein_record</span><span class="p">(</span><span class="n">nuc_record</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a new SeqRecord with the translated sequence (default table).&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">SeqRecord</span><span class="p">(</span>
         <span class="n">seq</span><span class="o">=</span><span class="n">nuc_record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">cds</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
@@ -339,7 +339,7 @@ identifier:</p>
 <p>We can then use this function to turn the input nucleotide records into
 protein records ready for output. An elegant way and memory efficient
 way to do this is with a generator expression:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">proteins</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">make_protein_record</span><span class="p">(</span><span class="n">nuc_rec</span><span class="p">)</span>
@@ -362,7 +362,7 @@ usually it is not important. You may want to edit the file to make
 everything consistent (e.g. all upper case), and you can do this easily
 using the <code class="docutils literal notranslate"><span class="pre">upper()</span></code> method of the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> object (added in
 Biopython 1.55):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">records</span> <span class="o">=</span> <span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;mixed.fas&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
 <span class="n">count</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="s2">&quot;upper.fas&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
@@ -387,7 +387,7 @@ contigs from an assembly), and you are working with a file format like
 FASTA or FASTQ which <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> can read, write (and index).</p>
 <p>If the file is small enough, you can load it all into memory at once as
 a list of <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> objects, sort the list, and save it:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">records</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
 <span class="n">records</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
@@ -398,7 +398,7 @@ a list of <code class="docutils literal notranslate"><span class="pre">SeqRecord
 the records (here we sort them by length). If you wanted the longest
 records first, you could flip the comparison or use the reverse
 argument:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">records</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">))</span>
 <span class="n">records</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">r</span><span class="p">:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
@@ -409,7 +409,7 @@ argument:</p>
 large file and you can’t load it all into memory like this? For example,
 you might have some next-generation sequencing reads to sort by length.
 This can be solved using the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code> function.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="c1"># Get the lengths and ids, and sort on length</span>
 <span class="n">len_and_ids</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
@@ -435,7 +435,7 @@ support, like the plain text SwissProt format? Here is an alternative
 solution using the <code class="docutils literal notranslate"><span class="pre">get_raw()</span></code> method added to <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.index()</span></code>
 in Biopython 1.54 (see
 Section <a class="reference internal" href="chapter_seqio.html#sec-seqio-index-getraw"><span class="std std-ref">Getting the raw data for a record</span></a>).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="c1"># Get the lengths and ids, and sort on length</span>
 <span class="n">len_and_ids</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
@@ -456,8 +456,8 @@ binary mode because the <code class="docutils literal notranslate"><span class="
 a second time it should be faster. If you only want to use this with
 FASTA format, we can speed this up one step further by using the
 low-level FASTA parser to get the record identifiers and lengths:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.SeqIO.FastaIO</span> <span class="kn">import</span> <span class="n">SimpleFastaParser</span>
-<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqIO.FastaIO</span><span class="w"> </span><span class="kn">import</span> <span class="n">SimpleFastaParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="c1"># Get the lengths and ids, and sort on length</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">in_handle</span><span class="p">:</span>
@@ -499,7 +499,7 @@ sequence read archive,
 Roche 454 GS FLX single end data from virus infected California sea
 lions (see <a class="reference external" href="https://www.ebi.ac.uk/ena/data/view/SRS004476">https://www.ebi.ac.uk/ena/data/view/SRS004476</a> for details).</p>
 <p>First, let’s count the reads:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;SRR020192.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">):</span>
@@ -508,7 +508,7 @@ lions (see <a class="reference external" href="https://www.ebi.ac.uk/ena/data/vi
 </pre></div>
 </div>
 <p>Now let’s do a simple filtering for a minimum PHRED quality of 20:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">good_reads</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">rec</span>
@@ -547,7 +547,7 @@ Section <a class="reference internal" href="chapter_seqio.html#sec-low-level-fa
 loading all the sequences into memory at once), and the <code class="docutils literal notranslate"><span class="pre">Seq</span></code> object’s
 <code class="docutils literal notranslate"><span class="pre">startswith</span></code> method to see if the read starts with the primer
 sequence:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">primer_reads</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">rec</span>
@@ -565,7 +565,7 @@ these reads but with the primer sequence removed? That’s just a small
 change as we can slice the <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> (see
 Section <a class="reference internal" href="chapter_seq_annot.html#sec-seqrecord-slicing"><span class="std std-ref">Slicing a SeqRecord</span></a>) to remove
 the first eleven letters (the length of our primer):</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">trimmed_primer_reads</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">rec</span><span class="p">[</span><span class="mi">11</span><span class="p">:]</span>
@@ -583,10 +583,10 @@ and save them to another new FASTQ file, <code class="docutils literal notransla
 their primer removed, but all the other reads are kept as they were? If
 we want to still use a generator expression, it is probably clearest to
 define our own trim function:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 
-<span class="k">def</span> <span class="nf">trim_primer</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">primer</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trim_primer</span><span class="p">(</span><span class="n">record</span><span class="p">,</span> <span class="n">primer</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">primer</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">record</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">primer</span><span class="p">)</span> <span class="p">:]</span>
     <span class="k">else</span><span class="p">:</span>
@@ -605,10 +605,10 @@ define our own trim function:</p>
 <span class="math notranslate nohighlight">\(41892\)</span> reads. Again, we’re used a generator expression to avoid
 any memory problems. You could alternatively use a generator function
 rather than a generator expression.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 
-<span class="k">def</span> <span class="nf">trim_primers</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">primer</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trim_primers</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">primer</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Removes perfect primer sequences at start of reads.</span>
 
 <span class="sd">    This is a generator function, the records argument should</span>
@@ -641,10 +641,10 @@ NCBI
 (<a class="reference external" href="ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR020/SRR020192/SRR020192.fastq.gz">ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR020/SRR020192/SRR020192.fastq.gz</a>).</p>
 <p>This time however, we will look for the sequence <em>anywhere</em> in the
 reads, not just at the very beginning:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 
-<span class="k">def</span> <span class="nf">trim_adaptors</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">adaptor</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trim_adaptors</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">adaptor</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Trims perfect adaptor sequences.</span>
 
 <span class="sd">    This is a generator function, the records argument should</span>
@@ -676,10 +676,10 @@ a primer/adaptor at the start of each read, you may find some of the
 trimmed reads are quite short after trimming (e.g. if the adaptor was
 found in the middle rather than near the start). So, let’s add a minimum
 length requirement as well:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 
-<span class="k">def</span> <span class="nf">trim_adaptors</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">adaptor</span><span class="p">,</span> <span class="n">min_len</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">trim_adaptors</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">adaptor</span><span class="p">,</span> <span class="n">min_len</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Trims perfect adaptor sequences, checks read length.</span>
 
 <span class="sd">    This is a generator function, the records argument should</span>
@@ -760,7 +760,7 @@ equations allow conversion between the two scoring systems - and
 Biopython includes functions to do this in the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.QualityIO</span></code>
 module, which are called if you use <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> to convert an old
 Solexa/Illumina file into a standard Sanger FASTQ file:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;solexa.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-solexa&quot;</span><span class="p">,</span> <span class="s2">&quot;standard.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
 </pre></div>
@@ -768,7 +768,7 @@ Solexa/Illumina file into a standard Sanger FASTQ file:</p>
 <p>If you want to convert a new Illumina 1.3+ FASTQ file, all that gets
 changed is the ASCII offset because although encoded differently the
 scores are all PHRED qualities:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;illumina.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq-illumina&quot;</span><span class="p">,</span> <span class="s2">&quot;standard.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
 </pre></div>
@@ -787,7 +787,7 @@ variants are very different from the original FASTQ standard as used by
 Sanger, the NCBI, and elsewhere (format name <code class="docutils literal notranslate"><span class="pre">fastq</span></code> or
 <code class="docutils literal notranslate"><span class="pre">fastq-sanger</span></code>).</p>
 <p>For more details, see the built-in help (also at <a class="reference internal" href="../api/Bio.SeqIO.QualityIO.html#module-Bio.SeqIO.QualityIO" title="Bio.SeqIO.QualityIO"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Bio.SeqIO.QualityIO</span></code></a>):</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqIO</span> <span class="kn">import</span> <span class="n">QualityIO</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqIO</span><span class="w"> </span><span class="kn">import</span> <span class="n">QualityIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">QualityIO</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -799,13 +799,13 @@ hold <em>just</em> sequences, while QUAL files hold <em>just</em> the qualities.
 Therefore a single FASTQ file can be converted to or from <em>paired</em> FASTA
 and QUAL files.</p>
 <p>Going from FASTQ to FASTA is easy:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;example.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Going from FASTQ to QUAL is also easy:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;example.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;example.qual&quot;</span><span class="p">,</span> <span class="s2">&quot;qual&quot;</span><span class="p">)</span>
 </pre></div>
@@ -818,7 +818,7 @@ memory efficient way is to loop over both together. The code is a little
 fiddly, so we provide a function called <code class="docutils literal notranslate"><span class="pre">PairedFastaQualIterator</span></code> in
 the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.QualityIO</span></code> module to do this. This takes two handles
 (the FASTA file and the QUAL file) and returns a <code class="docutils literal notranslate"><span class="pre">SeqRecord</span></code> iterator:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio.SeqIO.QualityIO</span> <span class="kn">import</span> <span class="n">PairedFastaQualIterator</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqIO.QualityIO</span><span class="w"> </span><span class="kn">import</span> <span class="n">PairedFastaQualIterator</span>
 
 <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">PairedFastaQualIterator</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example.fasta&quot;</span><span class="p">),</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example.qual&quot;</span><span class="p">)):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
@@ -828,8 +828,8 @@ the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.Quali
 (e.g. the records are in the same order, and have the same sequence
 length). You can combine this with the <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code> function to
 convert a pair of FASTA and QUAL files into a single FASTQ files:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="kn">from</span> <span class="nn">Bio.SeqIO.QualityIO</span> <span class="kn">import</span> <span class="n">PairedFastaQualIterator</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqIO.QualityIO</span><span class="w"> </span><span class="kn">import</span> <span class="n">PairedFastaQualIterator</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_handle</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example.qual&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">q_handle</span><span class="p">:</span>
     <span class="n">records</span> <span class="o">=</span> <span class="n">PairedFastaQualIterator</span><span class="p">(</span><span class="n">f_handle</span><span class="p">,</span> <span class="n">q_handle</span><span class="p">)</span>
@@ -852,7 +852,7 @@ file by its name (see Section <a class="reference internal" href="chapter_seqio
 (<a class="reference external" href="ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR020/SRR020192/SRR020192.fastq.gz">ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR020/SRR020192/SRR020192.fastq.gz</a>),
 although this is actually quite a small FASTQ file with less than
 <span class="math notranslate nohighlight">\(50,000\)</span> reads:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">fq_dict</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;SRR020192.fastq&quot;</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">fq_dict</span><span class="p">)</span>
 <span class="go">41892</span>
@@ -881,7 +881,7 @@ original flow information.</p>
 or to a single FASTQ file. These operations are trivial using the
 <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.convert()</span></code> function (see
 Section <a class="reference internal" href="chapter_seqio.html#sec-seqio-conversion"><span class="std std-ref">Converting between sequence file formats</span></a>):</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;E3MFGYR02_random_10_reads.sff&quot;</span><span class="p">,</span> <span class="s2">&quot;sff&quot;</span><span class="p">,</span> <span class="s2">&quot;reads.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
 <span class="go">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;E3MFGYR02_random_10_reads.sff&quot;</span><span class="p">,</span> <span class="s2">&quot;sff&quot;</span><span class="p">,</span> <span class="s2">&quot;reads.qual&quot;</span><span class="p">,</span> <span class="s2">&quot;qual&quot;</span><span class="p">)</span>
@@ -895,7 +895,7 @@ example just ten. This will give you the <em>untrimmed</em> reads, where the
 leading and trailing poor quality sequence or adaptor will be in lower
 case. If you want the <em>trimmed</em> reads (using the clipping information
 recorded within the SFF file) use this:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;E3MFGYR02_random_10_reads.sff&quot;</span><span class="p">,</span> <span class="s2">&quot;sff-trim&quot;</span><span class="p">,</span> <span class="s2">&quot;trimmed.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
 <span class="go">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">SeqIO</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;E3MFGYR02_random_10_reads.sff&quot;</span><span class="p">,</span> <span class="s2">&quot;sff-trim&quot;</span><span class="p">,</span> <span class="s2">&quot;trimmed.qual&quot;</span><span class="p">,</span> <span class="s2">&quot;qual&quot;</span><span class="p">)</span>
@@ -918,7 +918,7 @@ line (but currently FASTQ output is not supported), e.g.</p>
 trimming points deliberately mimics what the Roche tools do.</p>
 <p>For more information on the Biopython SFF support, consult the built-in
 help:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.SeqIO</span> <span class="kn">import</span> <span class="n">SffIO</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqIO</span><span class="w"> </span><span class="kn">import</span> <span class="n">SffIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">help</span><span class="p">(</span><span class="n">SffIO</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -941,7 +941,7 @@ pre-marked genes:
 This is a bacterial sequence, so we’ll want to use NCBI codon table 11
 (see Section <a class="reference internal" href="chapter_seq_objects.html#sec-translation"><span class="std std-ref">Translation</span></a> about
 translation).</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.fna&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="mi">11</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">min_pro_len</span> <span class="o">=</span> <span class="mi">100</span>
@@ -985,14 +985,14 @@ one thing this code doesn’t do is keep track of where the proteins are.</p>
 tracks the locations in terms of the protein counting, and converts back
 to the parent sequence by multiplying by three, then adjusting for the
 frame and strand:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
 <span class="n">table</span> <span class="o">=</span> <span class="mi">11</span>
 <span class="n">min_pro_len</span> <span class="o">=</span> <span class="mi">100</span>
 
 
-<span class="k">def</span> <span class="nf">find_orfs_with_trans</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">trans_table</span><span class="p">,</span> <span class="n">min_protein_length</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_orfs_with_trans</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">trans_table</span><span class="p">,</span> <span class="n">min_protein_length</span><span class="p">):</span>
     <span class="n">answer</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">seq_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">strand</span><span class="p">,</span> <span class="n">nuc</span> <span class="ow">in</span> <span class="p">[(</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">seq</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">seq</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">())]:</span>
@@ -1079,7 +1079,7 @@ which has only 94 sequences.</p>
 <p>First of all, we will use <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> to parse the FASTA file and
 compile a list of all the sequence lengths. You could do this with a for
 loop, but I find a list comprehension more pleasing:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span> <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">sizes</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">sizes</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
 <span class="go">(94, 572, 789)</span>
@@ -1089,11 +1089,11 @@ loop, but I find a list comprehension more pleasing:</p>
 </div>
 <p>Now that we have the lengths of all the genes (as a list of integers),
 we can use the matplotlib histogram function to display it.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span> <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)]</span>
 
-<span class="kn">import</span> <span class="nn">pylab</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
 
 <span class="n">pylab</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
@@ -1129,8 +1129,8 @@ reuse our orchid FASTA file
 <p>First of all, we will use <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> to parse the FASTA file and
 compile a list of all the GC percentages. Again, you could do this with
 a for loop, but I prefer this:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="kn">from</span> <span class="nn">Bio.SeqUtils</span> <span class="kn">import</span> <span class="n">gc_fraction</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqUtils</span><span class="w"> </span><span class="kn">import</span> <span class="n">gc_fraction</span>
 
 <span class="n">gc_values</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
     <span class="mi">100</span> <span class="o">*</span> <span class="n">gc_fraction</span><span class="p">(</span><span class="n">rec</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span> <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
@@ -1140,7 +1140,7 @@ a for loop, but I prefer this:</p>
 <p>Having read in each sequence and calculated the GC%, we then sorted them
 into ascending order. Now we’ll take this list of floating point values
 and plot them with matplotlib:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
 
 <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gc_values</span><span class="p">)</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
@@ -1179,7 +1179,7 @@ simplicity we’ll only look for perfect matches (shown in black in
 <p>To start off, we’ll need two sequences. For the sake of argument, we’ll
 just take the first two from our orchid FASTA file
 <a class="reference external" href="https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/ls_orchid.fasta">ls_orchid.fasta</a>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">in_handle</span><span class="p">:</span>
     <span class="n">record_iterator</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">in_handle</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
@@ -1208,7 +1208,7 @@ with a nested list comprehension:</p>
 we’ll use the matplotlib’s <code class="docutils literal notranslate"><span class="pre">pylab.imshow()</span></code> function to display this
 data, first requesting the gray color scheme so this is done in black
 and white:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
 
 <span class="n">pylab</span><span class="o">.</span><span class="n">gray</span><span class="p">()</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -1265,7 +1265,7 @@ to locations:</p>
 </pre></div>
 </div>
 <p>We are now ready to draw the revised dot plot as a scatter plot:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
 
 <span class="n">pylab</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>  <span class="c1"># clear any prior graph</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">gray</span><span class="p">()</span>
@@ -1307,8 +1307,8 @@ and are from <em>E. coli</em> – see
 order to show the forward and reverse qualities on two subplots, side by
 side. There is also a little bit of code to only plot the first fifty
 reads.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pylab</span>
-<span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="k">for</span> <span class="n">subfigure</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;SRR001666_</span><span class="si">%i</span><span class="s2">.fastq&quot;</span> <span class="o">%</span> <span class="n">subfigure</span>

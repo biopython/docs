@@ -5,7 +5,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bio.bgzf module &mdash; Biopython 1.85.dev0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
       <link rel="stylesheet" type="text/css" href="../_static/biopython.css?v=d1305275" />
 
@@ -176,24 +176,24 @@ CPU load).</p>
 it pollutes the namespace. This is a real issue with Bio.bgzf (and the
 standard Python library gzip) because they contain a function called open
 i.e. Suppose you do this:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio.bgzf</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.bgzf</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">open</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
 <span class="go">Bio.bgzf</span>
 </pre></div>
 </div>
 <p>Or,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">gzip</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">gzip</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">open</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
 <span class="go">gzip</span>
 </pre></div>
 </div>
 <p>Notice that the open function has been replaced. You can “fix” this if you
 need to by importing the built-in open function:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">open</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">open</span>
 </pre></div>
 </div>
 <p>However, what we recommend instead is to use the explicit namespace, e.g.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">bgzf</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">bgzf</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">bgzf</span><span class="o">.</span><span class="n">open</span><span class="o">.</span><span class="vm">__module__</span><span class="p">)</span>
 <span class="go">Bio.bgzf</span>
 </pre></div>
@@ -203,7 +203,7 @@ need to by importing the built-in open function:</p>
 <h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
 <p>This is an ordinary GenBank file compressed using BGZF, so it can
 be decompressed using gzip,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">gzip</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">0</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -290,7 +290,7 @@ a relative offset.</p>
 <p>Of course you can parse this file with Bio.SeqIO using BgzfReader,
 although there isn’t any benefit over using gzip.open(…), unless
 you want to index BGZF compressed sequence files:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Bio</span> <span class="kn">import</span> <span class="n">SeqIO</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -406,7 +406,7 @@ the file.</p>
 length (add these for the start of the next block), and the
 decompressed length of the blocks contents (limited to 65536 in
 BGZF), as an iterator - one tuple per BGZF block.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">open</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">open</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
@@ -471,7 +471,7 @@ the blocks show the same sizes (they contain the same read data):</p>
 <p>BGZF reader, acts like a read only handle but seek/tell differ.</p>
 <p>Let’s use the BgzfBlocks function to have a peek at the BGZF blocks
 in an example BAM file,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">open</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">open</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
