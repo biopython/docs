@@ -495,9 +495,7 @@ the ID of each record, you can use a generator function as follows:</p>
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaWriter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.FastaIO.</span></span><span class="sig-name descname"><span class="pre">FastaWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record2title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaWriter" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceWriter" title="Bio.SeqIO.Interfaces.SequenceWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequenceWriter</span></code></a></p>
-<p>Class to write Fasta format files (OBSOLETE).</p>
-<p>Please use the <code class="docutils literal notranslate"><span class="pre">as_fasta</span></code> function instead, or the top level
-<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code> function instead using <code class="docutils literal notranslate"><span class="pre">format=&quot;fasta&quot;</span></code>.</p>
+<p>FASTA file writer.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaWriter.modes">
 <span class="sig-name descname"><span class="pre">modes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'t'</span></em><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaWriter.modes" title="Link to this definition"></a></dt>
@@ -506,7 +504,7 @@ the ID of each record, you can use a generator function as follows:</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaWriter.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wrap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">60</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record2title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaWriter.__init__" title="Link to this definition"></a></dt>
-<dd><p>Create a Fasta writer (OBSOLETE).</p>
+<dd><p>Create a Fasta writer.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
 <li><p>target - Output stream opened in text mode, or a path to a file.</p></li>
@@ -541,6 +539,12 @@ record.id, then just the record.description is used.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaWriter.to_string">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaWriter.to_string" title="Link to this definition"></a></dt>
+<dd><p>Turn a SeqRecord into a FASTA formatted string, and return it.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaWriter.write_record">
 <span class="sig-name descname"><span class="pre">write_record</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaWriter.write_record" title="Link to this definition"></a></dt>
 <dd><p>Write a single Fasta record to the file.</p>
@@ -567,16 +571,14 @@ record.id, then just the record.description is used.</p></li>
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaTwoLineWriter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.FastaIO.</span></span><span class="sig-name descname"><span class="pre">FastaTwoLineWriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record2title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineWriter" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#Bio.SeqIO.FastaIO.FastaWriter" title="Bio.SeqIO.FastaIO.FastaWriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">FastaWriter</span></code></a></p>
-<p>Class to write 2-line per record Fasta format files (OBSOLETE).</p>
+<p>Class to write 2-line per record Fasta format files.</p>
 <p>This means we write the sequence information  without line
 wrapping, and will always write a blank line for an empty
 sequence.</p>
-<p>Please use the <code class="docutils literal notranslate"><span class="pre">as_fasta_2line</span></code> function instead, or the top level
-<code class="docutils literal notranslate"><span class="pre">Bio.SeqIO.write()</span></code> function instead using <code class="docutils literal notranslate"><span class="pre">format=&quot;fasta&quot;</span></code>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaTwoLineWriter.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">record2title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineWriter.__init__" title="Link to this definition"></a></dt>
-<dd><p>Create a 2-line per record Fasta writer (OBSOLETE).</p>
+<dd><p>Create a 2-line per record Fasta writer.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
 <li><p>handle - Handle to an output file, e.g. as returned
@@ -607,6 +609,12 @@ record.id, then just the record.description is used.</p></li>
 </div>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaTwoLineWriter.to_string">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineWriter.to_string" title="Link to this definition"></a></dt>
+<dd><p>Return a string in FASTA format with the sequence as one line.</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaTwoLineWriter.__abstractmethods__">
 <span class="sig-name descname"><span class="pre">__abstractmethods__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">frozenset({})</span></em><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaTwoLineWriter.__abstractmethods__" title="Link to this definition"></a></dt>
@@ -628,16 +636,12 @@ record.id, then just the record.description is used.</p></li>
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.as_fasta">
 <span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.FastaIO.</span></span><span class="sig-name descname"><span class="pre">as_fasta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.as_fasta" title="Link to this definition"></a></dt>
 <dd><p>Turn a SeqRecord into a FASTA formatted string.</p>
-<p>This is used internally by the SeqRecord’s .format(“fasta”)
-method and by the SeqIO.write(…, …, “fasta”) function.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.as_fasta_2line">
 <span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.FastaIO.</span></span><span class="sig-name descname"><span class="pre">as_fasta_2line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.as_fasta_2line" title="Link to this definition"></a></dt>
 <dd><p>Turn a SeqRecord into a two-line FASTA formatted string.</p>
-<p>This is used internally by the SeqRecord’s .format(“fasta-2line”)
-method and by the SeqIO.write(…, …, “fasta-2line”) function.</p>
 </dd></dl>
 
 </section>
