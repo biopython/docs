@@ -595,32 +595,159 @@ alignment are indicated by -1:</p>
 </div>
 </section>
 <section id="counting-identities-mismatches-and-gaps">
-<h3>Counting identities, mismatches, and gaps<a class="headerlink" href="#counting-identities-mismatches-and-gaps" title="Link to this heading"></a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">counts</span></code> method calculates the number of identities, mismatches,
-and gaps of a pairwise alignment. For an alignment of more than two
-sequences, the number of identities, mismatches, and gaps are calculated
-and summed for all pairs of sequences in the alignment. The three
-numbers are returned as an <code class="docutils literal notranslate"><span class="pre">AlignmentCounts</span></code> object, which is a
-<code class="docutils literal notranslate"><span class="pre">namedtuple</span></code> with fields <code class="docutils literal notranslate"><span class="pre">gaps</span></code>, <code class="docutils literal notranslate"><span class="pre">identities</span></code>, and <code class="docutils literal notranslate"><span class="pre">mismatches</span></code>.
-This method currently takes no arguments, but in the future will likely
-be modified to accept optional arguments allowing its behavior to be
-customized.</p>
+<span id="paragraph-alignment-counts"></span><h3>Counting identities, mismatches, and gaps<a class="headerlink" href="#counting-identities-mismatches-and-gaps" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">counts</span></code> method counts the number of identities, mismatches, and gaps
+(insertions and deletions) of an alignment.  The return value is an
+<code class="docutils literal notranslate"><span class="pre">AlignmentCounts</span></code> object, from which the counts can be obtained as properties.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pairwise_alignment</span><span class="p">)</span>
 <span class="go">target            1 CGGTTTTT 9</span>
 <span class="go">                  0 .|-|||-- 8</span>
 <span class="go">query             0 AG-TTT-- 5</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pairwise_alignment</span><span class="o">.</span><span class="n">counts</span><span class="p">()</span>
-<span class="go">AlignmentCounts(gaps=3, identities=4, mismatches=1)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span> <span class="o">=</span> <span class="n">pairwise_alignment</span><span class="o">.</span><span class="n">counts</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">aligned</span>
+<span class="go">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">identities</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">mismatches</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">gaps</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">insertions</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">deletions</span>
+<span class="go">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">internal_deletions</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">right_deletions</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>For an alignment of more than two sequences, the number of identities,
+mismatches, and gaps are calculated and summed for all pairs of sequences in
+the alignment.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
 <span class="go">                  1 CGGTTTTT 9</span>
 <span class="go">                  0 AG-TTT-- 5</span>
 <span class="go">                  0 AGGTTT-- 6</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">counts</span><span class="p">()</span>
-<span class="go">AlignmentCounts(gaps=6, identities=14, mismatches=2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span> <span class="o">=</span> <span class="n">alignment</span><span class="o">.</span><span class="n">counts</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">aligned</span>
+<span class="go">16</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">identities</span>
+<span class="go">14</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">mismatches</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">insertions</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">deletions</span>
+<span class="go">5</span>
 </pre></div>
 </div>
+<p>Here, insertions are defined as sequence insertions of a later sequence into an
+earlier sequence in the alignment. In contrast to the pairwise alignment above,
+the distinction between insertions and deletions may not be meaningful for a
+multiple sequence alignment, and you will probably be more interested in the
+number of gaps (= insertions + deletions):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">gaps</span>
+<span class="go">6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">left_gaps</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">right_gaps</span>
+<span class="go">4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">internal_gaps</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+<p>For protein alignments, in addition to the number of identities and mismatches,
+you can also count the number of positive matches by supplying a substitution
+matrix (see Chapter <a class="reference internal" href="chapter_pairwise.html#sec-substitution-matrices"><span class="std std-ref">Substitution matrices</span></a>):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">substitution_matrices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">substitution_matrix</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;BLOSUM62&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein_alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">([</span><span class="s2">&quot;GQCGSCWSFS&quot;</span><span class="p">,</span> <span class="s2">&quot;GACGSCWTFS&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">protein_alignment</span><span class="p">)</span>
+<span class="go">target            0 GQCGSCWSFS 10</span>
+<span class="go">                  0 |.|||||.|| 10</span>
+<span class="go">query             0 GACGSCWTFS 10</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span> <span class="o">=</span> <span class="n">protein_alignment</span><span class="o">.</span><span class="n">counts</span><span class="p">(</span><span class="n">substitution_matrix</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">aligned</span>
+<span class="go">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">identities</span>
+<span class="go">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">mismatches</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">positives</span>
+<span class="go">9</span>
+</pre></div>
+</div>
+<p>where the number of positives is one higher than the number of identities
+because the mismatch of S against T has a positive score (while the mismatch
+score of Q against A is not positive):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">substitution_matrix</span><span class="p">[</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">]</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">substitution_matrix</span><span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">]</span>
+<span class="go">-1.0</span>
+</pre></div>
+</div>
+<p>An <code class="docutils literal notranslate"><span class="pre">AlignmentCounts</span></code> object has the following properties:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>property</strong></p></th>
+<th class="head"><p><strong>description</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">aligned</span></code></p></td>
+<td><p>The number of aligned letters in the alignment. This quantity is also calculated if some or all of the sequences are undefined. If all sequences are known, then <code class="docutils literal notranslate"><span class="pre">aligned</span></code> = <code class="docutils literal notranslate"><span class="pre">identities</span></code> + <code class="docutils literal notranslate"><span class="pre">mismatches</span></code>. If some sequences are undefined, then <code class="docutils literal notranslate"><span class="pre">aligned</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">identities</span></code> + <code class="docutils literal notranslate"><span class="pre">mismatches</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">identities</span></code></p></td>
+<td><p>The number of identical letters in the alignment</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mismatches</span></code></p></td>
+<td><p>The number of mismatched letters in the alignment</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">positives</span></code></p></td>
+<td><p>The number of aligned letters with a positive score</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">left_insertions</span></code></p></td>
+<td><p>The number of insertions on the left side of the alignment</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">left_deletions</span></code></p></td>
+<td><p>The number of deletions on the left side of the alignment</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">right_insertions</span></code></p></td>
+<td><p>The number of insertions on the right side of the alignment</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">right_deletions</span></code></p></td>
+<td><p>The number of deletions on the right side of the alignment</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">internal_insertions</span></code></p></td>
+<td><p>The number of insertions in the interior of the alignment</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">internal_deletions</span></code></p></td>
+<td><p>The number of deletions in the interior of the alignment</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">insertions</span></code></p></td>
+<td><p>The total number of insertions, equal to <code class="docutils literal notranslate"><span class="pre">left_insertions</span></code> + <code class="docutils literal notranslate"><span class="pre">right_insertions</span></code> + <code class="docutils literal notranslate"><span class="pre">internal_insertions</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">deletions</span></code></p></td>
+<td><p>The total number of deletions, equal to <code class="docutils literal notranslate"><span class="pre">left_deletions</span></code> + <code class="docutils literal notranslate"><span class="pre">right_deletions</span></code> + <code class="docutils literal notranslate"><span class="pre">internal_deletions</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">left_gaps</span></code></p></td>
+<td><p>The number of gaps on the left side of the alignment, equal to <code class="docutils literal notranslate"><span class="pre">left_insertions</span></code> + <code class="docutils literal notranslate"><span class="pre">left_deletions</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">right_gaps</span></code></p></td>
+<td><p>The number of gaps on the right side of the alignment, equal to <code class="docutils literal notranslate"><span class="pre">right_insertions</span></code> + <code class="docutils literal notranslate"><span class="pre">right_deletions</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">internal_gaps</span></code></p></td>
+<td><p>The number of gaps in the interior of the alignment, equal to <code class="docutils literal notranslate"><span class="pre">internal_insertions</span></code> + <code class="docutils literal notranslate"><span class="pre">internal_deletions</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gaps</span></code></p></td>
+<td><p>The total number of gaps in the alignment, equal to <code class="docutils literal notranslate"><span class="pre">left_gaps</span></code> + <code class="docutils literal notranslate"><span class="pre">right_gaps</span></code> + <code class="docutils literal notranslate"><span class="pre">internal_gaps</span></code></p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="letter-frequencies">
 <h3>Letter frequencies<a class="headerlink" href="#letter-frequencies" title="Link to this heading"></a></h3>
@@ -2269,12 +2396,20 @@ information associated with this alignment specifically:</p>
 </div>
 <p>The number of gaps, identities, and mismatches can also be obtained by
 calling the <code class="docutils literal notranslate"><span class="pre">counts</span></code> method on the <code class="docutils literal notranslate"><span class="pre">alignment</span></code> object:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">counts</span><span class="p">()</span>
-<span class="go">AlignmentCounts(gaps=19, identities=112, mismatches=0)</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span> <span class="o">=</span> <span class="n">alignment</span><span class="o">.</span><span class="n">counts</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>where <code class="docutils literal notranslate"><span class="pre">AlignmentCounts</span></code> is a <code class="docutils literal notranslate"><span class="pre">namedtuple</span></code> in the <code class="docutils literal notranslate"><span class="pre">collections</span></code>
-module in Python’s standard library.</p>
+<p>where the <code class="docutils literal notranslate"><span class="pre">counts</span></code> variable is an <code class="docutils literal notranslate"><span class="pre">AlignmentCounts</span></code> object collecting
+information on the number of gaps, matches, and mismatches in the alignment
+library (see <a class="reference internal" href="#paragraph-alignment-counts"><span class="std std-ref">Counting identities, mismatches, and gaps</span></a>)):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">identities</span>
+<span class="go">112</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">mismatches</span>
+<span class="go">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">gaps</span>
+<span class="go">19</span>
+</pre></div>
+</div>
 <p>The consensus line shown between the two sequences is stored in the
 <code class="docutils literal notranslate"><span class="pre">column_annotations</span></code> attribute:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">column_annotations</span>

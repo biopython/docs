@@ -596,52 +596,175 @@
 class, used in the Bio.AlignIO module.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.Align.AlignmentCounts">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.</span></span><span class="sig-name descname"><span class="pre">AlignmentCounts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gaps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mismatches</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignmentCounts" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.__getnewargs__">
-<span class="sig-name descname"><span class="pre">__getnewargs__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignmentCounts.__getnewargs__" title="Link to this definition"></a></dt>
-<dd><p>Return self as a plain tuple.  Used by copy and pickle.</p>
-</dd></dl>
-
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.</span></span><span class="sig-name descname"><span class="pre">AlignmentCounts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_insertions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_deletions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_insertions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_deletions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_insertions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_deletions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aligned</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mismatches</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positives</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignmentCounts" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Detailed number of gaps, identities, and mismatches.</p>
+<p>An <cite>AlignmentCounts</cite> object has the following properties:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>aligned             - the number of letters aligned to each other. If</dt><dd><p>sequences are known, then this is equal to the
+number of identities plus the number of mismatches.
+Otherwise, the number of aligned letters may be
+greater than the number of identities plus the
+number of mismatches. The number of aligned letters
+is always calculated, even if none of the sequences
+are known.</p>
+</dd>
+</dl>
+</li>
+<li><p>identities          - the number of identical letters in the alignment;</p></li>
+<li><p>mismatches          - the number of mismatched letters in the alignment;</p></li>
+<li><p>positives           - the number of aligned letters with a positive score;</p></li>
+<li><dl class="simple">
+<dt>left_insertions     - the number of insertions on the left side of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>left_deletions      - the number of deletions on the left side of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>right_insertions    - the number of insertions on the right side of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>right_deletions     - the number of deletions on the right side of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>internal_insertions - the number of insertions in the interior of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>internal_deletions  - the number of deletions in the interior of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><p>insertions          - the total number of insertions;</p></li>
+<li><p>deletions           - the total number of deletions;</p></li>
+<li><p>left_gaps           - the number of gaps on the left side of the alignment;</p></li>
+<li><p>right_gaps          - the number of gaps on the right side of the alignment;</p></li>
+<li><p>internal_gaps       - the number of gaps in the interior of the alignment;</p></li>
+<li><p>gaps                - the total number of gaps in the alignment;</p></li>
+</ul>
+</div></blockquote>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.__match_args__">
-<span class="sig-name descname"><span class="pre">__match_args__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('gaps',</span> <span class="pre">'identities',</span> <span class="pre">'mismatches')</span></em><a class="headerlink" href="#Bio.Align.AlignmentCounts.__match_args__" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.__slots__">
+<span class="sig-name descname"><span class="pre">__slots__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('_left_insertions',</span> <span class="pre">'_left_deletions',</span> <span class="pre">'_right_insertions',</span> <span class="pre">'_right_deletions',</span> <span class="pre">'_internal_insertions',</span> <span class="pre">'_internal_deletions',</span> <span class="pre">'_aligned',</span> <span class="pre">'_identities',</span> <span class="pre">'_mismatches',</span> <span class="pre">'_positives')</span></em><a class="headerlink" href="#Bio.Align.AlignmentCounts.__slots__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.__new__">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_cls</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mismatches</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignmentCounts.__new__" title="Link to this definition"></a></dt>
-<dd><p>Create new instance of AlignmentCounts(gaps, identities, mismatches)</p>
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_insertions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left_deletions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_insertions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_deletions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_insertions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_deletions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aligned</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">identities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mismatches</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">positives</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignmentCounts.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize an AlignmentCount object with the given counts.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.__repr__">
 <span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.AlignmentCounts.__repr__" title="Link to this definition"></a></dt>
-<dd><p>Return a nicely formatted representation string</p>
+<dd><p>Return repr(self).</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.__slots__">
-<span class="sig-name descname"><span class="pre">__slots__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#Bio.Align.AlignmentCounts.__slots__" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.gaps">
-<span class="sig-name descname"><span class="pre">gaps</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.gaps" title="Link to this definition"></a></dt>
-<dd><p>Alias for field number 0</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.aligned">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aligned</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.aligned" title="Link to this definition"></a></dt>
+<dd><p>the number of letters aligned to each other in the alignment.</p>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py property">
 <dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.identities">
-<span class="sig-name descname"><span class="pre">identities</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.identities" title="Link to this definition"></a></dt>
-<dd><p>Alias for field number 1</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">identities</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.identities" title="Link to this definition"></a></dt>
+<dd><p>the number of identical letters in the alignment.</p>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="py property">
 <dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.mismatches">
-<span class="sig-name descname"><span class="pre">mismatches</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.mismatches" title="Link to this definition"></a></dt>
-<dd><p>Alias for field number 2</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mismatches</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.mismatches" title="Link to this definition"></a></dt>
+<dd><p>the number of mismatched letters in the alignment.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.positives">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positives</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.positives" title="Link to this definition"></a></dt>
+<dd><p>the number of aligned letters with a positive score.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.left_insertions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">left_insertions</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.left_insertions" title="Link to this definition"></a></dt>
+<dd><p>the number of insertions on the left side of the alignment.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.left_deletions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">left_deletions</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.left_deletions" title="Link to this definition"></a></dt>
+<dd><p>the number of deletions on the left side of the alignment.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.right_insertions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">right_insertions</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.right_insertions" title="Link to this definition"></a></dt>
+<dd><p>the number of insertions on the right side of the alignment.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.right_deletions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">right_deletions</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.right_deletions" title="Link to this definition"></a></dt>
+<dd><p>the number of deletions on the right side of the alignment.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.internal_insertions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">internal_insertions</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.internal_insertions" title="Link to this definition"></a></dt>
+<dd><p>the number of insertions in the interior of the alignment.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.internal_deletions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">internal_deletions</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.internal_deletions" title="Link to this definition"></a></dt>
+<dd><p>the number of deletions in the interior of the alignment.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.left_gaps">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">left_gaps</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.left_gaps" title="Link to this definition"></a></dt>
+<dd><p>the number of gaps on the left side of the alignment.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.right_gaps">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">right_gaps</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.right_gaps" title="Link to this definition"></a></dt>
+<dd><p>the number of gaps on the right side of the alignment.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.internal_gaps">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">internal_gaps</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.internal_gaps" title="Link to this definition"></a></dt>
+<dd><p>the number of gaps in the interior of the alignment.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.insertions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">insertions</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.insertions" title="Link to this definition"></a></dt>
+<dd><p>the total number of insertions.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.deletions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">deletions</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.deletions" title="Link to this definition"></a></dt>
+<dd><p>the total number of deletions.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Bio.Align.AlignmentCounts.gaps">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gaps</span></span><a class="headerlink" href="#Bio.Align.AlignmentCounts.gaps" title="Link to this definition"></a></dt>
+<dd><p>the total number of gaps in the alignment.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2389,8 +2512,30 @@ is 3.5 + 3.5 = 7.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.Alignment.counts">
-<span class="sig-name descname"><span class="pre">counts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.counts" title="Link to this definition"></a></dt>
-<dd><p>Return number of identities, mismatches, and gaps of a pairwise alignment.</p>
+<span class="sig-name descname"><span class="pre">counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substitution_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaps_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.counts" title="Link to this definition"></a></dt>
+<dd><p>Count the number of identities, mismatches, and gaps of an alignment.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>substitution_matrix - If None (default value), do not calculate the number</dt><dd><p>of positive matches in the alignment.
+Otherwise, use the provided substitution matrix
+(typically from the <code class="docutils literal notranslate"><span class="pre">Bio.Align.substitution_matrices</span></code>
+submodule) to also calculate the number of positive
+matches in an amino acid alignment.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>gaps_only           - If True, do not calculate the number of identities,</dt><dd><p>positives, and mismatches, but only calculate the
+number of gaps. This will speed up the calculation.
+Default value: False.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>A ValueError is raised if gaps_only is True and substitution_matrix is not None.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="n">match_score</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mismatch_score</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;TACCG&quot;</span><span class="p">,</span> <span class="s2">&quot;ACG&quot;</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score = </span><span class="si">%.1f</span><span class="s2">:&quot;</span> <span class="o">%</span> <span class="n">alignment</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
@@ -2411,12 +2556,57 @@ is 3.5 + 3.5 = 7.</p>
 <span class="go">query             0 -A-CG 3</span>
 </pre></div>
 </div>
-<p>This classifies each pair of letters in a pairwise alignment into gaps,
-perfect matches, or mismatches. It has been defined as a method (not a
-property) so that it may in future take optional argument(s) allowing
-the behavior to be customized. These three values are returned as a
-namedtuple. This is calculated for all the pairs of sequences in the
+<p>The counts are calculated by summing over all pairs of sequences in the
 alignment.</p>
+<p>An <cite>AlignCounts</cite> object has the following properties:</p>
+<blockquote>
+<div><ul class="simple">
+<li><dl class="simple">
+<dt>aligned             - the number of letters aligned to each other in the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><p>identities          - the number of identical letters in the alignment;</p></li>
+<li><p>mismatches          - the number of mismatched letters in the alignment;</p></li>
+<li><p>positives           - the number of aligned letters with a positive score;</p></li>
+<li><dl class="simple">
+<dt>left_insertions     - the number of insertions on the left side of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>left_deletions      - the number of deletions on the left side of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>right_insertions    - the number of insertions on the right side of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>right_deletions     - the number of deletions on the right side of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>internal_insertions - the number of insertions in the interior of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>internal_deletions  - the number of deletions in the interior of the</dt><dd><p>alignment;</p>
+</dd>
+</dl>
+</li>
+<li><p>insertions          - the total number of insertions;</p></li>
+<li><p>deletions           - the total number of deletions;</p></li>
+<li><p>left_gaps           - the number of gaps on the left side of the alignment;</p></li>
+<li><p>right_gaps          - the number of gaps on the right side of the alignment;</p></li>
+<li><p>internal_gaps       - the number of gaps in the interior of the alignment;</p></li>
+<li><p>gaps                - the total number of gaps in the alignment;</p></li>
+</ul>
+</div></blockquote>
 </dd></dl>
 
 <dl class="py method">
