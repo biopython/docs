@@ -2512,7 +2512,7 @@ is 3.5 + 3.5 = 7.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.Alignment.counts">
-<span class="sig-name descname"><span class="pre">counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substitution_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaps_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.counts" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substitution_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_sequences</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.counts" title="Link to this definition"></a></dt>
 <dd><p>Count the number of identities, mismatches, and gaps of an alignment.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -2526,8 +2526,9 @@ matches in an amino acid alignment.</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>gaps_only           - If True, do not calculate the number of identities,</dt><dd><p>positives, and mismatches, but only calculate the
-number of gaps. This will speed up the calculation.
+<dt>ignore_sequences    - If True, do not calculate the number of identities,</dt><dd><p>positives, and mismatches, but only calculate the
+number of aligned sequences and number of gaps
+to speed up the calculation.
 Default value: False.</p>
 </dd>
 </dl>
@@ -2535,7 +2536,7 @@ Default value: False.</p>
 </ul>
 </dd>
 </dl>
-<p>A ValueError is raised if gaps_only is True and substitution_matrix is not None.</p>
+<p>A ValueError is raised if ignore_sequences is True and substitution_matrix is not None.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="n">match_score</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">mismatch_score</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;TACCG&quot;</span><span class="p">,</span> <span class="s2">&quot;ACG&quot;</span><span class="p">):</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Score = </span><span class="si">%.1f</span><span class="s2">:&quot;</span> <span class="o">%</span> <span class="n">alignment</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>

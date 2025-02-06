@@ -596,9 +596,10 @@ alignment are indicated by -1:</p>
 </section>
 <section id="counting-identities-mismatches-and-gaps">
 <span id="paragraph-alignment-counts"></span><h3>Counting identities, mismatches, and gaps<a class="headerlink" href="#counting-identities-mismatches-and-gaps" title="Link to this heading"></a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">counts</span></code> method counts the number of identities, mismatches, and gaps
-(insertions and deletions) of an alignment.  The return value is an
-<code class="docutils literal notranslate"><span class="pre">AlignmentCounts</span></code> object, from which the counts can be obtained as properties.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">counts</span></code> method counts the number of identities, mismatches, aligned
+letters, and agaps (insertions and deletions) of an alignment.  The return
+value is an <code class="docutils literal notranslate"><span class="pre">AlignmentCounts</span></code> object, from which the counts can be obtained
+as properties.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pairwise_alignment</span><span class="p">)</span>
 <span class="go">target            1 CGGTTTTT 9</span>
 <span class="go">                  0 .|-|||-- 8</span>
@@ -657,6 +658,22 @@ number of gaps (= insertions + deletions):</p>
 <span class="go">4</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">internal_gaps</span>
 <span class="go">2</span>
+</pre></div>
+</div>
+<p>To speed up the calculation, you can use <code class="docutils literal notranslate"><span class="pre">ignore_sequences=True</span></code> to skip
+counting the number of matches and mismatches (this will still calculate the
+number of aligned sequences):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span> <span class="o">=</span> <span class="n">alignment</span><span class="o">.</span><span class="n">counts</span><span class="p">(</span><span class="n">ignore_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">aligned</span>
+<span class="go">16</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">identities</span><span class="p">)</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">mismatches</span><span class="p">)</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">insertions</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span><span class="o">.</span><span class="n">deletions</span>
+<span class="go">5</span>
 </pre></div>
 </div>
 <p>For protein alignments, in addition to the number of identities and mismatches,
