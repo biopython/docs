@@ -1060,11 +1060,11 @@ like <code class="docutils literal notranslate"><span class="pre">grep</span></c
 </section>
 </section>
 <section id="sequence-parsing-plus-simple-plots">
-<span id="sec-sequence-parsing-plus-pylab"></span><h2>Sequence parsing plus simple plots<a class="headerlink" href="#sequence-parsing-plus-simple-plots" title="Link to this heading"></a></h2>
+<span id="sec-sequence-parsing-plus-pyplot"></span><h2>Sequence parsing plus simple plots<a class="headerlink" href="#sequence-parsing-plus-simple-plots" title="Link to this heading"></a></h2>
 <p>This section shows some more examples of sequence parsing, using the
 <code class="docutils literal notranslate"><span class="pre">Bio.SeqIO</span></code> module described in
 Chapter <a class="reference internal" href="chapter_seqio.html#chapter-seqio"><span class="std std-ref">Sequence Input/Output</span></a>, plus the Python library
-matplotlib’s <code class="docutils literal notranslate"><span class="pre">pylab</span></code> plotting interface (see <a class="reference external" href="https://matplotlib.org">the matplotlib website
+matplotlib’s <code class="docutils literal notranslate"><span class="pre">pyplot</span></code> plotting interface (see <a class="reference external" href="https://matplotlib.org">the matplotlib website
 for a tutorial</a>). Note that to follow these
 examples you will need matplotlib installed - but without it you can
 still try the data parsing bits.</p>
@@ -1093,15 +1093,15 @@ we can use the matplotlib histogram function to display it.</p>
 
 <span class="n">sizes</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">rec</span><span class="p">)</span> <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;ls_orchid.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)]</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="n">pylab</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">sizes</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
     <span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> orchid sequences</span><span class="se">\n</span><span class="s2">Lengths </span><span class="si">%i</span><span class="s2"> to </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sizes</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">sizes</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">sizes</span><span class="p">))</span>
 <span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Sequence length (bp)&quot;</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Sequence length (bp)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <figure class="align-default" id="fig-seq-len-hist">
@@ -1114,8 +1114,8 @@ we can use the matplotlib histogram function to display it.</p>
 <a class="reference internal" href="#fig-seq-len-hist"><span class="std std-numref">Fig. 22</span></a>. Notice that most of these orchid
 sequences are about <span class="math notranslate nohighlight">\(740\)</span> bp long, and there could be two distinct
 classes of sequence here with a subset of shorter sequences.</p>
-<p><em>Tip:</em> Rather than using <code class="docutils literal notranslate"><span class="pre">pylab.show()</span></code> to show the plot in a window,
-you can also use <code class="docutils literal notranslate"><span class="pre">pylab.savefig(...)</span></code> to save the figure to a file
+<p><em>Tip:</em> Rather than using <code class="docutils literal notranslate"><span class="pre">plt.show()</span></code> to show the plot in a window,
+you can also use <code class="docutils literal notranslate"><span class="pre">plt.savefig(...)</span></code> to save the figure to a file
 (e.g. as a PNG or PDF).</p>
 </section>
 <section id="plot-of-sequence-gc">
@@ -1140,16 +1140,16 @@ a for loop, but I prefer this:</p>
 <p>Having read in each sequence and calculated the GC%, we then sorted them
 into ascending order. Now we’ll take this list of floating point values
 and plot them with matplotlib:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gc_values</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">gc_values</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span>
     <span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> orchid sequences</span><span class="se">\n</span><span class="s2">GC</span><span class="si">%%</span><span class="s2"> </span><span class="si">%0.1f</span><span class="s2"> to </span><span class="si">%0.1f</span><span class="s2">&quot;</span>
     <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gc_values</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">gc_values</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">gc_values</span><span class="p">))</span>
 <span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Genes&quot;</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;GC%&quot;</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Genes&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;GC%&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <figure class="align-default" id="fig-seq-gc-plot">
@@ -1205,17 +1205,17 @@ with a nested list comprehension:</p>
 </pre></div>
 </div>
 <p>Note that we have <em>not</em> checked for reverse complement matches here. Now
-we’ll use the matplotlib’s <code class="docutils literal notranslate"><span class="pre">pylab.imshow()</span></code> function to display this
+we’ll use the matplotlib’s <code class="docutils literal notranslate"><span class="pre">plt.imshow()</span></code> function to display this
 data, first requesting the gray color scheme so this is done in black
 and white:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="n">pylab</span><span class="o">.</span><span class="n">gray</span><span class="p">()</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (length </span><span class="si">%i</span><span class="s2"> bp)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rec_one</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_one</span><span class="p">)))</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (length </span><span class="si">%i</span><span class="s2"> bp)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rec_two</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_two</span><span class="p">)))</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dot plot using window size </span><span class="si">%i</span><span class="se">\n</span><span class="s2">(allowing no mis-matches)&quot;</span> <span class="o">%</span> <span class="n">window</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gray</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (length </span><span class="si">%i</span><span class="s2"> bp)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rec_one</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_one</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (length </span><span class="si">%i</span><span class="s2"> bp)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rec_two</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_two</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dot plot using window size </span><span class="si">%i</span><span class="se">\n</span><span class="s2">(allowing no mis-matches)&quot;</span> <span class="o">%</span> <span class="n">window</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>That should pop up a new window showing the graph in
@@ -1229,9 +1229,9 @@ off all, this brute force approach to the all against all comparisons is
 very slow. Instead, we’ll compile dictionaries mapping the window sized
 sub-sequences to their locations, and then take the set intersection to
 find those sub-sequences found in both sequences. This uses more memory,
-but is <em>much</em> faster. Secondly, the <code class="docutils literal notranslate"><span class="pre">pylab.imshow()</span></code> function is
+but is <em>much</em> faster. Secondly, the <code class="docutils literal notranslate"><span class="pre">plt.imshow()</span></code> function is
 limited in the size of matrix it can display. As an alternative, we’ll
-use the <code class="docutils literal notranslate"><span class="pre">pylab.scatter()</span></code> function.</p>
+use the <code class="docutils literal notranslate"><span class="pre">plt.scatter()</span></code> function.</p>
 <p>We start by creating dictionaries mapping the window-sized sub-sequences
 to locations:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">window</span> <span class="o">=</span> <span class="mi">7</span>
@@ -1252,7 +1252,7 @@ to locations:</p>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%i</span><span class="s2"> unique matches&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>In order to use the <code class="docutils literal notranslate"><span class="pre">pylab.scatter()</span></code> we need separate lists for the
+<p>In order to use the <code class="docutils literal notranslate"><span class="pre">plt.scatter()</span></code> we need separate lists for the
 <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> coordinates:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create lists of x and y coordinates for scatter plot</span>
 <span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
@@ -1265,17 +1265,17 @@ to locations:</p>
 </pre></div>
 </div>
 <p>We are now ready to draw the revised dot plot as a scatter plot:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="n">pylab</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>  <span class="c1"># clear any prior graph</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">gray</span><span class="p">()</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_one</span><span class="p">)</span> <span class="o">-</span> <span class="n">window</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_two</span><span class="p">)</span> <span class="o">-</span> <span class="n">window</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (length </span><span class="si">%i</span><span class="s2"> bp)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rec_one</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_one</span><span class="p">)))</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (length </span><span class="si">%i</span><span class="s2"> bp)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rec_two</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_two</span><span class="p">)))</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dot plot using window size </span><span class="si">%i</span><span class="se">\n</span><span class="s2">(allowing no mis-matches)&quot;</span> <span class="o">%</span> <span class="n">window</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">cla</span><span class="p">()</span>  <span class="c1"># clear any prior graph</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">gray</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_one</span><span class="p">)</span> <span class="o">-</span> <span class="n">window</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_two</span><span class="p">)</span> <span class="o">-</span> <span class="n">window</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (length </span><span class="si">%i</span><span class="s2"> bp)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rec_one</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_one</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (length </span><span class="si">%i</span><span class="s2"> bp)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rec_two</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">rec_two</span><span class="p">)))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dot plot using window size </span><span class="si">%i</span><span class="se">\n</span><span class="s2">(allowing no mis-matches)&quot;</span> <span class="o">%</span> <span class="n">window</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>That should pop up a new window showing the graph in
@@ -1303,24 +1303,24 @@ and
 <a class="reference external" href="ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR001/SRR001666/SRR001666_2.fastq.gz">ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR001/SRR001666/SRR001666_2.fastq.gz</a>),
 and are from <em>E. coli</em> – see
 <a class="reference external" href="https://www.ebi.ac.uk/ena/data/view/SRR001666">https://www.ebi.ac.uk/ena/data/view/SRR001666</a> for details.</p>
-<p>In the following code the <code class="docutils literal notranslate"><span class="pre">pylab.subplot(...)</span></code> function is used in
+<p>In the following code the <code class="docutils literal notranslate"><span class="pre">plt.subplot(...)</span></code> function is used in
 order to show the forward and reverse qualities on two subplots, side by
 side. There is also a little bit of code to only plot the first fifty
 reads.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="k">for</span> <span class="n">subfigure</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;SRR001666_</span><span class="si">%i</span><span class="s2">.fastq&quot;</span> <span class="o">%</span> <span class="n">subfigure</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">subfigure</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">subfigure</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">record</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;fastq&quot;</span><span class="p">)):</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mi">50</span><span class="p">:</span>
             <span class="k">break</span>  <span class="c1"># trick!</span>
-        <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;PHRED quality score&quot;</span><span class="p">)</span>
-    <span class="n">pylab</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Position&quot;</span><span class="p">)</span>
-<span class="n">pylab</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;SRR001666.png&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">letter_annotations</span><span class="p">[</span><span class="s2">&quot;phred_quality&quot;</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;PHRED quality score&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Position&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;SRR001666.png&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1330,8 +1330,8 @@ Sanger FASTQ format with PHRED scores. However, as you might guess from
 the read lengths, this data was from an Illumina Genome Analyzer and was
 probably originally in one of the two Solexa/Illumina FASTQ variant file
 formats instead.</p>
-<p>This example uses the <code class="docutils literal notranslate"><span class="pre">pylab.savefig(...)</span></code> function instead of
-<code class="docutils literal notranslate"><span class="pre">pylab.show(...)</span></code>, but as mentioned before both are useful.</p>
+<p>This example uses the <code class="docutils literal notranslate"><span class="pre">plt.savefig(...)</span></code> function instead of
+<code class="docutils literal notranslate"><span class="pre">plt.show(...)</span></code>, but as mentioned before both are useful.</p>
 <figure class="align-default" id="fig-paired-end-qual-plot">
 <a class="reference internal image-reference" href="../_images/SRR001666.png"><img alt="Quality plot for some paired end reads." src="../_images/SRR001666.png" style="width: 80.0%;" /></a>
 <figcaption>
