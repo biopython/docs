@@ -116,11 +116,15 @@
 <li class="toctree-l4"><a class="reference internal" href="#measuring-torsion-angles">Measuring torsion angles</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#internal-coordinates-distances-angles-torsion-angles-distance-plots-etc">Internal coordinates - distances, angles, torsion angles, distance plots, etc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#determining-atom-atom-contacts">Determining atom-atom contacts</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#superimposing-two-structures">Superimposing two structures</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#mapping-the-residues-of-two-related-structures-onto-each-other">Mapping the residues of two related structures onto each other</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#calculating-the-half-sphere-exposure">Calculating the Half Sphere Exposure</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#determining-the-secondary-structure">Determining the secondary structure</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#calculating-the-residue-depth">Calculating the residue depth</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#superimposing-two-structures">Superimposing two structures</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#superimposing-identical-sets-of-atoms">Superimposing identical sets of atoms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aligning-related-structures">Aligning related structures</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#aligning-dissimilar-structures">Aligning dissimilar structures</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#common-problems-in-pdb-files">Common problems in PDB files</a><ul>
@@ -1633,48 +1637,10 @@ module <code class="docutils literal notranslate"><span class="pre">Bio.PDB.kdtr
 fast method to find all point pairs within a certain distance of each
 other.</p>
 </section>
-<section id="superimposing-two-structures">
-<h3>Superimposing two structures<a class="headerlink" href="#superimposing-two-structures" title="Link to this heading"></a></h3>
-<p>Use a <code class="docutils literal notranslate"><span class="pre">Superimposer</span></code> object to superimpose two coordinate sets. This
-object calculates the rotation and translation matrix that rotates two
-lists of atoms on top of each other in such a way that their RMSD is
-minimized. Of course, the two lists need to contain the same number of
-atoms. The <code class="docutils literal notranslate"><span class="pre">Superimposer</span></code> object can also apply the
-rotation/translation to a list of atoms. The rotation and translation
-are stored as a tuple in the <code class="docutils literal notranslate"><span class="pre">rotran</span></code> attribute of the
-<code class="docutils literal notranslate"><span class="pre">Superimposer</span></code> object (note that the rotation is right multiplying!).
-The RMSD is stored in the <code class="docutils literal notranslate"><span class="pre">rmsd</span></code> attribute.</p>
-<p>The algorithm used by <code class="docutils literal notranslate"><span class="pre">Superimposer</span></code> comes from
-Golub &amp; Van Loan <a class="reference internal" href="chapter_bibliography.html#golub1989" id="id1"><span>[Golub1989]</span></a> and makes use of
-singular value decomposition (this is implemented in the general
-<code class="docutils literal notranslate"><span class="pre">Bio.SVDSuperimposer</span></code> module).</p>
-<p>Example:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span> <span class="o">=</span> <span class="n">Superimposer</span><span class="p">()</span>
-<span class="go"># Specify the atom lists</span>
-<span class="go"># &#39;fixed&#39; and &#39;moving&#39; are lists of Atom objects</span>
-<span class="go"># The moving atoms will be put on the fixed atoms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span><span class="o">.</span><span class="n">set_atoms</span><span class="p">(</span><span class="n">fixed</span><span class="p">,</span> <span class="n">moving</span><span class="p">)</span>
-<span class="go"># Print rotation/translation/rmsd</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sup</span><span class="o">.</span><span class="n">rotran</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sup</span><span class="o">.</span><span class="n">rms</span><span class="p">)</span>
-<span class="go"># Apply rotation/translation to the moving atoms</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">moving</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>To superimpose two structures based on their active sites, use the
-active site atoms to calculate the rotation/translation matrices (as
-above), and apply these to the whole molecule.</p>
-</section>
-<section id="mapping-the-residues-of-two-related-structures-onto-each-other">
-<h3>Mapping the residues of two related structures onto each other<a class="headerlink" href="#mapping-the-residues-of-two-related-structures-onto-each-other" title="Link to this heading"></a></h3>
-<p>First, create an alignment file in FASTA format, then use the
-<code class="docutils literal notranslate"><span class="pre">StructureAlignment</span></code> class. This class can also be used for alignments
-with more than two structures.</p>
-</section>
 <section id="calculating-the-half-sphere-exposure">
 <h3>Calculating the Half Sphere Exposure<a class="headerlink" href="#calculating-the-half-sphere-exposure" title="Link to this heading"></a></h3>
 <p>Half Sphere Exposure (HSE) is a new, 2D measure of solvent exposure
-<a class="reference internal" href="chapter_bibliography.html#hamelryck2005" id="id2"><span>[Hamelryck2005]</span></a>. Basically, it counts the number of
+<a class="reference internal" href="chapter_bibliography.html#hamelryck2005" id="id1"><span>[Hamelryck2005]</span></a>. Basically, it counts the number of
 C<span class="math notranslate nohighlight">\(\alpha\)</span> atoms around a residue in the direction of its side
 chain, and in the opposite direction (within a radius of 13 Å. Despite
 its simplicity, it outperforms many other measures of solvent exposure.</p>
@@ -1770,6 +1736,96 @@ residue’s C<span class="math notranslate nohighlight">\(\alpha\)</span> atom t
 the surface points.</p>
 </section>
 </section>
+<section id="superimposing-two-structures">
+<h2>Superimposing two structures<a class="headerlink" href="#superimposing-two-structures" title="Link to this heading"></a></h2>
+<section id="superimposing-identical-sets-of-atoms">
+<h3>Superimposing identical sets of atoms<a class="headerlink" href="#superimposing-identical-sets-of-atoms" title="Link to this heading"></a></h3>
+<p>Use a <code class="docutils literal notranslate"><span class="pre">Superimposer</span></code> object to superimpose two coordinate sets. This
+object calculates the rotation and translation matrix that rotates two
+lists of atoms on top of each other in such a way that their RMSD is
+minimized. Of course, the two lists need to contain the same number of
+atoms. The <code class="docutils literal notranslate"><span class="pre">Superimposer</span></code> object can also apply the
+rotation/translation to a list of atoms. The rotation and translation
+are stored as a tuple in the <code class="docutils literal notranslate"><span class="pre">rotran</span></code> attribute of the
+<code class="docutils literal notranslate"><span class="pre">Superimposer</span></code> object (note that the rotation is right multiplying!).
+The RMSD is stored in the <code class="docutils literal notranslate"><span class="pre">rms</span></code> attribute.</p>
+<p>To reiterate, the <code class="docutils literal notranslate"><span class="pre">Superimposer</span></code> object requires two lists of atoms
+that must contain an identical number. To align two chains with similar
+but not identical sequences, use the CEAligner (described below)</p>
+<p>The algorithm used by <code class="docutils literal notranslate"><span class="pre">Superimposer</span></code> comes from
+Golub &amp; Van Loan <a class="reference internal" href="chapter_bibliography.html#golub1989" id="id2"><span>[Golub1989]</span></a> and makes use of
+singular value decomposition (this is implemented in the general
+<code class="docutils literal notranslate"><span class="pre">Bio.SVDSuperimposer</span></code> module).</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.PDB</span><span class="w"> </span><span class="kn">import</span> <span class="n">Superimposer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span> <span class="o">=</span> <span class="n">Superimposer</span><span class="p">()</span>
+<span class="go"># Specify the atom lists</span>
+<span class="go"># &#39;fixed&#39; and &#39;moving&#39; are lists of Atom objects</span>
+<span class="go"># The moving atoms will be put on the fixed atoms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span><span class="o">.</span><span class="n">set_atoms</span><span class="p">(</span><span class="n">fixed</span><span class="p">,</span> <span class="n">moving</span><span class="p">)</span>
+<span class="go"># Print rotation/translation/rmsd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sup</span><span class="o">.</span><span class="n">rotran</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sup</span><span class="o">.</span><span class="n">rms</span><span class="p">)</span>
+<span class="go"># Apply rotation/translation to the moving atoms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">moving</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To superimpose two structures based on their active sites, use the
+active site atoms to calculate the rotation/translation matrices (as
+above), and apply these to the whole molecule.</p>
+<p>In addition to using the <code class="docutils literal notranslate"><span class="pre">Superimposer</span></code> object, you can also choose
+to use the <code class="docutils literal notranslate"><span class="pre">QCPSuperimposer</span></code> object, which is faster than the
+standard <code class="docutils literal notranslate"><span class="pre">Superimposer</span></code>.</p>
+<p>The algorithm for the <code class="docutils literal notranslate"><span class="pre">QCPSuperimposer</span></code> comes from Theobald <a class="reference internal" href="chapter_bibliography.html#theobald2005" id="id3"><span>[Theobald2005]</span></a>
+and rapidly calculates the minimum RMSD by using the quaternion characteristic
+polynomial (QCP).</p>
+<p>The implementation is very similar to the <code class="docutils literal notranslate"><span class="pre">Superimposer</span></code></p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.PDB.qcprot</span><span class="w"> </span><span class="kn">import</span> <span class="n">QCPSuperimposer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span> <span class="o">=</span> <span class="n">QCPSuperimposer</span><span class="p">()</span>
+<span class="go"># Specify the atom lists</span>
+<span class="go"># &#39;fixed&#39; and &#39;moving&#39; are lists of Atom objects</span>
+<span class="go"># The moving atoms will be put on the fixed atoms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span><span class="o">.</span><span class="n">set_atoms</span><span class="p">(</span><span class="n">fixed</span><span class="p">,</span> <span class="n">moving</span><span class="p">)</span>
+<span class="go"># Print rotation/translation/rmsd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sup</span><span class="o">.</span><span class="n">rotran</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">sup</span><span class="o">.</span><span class="n">rms</span><span class="p">)</span>
+<span class="go"># Apply rotation/translation to the moving atoms</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sup</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">moving</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="aligning-related-structures">
+<h3>Aligning related structures<a class="headerlink" href="#aligning-related-structures" title="Link to this heading"></a></h3>
+<p>To align two proteins with similar sequences (greater than 50% sequence identity),
+first align the two sequences by making a alignment file in FASTA format, and then
+use the <code class="docutils literal notranslate"><span class="pre">StructureAlignment</span></code> class to align the structures. This class can be used
+for alignments with more than two structures.</p>
+</section>
+<section id="aligning-dissimilar-structures">
+<h3>Aligning dissimilar structures<a class="headerlink" href="#aligning-dissimilar-structures" title="Link to this heading"></a></h3>
+<p>If you want to align two structures with low sequence identity (less than 50%)
+you can use the <code class="docutils literal notranslate"><span class="pre">CEAligner</span></code> class, which implements the Combinatorial Extension (CE)
+algorithm for structural alignment. This method automatically finds the best matching
+regions between two structures and superimposes them by using the C-alpha coordinates
+(for proteins) or C4’ (for nucleic acids)</p>
+<p>The algorithm used in the <code class="docutils literal notranslate"><span class="pre">CEAligner</span></code> class is from Shindyalov &amp; Bourne <a class="reference internal" href="chapter_bibliography.html#shindyalov1998" id="id4"><span>[Shindyalov1998]</span></a>
+and uses the <code class="docutils literal notranslate"><span class="pre">QCPSuperimposer</span></code> to perform the actual superimposition after discovering
+the best matching regions</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.PDB.cealign</span><span class="w"> </span><span class="kn">import</span> <span class="n">CEAligner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">CEAligner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">set_reference</span><span class="p">(</span><span class="n">structure1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">structure2</span><span class="p">)</span>
+<span class="go"># Get RMSD of the best alignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aligner</span><span class="o">.</span><span class="n">rms</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is useful for comparing proteins with significantly different sequences. By default,
+the <code class="docutils literal notranslate"><span class="pre">align</span></code> function will apply the transformation to structure2 as well as calculate the
+RMSD. To just calculate optimal RMSD without changing the structure2 coordinates, pass
+<code class="docutils literal notranslate"><span class="pre">transform=False</span></code>.</p>
+</section>
+</section>
 <section id="common-problems-in-pdb-files">
 <h2>Common problems in PDB files<a class="headerlink" href="#common-problems-in-pdb-files" title="Link to this heading"></a></h2>
 <p>It is well known that many PDB files contain semantic errors (not the
@@ -1792,7 +1848,7 @@ errors include:</p>
 <li><p>Multiple atoms with the same identifier (taking into account the
 altloc identifier)</p></li>
 </ul>
-<p>These errors indicate real problems in the PDB file (for details see Hamelryck and Manderick, 2003 <a class="reference internal" href="chapter_bibliography.html#hamelryck2003a" id="id3"><span>[Hamelryck2003A]</span></a>). In
+<p>These errors indicate real problems in the PDB file (for details see Hamelryck and Manderick, 2003 <a class="reference internal" href="chapter_bibliography.html#hamelryck2003a" id="id5"><span>[Hamelryck2003A]</span></a>). In
 the restrictive state, PDB files with errors cause an exception to
 occur. This is useful to find errors in PDB files.</p>
 <p>Some errors however are automatically corrected. Normally each
@@ -1864,7 +1920,7 @@ correctly interpreted.</p>
 guessing and risking a mistake, an exception is generated, and the user
 is expected to correct the PDB file. These cases are listed below.</p>
 <section id="duplicate-residues-1">
-<span id="id4"></span><h4>Duplicate residues<a class="headerlink" href="#duplicate-residues-1" title="Link to this heading"></a></h4>
+<span id="id6"></span><h4>Duplicate residues<a class="headerlink" href="#duplicate-residues-1" title="Link to this heading"></a></h4>
 <p>All residues in a chain should have a unique id. This id is generated
 based on:</p>
 <ul class="simple">
@@ -1879,7 +1935,7 @@ store the Residue objects in a DisorderedResidue object).</p></li>
 and an exception is generated.</p>
 </section>
 <section id="duplicate-atoms-1">
-<span id="id5"></span><h4>Duplicate atoms<a class="headerlink" href="#duplicate-atoms-1" title="Link to this heading"></a></h4>
+<span id="id7"></span><h4>Duplicate atoms<a class="headerlink" href="#duplicate-atoms-1" title="Link to this heading"></a></h4>
 <p>All atoms in a residue should have a unique id. This id is generated
 based on:</p>
 <ul class="simple">
@@ -1997,8 +2053,8 @@ Python based/aware molecular graphics solutions include:</p>
 predicts disordered regions in proteins (<a class="reference external" href="http://dis.embl.de/">http://dis.embl.de/</a>). Bio.PDB
 has also been used to perform a large scale search for active sites
 similarities between protein structures in the PDB
-<a class="reference internal" href="chapter_bibliography.html#hamelryck2003b" id="id6"><span>[Hamelryck2003B]</span></a>, and to develop a
-new algorithm that identifies linear secondary structure elements <a class="reference internal" href="chapter_bibliography.html#majumdar2005" id="id7"><span>[Majumdar2005]</span></a>.</p>
+<a class="reference internal" href="chapter_bibliography.html#hamelryck2003b" id="id8"><span>[Hamelryck2003B]</span></a>, and to develop a
+new algorithm that identifies linear secondary structure elements <a class="reference internal" href="chapter_bibliography.html#majumdar2005" id="id9"><span>[Majumdar2005]</span></a>.</p>
 <p>Judging from requests for features and information, Bio.PDB is also used
 by several LPCs (Large Pharmaceutical Companies :-).</p>
 </section>
