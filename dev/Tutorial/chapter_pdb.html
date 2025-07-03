@@ -1797,9 +1797,35 @@ polynomial (QCP).</p>
 <section id="aligning-related-structures">
 <h3>Aligning related structures<a class="headerlink" href="#aligning-related-structures" title="Link to this heading"></a></h3>
 <p>To align two proteins with similar sequences (greater than 50% sequence identity),
-first align the two sequences by making a alignment file in FASTA format, and then
-use the <code class="docutils literal notranslate"><span class="pre">StructureAlignment</span></code> class to align the structures. This class can be used
-for alignments with more than two structures.</p>
+use the <code class="docutils literal notranslate"><span class="pre">StructureAlignment</span></code> class. This class can either take in a sequence alignment
+as an argument (either <code class="docutils literal notranslate"><span class="pre">MultipleSeqAlignment</span></code> or <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> objects) or automatically
+compute this alignment by just passing two structure models.</p>
+<p>Example:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">p</span> <span class="o">=</span> <span class="n">PDBParser</span><span class="p">(</span><span class="n">QUIET</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s1</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb_file_1.pdb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s2</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb_file_2.pdb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_1</span> <span class="o">=</span> <span class="n">s1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_2</span> <span class="o">=</span> <span class="n">s2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">StructureAlignment</span><span class="p">(</span><span class="n">m1</span><span class="o">=</span><span class="n">model_1</span><span class="p">,</span> <span class="n">m2</span><span class="o">=</span><span class="n">model_2</span><span class="p">)</span>
+<span class="go"># Currently, the alignment will use the blastp default values to align the structures</span>
+
+<span class="go"># To use custom values, you can pass in a customized PairwiseAligner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">(</span><span class="n">gap_score</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">StructureAlignment</span><span class="p">(</span><span class="n">m1</span><span class="o">=</span><span class="n">model_1</span><span class="p">,</span> <span class="n">m2</span><span class="o">=</span><span class="n">model_2</span><span class="p">,</span> <span class="n">aligner</span><span class="o">=</span><span class="n">aligner</span><span class="p">)</span>
+
+<span class="go"># Alternatively, you can also pass a premade fasta alignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fasta_alignment</span> <span class="o">=</span> <span class="n">Bio</span><span class="o">.</span><span class="n">AlignIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;fasta_alignment_file.fasta&quot;</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+<span class="go"># For how to create a sequence alignment from both models, please see the documentation</span>
+<span class="go"># on ``MultipleSequenceAlignment`` objects</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">StructureAlignment</span><span class="p">(</span><span class="n">m1</span><span class="o">=</span><span class="n">model_1</span><span class="p">,</span> <span class="n">m2</span><span class="o">=</span><span class="n">model_2</span><span class="p">,</span> <span class="n">fasta_align</span><span class="o">=</span><span class="n">fasta_alignment</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that in order to work with legacy code, the first parameter in <code class="docutils literal notranslate"><span class="pre">StructureAlignment</span></code> is
+still an alignment object. This means that to use the class correctly, the models must either
+be passed as keyword arguments (as seen in the example above), or the first argument must be
+passed as None. Now that explicitly passing the alignment object is deprecated, this is subject
+to change in a future release. Also, if you are using an older version of Biopython (&lt;=1.85), you will
+have to generate the sequence alignment manually (<code class="docutils literal notranslate"><span class="pre">Bio.Align</span></code> module)</p>
 </section>
 <section id="aligning-dissimilar-structures">
 <h3>Aligning dissimilar structures<a class="headerlink" href="#aligning-dissimilar-structures" title="Link to this heading"></a></h3>
