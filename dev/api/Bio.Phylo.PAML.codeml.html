@@ -149,7 +149,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Phylo.PAML.codeml.Codeml.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignment</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">working_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.PAML.codeml.Codeml.__init__" title="Link to this definition"></a></dt>
-<dd><p>Initialize the codeml instance.</p>
+<dd><p>Initialize the Codeml instance.</p>
 <p>The user may optionally pass in strings specifying the locations
 of the input alignment and tree files, the working directory and
 the final output file. Other options found in the CODEML control
@@ -162,13 +162,16 @@ have typical settings by default to run site class models 0, 1 and
 <span class="sig-name descname"><span class="pre">write_ctl_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.PAML.codeml.Codeml.write_ctl_file" title="Link to this definition"></a></dt>
 <dd><p>Dynamically build a CODEML control file from the options.</p>
 <p>The control file is written to the location specified by the
-ctl_file property of the codeml class.</p>
+ctl_file property of the Codeml class.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Phylo.PAML.codeml.Codeml.read_ctl_file">
 <span class="sig-name descname"><span class="pre">read_ctl_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctl_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.PAML.codeml.Codeml.read_ctl_file" title="Link to this definition"></a></dt>
 <dd><p>Parse a control file and load the options into the Codeml instance.</p>
+<p>Update each CODEML option to the new option if supplied or None if
+not supplied. Raise an exception if the control file does not exist,
+a line is malformed, or an option is invalid.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -180,11 +183,13 @@ ctl_file property of the codeml class.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Phylo.PAML.codeml.Codeml.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctl_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'codeml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.PAML.codeml.Codeml.run" title="Link to this definition"></a></dt>
-<dd><p>Run codeml using the current configuration.</p>
-<p>If parse is True then read and return the results, otherwise
-return None.</p>
+<dd><p>Run <code class="docutils literal notranslate"><span class="pre">codeml</span></code> using the current configuration.</p>
+<p>Check that the tree file is specified and exists, and then
+run <code class="docutils literal notranslate"><span class="pre">codeml</span></code>. If parse is True then read and return the results,
+otherwise return None. An exception is raised if the return code
+of the <code class="docutils literal notranslate"><span class="pre">codeml</span></code> command is non-zero.</p>
 <p>The arguments may be passed as either absolute or relative
-paths, despite the fact that CODEML requires relative paths.</p>
+paths, despite the fact that <code class="docutils literal notranslate"><span class="pre">codeml</span></code> requires relative paths.</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -198,6 +203,8 @@ paths, despite the fact that CODEML requires relative paths.</p>
 <dt class="sig sig-object py" id="Bio.Phylo.PAML.codeml.read">
 <span class="sig-prename descclassname"><span class="pre">Bio.Phylo.PAML.codeml.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.PAML.codeml.read" title="Link to this definition"></a></dt>
 <dd><p>Parse a CODEML results file.</p>
+<p>Return the results if there are any. Raise an exception if
+the results file does not exist, is empty, or is invalid.</p>
 </dd></dl>
 
 </section>

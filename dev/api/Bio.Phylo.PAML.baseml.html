@@ -132,7 +132,7 @@
              
   <section id="module-Bio.Phylo.PAML.baseml">
 <span id="bio-phylo-paml-baseml-module"></span><h1>Bio.Phylo.PAML.baseml module<a class="headerlink" href="#module-Bio.Phylo.PAML.baseml" title="Link to this heading"></a></h1>
-<p>Classes for the support of baseml.</p>
+<p>Classes for the support of BASEML.</p>
 <p>Maximum likelihood analysis of nucleotide sequences.</p>
 <dl class="py exception">
 <dt class="sig sig-object py" id="Bio.Phylo.PAML.baseml.BasemlError">
@@ -160,24 +160,28 @@ the final output file.</p>
 <span class="sig-name descname"><span class="pre">write_ctl_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.PAML.baseml.Baseml.write_ctl_file" title="Link to this definition"></a></dt>
 <dd><p>Dynamically build a BASEML control file from the options.</p>
 <p>The control file is written to the location specified by the
-ctl_file property of the baseml class.</p>
+ctl_file property of the Baseml class.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Phylo.PAML.baseml.Baseml.read_ctl_file">
 <span class="sig-name descname"><span class="pre">read_ctl_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctl_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.PAML.baseml.Baseml.read_ctl_file" title="Link to this definition"></a></dt>
 <dd><p>Parse a control file and load the options into the Baseml instance.</p>
+<p>Update each BASEML option to the new option if supplied or None if
+not supplied. Raise an exception if the control file does not exist,
+a line is malformed, or an option is invalid.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Phylo.PAML.baseml.Baseml.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctl_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'baseml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.PAML.baseml.Baseml.run" title="Link to this definition"></a></dt>
-<dd><p>Run baseml using the current configuration.</p>
-<p>Check that the tree attribute is specified and exists, and then
-run baseml. If parse is True then read and return the result,
-otherwise return none.</p>
+<dd><p>Run <code class="docutils literal notranslate"><span class="pre">baseml</span></code> using the current configuration.</p>
+<p>Check that the tree file is specified and exists, and then
+run <code class="docutils literal notranslate"><span class="pre">baseml</span></code>. If parse is True then read and return the results,
+otherwise return None. An exception is raised if the return code
+of the <code class="docutils literal notranslate"><span class="pre">baseml</span></code> command is non-zero.</p>
 <p>The arguments may be passed as either absolute or relative paths,
-despite the fact that BASEML requires relative paths.</p>
+despite the fact that <code class="docutils literal notranslate"><span class="pre">baseml</span></code> requires relative paths.</p>
 </dd></dl>
 
 </dd></dl>
@@ -186,6 +190,8 @@ despite the fact that BASEML requires relative paths.</p>
 <dt class="sig sig-object py" id="Bio.Phylo.PAML.baseml.read">
 <span class="sig-prename descclassname"><span class="pre">Bio.Phylo.PAML.baseml.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Phylo.PAML.baseml.read" title="Link to this definition"></a></dt>
 <dd><p>Parse a BASEML results file.</p>
+<p>Parse the file and return the results. Raise an exception if
+the results file does not exist, is empty, or is invalid.</p>
 </dd></dl>
 
 </section>
