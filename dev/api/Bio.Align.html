@@ -1659,12 +1659,35 @@ represents the query sequence; and</p>
 <dt class="sig sig-object py" id="Bio.Align.Alignment.format">
 <span class="sig-name descname"><span class="pre">format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fmt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.format" title="Link to this definition"></a></dt>
 <dd><p>Return the alignment as a string in the specified file format.</p>
-<dl class="simple">
-<dt>Arguments:</dt><dd><ul class="simple">
+<dl>
+<dt>Arguments:</dt><dd><ul>
 <li><dl class="simple">
 <dt>fmt       - File format. Acceptable values are an empty string to</dt><dd><p>create a human-readable representation of the alignment,
 or any of the alignment file formats supported by
 <cite>Bio.Align</cite> (some have not yet been implemented).</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>scoring  - Optional keyword-only parameter; default=None.</dt><dd><blockquote>
+<div><p>If provided, can be:</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>A substitution matrix (typically from the</dt><dd><dl class="simple">
+<dt><cite>Bio.Align.substitution_matrices</cite> submodule)</dt><dd><p>used to mark positive matches (:) in the alignment string
+when two different residues have a positive score.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>A PairwiseAligner object, in which case its substitution</dt><dd><p>matrix and settings are used for determining positive matches.</p>
+</dd>
+</dl>
+</li>
+</ul>
 </dd>
 </dl>
 </li>
@@ -2333,9 +2356,9 @@ is 3.5 + 3.5 = 7.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.Alignment.counts">
-<span class="sig-name descname"><span class="pre">counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">argument</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.counts" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">counts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scoring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.counts" title="Link to this definition"></a></dt>
 <dd><p>Count the number of identities, mismatches, and gaps of an alignment.</p>
-<p>This method takes a single optional argument, which can be either None
+<p>This method takes a single optional argument named scoring, which can be either None
 (default), a substitution matrix, a wildcard character, or a pairwise
 aligner object:</p>
 <blockquote>
@@ -2473,7 +2496,7 @@ otherwise);</p>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>open_internal_insertions   - the number of insertion gaps opaned in the</dt><dd><p>interior of the alignment;</p>
+<dt>open_internal_insertions   - the number of insertion gaps opened in the</dt><dd><p>interior of the alignment;</p>
 </dd>
 </dl>
 </li>
