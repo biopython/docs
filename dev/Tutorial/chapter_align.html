@@ -1779,6 +1779,52 @@ the string representation of the alignment:</p>
 <span class="go">                  0 AG-TTT-- 5</span>
 </pre></div>
 </div>
+<p>As optional keyword arguments cannot be used with Python’s built-in
+<code class="docutils literal notranslate"><span class="pre">format</span></code> function or with formatted strings, the <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> class
+has a <code class="docutils literal notranslate"><span class="pre">format</span></code> method with optional arguments to customize the
+alignment format. For example, you can use the optional <code class="docutils literal notranslate"><span class="pre">scoring</span></code> argument
+to provide a substitution matrix (see Section
+<a class="reference internal" href="chapter_pairwise.html#sec-pairwise-substitution-scores"><span class="std std-ref">Substitution scores</span></a>) to let the printed alignment reflect
+the substitution scores as follows:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">|</span></code> for identical residues,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">:</span></code> for substitutions with a positive score,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.</span></code> for substitutions with a negative score,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-</span></code> for gaps.</p></li>
+</ul>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">M</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;NUC.4.4&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">M</span><span class="p">[:,</span> <span class="p">:])</span>
+<span class="go">     A    T    G    C    S    W    R    Y    K    M    B    V    H    D    N</span>
+<span class="go">A  5.0 -4.0 -4.0 -4.0 -4.0  1.0  1.0 -4.0 -4.0  1.0 -4.0 -1.0 -1.0 -1.0 -2.0</span>
+<span class="go">T -4.0  5.0 -4.0 -4.0 -4.0  1.0 -4.0  1.0  1.0 -4.0 -1.0 -4.0 -1.0 -1.0 -2.0</span>
+<span class="go">G -4.0 -4.0  5.0 -4.0  1.0 -4.0  1.0 -4.0  1.0 -4.0 -1.0 -1.0 -4.0 -1.0 -2.0</span>
+<span class="go">C -4.0 -4.0 -4.0  5.0  1.0 -4.0 -4.0  1.0 -4.0  1.0 -1.0 -1.0 -1.0 -4.0 -2.0</span>
+<span class="go">S -4.0 -4.0  1.0  1.0 -1.0 -4.0 -2.0 -2.0 -2.0 -2.0 -1.0 -1.0 -3.0 -3.0 -1.0</span>
+<span class="go">W  1.0  1.0 -4.0 -4.0 -4.0 -1.0 -2.0 -2.0 -2.0 -2.0 -3.0 -3.0 -1.0 -1.0 -1.0</span>
+<span class="go">R  1.0 -4.0  1.0 -4.0 -2.0 -2.0 -1.0 -4.0 -2.0 -2.0 -3.0 -1.0 -3.0 -1.0 -1.0</span>
+<span class="go">Y -4.0  1.0 -4.0  1.0 -2.0 -2.0 -4.0 -1.0 -2.0 -2.0 -1.0 -3.0 -1.0 -3.0 -1.0</span>
+<span class="go">K -4.0  1.0  1.0 -4.0 -2.0 -2.0 -2.0 -2.0 -1.0 -4.0 -1.0 -3.0 -3.0 -1.0 -1.0</span>
+<span class="go">M  1.0 -4.0 -4.0  1.0 -2.0 -2.0 -2.0 -2.0 -4.0 -1.0 -3.0 -1.0 -1.0 -3.0 -1.0</span>
+<span class="go">B -4.0 -1.0 -1.0 -1.0 -1.0 -3.0 -3.0 -1.0 -1.0 -3.0 -1.0 -2.0 -2.0 -2.0 -1.0</span>
+<span class="go">V -1.0 -4.0 -1.0 -1.0 -1.0 -3.0 -1.0 -3.0 -3.0 -1.0 -2.0 -1.0 -2.0 -2.0 -1.0</span>
+<span class="go">H -1.0 -1.0 -4.0 -1.0 -3.0 -1.0 -3.0 -1.0 -3.0 -1.0 -2.0 -2.0 -1.0 -2.0 -1.0</span>
+<span class="go">D -1.0 -1.0 -1.0 -4.0 -3.0 -1.0 -1.0 -3.0 -1.0 -3.0 -2.0 -2.0 -2.0 -1.0 -1.0</span>
+<span class="go">N -2.0 -2.0 -2.0 -2.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0 -1.0</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">M</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">]</span>
+<span class="go">1.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">M</span><span class="p">[</span><span class="s2">&quot;T&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">]</span>
+<span class="go">-4.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">Alignment</span><span class="p">([</span><span class="s2">&quot;GATTACAT&quot;</span><span class="p">,</span> <span class="s2">&quot;GATYACAC&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scoring</span><span class="o">=</span><span class="n">M</span><span class="p">))</span>
+<span class="go">target            0 GATTACAT 8</span>
+<span class="go">                  0 |||:|||. 8</span>
+<span class="go">query             0 GATYACAC 8</span>
+</pre></div>
+</div>
+<p>Instead of the substitution matrix, you can also use a <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code>
+object (see Chapter <a class="reference internal" href="chapter_pairwise.html#chapter-pairwise"><span class="std std-ref">Pairwise sequence alignment</span></a>) as the <code class="docutils literal notranslate"><span class="pre">scoring</span></code> argument
+to use the substitution matrix associated with the aligner.</p>
 <p>By specifying one of the formats shown in
 Section <a class="reference internal" href="#sec-alignformats"><span class="std std-ref">Alignment file formats</span></a>, <code class="docutils literal notranslate"><span class="pre">format</span></code> will create a string
 showing the alignment in the requested format:</p>
@@ -1810,13 +1856,8 @@ showing the alignment in the requested format:</p>
 
 </pre></div>
 </div>
-<p>As optional keyword arguments cannot be used with Python’s built-in
-<code class="docutils literal notranslate"><span class="pre">format</span></code> function or with formatted strings, the <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> class
-has a <code class="docutils literal notranslate"><span class="pre">format</span></code> method with optional arguments to customize the
-alignment format, as described in the subsections below. For example, we
-can print the alignment in BED format (see
-section <a class="reference internal" href="#subsec-align-bed"><span class="std std-ref">Browser Extensible Data (BED)</span></a>) with a specific number of
-columns:</p>
+<p>As another example, we can print the alignment in BED format (see
+section <a class="reference internal" href="#subsec-align-bed"><span class="std std-ref">Browser Extensible Data (BED)</span></a>) with a specific number of columns:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">pairwise_alignment</span><span class="p">)</span>
 <span class="go">target            1 CGGTTTTT 9</span>
 <span class="go">                  0 .|-|||-- 8</span>
@@ -2871,29 +2912,6 @@ coordinate increasing. Printing this alignment in <code class="docutils literal 
 using Python’s built-in <code class="docutils literal notranslate"><span class="pre">format</span></code> function writes a vulgar line:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="nb">format</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span> <span class="s2">&quot;exonerate&quot;</span><span class="p">))</span>
 <span class="go">vulgar: gi|296143771|ref|NM_001180731.1| 0 1230 + gi|330443520|ref|NC_001136.10| 1319275 1318045 - 6146 M 1 1 C 3 3 M 1226 1226</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">Alignment.format()</span></code> method also accepts an optional <code class="docutils literal notranslate"><span class="pre">scoring</span></code> argument.
-If you provide a substitution matrix (for example, <code class="docutils literal notranslate"><span class="pre">scoring=M</span></code> where
-<code class="docutils literal notranslate"><span class="pre">M</span> <span class="pre">=</span> <span class="pre">Bio.Align.substitution_matrices.load(&quot;NUC.4.4&quot;)</span></code>), the middle pattern
-line will reflect the substitution scores:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">|</span></code> for identical residues,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">:</span></code> for substitutions with a positive score,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">.</span></code> for substitutions with a negative score,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-</span></code> for gaps.</p></li>
-</ul>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">PairwiseAligner</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">substitution_matrices</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">M</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;NUC.4.4&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">open_gap_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">extend_gap_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aln</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;GATTACAT&quot;</span><span class="p">,</span> <span class="s2">&quot;GATYACAC&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">aln</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="n">M</span><span class="p">))</span>
-<span class="go">target            0 GATTACAT 8</span>
-<span class="go">                  0 |||:|||. 8</span>
-<span class="go">query             0 GATYACAC 8</span>
 </pre></div>
 </div>
 <p>Using the <code class="docutils literal notranslate"><span class="pre">format</span></code> method allows us to request either a vulgar line
