@@ -172,8 +172,8 @@ the constructor of the object:</p>
 </div>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">aligner.score</span></code> method to calculate the alignment score
 between two sequences:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="s2">&quot;GAACT&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;GAT&quot;</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="s2">&quot;GAACTTT&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;GATTT&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">score</span>
 <span class="go">3.0</span>
@@ -192,7 +192,7 @@ tell you how many alignments were found, and what their score is:</p>
 indexing:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span>  
-<span class="go">&lt;Alignment object (2 rows x 5 columns) at 0x...&gt;</span>
+<span class="go">&lt;Alignment object (2 rows x 7 columns) at 0x...&gt;</span>
 </pre></div>
 </div>
 <p>Iterate over the <code class="docutils literal notranslate"><span class="pre">Alignment</span></code> objects and print them to see the
@@ -200,20 +200,20 @@ alignments:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="go">target            0 GAACT 5</span>
-<span class="go">                  0 ||--| 5</span>
-<span class="go">query             0 GA--T 3</span>
+<span class="go">target            0 GAACTTT 7</span>
+<span class="go">                  0 ||--||| 7</span>
+<span class="go">query             0 GA--TTT 5</span>
 
-<span class="go">target            0 GAACT 5</span>
-<span class="go">                  0 |-|-| 5</span>
-<span class="go">query             0 G-A-T 3</span>
+<span class="go">target            0 GAACTTT 7</span>
+<span class="go">                  0 |-|-||| 7</span>
+<span class="go">query             0 G-A-TTT 5</span>
 </pre></div>
 </div>
 <p>Use indices to get the aligned sequence (see <a class="reference internal" href="chapter_align.html#subsec-slicing-indexing-alignment"><span class="std std-ref">Slicing and indexing an alignment</span></a>):</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">&#39;GAACT&#39;</span>
+<span class="go">&#39;GAACTTT&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="go">&#39;G-A-T&#39;</span>
+<span class="go">&#39;G-A-TTT&#39;</span>
 </pre></div>
 </div>
 <p>Each alignment stores the alignment score:</p>
@@ -223,16 +223,16 @@ alignments:</p>
 </div>
 <p>as well as pointers to the sequences that were aligned:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">target</span>
-<span class="go">&#39;GAACT&#39;</span>
+<span class="go">&#39;GAACTTT&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">query</span>
-<span class="go">&#39;GAT&#39;</span>
+<span class="go">&#39;GATTT&#39;</span>
 </pre></div>
 </div>
 <p>Internally, the alignment is stored in terms of the sequence coordinates:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[0, 2, 4, 5],</span>
-<span class="go">       [0, 2, 2, 3]])</span>
+<span class="go">array([[0, 2, 4, 7],</span>
+<span class="go">       [0, 2, 2, 5]])</span>
 </pre></div>
 </div>
 <p>Here, the two rows refer to the target and query sequence. These
@@ -242,7 +242,7 @@ blocks:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">target[0:2]</span></code> aligned to <code class="docutils literal notranslate"><span class="pre">query[0:2]</span></code>;</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">target[2:4]</span></code> aligned to a gap, since <code class="docutils literal notranslate"><span class="pre">query[2:2]</span></code> is an empty
 string (i.e., a deletion);</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">target[4:5]</span></code> aligned to <code class="docutils literal notranslate"><span class="pre">query[2:3]</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">target[4:7]</span></code> aligned to <code class="docutils literal notranslate"><span class="pre">query[2:5]</span></code>.</p></li>
 </ul>
 <p>The number of aligned sequences is always 2 for a pairwise alignment:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
@@ -254,7 +254,7 @@ alignment as printed. This is equal to the sum of the number of matches,
 number of mismatches, and the total length of gaps in the target and
 query:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">length</span>
-<span class="go">5</span>
+<span class="go">7</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">aligned</span></code> property, which returns the start and end indices of
@@ -262,28 +262,28 @@ aligned subsequences, returns two tuples of length 2 for the first
 alignment:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">aligned</span>
 <span class="go">array([[[0, 2],</span>
-<span class="go">        [4, 5]],</span>
+<span class="go">        [4, 7]],</span>
 
 <span class="go">       [[0, 2],</span>
-<span class="go">        [2, 3]]])</span>
+<span class="go">        [2, 5]]])</span>
 </pre></div>
 </div>
 <p>while for the alternative alignment, two tuples of length 3 are
 returned:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
-<span class="go">target            0 GAACT 5</span>
-<span class="go">                  0 |-|-| 5</span>
-<span class="go">query             0 G-A-T 3</span>
+<span class="go">target            0 GAACTTT 7</span>
+<span class="go">                  0 |-|-||| 7</span>
+<span class="go">query             0 G-A-TTT 5</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">aligned</span>
 <span class="go">array([[[0, 1],</span>
 <span class="go">        [2, 3],</span>
-<span class="go">        [4, 5]],</span>
+<span class="go">        [4, 7]],</span>
 
 <span class="go">       [[0, 1],</span>
 <span class="go">        [1, 2],</span>
-<span class="go">        [2, 3]]])</span>
+<span class="go">        [2, 5]]])</span>
 </pre></div>
 </div>
 <p>Note that different alignments may have the same subsequences aligned to
@@ -399,16 +399,14 @@ follow the suggestion by Waterman &amp; Eggert
 <a class="reference internal" href="chapter_bibliography.html#waterman1987" id="id2"><span>[Waterman1987]</span></a> and disallow such extensions.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">aligner.mode</span></code> is set to <code class="docutils literal notranslate"><span class="pre">&quot;fogsaa&quot;</span></code>, then the Fast Optimal Global
 Alignment Algorithm <a class="reference internal" href="chapter_bibliography.html#chakraborty2013" id="id3"><span>[Chakraborty2013]</span></a> with some modifications is used. This
-mode calculates a global alignment, but it is not like the regular <cite>“global”</cite>
-mode.  It is best suited for long alignments between similar sequences. Rather
-than calculating all possible alignments like other algorithms do, FOGSAA uses
-a heuristic to detect steps in an alignment that cannot lead to an optimal
-alignment. This can speed up alignment, however, the heuristic makes
-assumptions about your match, mismatch, and gap scores. If the match score is
-less than the mismatch score or any gap score, or if any gap score is greater
-than the mismatch score, then a warning is raised and the algorithm may return
-incorrect results. Unlike other modes that may return more than one alignment,
-FOGSAA always returns only one alignment.</p>
+mode also calculates a global alignment, but uses a heuristic to detect steps
+in an alignment that cannot lead to an optimal alignment. This can speed up
+alignment and is best suited for long alignments between similar sequences.
+The heuristic makes assumptions about your match, mismatch, and gap scores. If
+the match score is less than the mismatch score or any gap score, or if any gap
+score is greater than the mismatch score, then a warning is raised and the
+algorithm may return incorrect results. Unlike other modes, which may return
+more than one alignment, FOGSAA always returns only one alignment.</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">&quot;fogsaa&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mismatch_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="s2">&quot;AAACAAA&quot;</span><span class="p">,</span> <span class="s2">&quot;AAAGAAA&quot;</span><span class="p">)</span>
@@ -433,18 +431,18 @@ all parameters, use</p>
 <span class="go">  wildcard: None</span>
 <span class="go">  match_score: 1.000000</span>
 <span class="go">  mismatch_score: 0.000000</span>
-<span class="go">  open_internal_insertion_score: 0.000000</span>
-<span class="go">  extend_internal_insertion_score: 0.000000</span>
-<span class="go">  open_left_insertion_score: 0.000000</span>
-<span class="go">  extend_left_insertion_score: 0.000000</span>
-<span class="go">  open_right_insertion_score: 0.000000</span>
-<span class="go">  extend_right_insertion_score: 0.000000</span>
-<span class="go">  open_internal_deletion_score: 0.000000</span>
-<span class="go">  extend_internal_deletion_score: 0.000000</span>
-<span class="go">  open_left_deletion_score: 0.000000</span>
-<span class="go">  extend_left_deletion_score: 0.000000</span>
-<span class="go">  open_right_deletion_score: 0.000000</span>
-<span class="go">  extend_right_deletion_score: 0.000000</span>
+<span class="go">  open_internal_insertion_score: -1.000000</span>
+<span class="go">  extend_internal_insertion_score: -1.000000</span>
+<span class="go">  open_left_insertion_score: -1.000000</span>
+<span class="go">  extend_left_insertion_score: -1.000000</span>
+<span class="go">  open_right_insertion_score: -1.000000</span>
+<span class="go">  extend_right_insertion_score: -1.000000</span>
+<span class="go">  open_internal_deletion_score: -1.000000</span>
+<span class="go">  extend_internal_deletion_score: -1.000000</span>
+<span class="go">  open_left_deletion_score: -1.000000</span>
+<span class="go">  extend_left_deletion_score: -1.000000</span>
+<span class="go">  open_right_deletion_score: -1.000000</span>
+<span class="go">  extend_right_deletion_score: -1.000000</span>
 <span class="go">  mode: local</span>
 </pre></div>
 </div>
@@ -936,14 +934,23 @@ disallows a deletion after two nucleotides in the query sequence:</p>
 </section>
 <section id="using-a-pre-defined-substitution-matrix-and-gap-scores">
 <span id="sec-pairwise-predefined-scoring"></span><h2>Using a pre-defined substitution matrix and gap scores<a class="headerlink" href="#using-a-pre-defined-substitution-matrix-and-gap-scores" title="Link to this heading"></a></h2>
-<p>By default, a <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> object is initialized with a match
-score of +1.0, a mismatch score of 0.0, and all gap scores equal to 0.0,
-While this has the benefit of being a simple scoring scheme, in general
-it does not give the best performance. Instead, you can use the argument
-<code class="docutils literal notranslate"><span class="pre">scoring</span></code> to select a predefined scoring scheme when initializing a
-<code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> object. Currently, the provided scoring schemes are
-<code class="docutils literal notranslate"><span class="pre">blastn</span></code> and <code class="docutils literal notranslate"><span class="pre">megablast</span></code>, which are suitable for nucleotide
-alignments, and <code class="docutils literal notranslate"><span class="pre">blastp</span></code>, which is suitable for protein alignments.
+<p>Currently, a <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> object is initialized by default with a match
+score of +1.0, a mismatch score of 0.0, and all gap scores equal to -1.0.
+Biopython versions 1.85 and older used a default gap score of 0.0 (this choice
+was made to be consistent with the older pairwise aligner in <code class="docutils literal notranslate"><span class="pre">Bio.pairwise2</span></code>,
+which uses a default gap score of 0.0). However, this scheme assigns the same
+score to a mismatch and a insertion or deletion, e.g.</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="go">A      A-      -A</span>
+<span class="go">C      -C      C-</span>
+</pre></div>
+</div>
+<p>are evaluated equally, which tends to result in a large number of alignments
+that are only trivially different from each other. While the current scoring
+scheme avoids this problem, in general you may get better performance using
+a predefined scoring scheme, which you can select using the <code class="docutils literal notranslate"><span class="pre">scoring</span></code>
+argument when initializing a <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> object. Currently, the
+provided scoring schemes are <code class="docutils literal notranslate"><span class="pre">blastn</span></code> and <code class="docutils literal notranslate"><span class="pre">megablast</span></code>, which are suitable
+for nucleotide alignments, and <code class="docutils literal notranslate"><span class="pre">blastp</span></code>, suitable for protein alignments.
 Selecting these scoring schemes will initialize the <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code>
 object to the default scoring parameters used by BLASTN, MegaBLAST, and
 BLASTP, respectively.</p>
@@ -1047,7 +1054,7 @@ save all alignments as a list.</p>
 the alignment score before proceeding to extract individual
 alignments:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
-<span class="go">2.0</span>
+<span class="go">1.0</span>
 </pre></div>
 </div>
 </li>
@@ -1064,6 +1071,7 @@ for <code class="docutils literal notranslate"><span class="pre">query</span></c
 <span class="gp">&gt;&gt;&gt; </span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;AACC&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">PairwiseAligner</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">mismatch_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">gap_score</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">internal_gap_score</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">query</span><span class="p">)</span>  <span class="c1"># strand is &quot;+&quot; by default</span>
 <span class="go">4.0</span>
@@ -1702,10 +1710,10 @@ hemoglobin sequences from above (<code class="docutils literal notranslate"><spa
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">PairwiseAligner</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">seq1</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span> <span class="n">seq2</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
-<span class="go">72.0</span>
+<span class="go">56.0</span>
 </pre></div>
 </div>
-<p>showing an alignment score of 72.0. To see the individual alignments, do</p>
+<p>showing an alignment score of 56.0. To see the individual alignments, do</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">seq1</span><span class="o">.</span><span class="n">seq</span><span class="p">,</span> <span class="n">seq2</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1725,28 +1733,24 @@ raise an <code class="docutils literal notranslate"><span class="pre">OverflowEr
 <p>The alignment object stores the alignment score, as well as the
 alignment itself:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
-<span class="go">72.0</span>
+<span class="go">56.0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
-<span class="go">target            0 MV-LS-PAD--KTN--VK-AA-WGKV-----GAHAGEYGAEALE-RMFLSF----P-TTK</span>
-<span class="go">                  0 ||-|--|----|----|--|--||||-----|---||--|--|--|--|------|-|--</span>
-<span class="go">query             0 MVHL-TP--EEK--SAV-TA-LWGKVNVDEVG---GE--A--L-GR--L--LVVYPWT--</span>
+<span class="go">target            0 MV-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLSHGSAQ---</span>
+<span class="go">                  0 ||-|.|..|..|.|.||||...--|.|.|||.|.....|.|...|..|-|||...|.---</span>
+<span class="go">query             0 MVHLTPEEKSAVTALWGKVNVD--EVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGN</span>
 
-<span class="go">target           41 TY--FPHF----DLSHGS---AQVK-G------HGKKV--A--DA-LTNAVAHV-DDMPN</span>
-<span class="go">                 60 ----|--|----|||------|-|--|------|||||--|--|--|--|--|--|---|</span>
-<span class="go">query            39 --QRF--FESFGDLS---TPDA-V-MGNPKVKAHGKKVLGAFSD-GL--A--H-LD---N</span>
+<span class="go">target           55 --VKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAH</span>
+<span class="go">                 60 --||.|||||..|.....||.|........||.||..||.|||.||.||...|...||.|</span>
+<span class="go">query            58 PKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHH</span>
 
-<span class="go">target           79 ALS----A-LSD-LHAH--KLR-VDPV-NFK-LLSHC---LLVT--LAAHLPA----EFT</span>
-<span class="go">                120 -|-----|-||--||----||--|||--||--||------|-|---||-|-------|||</span>
-<span class="go">query            81 -L-KGTFATLS-ELH--CDKL-HVDP-ENF-RLL---GNVL-V-CVLA-H---HFGKEFT</span>
-
-<span class="go">target          119 PA-VH-ASLDKFLAS---VSTV------LTS--KYR- 142</span>
-<span class="go">                180 |--|--|------|----|--|------|----||-- 217</span>
-<span class="go">query           124 P-PV-QA------A-YQKV--VAGVANAL--AHKY-H 147</span>
+<span class="go">target          113 LPAEFTPAVHASLDKFLASVSTVLTSKYR 142</span>
+<span class="go">                120 ...||||.|.|...|..|.|...|..||. 149</span>
+<span class="go">query           118 FGKEFTPPVQAAYQKVVAGVANALAHKYH 147</span>
 </pre></div>
 </div>
 <p>Better alignments are usually obtained by penalizing gaps: higher costs
 for opening a gap and lower costs for extending an existing gap. For
-amino acid sequences match scores are usually encoded in matrices like
+amino acid sequences, match scores are usually encoded in matrices like
 <code class="docutils literal notranslate"><span class="pre">PAM</span></code> or <code class="docutils literal notranslate"><span class="pre">BLOSUM</span></code>. Thus, a more meaningful alignment for our example
 can be obtained by using the BLOSUM62 matrix, together with a gap open
 penalty of 10 and a gap extension penalty of 0.5:</p>
@@ -1903,7 +1907,7 @@ BLOSUM62 matrix, and align these sequences to each other:</p>
 <span class="go">Asn --- Leu Phe</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
-<span class="go">18.0</span>
+<span class="go">17.0</span>
 </pre></div>
 </div>
 </section>
@@ -1935,7 +1939,7 @@ This step can be bypassed by passing integer arrays directly:</p>
 <span class="go">2 -- 10 13</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
-<span class="go">18.0</span>
+<span class="go">17.0</span>
 </pre></div>
 </div>
 <p>Note that the indices should consist of 32-bit integers, as specified in
