@@ -77,6 +77,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#adding-alignments">Adding alignments</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mapping-a-pairwise-sequence-alignment">Mapping a pairwise sequence alignment</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#mapping-a-multiple-sequence-alignment">Mapping a multiple sequence alignment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#using-from-alignments-with-same-reference">Using from_alignments_with_same_reference</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#the-alignments-class">The Alignments class</a></li>
@@ -1523,6 +1524,52 @@ each species:</p>
 <span class="go">rn7.chr2  174256650</span>
 </pre></div>
 </div>
+</section>
+<section id="using-from-alignments-with-same-reference">
+<h3>Using from_alignments_with_same_reference<a class="headerlink" href="#using-from-alignments-with-same-reference" title="Link to this heading"></a></h3>
+<p>The <a class="reference internal" href="../api/Bio.Align.html#Bio.Align.Alignment.from_alignments_with_same_reference" title="Bio.Align.Alignment.from_alignments_with_same_reference"><code class="xref py py-meth docutils literal notranslate"><span class="pre">from_alignments_with_same_reference()</span></code></a> method
+constructs a new multiple sequence alignment from a collection of pairwise
+alignments that all share the same reference sequence. This is useful when you
+have aligned several sequences independently to the same reference and want to
+combine those results into a single multiple alignment.</p>
+<p>Suppose you have a pairwise alignment of a reference sequence to sequence A and
+a multiple alignment of sequences B and C to the same reference. To merge
+these into a single multiple alignment of the reference and sequences A, B, and C,
+you can use the <code class="docutils literal notranslate"><span class="pre">from_alignments_with_same_reference</span></code> method as follows:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Seq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">PairwiseAligner</span><span class="p">,</span> <span class="n">Alignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">reference_str</span> <span class="o">=</span> <span class="s2">&quot;ACGT&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1_str</span> <span class="o">=</span> <span class="s2">&quot;ACT&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2_str</span> <span class="o">=</span> <span class="s2">&quot;ACGGT&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq3_str</span> <span class="o">=</span> <span class="s2">&quot;AT&quot;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_1</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">reference_str</span><span class="p">,</span> <span class="n">seq1_str</span><span class="p">))</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment_2</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">([</span><span class="n">reference_str</span><span class="p">,</span> <span class="n">seq2_str</span><span class="p">,</span> <span class="n">seq3_str</span><span class="p">],</span> <span class="n">coords</span><span class="p">)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">combined_alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="o">.</span><span class="n">from_alignments_with_same_reference</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">[</span><span class="n">alignment_1</span><span class="p">,</span> <span class="n">alignment_2</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">combined_alignment</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">&#39;ACG-T&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">combined_alignment</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="go">&#39;AC--T&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">combined_alignment</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="go">&#39;ACGGT&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">str</span><span class="p">(</span><span class="n">combined_alignment</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="go">&#39;A---T&#39;</span>
+</pre></div>
+</div>
+<p>The resulting alignment contains all sequences aligned to the shared reference.
+This method differs from <a class="reference internal" href="../api/Bio.Align.html#Bio.Align.Alignment.map" title="Bio.Align.Alignment.map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">map()</span></code></a> and
+<a class="reference internal" href="../api/Bio.Align.html#Bio.Align.Alignment.mapall" title="Bio.Align.Alignment.mapall"><code class="xref py py-meth docutils literal notranslate"><span class="pre">mapall()</span></code></a> in that it <em>builds</em> a new multiple alignment
+directly from a set of pairwise alignments, rather than transforming an existing
+multiple alignment using mappings. Each input alignment must have the same
+reference sequence (in the same orientation), otherwise an error is raised.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">mapall</span></code> method can also be used to create a multiple alignment of
 codon sequences from a multiple sequence alignment of the corresponding
 amino acid sequences (see Section <a class="reference internal" href="chapter_pairwise.html#sec-msa-codons"><span class="std std-ref">Generating a multiple sequence alignment of codon sequences</span></a>

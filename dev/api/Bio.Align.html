@@ -1340,6 +1340,88 @@ Note that the input sequences are bytes objects.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="Bio.Align.Alignment.from_alignments_with_same_reference">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_alignments_with_same_reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alignments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#Bio.Align.Alignment" title="Bio.Align.Alignment"><span class="pre">Alignment</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#Bio.Align.Alignment" title="Bio.Align.Alignment"><span class="pre">Alignment</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#Bio.Align.Alignment" title="Bio.Align.Alignment"><span class="pre">Alignment</span></a></span></span><a class="headerlink" href="#Bio.Align.Alignment.from_alignments_with_same_reference" title="Link to this definition"></a></dt>
+<dd><p>Create an Alignment from a list of alignments in which the first sequence is the same (reference sequence).</p>
+<p>This method combines multiple alignments into a single multiple sequence alignment.
+All alignments must share the same reference sequence (ignoring gaps).</p>
+<dl>
+<dt>Args:</dt><dd><p>alignments: A list or tuple of Alignment objects.</p>
+</dd>
+<dt>Returns:</dt><dd><p>An Alignment object representing a multiple sequence alignment.</p>
+</dd>
+<dt>Raises:</dt><dd><p>ValueError: If no alignments are provided or if the reference
+sequences do not match across all alignments.</p>
+</dd>
+<dt>Example 1: Basic Usage with Strings</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Seq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqRecord</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">PairwiseAligner</span><span class="p">,</span> <span class="n">Alignment</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</pre></div>
+</div>
+<p>Consider the following reference and sequences:
+&gt;&gt;&gt; reference_str = “ACGT”
+&gt;&gt;&gt; seq1_str = “ACT”
+&gt;&gt;&gt; seq2_str = “ACGGT”
+&gt;&gt;&gt; seq3_str = “AT”</p>
+<p>To produce a pairwise alignment:
+&gt;&gt;&gt; aligner = PairwiseAligner()
+&gt;&gt;&gt; pwa = next(aligner.align(reference_str, seq1_str))</p>
+<p>To produce a three sequence alignment:
+&gt;&gt;&gt; coords = np.array([
+…     [0, 1, 2, 3, 3, 4],
+…     [0, 1, 2, 3, 4, 5],
+…     [0, 1, 1, 1, 1, 2]
+… ])</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">not_pwa</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">([</span><span class="n">reference_str</span><span class="p">,</span> <span class="n">seq2_str</span><span class="p">,</span> <span class="n">seq3_str</span><span class="p">],</span> <span class="n">coords</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The pairwise alignment would look like
+&gt;&gt;&gt; print(f”Reference: {pwa[0]}”)
+Reference: ACGT
+&gt;&gt;&gt; print(f”Seq1:      {pwa[1]}”)
+Seq1:      AC-T</p>
+<p>The three sequence alignment would look like
+&gt;&gt;&gt; str(not_pwa[0])
+‘ACG-T’
+&gt;&gt;&gt; str(not_pwa[1])
+‘ACGGT’
+&gt;&gt;&gt; str(not_pwa[2])
+‘A—T’</p>
+<p>Now, we can combine these alignments into a multiple sequence alignment:
+&gt;&gt;&gt; msa = Alignment.from_alignments_with_same_reference([pwa, not_pwa])
+&gt;&gt;&gt; str(msa[0])
+‘ACG-T’
+&gt;&gt;&gt; str(msa[1])
+‘AC–T’
+&gt;&gt;&gt; str(msa[2])
+‘ACGGT’
+&gt;&gt;&gt; str(msa[3])
+‘A—T’</p>
+</dd>
+<dt>Example 2: Using SeqRecord Objects with Metadata</dt><dd><p>Consider the following reference and sequences with metadata:
+&gt;&gt;&gt; reference_seqr = SeqRecord(Seq(“ACGT”), id=”reference”, description=”desc 1”)
+&gt;&gt;&gt; seq1 = SeqRecord(Seq(“ACGGT”), id=”seq1”, description=”desc 2”)
+&gt;&gt;&gt; seq2 = SeqRecord(Seq(“AT”), id=”seq2”, description=”desc 3”)</p>
+<p>To produce pairwise alignments:
+&gt;&gt;&gt; aligner = PairwiseAligner()
+&gt;&gt;&gt; pwa1 = next(aligner.align(reference_seqr, seq1))
+&gt;&gt;&gt; pwa2 = next(aligner.align(reference_seqr, seq2))</p>
+<p>The msa retains the metadata from the original SeqRecord objects:
+&gt;&gt;&gt; msa = Alignment.from_alignments_with_same_reference([pwa1, pwa2])
+&gt;&gt;&gt; print(msa.format(“fasta”))
+&gt;reference desc 1
+ACG-T
+&gt;seq1 desc 2
+ACGGT
+&gt;seq2 desc 3
+A—T
+&lt;BLANKLINE&gt;</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.Alignment.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sequences</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.Alignment.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initialize a new Alignment object.</p>
