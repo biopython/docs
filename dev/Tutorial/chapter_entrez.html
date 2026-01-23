@@ -354,13 +354,13 @@ instead, we can directly parse this XML file into a Python object:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Now <code class="docutils literal notranslate"><span class="pre">record</span></code> is a dictionary with exactly one key:</p>
+<p>Now <code class="docutils literal notranslate"><span class="pre">record</span></code> is a dictionary with three keys:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-<span class="go">dict_keys([&#39;DbList&#39;])</span>
+<span class="go">dict_keys([&#39;DbInfo&#39;, &#39;ERROR&#39;, &#39;DbList&#39;])</span>
 </pre></div>
 </div>
-<p>The values stored in this key is the list of database names shown in the
-XML above:</p>
+<p>The values stored in the <code class="docutils literal notranslate"><span class="pre">'DbList</span></code> key is the list of database
+names shown in the XML above:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;DbList&quot;</span><span class="p">]</span>
 <span class="go">[&#39;pubmed&#39;, &#39;protein&#39;, &#39;nucleotide&#39;, &#39;nuccore&#39;, &#39;nucgss&#39;, &#39;nucest&#39;,</span>
 <span class="go"> &#39;structure&#39;, &#39;genome&#39;, &#39;books&#39;, &#39;cancerchromosomes&#39;, &#39;cdd&#39;, &#39;gap&#39;,</span>
@@ -376,13 +376,13 @@ information:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;A.N.Other@example.com&quot;</span>  <span class="c1"># Always tell NCBI who you are</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">einfo</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;pubmed&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;DbInfo&quot;</span><span class="p">][</span><span class="s2">&quot;Description&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;DbInfo&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;Description&quot;</span><span class="p">]</span>
 <span class="go">&#39;PubMed bibliographic record&#39;</span>
 </pre></div>
 </div>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;DbInfo&quot;</span><span class="p">][</span><span class="s2">&quot;Count&quot;</span><span class="p">]</span>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;DbInfo&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;Count&quot;</span><span class="p">]</span>
 <span class="go">&#39;17989604&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;DbInfo&quot;</span><span class="p">][</span><span class="s2">&quot;LastUpdate&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span><span class="p">[</span><span class="s2">&quot;DbInfo&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;LastUpdate&quot;</span><span class="p">]</span>
 <span class="go">&#39;2008/05/24 06:45&#39;</span>
 </pre></div>
 </div>
@@ -993,59 +993,20 @@ error was detected.</p>
 </section>
 <section id="the-file-contains-items-that-are-missing-from-the-associated-dtd">
 <h3>The file contains items that are missing from the associated DTD<a class="headerlink" href="#the-file-contains-items-that-are-missing-from-the-associated-dtd" title="Link to this heading"></a></h3>
-<p>This is an example of an XML file containing tags that do not have a
-description in the corresponding DTD file:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;!DOCTYPE eInfoResult PUBLIC &quot;-//NLM//DTD eInfoResult, 11 May 2002//EN&quot; &quot;https://www.ncbi.nlm.nih.gov/entrez/query/DTD/eInfo_020511.dtd&quot;&gt;
-&lt;eInfoResult&gt;
-        &lt;DbInfo&gt;
-        &lt;DbName&gt;pubmed&lt;/DbName&gt;
-        &lt;MenuName&gt;PubMed&lt;/MenuName&gt;
-        &lt;Description&gt;PubMed bibliographic record&lt;/Description&gt;
-        &lt;Count&gt;20161961&lt;/Count&gt;
-        &lt;LastUpdate&gt;2010/09/10 04:52&lt;/LastUpdate&gt;
-        &lt;FieldList&gt;
-                &lt;Field&gt;
-...
-                &lt;/Field&gt;
-        &lt;/FieldList&gt;
-        &lt;DocsumList&gt;
-                &lt;Docsum&gt;
-                        &lt;DsName&gt;PubDate&lt;/DsName&gt;
-                        &lt;DsType&gt;4&lt;/DsType&gt;
-                        &lt;DsTypeName&gt;string&lt;/DsTypeName&gt;
-                &lt;/Docsum&gt;
-                &lt;Docsum&gt;
-                        &lt;DsName&gt;EPubDate&lt;/DsName&gt;
-...
-        &lt;/DbInfo&gt;
-&lt;/eInfoResult&gt;
-</pre></div>
-</div>
-<p>In this file, for some reason the tag <code class="docutils literal notranslate"><span class="pre">&lt;DocsumList&gt;</span></code> (and several
-others) are not listed in the DTD file <code class="docutils literal notranslate"><span class="pre">eInfo_020511.dtd</span></code>, which is
-specified on the second line as the DTD for this XML file. By default,
-the parser will stop and raise a ValidationError if it cannot find some
-tag in the DTD:</p>
+<p>In some extraordinary cases, the XML file is not fully consistent with the
+associated DTD file, and contains some tags that are not defined in the
+DTD file. By default, the parser will stop and raise a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code>
+if it cannot find some tag in the DTD. You can instruct the parser to skip
+such tags instead of raising a <code class="docutils literal notranslate"><span class="pre">ValidationError</span></code> by calling <code class="docutils literal notranslate"><span class="pre">Entrez.read</span></code>
+or <code class="docutils literal notranslate"><span class="pre">Entrez.parse</span></code> with the argument <code class="docutils literal notranslate"><span class="pre">validate</span></code> equal to False:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entrez</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;einfo3.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
-<span class="gt">Traceback (most recent call last):</span>
-<span class="w">  </span><span class="c">...</span>
-<span class="gr">Bio.Entrez.Parser.ValidationError</span>: <span class="n">Failed to find tag &#39;DocsumList&#39; in the DTD. To skip all tags that are not represented in the DTD, please call Bio.Entrez.read or Bio.Entrez.parse with validate=False.</span>
-</pre></div>
-</div>
-<p>Optionally, you can instruct the parser to skip such tags instead of
-raising a ValidationError. This is done by calling <code class="docutils literal notranslate"><span class="pre">Entrez.read</span></code> or
-<code class="docutils literal notranslate"><span class="pre">Entrez.parse</span></code> with the argument <code class="docutils literal notranslate"><span class="pre">validate</span></code> equal to False:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entrez</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;einfo3.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;myxmlfile.xml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">stream</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Of course, the information contained in the XML tags that are not in the
-DTD are not present in the record returned by <code class="docutils literal notranslate"><span class="pre">Entrez.read</span></code>.</p>
+DTD will not be present in the record returned by <code class="docutils literal notranslate"><span class="pre">Entrez.read</span></code>.</p>
 </section>
 <section id="the-file-contains-an-error-message">
 <h3>The file contains an error message<a class="headerlink" href="#the-file-contains-an-error-message" title="Link to this heading"></a></h3>

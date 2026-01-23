@@ -137,9 +137,8 @@
 <li class="toctree-l1"><a class="reference internal" href="Bio.Entrez.Parser.html">Bio.Entrez.Parser module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.NoneElement"><code class="docutils literal notranslate"><span class="pre">NoneElement</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.NoneElement.__init__"><code class="docutils literal notranslate"><span class="pre">NoneElement.__init__()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.NoneElement.__eq__"><code class="docutils literal notranslate"><span class="pre">NoneElement.__eq__()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.NoneElement.__ne__"><code class="docutils literal notranslate"><span class="pre">NoneElement.__ne__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.NoneElement.__repr__"><code class="docutils literal notranslate"><span class="pre">NoneElement.__repr__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.NoneElement.__eq__"><code class="docutils literal notranslate"><span class="pre">NoneElement.__eq__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.NoneElement.__hash__"><code class="docutils literal notranslate"><span class="pre">NoneElement.__hash__</span></code></a></li>
 </ul>
 </li>
@@ -231,6 +230,7 @@
 <li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.DataHandler.open_xsd_file"><code class="docutils literal notranslate"><span class="pre">DataHandler.open_xsd_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.DataHandler.save_dtd_file"><code class="docutils literal notranslate"><span class="pre">DataHandler.save_dtd_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.DataHandler.save_xsd_file"><code class="docutils literal notranslate"><span class="pre">DataHandler.save_xsd_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.DataHandler.verify_security"><code class="docutils literal notranslate"><span class="pre">DataHandler.verify_security()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="Bio.Entrez.Parser.html#Bio.Entrez.Parser.DataHandler.externalEntityRefHandler"><code class="docutils literal notranslate"><span class="pre">DataHandler.externalEntityRefHandler()</span></code></a></li>
 </ul>
 </li>
@@ -243,9 +243,9 @@
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Bio.Entrez" title="Link to this heading"></a></h2>
 <p>Provides code to access NCBI over the WWW.</p>
 <p>The main Entrez web page is available at:
-<a class="reference external" href="http://www.ncbi.nlm.nih.gov/Entrez/">http://www.ncbi.nlm.nih.gov/Entrez/</a></p>
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/search/">https://www.ncbi.nlm.nih.gov/search/</a></p>
 <p>Entrez Programming Utilities web page is available at:
-<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25501/">http://www.ncbi.nlm.nih.gov/books/NBK25501/</a></p>
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK25501/">https://www.ncbi.nlm.nih.gov/books/NBK25501/</a></p>
 <p>This module provides a number of functions like <code class="docutils literal notranslate"><span class="pre">efetch</span></code> (short for
 Entrez Fetch) which will return the data as a handle object. This is
 a standard interface used in Python for reading data from a file, or
@@ -337,13 +337,13 @@ Typical usage is:</p>
 <li><p>parse        Parses the XML results returned by those of the above functions
 which can return multiple records - such as efetch, esummary
 and elink. Typical usage is:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">esummary</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;pubmed&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;19304878,14630660&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">efetch</span><span class="p">(</span><span class="n">db</span><span class="o">=</span><span class="s2">&quot;taxonomy&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;9615,9685&quot;</span><span class="p">,</span> <span class="n">retmode</span><span class="o">=</span><span class="s2">&quot;xml&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="c1"># each record is a Python dictionary or list.</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;Title&#39;</span><span class="p">])</span>
-<span class="go">Biopython: freely available Python tools for computational molecular biology and bioinformatics.</span>
-<span class="go">PDB file parser and structure class implemented in Python.</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;TaxId&#39;</span><span class="p">],</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;OtherNames&quot;</span><span class="p">][</span><span class="s1">&#39;GenbankCommonName&#39;</span><span class="p">])</span>
+<span class="gp">...</span>
+<span class="go">9615 dog</span>
+<span class="go">9685 domestic cat</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -360,7 +360,7 @@ multiple records, and is particular useful for large files.</p>
 <p>Posts a file containing a list of UIs for future use in the user’s
 environment to use with subsequent search strategies.</p>
 <p>See the online documentation for an explanation of the parameters:
-<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EPost">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EPost</a></p>
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EPost">https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EPost</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Handle to the results.</p>
@@ -378,7 +378,7 @@ environment to use with subsequent search strategies.</p>
 <p>EFetch retrieves records in the requested format from a list or set of one or
 more UIs or from user’s environment.</p>
 <p>See the online documentation for an explanation of the parameters:
-<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch</a></p>
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch">https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EFetch</a></p>
 <p>Short example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entrez</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
@@ -410,7 +410,7 @@ databases which previously returned text output now give XML.</p>
 and ESummary) and term translations, and optionally retains results
 for future use in the user’s environment.</p>
 <p>See the online documentation for an explanation of the parameters:
-<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch</a></p>
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch">https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESearch</a></p>
 <p>Short example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entrez</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
@@ -449,7 +449,7 @@ scores for links to Entrez databases or Related Articles; creates a
 hyperlink to the primary LinkOut provider for a specific ID and
 database, or lists LinkOut URLs and attributes for multiple IDs.</p>
 <p>See the online documentation for an explanation of the parameters:
-<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ELink">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ELink</a></p>
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ELink">https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ELink</a></p>
 <p>Note that ELink treats the “id” parameter differently than the other
 tools when multiple values are given. You should generally pass multiple
 UIDs as a list of strings or integers. This will provide a “one-to-one”
@@ -489,7 +489,7 @@ note’s entry in the PubMed database:</p>
 <p>EInfo provides field names, index term counts, last update, and
 available links for each Entrez database.</p>
 <p>See the online documentation for an explanation of the parameters:
-<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EInfo">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EInfo</a></p>
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EInfo">https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.EInfo</a></p>
 <p>Short example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entrez</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
@@ -515,7 +515,7 @@ available links for each Entrez database.</p>
 <p>ESummary retrieves document summaries from a list of primary IDs or
 from the user’s environment.</p>
 <p>See the online documentation for an explanation of the parameters:
-<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESummary">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESummary</a></p>
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESummary">https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESummary</a></p>
 <p>This example discovers more about entry 19923 in the structure
 database:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entrez</span>
@@ -545,7 +545,7 @@ database:</p>
 <dd><p>Retrieve spelling suggestions as a results handle.</p>
 <p>ESpell retrieves spelling suggestions, if available.</p>
 <p>See the online documentation for an explanation of the parameters:
-<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESpell">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESpell</a></p>
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESpell">https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ESpell</a></p>
 <p>Short example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entrez</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
@@ -573,7 +573,7 @@ database:</p>
 <p>ECitMatch retrieves PubMed IDs (PMIDs) that correspond to a set of input
 citation strings.</p>
 <p>See the online documentation for an explanation of the parameters:
-<a class="reference external" href="http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ECitMatch">http://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ECitMatch</a></p>
+<a class="reference external" href="https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ECitMatch">https://www.ncbi.nlm.nih.gov/books/NBK25499/#chapter4.ECitMatch</a></p>
 <p>Short example:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entrez</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">Entrez</span><span class="o">.</span><span class="n">email</span> <span class="o">=</span> <span class="s2">&quot;Your.Name.Here@example.org&quot;</span>
@@ -615,14 +615,14 @@ data in binary mode. For files, use mode “rb” when opening the file, as in</
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;QueryTranslation&#39;</span><span class="p">])</span>
-<span class="go">biopython[All Fields]</span>
+<span class="go">&quot;biopython&quot;[All Fields]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Alternatively, you can use the filename directly, as in</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;QueryTranslation&#39;</span><span class="p">])</span>
-<span class="go">biopython[All Fields]</span>
+<span class="go">&quot;biopython&quot;[All Fields]</span>
 </pre></div>
 </div>
 <p>which is safer, as the file stream will automatically be closed after the
@@ -665,24 +665,24 @@ uses it to convert all text in the XML to the correct Unicode string. The
 functions in Bio.Entrez to access NCBI Entrez will automatically return XML
 data in binary mode. For files, use mode “rb” when opening the file, as in</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entrez</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;Entrez/pubmed1.xml&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;Entrez/taxonomy.xml&quot;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>  <span class="c1"># opened in binary mode</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;MedlineCitation&#39;</span><span class="p">][</span><span class="s1">&#39;Article&#39;</span><span class="p">][</span><span class="s1">&#39;Journal&#39;</span><span class="p">][</span><span class="s1">&#39;Title&#39;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;TaxId&#39;</span><span class="p">],</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;OtherNames&quot;</span><span class="p">][</span><span class="s1">&#39;GenbankCommonName&#39;</span><span class="p">])</span>
 <span class="gp">...</span>
-<span class="go">Social justice (San Francisco, Calif.)</span>
-<span class="go">Biochimica et biophysica acta</span>
+<span class="go">9615 dog</span>
+<span class="go">9685 domestic cat</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">stream</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Alternatively, you can use the filename directly, as in</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">records</span> <span class="o">=</span> <span class="n">Entrez</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;MedlineCitation&#39;</span><span class="p">][</span><span class="s1">&#39;Article&#39;</span><span class="p">][</span><span class="s1">&#39;Journal&#39;</span><span class="p">][</span><span class="s1">&#39;Title&#39;</span><span class="p">])</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s1">&#39;TaxId&#39;</span><span class="p">],</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;OtherNames&quot;</span><span class="p">][</span><span class="s1">&#39;GenbankCommonName&#39;</span><span class="p">])</span>
 <span class="gp">...</span>
-<span class="go">Social justice (San Francisco, Calif.)</span>
-<span class="go">Biochimica et biophysica acta</span>
+<span class="go">9615 dog</span>
+<span class="go">9685 domestic cat</span>
 </pre></div>
 </div>
 <p>which is safer, as the file stream will automatically be closed after all
