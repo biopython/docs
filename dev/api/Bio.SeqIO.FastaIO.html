@@ -147,15 +147,15 @@
 line (without the leading ‘&gt;’ character), and the sequence (with any
 whitespace removed). The title line is not divided up into an
 identifier (the first word) and comment or description.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/dups.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"Fasta/dups.fasta"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">SimpleFastaParser</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="go">(&#39;alpha&#39;, &#39;ACGTA&#39;)</span>
-<span class="go">(&#39;beta&#39;, &#39;CGTC&#39;)</span>
-<span class="go">(&#39;gamma&#39;, &#39;CCGCC&#39;)</span>
-<span class="go">(&#39;alpha (again - this is a duplicate entry to test the indexing code)&#39;, &#39;ACGTA&#39;)</span>
-<span class="go">(&#39;delta&#39;, &#39;CGCGC&#39;)</span>
+<span class="go">('alpha', 'ACGTA')</span>
+<span class="go">('beta', 'CGTC')</span>
+<span class="go">('gamma', 'CCGCC')</span>
+<span class="go">('alpha (again - this is a duplicate entry to test the indexing code)', 'ACGTA')</span>
+<span class="go">('delta', 'CGCGC')</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -179,21 +179,21 @@ lines (other than the special case of a zero-length sequence
 as the second line of a record).</p>
 <p class="rubric">Examples</p>
 <p>This file uses two lines per FASTA record:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/aster_no_wrap.pro&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"Fasta/aster_no_wrap.pro"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">FastaTwoLineParser</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
 <span class="gp">...</span>
 <span class="go">gi|3298468|dbj|BAA31520.1| SAMIPF = GGH...</span>
 </pre></div>
 </div>
 <p>This equivalent file uses line wrapping:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/aster.pro&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"Fasta/aster.pro"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">title</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">FastaTwoLineParser</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> = </span><span class="si">%s</span><span class="s2">..."</span> <span class="o">%</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">seq</span><span class="p">[:</span><span class="mi">3</span><span class="p">]))</span>
 <span class="gp">...</span>
 <span class="gt">Traceback (most recent call last):</span>
 <span class="w">   </span><span class="c">...</span>
-<span class="gr">ValueError</span>: <span class="n">Expected FASTA record starting with &#39;&gt;&#39; character. Perhaps this file is using FASTA line wrapping? Got: &#39;MTFGLVYTVYATAIDPKKGSLGTIAPIAIGFIVGANI&#39;</span>
+<span class="gr">ValueError</span>: <span class="n">Expected FASTA record starting with '&gt;' character. Perhaps this file is using FASTA line wrapping? Got: 'MTFGLVYTVYATAIDPKKGSLGTIAPIAIGFIVGANI'</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -223,7 +223,7 @@ as the second line of a record).</p>
 lines.</p>
 <p>By default this will act like calling Bio.SeqIO.parse(handle, “fasta”)
 with no custom handling of the title lines:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/dups.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"Fasta/dups.fasta"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="gp">...</span>
@@ -241,7 +241,7 @@ the ID of each record, you can use a generator function as follows:</p>
 <span class="gp">... </span>        <span class="n">record</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="k">yield</span> <span class="n">record</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;Fasta/dups.fasta&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'Fasta/dups.fasta'</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">modify_records</span><span class="p">(</span><span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">)):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="gp">...</span>
@@ -351,7 +351,7 @@ by the relaxed FASTA parser is offered.</p>
 starting with ‘#’, ‘!’, or ‘;’ are interpreted as comments and ignored.</p>
 <p>This iterator acts like calling Bio.SeqIO.parse(handle, “fasta-blast”)
 with no custom handling of the title lines:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/dups.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"Fasta/dups.fasta"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="gp">...</span>
@@ -369,7 +369,7 @@ the ID of each record, you can use a generator function as follows:</p>
 <span class="gp">... </span>        <span class="n">record</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="k">yield</span> <span class="n">record</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;Fasta/dups.fasta&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'Fasta/dups.fasta'</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">modify_records</span><span class="p">(</span><span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">)):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="gp">...</span>
@@ -431,7 +431,7 @@ first sequence record) and comments (lines starting with ‘;’) as in
 William Pearson’s FASTA aligner software.</p>
 <p>This iterator acts as calling Bio.SeqIO.parse(handle, “fasta-pearson”)
 with no custom handling of the title lines:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Fasta/dups.fasta&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"Fasta/dups.fasta"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="gp">...</span>
@@ -449,7 +449,7 @@ the ID of each record, you can use a generator function as follows:</p>
 <span class="gp">... </span>        <span class="n">record</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
 <span class="gp">... </span>        <span class="k">yield</span> <span class="n">record</span>
 <span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;Fasta/dups.fasta&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'Fasta/dups.fasta'</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">modify_records</span><span class="p">(</span><span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">)):</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="gp">...</span>
@@ -515,14 +515,14 @@ record.id, then just the record.description is used.</p></li>
 </dd>
 </dl>
 <p>You can either use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">FastaWriter</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
 <span class="n">writer</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span><span class="n">myRecords</span><span class="p">)</span>
 <span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Or, follow the sequential file writer system, for example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">FastaWriter</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
 <span class="o">...</span>
 <span class="n">Multiple</span> <span class="n">writer</span><span class="o">.</span><span class="n">write_record</span><span class="p">()</span> <span class="ow">and</span><span class="o">/</span><span class="ow">or</span> <span class="n">writer</span><span class="o">.</span><span class="n">write_records</span><span class="p">()</span> <span class="n">calls</span>
@@ -586,14 +586,14 @@ record.id, then just the record.description is used.</p></li>
 </dd>
 </dl>
 <p>You can either use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">FastaWriter</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
 <span class="n">writer</span><span class="o">.</span><span class="n">write_file</span><span class="p">(</span><span class="n">myRecords</span><span class="p">)</span>
 <span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Or, follow the sequential file writer system, for example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span>
 <span class="n">writer</span> <span class="o">=</span> <span class="n">FastaWriter</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
 <span class="o">...</span>
 <span class="n">Multiple</span> <span class="n">writer</span><span class="o">.</span><span class="n">write_record</span><span class="p">()</span> <span class="ow">and</span><span class="o">/</span><span class="ow">or</span> <span class="n">writer</span><span class="o">.</span><span class="n">write_records</span><span class="p">()</span> <span class="n">calls</span>

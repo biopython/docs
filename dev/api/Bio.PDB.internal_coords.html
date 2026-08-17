@@ -156,52 +156,52 @@ internal coordinate data files.</p>
 
 <span class="c1"># load a structure as normal, get first chain</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">PDBParser</span><span class="p">()</span>
-<span class="n">myProtein</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">&quot;7rsa&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb7rsa.ent&quot;</span><span class="p">)</span>
-<span class="n">myChain</span> <span class="o">=</span> <span class="n">myProtein</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;A&quot;</span><span class="p">]</span>
+<span class="n">myProtein</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_structure</span><span class="p">(</span><span class="s2">"7rsa"</span><span class="p">,</span> <span class="s2">"pdb7rsa.ent"</span><span class="p">)</span>
+<span class="n">myChain</span> <span class="o">=</span> <span class="n">myProtein</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"A"</span><span class="p">]</span>
 
 <span class="c1"># compute bond lengths, angles, dihedral angles</span>
 <span class="n">myChain</span><span class="o">.</span><span class="n">atom_to_internal_coordinates</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># check myChain makes sense (can get angles and rebuild same structure)</span>
 <span class="n">resultDict</span> <span class="o">=</span> <span class="n">structure_rebuild_test</span><span class="p">(</span><span class="n">myChain</span><span class="p">)</span>
-<span class="k">assert</span> <span class="n">resultDict</span><span class="p">[</span><span class="s1">&#39;pass&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span>
+<span class="k">assert</span> <span class="n">resultDict</span><span class="p">[</span><span class="s1">'pass'</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span>
 
 <span class="c1"># get residue 1 chi2 angle</span>
 <span class="n">r1</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">myChain</span><span class="o">.</span><span class="n">get_residues</span><span class="p">())</span>
-<span class="n">r1chi2</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;chi2&quot;</span><span class="p">)</span>
+<span class="n">r1chi2</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"chi2"</span><span class="p">)</span>
 
 <span class="c1"># rotate residue 1 chi2 angle by 120 degrees (loops w/in +/-180)</span>
-<span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">set_angle</span><span class="p">(</span><span class="s2">&quot;chi2&quot;</span><span class="p">,</span> <span class="n">r1chi2</span> <span class="o">+</span> <span class="mf">120.0</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">set_angle</span><span class="p">(</span><span class="s2">"chi2"</span><span class="p">,</span> <span class="n">r1chi2</span> <span class="o">+</span> <span class="mf">120.0</span><span class="p">)</span>
 <span class="c1"># or</span>
-<span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">bond_rotate</span><span class="p">(</span><span class="s2">&quot;chi2&quot;</span><span class="p">,</span> <span class="mf">120.0</span><span class="p">)</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">bond_rotate</span><span class="p">(</span><span class="s2">"chi2"</span><span class="p">,</span> <span class="mf">120.0</span><span class="p">)</span>
 <span class="c1"># update myChain XYZ coordinates with chi2 changed</span>
 <span class="n">myChain</span><span class="o">.</span><span class="n">internal_to_atom_coordinates</span><span class="p">()</span>
 <span class="c1"># write new conformation with PDBIO</span>
-<span class="n">write_PDB</span><span class="p">(</span><span class="n">myProtein</span><span class="p">,</span> <span class="s2">&quot;myChain.pdb&quot;</span><span class="p">)</span>
+<span class="n">write_PDB</span><span class="p">(</span><span class="n">myProtein</span><span class="p">,</span> <span class="s2">"myChain.pdb"</span><span class="p">)</span>
 <span class="c1"># or just the ATOM records without headers:</span>
 <span class="n">io</span> <span class="o">=</span> <span class="n">PDBIO</span><span class="p">()</span>
 <span class="n">io</span><span class="o">.</span><span class="n">set_structure</span><span class="p">(</span><span class="n">myProtein</span><span class="p">)</span>
-<span class="n">io</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;myChain2.pdb&quot;</span><span class="p">)</span>
+<span class="n">io</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">"myChain2.pdb"</span><span class="p">)</span>
 
-<span class="c1"># write chain as &#39;protein internal coordinates&#39; (.pic) file</span>
-<span class="n">write_PIC</span><span class="p">(</span><span class="n">myProtein</span><span class="p">,</span> <span class="s2">&quot;myChain.pic&quot;</span><span class="p">)</span>
+<span class="c1"># write chain as 'protein internal coordinates' (.pic) file</span>
+<span class="n">write_PIC</span><span class="p">(</span><span class="n">myProtein</span><span class="p">,</span> <span class="s2">"myChain.pic"</span><span class="p">)</span>
 <span class="c1"># read .pic file</span>
-<span class="n">myProtein2</span> <span class="o">=</span> <span class="n">read_PIC</span><span class="p">(</span><span class="s2">&quot;myChain.pic&quot;</span><span class="p">)</span>
+<span class="n">myProtein2</span> <span class="o">=</span> <span class="n">read_PIC</span><span class="p">(</span><span class="s2">"myChain.pic"</span><span class="p">)</span>
 
 <span class="c1"># create default structure for random sequence by reading as .pic file</span>
 <span class="n">myProtein3</span> <span class="o">=</span> <span class="n">read_PIC_seq</span><span class="p">(</span>
     <span class="n">SeqRecord</span><span class="p">(</span>
-        <span class="n">Seq</span><span class="p">(</span><span class="s2">&quot;GAVLIMFPSTCNQYWDEHKR&quot;</span><span class="p">),</span>
-        <span class="nb">id</span><span class="o">=</span><span class="s2">&quot;1RND&quot;</span><span class="p">,</span>
-        <span class="n">description</span><span class="o">=</span><span class="s2">&quot;my random sequence&quot;</span><span class="p">,</span>
+        <span class="n">Seq</span><span class="p">(</span><span class="s2">"GAVLIMFPSTCNQYWDEHKR"</span><span class="p">),</span>
+        <span class="nb">id</span><span class="o">=</span><span class="s2">"1RND"</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"my random sequence"</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="p">)</span>
 <span class="n">myProtein3</span><span class="o">.</span><span class="n">internal_to_atom_coordinates</span><span class="p">()</span>
-<span class="n">write_PDB</span><span class="p">(</span><span class="n">myProtein3</span><span class="p">,</span> <span class="s2">&quot;myRandom.pdb&quot;</span><span class="p">)</span>
+<span class="n">write_PDB</span><span class="p">(</span><span class="n">myProtein3</span><span class="p">,</span> <span class="s2">"myRandom.pdb"</span><span class="p">)</span>
 
 <span class="c1"># access the all-dihedrals array for the chain, e.g. residue 1 chi2 angle:</span>
-<span class="n">r1chi2_obj</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">pick_angle</span><span class="p">(</span><span class="s2">&quot;chi2&quot;</span><span class="p">)</span>
-<span class="c1"># or same thing: r1chi2_obj = r1.internal_coord.pick_angle(&quot;CA:CB:CG:CD&quot;)</span>
+<span class="n">r1chi2_obj</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">pick_angle</span><span class="p">(</span><span class="s2">"chi2"</span><span class="p">)</span>
+<span class="c1"># or same thing: r1chi2_obj = r1.internal_coord.pick_angle("CA:CB:CG:CD")</span>
 <span class="n">r1chi2_key</span> <span class="o">=</span> <span class="n">r1chi2_obj</span><span class="o">.</span><span class="n">atomkeys</span>
 <span class="c1"># r1chi2_key is tuple of AtomKeys (1_K_CA, 1_K_CB, 1_K_CG, 1_K_CD)</span>
 <span class="n">r1chi2_index</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">dihedraNdx</span><span class="p">[</span><span class="n">r1chi2_key</span><span class="p">]</span>
@@ -210,14 +210,14 @@ internal coordinate data files.</p>
 <span class="c1"># also true: r1chi2_obj == myChain.internal_coord.dihedra[r1chi2_index]</span>
 
 <span class="c1"># access the array of all atoms for the chain, e.g. residue 1 C-beta</span>
-<span class="n">r1_cBeta_index</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">atomArrayIndex</span><span class="p">[</span><span class="n">AtomKey</span><span class="p">(</span><span class="s2">&quot;1_K_CB&quot;</span><span class="p">)]</span>
+<span class="n">r1_cBeta_index</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">atomArrayIndex</span><span class="p">[</span><span class="n">AtomKey</span><span class="p">(</span><span class="s2">"1_K_CB"</span><span class="p">)]</span>
 <span class="n">r1_cBeta_coords</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">atomArray</span><span class="p">[</span><span class="n">r1_cBeta_index</span><span class="p">]</span>
 <span class="c1"># r1_cBeta_coords = [ x, y, z, 1.0 ]</span>
 
 <span class="c1"># the Biopython Atom coord array is now a view into atomArray, so</span>
-<span class="k">assert</span> <span class="n">r1_cBeta_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">r1</span><span class="p">[</span><span class="s2">&quot;CB&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">r1_cBeta_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">r1</span><span class="p">[</span><span class="s2">"CB"</span><span class="p">]</span><span class="o">.</span><span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">r1_cBeta_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">1.0</span>  <span class="c1"># change the Y coord 1 angstrom</span>
-<span class="k">assert</span> <span class="n">r1_cBeta_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">r1</span><span class="p">[</span><span class="s2">&quot;CB&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">assert</span> <span class="n">r1_cBeta_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">r1</span><span class="p">[</span><span class="s2">"CB"</span><span class="p">]</span><span class="o">.</span><span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="c1"># they are always the same (they share the same memory)</span>
 <span class="n">r1_cBeta_coords</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">1.0</span>  <span class="c1"># restore</span>
 
@@ -225,7 +225,7 @@ internal coordinate data files.</p>
 <span class="n">atmNameNdx</span> <span class="o">=</span> <span class="n">AtomKey</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">atm</span>
 <span class="n">atomArrayIndex</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">atomArrayIndex</span>
 <span class="n">CaSelect</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">atmNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CA&quot;</span>
+    <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">atmNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"CA"</span>
 <span class="p">]</span>
 <span class="c1"># now the ordered array of C-alpha atom coordinates is:</span>
 <span class="n">CA_coords</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">atomArray</span><span class="p">[</span><span class="n">CaSelect</span><span class="p">]</span>
@@ -235,7 +235,7 @@ internal coordinate data files.</p>
 <span class="n">caDistances</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">distance_plot</span><span class="p">(</span><span class="n">CaSelect</span><span class="p">)</span>
 <span class="c1"># display with e.g. MatPlotLib:</span>
 <span class="c1"># import matplotlib.pyplot as plt</span>
-<span class="c1"># plt.imshow(caDistances, cmap=&quot;hot&quot;, interpolation=&quot;nearest&quot;)</span>
+<span class="c1"># plt.imshow(caDistances, cmap="hot", interpolation="nearest")</span>
 <span class="c1"># plt.show()</span>
 
 <span class="c1"># build structure from distance plot:</span>
@@ -244,7 +244,7 @@ internal coordinate data files.</p>
 <span class="c1">## get the sign of the dihedral angles</span>
 <span class="n">chirality</span> <span class="o">=</span> <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">dihedral_signs</span><span class="p">()</span>
 <span class="c1">## get new, empty data structure : copy data structure from myChain</span>
-<span class="n">myChain2</span> <span class="o">=</span> <span class="n">IC_duplicate</span><span class="p">(</span><span class="n">myChain</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;A&quot;</span><span class="p">]</span>
+<span class="n">myChain2</span> <span class="o">=</span> <span class="n">IC_duplicate</span><span class="p">(</span><span class="n">myChain</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"A"</span><span class="p">]</span>
 <span class="n">cic2</span> <span class="o">=</span> <span class="n">myChain2</span><span class="o">.</span><span class="n">internal_coord</span>
 <span class="c1">## clear the new atomArray and di/hedra value arrays, just for proof</span>
 <span class="n">cic2</span><span class="o">.</span><span class="n">atomArray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">cic2</span><span class="o">.</span><span class="n">AAsiz</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -271,17 +271,17 @@ internal coordinate data files.</p>
 <span class="n">resNameNdx</span> <span class="o">=</span> <span class="n">AtomKey</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">resname</span>
 <span class="n">aaNdx</span> <span class="o">=</span> <span class="n">cic</span><span class="o">.</span><span class="n">atomArrayIndex</span>
 <span class="c1">## select just PHE atoms:</span>
-<span class="n">pheAtomSelect</span> <span class="o">=</span> <span class="p">[</span><span class="n">aaNdx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">aaNdx</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">resNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span><span class="p">]</span>
+<span class="n">pheAtomSelect</span> <span class="o">=</span> <span class="p">[</span><span class="n">aaNdx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">aaNdx</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">resNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"F"</span><span class="p">]</span>
 <span class="n">aaF</span> <span class="o">=</span> <span class="n">cic</span><span class="o">.</span><span class="n">atomArray</span><span class="p">[</span> <span class="n">pheAtomSelect</span> <span class="p">]</span>  <span class="c1"># numpy fancy indexing makes COPY not view</span>
 
 <span class="k">for</span> <span class="n">ric</span> <span class="ow">in</span> <span class="n">cic</span><span class="o">.</span><span class="n">ordered_aa_ic_list</span><span class="p">:</span>  <span class="c1"># internal_coords version of get_residues()</span>
-    <span class="k">if</span> <span class="n">ric</span><span class="o">.</span><span class="n">rbase</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span><span class="p">:</span>  <span class="c1"># if PHE, get transform matrices for chi1 dihedral</span>
-        <span class="n">chi1</span> <span class="o">=</span> <span class="n">ric</span><span class="o">.</span><span class="n">pick_angle</span><span class="p">(</span><span class="s2">&quot;N:CA:CB:CG&quot;</span><span class="p">)</span>  <span class="c1"># chi1 space has C-alpha at origin</span>
+    <span class="k">if</span> <span class="n">ric</span><span class="o">.</span><span class="n">rbase</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"F"</span><span class="p">:</span>  <span class="c1"># if PHE, get transform matrices for chi1 dihedral</span>
+        <span class="n">chi1</span> <span class="o">=</span> <span class="n">ric</span><span class="o">.</span><span class="n">pick_angle</span><span class="p">(</span><span class="s2">"N:CA:CB:CG"</span><span class="p">)</span>  <span class="c1"># chi1 space has C-alpha at origin</span>
         <span class="n">cst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">chi1</span><span class="o">.</span><span class="n">cst</span><span class="p">)</span>  <span class="c1"># transform TO chi1 space</span>
         <span class="c1"># rcst = np.transpose(chi1.rcst)  # transform FROM chi1 space</span>
         <span class="n">cic</span><span class="o">.</span><span class="n">atomArray</span><span class="p">[</span><span class="n">pheAtomSelect</span><span class="p">]</span> <span class="o">=</span> <span class="n">aaF</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span>  <span class="c1"># transform just the PHEs</span>
         <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">myChain</span><span class="o">.</span><span class="n">get_residues</span><span class="p">():</span>  <span class="c1"># print PHEs in new coordinate space</span>
-            <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">resname</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;PHE&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">resname</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"PHE"</span><span class="p">]:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">internal_coord</span><span class="o">.</span><span class="n">pdb_residue_string</span><span class="p">())</span>
         <span class="n">cic</span><span class="o">.</span><span class="n">atomArray</span><span class="p">[</span><span class="n">pheAtomSelect</span><span class="p">]</span> <span class="o">=</span> <span class="n">aaF</span>  <span class="c1"># restore coordinate space from copy</span>
 
@@ -290,7 +290,7 @@ internal coordinate data files.</p>
 <span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_atoms</span> <span class="o">=</span> <span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_backbone</span>
 <span class="c1">## delete existing data to force re-read of all atoms:</span>
 <span class="n">myChain</span><span class="o">.</span><span class="n">internal_coord</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">write_SCAD</span><span class="p">(</span><span class="n">myChain</span><span class="p">,</span> <span class="s2">&quot;myChain.scad&quot;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+<span class="n">write_SCAD</span><span class="p">(</span><span class="n">myChain</span><span class="p">,</span> <span class="s2">"myChain.scad"</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>See the <cite>‘’Internal coordinates module’’</cite> section of the <cite>Biopython Tutorial
@@ -322,7 +322,7 @@ mapping between residues and backbone dihedral angles.</p>
 accessible via <a class="reference internal" href="#Bio.PDB.internal_coords.IC_Chain.dCoordSpace" title="Bio.PDB.internal_coords.IC_Chain.dCoordSpace"><code class="xref py py-data docutils literal notranslate"><span class="pre">IC_Chain.dCoordSpace</span></code></a> and <a class="reference internal" href="#Bio.PDB.internal_coords.Dihedron" title="Bio.PDB.internal_coords.Dihedron"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dihedron</span></code></a> attributes
 .cst and .rcst, and may be applied in the alignment and comparison of residues
 and their environments with code along the lines of:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chi1</span> <span class="o">=</span> <span class="n">ric0</span><span class="o">.</span><span class="n">pick_angle</span><span class="p">(</span><span class="s2">&quot;chi1&quot;</span><span class="p">)</span> <span class="c1"># chi1 space defined with CA at origin</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chi1</span> <span class="o">=</span> <span class="n">ric0</span><span class="o">.</span><span class="n">pick_angle</span><span class="p">(</span><span class="s2">"chi1"</span><span class="p">)</span> <span class="c1"># chi1 space defined with CA at origin</span>
 <span class="n">cst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">chi1</span><span class="o">.</span><span class="n">cst</span><span class="p">)</span> <span class="c1"># transform TO chi1 local space</span>
 <span class="n">newAtomCoords</span> <span class="o">=</span> <span class="n">oldAtomCoords</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">cst</span><span class="p">)</span>
 </pre></div>
@@ -818,7 +818,7 @@ classic C-alpha distance plot, pass a boolean mask array like:</p>
 <span class="n">CaSelect</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">atmNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CA&quot;</span>
+    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">atmNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"CA"</span>
 <span class="p">]</span>
 <span class="n">plot</span> <span class="o">=</span> <span class="n">cic</span><span class="o">.</span><span class="n">distance_plot</span><span class="p">(</span><span class="n">CaSelect</span><span class="p">)</span>
 </pre></div>
@@ -958,7 +958,7 @@ override as:</p>
 </pre></div>
 </div>
 <p>to get only mainchain atoms plus amide proton, use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_atoms</span> <span class="o">=</span> <span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_mainchain</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;H&#39;</span><span class="p">,)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_atoms</span> <span class="o">=</span> <span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_mainchain</span> <span class="o">+</span> <span class="p">(</span><span class="s1">'H'</span><span class="p">,)</span>
 </pre></div>
 </div>
 <p>to convert D atoms to H, set <a class="reference internal" href="#Bio.PDB.internal_coords.AtomKey.d2h" title="Bio.PDB.internal_coords.AtomKey.d2h"><code class="xref py py-data docutils literal notranslate"><span class="pre">AtomKey.d2h</span></code></a> = True and use:</p>
@@ -974,7 +974,7 @@ structure alignment in dihedral angle space, use:</p>
 </pre></div>
 </div>
 <p>or set gly_Cbeta = True and use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_atoms</span> <span class="o">=</span> <span class="n">accept_backbone</span> <span class="o">+</span> <span class="p">(</span><span class="s1">&#39;CB&#39;</span><span class="p">,)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IC_Residue</span><span class="o">.</span><span class="n">accept_atoms</span> <span class="o">=</span> <span class="n">accept_backbone</span> <span class="o">+</span> <span class="p">(</span><span class="s1">'CB'</span><span class="p">,)</span>
 </pre></div>
 </div>
 <p>Changing accept_atoms will cause the default <cite>structure_rebuild_test</cite> in
@@ -1005,7 +1005,7 @@ accuracy in rebuild tests.  If you find rebuild tests fail with
 ‘ERROR -COORDINATES-’ and verbose=True shows only small discrepancies,
 try raising this value (or lower it to 9.5 if only working with PDB
 format files).</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IC_Residue</span><span class="o">.</span><span class="n">pic_accuracy</span> <span class="o">=</span> <span class="s2">&quot;9.5f&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IC_Residue</span><span class="o">.</span><span class="n">pic_accuracy</span> <span class="o">=</span> <span class="s2">"9.5f"</span>
 </pre></div>
 </div>
 </dd>
@@ -1117,8 +1117,8 @@ server. Bioinformatics, 19:1589-1591, 2003.’</p>
 <span class="p">(</span><span class="n">case</span> <span class="n">when</span> <span class="n">f</span><span class="o">.</span><span class="n">rslt</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="n">then</span> <span class="n">f</span><span class="o">.</span><span class="n">rslt</span><span class="o">-</span><span class="mf">360.0</span> <span class="k">else</span> <span class="n">f</span><span class="o">.</span><span class="n">rslt</span> <span class="n">end</span><span class="p">)</span> <span class="k">as</span> <span class="n">rslt</span>
 <span class="kn">from</span><span class="w"> </span><span class="p">(</span><span class="n">select</span> <span class="n">d1</span><span class="o">.</span><span class="n">angle</span> <span class="k">as</span> <span class="n">d1d</span><span class="p">,</span> <span class="n">d2</span><span class="o">.</span><span class="n">angle</span> <span class="k">as</span> <span class="n">d2d</span><span class="p">,</span>
 <span class="p">(</span><span class="n">d2</span><span class="o">.</span><span class="n">angle</span> <span class="o">-</span> <span class="n">d1</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span> <span class="k">as</span> <span class="n">rslt</span> <span class="kn">from</span><span class="w"> </span><span class="nn">dihedron</span> <span class="n">d1</span><span class="p">,</span>
-<span class="n">dihedron</span> <span class="n">d2</span> <span class="n">where</span> <span class="n">d1</span><span class="o">.</span><span class="n">re_class</span><span class="o">=</span><span class="s1">&#39;AOACACAACB&#39;</span> <span class="ow">and</span>
-<span class="n">d2</span><span class="o">.</span><span class="n">re_class</span><span class="o">=</span><span class="s1">&#39;ANACAACAO&#39;</span> <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">pdb</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">pdb</span> <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">chn</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">chn</span>
+<span class="n">dihedron</span> <span class="n">d2</span> <span class="n">where</span> <span class="n">d1</span><span class="o">.</span><span class="n">re_class</span><span class="o">=</span><span class="s1">'AOACACAACB'</span> <span class="ow">and</span>
+<span class="n">d2</span><span class="o">.</span><span class="n">re_class</span><span class="o">=</span><span class="s1">'ANACAACAO'</span> <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">pdb</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">pdb</span> <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">chn</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">chn</span>
 <span class="ow">and</span> <span class="n">d1</span><span class="o">.</span><span class="n">res</span><span class="o">=</span><span class="n">d2</span><span class="o">.</span><span class="n">res</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">)</span> <span class="k">as</span> <span class="n">g</span>
 </pre></div>
 </div>
@@ -1397,19 +1397,19 @@ non-carbon atoms for chi2):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ric</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">internal_coord</span>
 <span class="nb">print</span><span class="p">(</span>
     <span class="n">r</span><span class="p">,</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;psi&quot;</span><span class="p">),</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;phi&quot;</span><span class="p">),</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;omg&quot;</span><span class="p">),</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;tau&quot;</span><span class="p">),</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;chi2&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"psi"</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"phi"</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"omg"</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"tau"</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"chi2"</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span>
     <span class="n">r</span><span class="p">,</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;N:CA:C:1N&quot;</span><span class="p">),</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;-1C:N:CA:C&quot;</span><span class="p">),</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;-1CA:-1C:N:CA&quot;</span><span class="p">),</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;N:CA:C&quot;</span><span class="p">),</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">&quot;CA:CB:CG:CD&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"N:CA:C:1N"</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"-1C:N:CA:C"</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"-1CA:-1C:N:CA"</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"N:CA:C"</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_angle</span><span class="p">(</span><span class="s2">"CA:CB:CG:CD"</span><span class="p">),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -1507,13 +1507,13 @@ preceding peptide bond.  Position specifiers are -1, 0, 1.</p></li>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ric</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">internal_coord</span>
 <span class="nb">print</span><span class="p">(</span>
     <span class="n">r</span><span class="p">,</span>
-    <span class="n">ric</span><span class="o">.</span><span class="n">get_length</span><span class="p">(</span><span class="s2">&quot;0C:1N&quot;</span><span class="p">),</span>
+    <span class="n">ric</span><span class="o">.</span><span class="n">get_length</span><span class="p">(</span><span class="s2">"0C:1N"</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span>
     <span class="n">r</span><span class="p">,</span>
     <span class="kc">None</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">ric</span><span class="o">.</span><span class="n">rnext</span>
-    <span class="k">else</span> <span class="n">ric</span><span class="o">.</span><span class="n">get_length</span><span class="p">((</span><span class="n">ric</span><span class="o">.</span><span class="n">rak</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">),</span> <span class="n">ric</span><span class="o">.</span><span class="n">rnext</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rak</span><span class="p">(</span><span class="s2">&quot;N&quot;</span><span class="p">))),</span>
+    <span class="k">else</span> <span class="n">ric</span><span class="o">.</span><span class="n">get_length</span><span class="p">((</span><span class="n">ric</span><span class="o">.</span><span class="n">rak</span><span class="p">(</span><span class="s2">"C"</span><span class="p">),</span> <span class="n">ric</span><span class="o">.</span><span class="n">rnext</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rak</span><span class="p">(</span><span class="s2">"N"</span><span class="p">))),</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -1946,7 +1946,7 @@ AtomKeys:</p>
 <span class="n">CaSelection</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">atmNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;CA&quot;</span>
+    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">atmNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"CA"</span>
 <span class="p">]</span>
 <span class="n">AtomArrayCa</span> <span class="o">=</span> <span class="n">atomArray</span><span class="p">[</span><span class="n">CaSelection</span><span class="p">]</span>
 </pre></div>
@@ -1956,7 +1956,7 @@ AtomKeys:</p>
 <span class="n">PheSelection</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">atomArrayIndex</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">resNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;F&quot;</span>
+    <span class="k">if</span> <span class="n">k</span><span class="o">.</span><span class="n">akl</span><span class="p">[</span><span class="n">resNameNdx</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"F"</span>
 <span class="p">]</span>
 <span class="n">AtomArrayPhe</span> <span class="o">=</span> <span class="n">atomArray</span><span class="p">[</span><span class="n">PheSelection</span><span class="p">]</span>
 </pre></div>
@@ -2033,12 +2033,12 @@ note the issue.  Set by <a class="reference internal" href="#Bio.PDB.internal_co
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#Bio.PDB.internal_coords.IC_Residue" title="Bio.PDB.internal_coords.IC_Residue"><span class="pre">IC_Residue</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="Bio.PDB.Atom.html#Bio.PDB.Atom.Atom" title="Bio.PDB.Atom.Atom"><span class="pre">Atom</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#Bio.PDB.internal_coords.AtomKey.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initialize AtomKey with residue and atom data.</p>
 <p>Examples of acceptable input:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="o">&lt;</span><span class="n">IC_Residue</span><span class="o">&gt;</span><span class="p">,</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>    <span class="p">:</span> <span class="n">IC_Residue</span> <span class="k">with</span> <span class="n">atom</span> <span class="n">info</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="o">&lt;</span><span class="n">IC_Residue</span><span class="o">&gt;</span><span class="p">,</span> <span class="s1">'CA'</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>    <span class="p">:</span> <span class="n">IC_Residue</span> <span class="k">with</span> <span class="n">atom</span> <span class="n">info</span>
 <span class="p">(</span><span class="o">&lt;</span><span class="n">IC_Residue</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Atom</span><span class="o">&gt;</span><span class="p">)</span>       <span class="p">:</span> <span class="n">IC_Residue</span> <span class="k">with</span> <span class="n">Biopython</span> <span class="n">Atom</span>
-<span class="p">([</span><span class="mi">52</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>  <span class="p">:</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">ordered</span> <span class="n">data</span> <span class="n">fields</span>
-<span class="p">(</span><span class="mi">52</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>    <span class="p">:</span> <span class="n">multiple</span> <span class="n">ordered</span> <span class="n">arguments</span>
-<span class="p">({</span><span class="n">respos</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span> <span class="n">icode</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="n">atm</span><span class="p">:</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">})</span> <span class="p">:</span> <span class="nb">dict</span> <span class="k">with</span> <span class="n">fieldNames</span>
-<span class="p">(</span><span class="n">respos</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span> <span class="n">icode</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="n">atm</span><span class="p">:</span> <span class="s1">&#39;CA&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">:</span> <span class="n">kwargs</span> <span class="k">with</span> <span class="n">fieldNames</span>
+<span class="p">([</span><span class="mi">52</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">'G'</span><span class="p">,</span> <span class="s1">'CA'</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>  <span class="p">:</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">ordered</span> <span class="n">data</span> <span class="n">fields</span>
+<span class="p">(</span><span class="mi">52</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">'G'</span><span class="p">,</span> <span class="s1">'CA'</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>    <span class="p">:</span> <span class="n">multiple</span> <span class="n">ordered</span> <span class="n">arguments</span>
+<span class="p">({</span><span class="n">respos</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span> <span class="n">icode</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="n">atm</span><span class="p">:</span> <span class="s1">'CA'</span><span class="p">,</span> <span class="o">...</span><span class="p">})</span> <span class="p">:</span> <span class="nb">dict</span> <span class="k">with</span> <span class="n">fieldNames</span>
+<span class="p">(</span><span class="n">respos</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span> <span class="n">icode</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="n">atm</span><span class="p">:</span> <span class="s1">'CA'</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="p">:</span> <span class="n">kwargs</span> <span class="k">with</span> <span class="n">fieldNames</span>
 <span class="mi">52</span><span class="n">_G_CA</span><span class="p">,</span> <span class="mi">52</span><span class="n">B_G_CA</span><span class="p">,</span> <span class="mi">52</span><span class="n">_G_CA_0</span><span class="mf">.33</span><span class="p">,</span> <span class="mi">52</span><span class="n">_G_CA_B_0</span><span class="mf">.33</span>  <span class="p">:</span> <span class="nb">id</span> <span class="n">strings</span>
 </pre></div>
 </div>

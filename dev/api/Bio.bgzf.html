@@ -197,7 +197,7 @@ need to by importing the built-in open function:</p>
 <p>This is an ordinary GenBank file compressed using BGZF, so it can
 be decompressed using gzip,</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">gzip</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"GenBank/NC_000932.gb.bgz"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">0</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">line</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">80</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
@@ -210,7 +210,7 @@ be decompressed using gzip,</p>
 </div>
 <p>We can also access the file using the BGZF reader - but pay
 attention to the file offsets which will be explained below:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">"GenBank/NC_000932.gb.bgz"</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">0</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
 <span class="go">LOCUS       NC_000932             154478 bp    DNA     circular PLN 15-APR-2009</span>
@@ -221,7 +221,7 @@ attention to the file offsets which will be explained below:</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">70000</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">987828735</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
-<span class="go">f=&quot;GeneID:844718&quot;</span>
+<span class="go">f="GeneID:844718"</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
 <span class="go">     CDS             complement(join(84337..84771,85454..85843))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">offset</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">make_virtual_offset</span><span class="p">(</span><span class="mi">55074</span><span class="p">,</span> <span class="mi">126</span><span class="p">))</span>
@@ -232,9 +232,9 @@ attention to the file offsets which will be explained below:</p>
 </div>
 <p>Notice the handle’s offset looks different as a BGZF file. This
 brings us to the key point about BGZF, which is the block structure:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"GenBank/NC_000932.gb.bgz"</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
 <span class="go">Raw start 0, raw length 15073; data start 0, data length 65536</span>
 <span class="go">Raw start 15073, raw length 17857; data start 65536, data length 65536</span>
 <span class="go">Raw start 32930, raw length 22144; data start 131072, data length 65536</span>
@@ -284,8 +284,8 @@ a relative offset.</p>
 although there isn’t any benefit over using gzip.open(…), unless
 you want to index BGZF compressed sequence files:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">&quot;GenBank/NC_000932.gb.bgz&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">"GenBank/NC_000932.gb.bgz"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="s2">"genbank"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="go">NC_000932.1</span>
@@ -400,9 +400,9 @@ length (add these for the start of the next block), and the
 decompressed length of the blocks contents (limited to 65536 in
 BGZF), as an iterator - one tuple per BGZF block.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">open</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"SamBam/ex1.bam"</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
 <span class="go">Raw start 0, raw length 18239; data start 0, data length 65536</span>
 <span class="go">Raw start 18239, raw length 18223; data start 65536, data length 65536</span>
 <span class="go">Raw start 36462, raw length 18017; data start 131072, data length 65536</span>
@@ -421,9 +421,9 @@ avoid splitting a read between two blocks, and give the header
 its own block (useful to speed up replacing the header). You
 can see this in ex1_refresh.bam created using samtools 0.1.18:</p>
 <p>samtools view -b ex1.bam &gt; ex1_refresh.bam</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1_refresh.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"SamBam/ex1_refresh.bam"</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
 <span class="go">Raw start 0, raw length 53; data start 0, data length 38</span>
 <span class="go">Raw start 53, raw length 18195; data start 38, data length 65434</span>
 <span class="go">Raw start 18248, raw length 18190; data start 65472, data length 65409</span>
@@ -440,9 +440,9 @@ can see this in ex1_refresh.bam created using samtools 0.1.18:</p>
 is very small at just 38 bytes of decompressed data), while the next
 example does (a larger block of 103 bytes). Notice that the rest of
 the blocks show the same sizes (they contain the same read data):</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1_header.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"SamBam/ex1_header.bam"</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
 <span class="go">Raw start 0, raw length 104; data start 0, data length 103</span>
 <span class="go">Raw start 104, raw length 18195; data start 103, data length 65434</span>
 <span class="go">Raw start 18299, raw length 18190; data start 65537, data length 65409</span>
@@ -465,9 +465,9 @@ the blocks show the same sizes (they contain the same read data):</p>
 <p>Let’s use the BgzfBlocks function to have a peek at the BGZF blocks
 in an example BAM file,</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">open</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"SamBam/ex1.bam"</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">BgzfBlocks</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Raw start </span><span class="si">%i</span><span class="s2">, raw length </span><span class="si">%i</span><span class="s2">; data start </span><span class="si">%i</span><span class="s2">, data length </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="n">values</span><span class="p">)</span>
 <span class="go">Raw start 0, raw length 18239; data start 0, data length 65536</span>
 <span class="go">Raw start 18239, raw length 18223; data start 65536, data length 65536</span>
 <span class="go">Raw start 36462, raw length 18017; data start 131072, data length 65536</span>
@@ -481,7 +481,7 @@ in an example BAM file,</p>
 </div>
 <p>Now let’s see how to use this block information to jump to
 specific parts of the decompressed BAM file:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">&quot;SamBam/ex1.bam&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">handle</span> <span class="o">=</span> <span class="n">BgzfReader</span><span class="p">(</span><span class="s2">"SamBam/ex1.bam"</span><span class="p">,</span> <span class="s2">"rb"</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">0</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">magic</span> <span class="o">=</span> <span class="n">handle</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">assert</span> <span class="mi">4</span> <span class="o">==</span> <span class="n">handle</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>

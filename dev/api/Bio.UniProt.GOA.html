@@ -186,27 +186,27 @@ returns a gaf 2.x or a gaf 1.0 iterator as needed</p>
 <p>Original data file has been trimmed to ~600 rows.</p>
 <p>Original source <a class="reference external" href="ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/YEAST/goa_yeast.gaf.gz">ftp://ftp.ebi.ac.uk/pub/databases/GO/goa/YEAST/goa_yeast.gaf.gz</a></p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.UniProt.GOA</span><span class="w"> </span><span class="kn">import</span> <span class="n">gafiterator</span><span class="p">,</span> <span class="n">record_has</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Evidence</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Evidence&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;ND&#39;</span><span class="p">])}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Synonym</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Synonym&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;YA19A_YEAST&#39;</span><span class="p">,</span> <span class="s1">&#39;YAL019W-A&#39;</span><span class="p">])}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">Taxon_ID</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Taxon_ID&#39;</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">&#39;taxon:559292&#39;</span><span class="p">])}</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;UniProt/goa_yeast.gaf&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Evidence</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Evidence'</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">'ND'</span><span class="p">])}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Synonym</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Synonym'</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">'YA19A_YEAST'</span><span class="p">,</span> <span class="s1">'YAL019W-A'</span><span class="p">])}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Taxon_ID</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Taxon_ID'</span><span class="p">:</span> <span class="nb">set</span><span class="p">([</span><span class="s1">'taxon:559292'</span><span class="p">])}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'UniProt/goa_yeast.gaf'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">rec</span> <span class="ow">in</span> <span class="n">gafiterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
 <span class="gp">... </span>        <span class="k">if</span> <span class="n">record_has</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">Taxon_ID</span><span class="p">)</span> <span class="ow">and</span> <span class="n">record_has</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">Evidence</span><span class="p">)</span> <span class="ow">and</span> <span class="n">record_has</span><span class="p">(</span><span class="n">rec</span><span class="p">,</span> <span class="n">Synonym</span><span class="p">):</span>
-<span class="gp">... </span>            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;DB_Object_Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Evidence&#39;</span><span class="p">,</span> <span class="s1">&#39;Synonym&#39;</span><span class="p">,</span> <span class="s1">&#39;Taxon_ID&#39;</span><span class="p">):</span>
+<span class="gp">... </span>            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">'DB_Object_Name'</span><span class="p">,</span> <span class="s1">'Evidence'</span><span class="p">,</span> <span class="s1">'Synonym'</span><span class="p">,</span> <span class="s1">'Taxon_ID'</span><span class="p">):</span>
 <span class="gp">... </span>                <span class="nb">print</span><span class="p">(</span><span class="n">rec</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
 <span class="gp">...</span>
 <span class="go">Putative uncharacterized protein YAL019W-A</span>
 <span class="go">ND</span>
-<span class="go">[&#39;YA19A_YEAST&#39;, &#39;YAL019W-A&#39;]</span>
-<span class="go">[&#39;taxon:559292&#39;]</span>
+<span class="go">['YA19A_YEAST', 'YAL019W-A']</span>
+<span class="go">['taxon:559292']</span>
 <span class="go">Putative uncharacterized protein YAL019W-A</span>
 <span class="go">ND</span>
-<span class="go">[&#39;YA19A_YEAST&#39;, &#39;YAL019W-A&#39;]</span>
-<span class="go">[&#39;taxon:559292&#39;]</span>
+<span class="go">['YA19A_YEAST', 'YAL019W-A']</span>
+<span class="go">['taxon:559292']</span>
 <span class="go">Putative uncharacterized protein YAL019W-A</span>
 <span class="go">ND</span>
-<span class="go">[&#39;YA19A_YEAST&#39;, &#39;YAL019W-A&#39;]</span>
-<span class="go">[&#39;taxon:559292&#39;]</span>
+<span class="go">['YA19A_YEAST', 'YAL019W-A']</span>
+<span class="go">['taxon:559292']</span>
 </pre></div>
 </div>
 </dd></dl>

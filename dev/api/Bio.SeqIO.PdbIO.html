@@ -174,22 +174,22 @@ PDB file header, not the atoms of the 3D structure.</p>
 <p>This gets called internally via Bio.SeqIO for the SEQRES based interpretation
 of the PDB file format:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.pdb&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb-seqres&quot;</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"PDB/1A8O.pdb"</span><span class="p">,</span> <span class="s2">"pdb-seqres"</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">"chain"</span><span class="p">]))</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="go">Record id 1A8O:A, chain A</span>
-<span class="go">[&#39;UNP:P12497&#39;, &#39;UNP:POL_HV1N5&#39;]</span>
+<span class="go">['UNP:P12497', 'UNP:POL_HV1N5']</span>
 </pre></div>
 </div>
 <p>Equivalently,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.pdb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"PDB/1A8O.pdb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">PdbSeqresIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">"Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">"chain"</span><span class="p">]))</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="go">Record id 1A8O:A, chain A</span>
-<span class="go">[&#39;UNP:P12497&#39;, &#39;UNP:POL_HV1N5&#39;]</span>
+<span class="go">['UNP:P12497', 'UNP:POL_HV1N5']</span>
 </pre></div>
 </div>
 <p>Note the chain is recorded in the annotations dictionary, and any PDB DBREF
@@ -254,16 +254,16 @@ be done in parse_pdb_header, not this module.</p>
 <p>This gets called internally via Bio.SeqIO for the atom based
 interpretation of the PDB file format:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.pdb&quot;</span><span class="p">,</span> <span class="s2">&quot;pdb-atom&quot;</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"PDB/1A8O.pdb"</span><span class="p">,</span> <span class="s2">"pdb-atom"</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">"chain"</span><span class="p">]))</span>
 <span class="gp">...</span>
 <span class="go">Record id 1A8O:A, chain A</span>
 </pre></div>
 </div>
 <p>Equivalently,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.pdb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"PDB/1A8O.pdb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">PdbAtomIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">"Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">"chain"</span><span class="p">]))</span>
 <span class="gp">...</span>
 <span class="go">Record id 1A8O:A, chain A</span>
 </pre></div>
@@ -321,22 +321,22 @@ and
 <p>This gets called internally via Bio.SeqIO for the sequence-based
 interpretation of the mmCIF file format:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.cif&quot;</span><span class="p">,</span> <span class="s2">&quot;cif-seqres&quot;</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"PDB/1A8O.cif"</span><span class="p">,</span> <span class="s2">"cif-seqres"</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">"chain"</span><span class="p">]))</span>
 <span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="go">Record id 1A8O:A, chain A</span>
-<span class="go">[&#39;UNP:P12497&#39;, &#39;UNP:POL_HV1N5&#39;]</span>
+<span class="go">['UNP:P12497', 'UNP:POL_HV1N5']</span>
 </pre></div>
 </div>
 <p>Equivalently,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.cif&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"PDB/1A8O.cif"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">CifSeqresIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">"Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">"chain"</span><span class="p">]))</span>
 <span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">dbxrefs</span><span class="p">)</span>
 <span class="gp">...</span>
 <span class="go">Record id 1A8O:A, chain A</span>
-<span class="go">[&#39;UNP:P12497&#39;, &#39;UNP:POL_HV1N5&#39;]</span>
+<span class="go">['UNP:P12497', 'UNP:POL_HV1N5']</span>
 </pre></div>
 </div>
 <p>Note the chain is recorded in the annotations dictionary, and any mmCIF
@@ -402,16 +402,16 @@ be done in parse_pdb_header, not this module.</p>
 <p>This gets called internally via Bio.SeqIO for the atom based
 interpretation of the PDB file format:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.cif&quot;</span><span class="p">,</span> <span class="s2">&quot;cif-atom&quot;</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"PDB/1A8O.cif"</span><span class="p">,</span> <span class="s2">"cif-atom"</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">"chain"</span><span class="p">]))</span>
 <span class="gp">...</span>
 <span class="go">Record id 1A8O:A, chain A</span>
 </pre></div>
 </div>
 <p>Equivalently,</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;PDB/1A8O.cif&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"PDB/1A8O.cif"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
 <span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">CifAtomIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">&quot;chain&quot;</span><span class="p">]))</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="s2">"Record id </span><span class="si">%s</span><span class="s2">, chain </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">annotations</span><span class="p">[</span><span class="s2">"chain"</span><span class="p">]))</span>
 <span class="gp">...</span>
 <span class="go">Record id 1A8O:A, chain A</span>
 </pre></div>

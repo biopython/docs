@@ -202,8 +202,8 @@
 <p>The main function is Bio.phenotype.parse(…) which takes an input file,
 and format string.  This returns an iterator giving PlateRecord objects:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">phenotype</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;phenotype/Plates.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-csv&quot;</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"phenotype/Plates.csv"</span><span class="p">,</span> <span class="s2">"pm-csv"</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
 <span class="gp">...</span>
 <span class="go">PM01 96</span>
 <span class="go">PM09 96</span>
@@ -219,8 +219,8 @@ you need to create a format specific sequence iterator directly.</p>
 the following ‘helper’ function which will return a single PlateRecord, or
 raise an exception if there are no records or more than one record:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">phenotype</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;phenotype/Plate.json&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-json&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"phenotype/Plate.json"</span><span class="p">,</span> <span class="s2">"pm-json"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
 <span class="go">PM01 96</span>
 </pre></div>
 </div>
@@ -230,8 +230,8 @@ JSON files saved by the opm library.</p>
 <p>However, if you just want the first record from a file containing multiple
 record, use the next() function on the iterator:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">phenotype</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;phenotype/Plates.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-csv&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"phenotype/Plates.csv"</span><span class="p">,</span> <span class="s2">"pm-csv"</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)))</span>
 <span class="go">PM01 96</span>
 </pre></div>
 </div>
@@ -247,14 +247,14 @@ PlateRecord objects (either as a list, or an iterator), an output file handle
 course the file format:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">phenotype</span>
 <span class="n">records</span> <span class="o">=</span> <span class="o">...</span>
-<span class="n">phenotype</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="s2">&quot;example.json&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-json&quot;</span><span class="p">)</span>
+<span class="n">phenotype</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="s2">"example.json"</span><span class="p">,</span> <span class="s2">"pm-json"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Or, using a handle:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">phenotype</span>
 <span class="n">records</span> <span class="o">=</span> <span class="o">...</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-   <span class="n">phenotype</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="s2">&quot;pm-json&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"example.json"</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+   <span class="n">phenotype</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">records</span><span class="p">,</span> <span class="n">handle</span><span class="p">,</span> <span class="s2">"pm-json"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You are expected to call this function once (with all your records) and if
@@ -311,10 +311,10 @@ write in JSON format.</p>
 </div></blockquote>
 <p>Typical usage, opening a file to read in, and looping over the record(s):</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">phenotype</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;phenotype/Plates.csv&quot;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;pm-csv&quot;</span><span class="p">):</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of wells </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s2">"phenotype/Plates.csv"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"pm-csv"</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">"ID </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">... </span>   <span class="nb">print</span><span class="p">(</span><span class="s2">"Number of wells </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
 <span class="gp">...</span>
 <span class="go">ID PM01</span>
 <span class="go">Number of wells 96</span>
@@ -343,17 +343,17 @@ only.</p>
 <p>This function is for use parsing phenotype files containing
 exactly one record.  For example, reading a PM JSON file:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">phenotype</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;phenotype/Plate.json&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-json&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"phenotype/Plate.json"</span><span class="p">,</span> <span class="s2">"pm-json"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">"ID </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 <span class="go">ID PM01</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of wells </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">"Number of wells </span><span class="si">%i</span><span class="s2">"</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
 <span class="go">Number of wells 96</span>
 </pre></div>
 </div>
 <p>If the handle contains no records, or more than one record,
 an exception is raised.  For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">phenotype</span>
-<span class="n">record</span> <span class="o">=</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;plates.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-csv&quot;</span><span class="p">)</span>
+<span class="n">record</span> <span class="o">=</span> <span class="n">phenotype</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"plates.csv"</span><span class="p">,</span> <span class="s2">"pm-csv"</span><span class="p">)</span>
 <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
 <span class="o">...</span>
 <span class="ne">ValueError</span><span class="p">:</span> <span class="n">More</span> <span class="n">than</span> <span class="n">one</span> <span class="n">record</span> <span class="n">found</span> <span class="ow">in</span> <span class="n">handle</span>
@@ -363,9 +363,9 @@ an exception is raised.  For example:</p>
 multiple records this function would raise an exception (as
 shown in the example above).  Instead use:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">phenotype</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">&quot;phenotype/Plates.csv&quot;</span><span class="p">,</span> <span class="s2">&quot;pm-csv&quot;</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First record&#39;s ID </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="go">First record&#39;s ID PM01</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">record</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">phenotype</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="s2">"phenotype/Plates.csv"</span><span class="p">,</span> <span class="s2">"pm-csv"</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">"First record's ID </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="go">First record's ID PM01</span>
 </pre></div>
 </div>
 <p>Use the Bio.phenotype.parse(handle, format) function if you want

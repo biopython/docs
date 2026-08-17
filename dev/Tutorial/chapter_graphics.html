@@ -204,14 +204,14 @@ from our website.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Graphics</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenomeDiagram</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
-<span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"NC_005816.gb"</span><span class="p">,</span> <span class="s2">"genbank"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We’re using a top down approach, so after loading in our sequence we
 next create an empty diagram, then add an (empty) track, and to that add
 an (empty) feature set:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_diagram</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">&quot;Yersinia pestis biovar Microtus plasmid pPCP1&quot;</span><span class="p">)</span>
-<span class="n">gd_track_for_features</span> <span class="o">=</span> <span class="n">gd_diagram</span><span class="o">.</span><span class="n">new_track</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Annotated Features&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_diagram</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">"Yersinia pestis biovar Microtus plasmid pPCP1"</span><span class="p">)</span>
+<span class="n">gd_track_for_features</span> <span class="o">=</span> <span class="n">gd_diagram</span><span class="o">.</span><span class="n">new_track</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Annotated Features"</span><span class="p">)</span>
 <span class="n">gd_feature_set</span> <span class="o">=</span> <span class="n">gd_track_for_features</span><span class="o">.</span><span class="n">new_set</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -220,7 +220,7 @@ an (empty) feature set:</p>
 going to color them blue, alternating between a dark blue and a light
 blue.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;gene&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">"gene"</span><span class="p">:</span>
         <span class="c1"># Exclude this feature</span>
         <span class="k">continue</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gd_feature_set</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -236,21 +236,21 @@ using ReportLab objects. Then we call the <code class="docutils literal notransl
 these to the requested file format. Note you can output in multiple file
 formats:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span>
-    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
-    <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;landscape&quot;</span><span class="p">,</span>
-    <span class="n">pagesize</span><span class="o">=</span><span class="s2">&quot;A4&quot;</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span>
+    <span class="n">orientation</span><span class="o">=</span><span class="s2">"landscape"</span><span class="p">,</span>
+    <span class="n">pagesize</span><span class="o">=</span><span class="s2">"A4"</span><span class="p">,</span>
     <span class="n">fragments</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">),</span>
 <span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear.eps&quot;</span><span class="p">,</span> <span class="s2">&quot;EPS&quot;</span><span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear.svg&quot;</span><span class="p">,</span> <span class="s2">&quot;SVG&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_linear.pdf"</span><span class="p">,</span> <span class="s2">"PDF"</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_linear.eps"</span><span class="p">,</span> <span class="s2">"EPS"</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_linear.svg"</span><span class="p">,</span> <span class="s2">"SVG"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Also, provided you have the dependencies installed, you can also do
 bitmaps, for example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear.png&quot;</span><span class="p">,</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_linear.png"</span><span class="p">,</span> <span class="s2">"PNG"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The expected output is shown in <a class="reference internal" href="#fig-plasmid-linear"><span class="std std-numref">Fig. 9</span></a>.</p>
@@ -265,14 +265,14 @@ bitmaps, for example:</p>
 many pieces the genome gets broken up into.</p>
 <p>If you want to do a circular figure, then try this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span>
-    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;circular&quot;</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">"circular"</span><span class="p">,</span>
     <span class="n">circular</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">pagesize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">cm</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">cm</span><span class="p">),</span>
     <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">),</span>
     <span class="n">circle_core</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_circular.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_circular.pdf"</span><span class="p">,</span> <span class="s2">"PDF"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The expected output is shown in <a class="reference internal" href="#fig-plasmid-circular"><span class="std std-numref">Fig. 10</span></a>.</p>
@@ -295,12 +295,12 @@ can be done in almost any order) and then combine them.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Graphics</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenomeDiagram</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
-<span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"NC_005816.gb"</span><span class="p">,</span> <span class="s2">"genbank"</span><span class="p">)</span>
 
 <span class="c1"># Create the feature set and its feature objects,</span>
 <span class="n">gd_feature_set</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">FeatureSet</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;gene&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">"gene"</span><span class="p">:</span>
         <span class="c1"># Exclude this feature</span>
         <span class="k">continue</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gd_feature_set</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -311,8 +311,8 @@ can be done in almost any order) and then combine them.</p>
 <span class="c1"># (this for loop is the same as in the previous example)</span>
 
 <span class="c1"># Create a track, and a diagram</span>
-<span class="n">gd_track_for_features</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Track</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Annotated Features&quot;</span><span class="p">)</span>
-<span class="n">gd_diagram</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">&quot;Yersinia pestis biovar Microtus plasmid pPCP1&quot;</span><span class="p">)</span>
+<span class="n">gd_track_for_features</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Track</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"Annotated Features"</span><span class="p">)</span>
+<span class="n">gd_diagram</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">"Yersinia pestis biovar Microtus plasmid pPCP1"</span><span class="p">)</span>
 
 <span class="c1"># Now have to glue the bits together...</span>
 <span class="n">gd_track_for_features</span><span class="o">.</span><span class="n">add_set</span><span class="p">(</span><span class="n">gd_feature_set</span><span class="p">)</span>
@@ -342,20 +342,20 @@ strand, and <code class="docutils literal notranslate"><span class="pre">None</s
 <span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Graphics</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenomeDiagram</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">reportlab.lib.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">cm</span>
 
-<span class="n">gdd</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">&quot;Test Diagram&quot;</span><span class="p">)</span>
+<span class="n">gdd</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">"Test Diagram"</span><span class="p">)</span>
 <span class="n">gdt_features</span> <span class="o">=</span> <span class="n">gdd</span><span class="o">.</span><span class="n">new_track</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">greytrack</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">gds_features</span> <span class="o">=</span> <span class="n">gdt_features</span><span class="o">.</span><span class="n">new_set</span><span class="p">()</span>
 
 <span class="c1"># Add three features to show the strand options,</span>
 <span class="n">feature</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">125</span><span class="p">,</span> <span class="n">strand</span><span class="o">=+</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">gds_features</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Forward&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">gds_features</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Forward"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">feature</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="n">strand</span><span class="o">=</span><span class="kc">None</span><span class="p">))</span>
-<span class="n">gds_features</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Strandless&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">gds_features</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Strandless"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">feature</span> <span class="o">=</span> <span class="n">SeqFeature</span><span class="p">(</span><span class="n">SimpleLocation</span><span class="p">(</span><span class="mi">275</span><span class="p">,</span> <span class="mi">375</span><span class="p">,</span> <span class="n">strand</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
-<span class="n">gds_features</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Reverse&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">gds_features</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Reverse"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">gdd</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span> <span class="o">*</span> <span class="n">cm</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">cm</span><span class="p">),</span> <span class="n">fragments</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
-<span class="n">gdd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;GD_labels_default.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;pdf&quot;</span><span class="p">)</span>
+<span class="n">gdd</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span> <span class="o">*</span> <span class="n">cm</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">cm</span><span class="p">),</span> <span class="n">fragments</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
+<span class="n">gdd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"GD_labels_default.pdf"</span><span class="p">,</span> <span class="s2">"pdf"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The output is shown at the top of <a class="reference internal" href="#fig-gd-sigil-labels"><span class="std std-numref">Fig. 11</span></a>
@@ -375,7 +375,7 @@ sensible caption for the features. By default the following possible
 entries under the <code class="docutils literal notranslate"><span class="pre">SeqFeature</span></code> object’s qualifiers dictionary are
 used: <code class="docutils literal notranslate"><span class="pre">gene</span></code>, <code class="docutils literal notranslate"><span class="pre">label</span></code>, <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">locus_tag</span></code>, and <code class="docutils literal notranslate"><span class="pre">product</span></code>.
 More simply, you can specify a name directly:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;My Gene&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"My Gene"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In addition to the caption text for each feature’s label, you can also
@@ -384,15 +384,15 @@ can also choose the middle or at the end) and orientation (for linear
 diagrams only, where this defaults to rotated by <span class="math notranslate nohighlight">\(45\)</span> degrees):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Large font, parallel with the track</span>
 <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
-    <span class="n">feature</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="n">label_size</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">label_angle</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">feature</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"green"</span><span class="p">,</span> <span class="n">label_size</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">label_angle</span><span class="o">=</span><span class="mi">0</span>
 <span class="p">)</span>
 
 <span class="c1"># Very small font, perpendicular to the track (towards it)</span>
 <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
     <span class="n">feature</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span>
-    <span class="n">label_position</span><span class="o">=</span><span class="s2">&quot;end&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"purple"</span><span class="p">,</span>
+    <span class="n">label_position</span><span class="o">=</span><span class="s2">"end"</span><span class="p">,</span>
     <span class="n">label_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="n">label_angle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
 <span class="p">)</span>
@@ -401,8 +401,8 @@ diagrams only, where this defaults to rotated by <span class="math notranslate n
 <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
     <span class="n">feature</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span>
-    <span class="n">label_position</span><span class="o">=</span><span class="s2">&quot;middle&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">,</span>
+    <span class="n">label_position</span><span class="o">=</span><span class="s2">"middle"</span><span class="p">,</span>
     <span class="n">label_size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
     <span class="n">label_angle</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span>
 <span class="p">)</span>
@@ -440,21 +440,21 @@ when GenomeDiagram was added to Biopython 1.50:</p>
 <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
 
 <span class="c1"># You can make this explicit:</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;BOX&quot;</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"BOX"</span><span class="p">)</span>
 
 <span class="c1"># Or opt for an arrow:</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"ARROW"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Biopython 1.61 added three more sigils,</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Box with corners cut off (making it an octagon)</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;OCTO&quot;</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"OCTO"</span><span class="p">)</span>
 
 <span class="c1"># Box with jagged edges (useful for showing breaks in contains)</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;JAGGY&quot;</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"JAGGY"</span><span class="p">)</span>
 
 <span class="c1"># Arrow which spans the axis with strand used only for direction</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;BIGARROW&quot;</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"BIGARROW"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>These are shown in <a class="reference internal" href="#fig-gd-sigils"><span class="std std-numref">Fig. 12</span></a>. Most sigils fit into
@@ -478,12 +478,12 @@ additional options to adjust the shapes of the arrows, firstly the
 thickness of the arrow shaft, given as a proportion of the height of the
 bounding box:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Full height shafts, giving pointed boxes:</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;brown&quot;</span><span class="p">,</span> <span class="n">arrowshaft_height</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"ARROW"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"brown"</span><span class="p">,</span> <span class="n">arrowshaft_height</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 <span class="c1"># Or, thin shafts:</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;teal&quot;</span><span class="p">,</span> <span class="n">arrowshaft_height</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"ARROW"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"teal"</span><span class="p">,</span> <span class="n">arrowshaft_height</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="c1"># Or, very thin shafts:</span>
 <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
-    <span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;darkgreen&quot;</span><span class="p">,</span> <span class="n">arrowshaft_height</span><span class="o">=</span><span class="mf">0.1</span>
+    <span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"ARROW"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"darkgreen"</span><span class="p">,</span> <span class="n">arrowshaft_height</span><span class="o">=</span><span class="mf">0.1</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -498,11 +498,11 @@ bounding box:</p>
 <p>Secondly, the length of the arrow head - given as a proportion of the
 height of the bounding box (defaulting to <span class="math notranslate nohighlight">\(0.5\)</span>, or <span class="math notranslate nohighlight">\(50\%\)</span>):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Short arrow heads:</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">,</span> <span class="n">arrowhead_length</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"ARROW"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">,</span> <span class="n">arrowhead_length</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
 <span class="c1"># Or, longer arrow heads:</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">,</span> <span class="n">arrowhead_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"ARROW"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"orange"</span><span class="p">,</span> <span class="n">arrowhead_length</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1"># Or, very very long arrow heads (i.e. all head, no shaft, so triangles):</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">arrowhead_length</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"ARROW"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">arrowhead_length</span><span class="o">=</span><span class="mi">10000</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The results are shown in <a class="reference internal" href="#fig-gd-sigil-arrow-heads"><span class="std std-numref">Fig. 14</span></a>.</p>
@@ -516,7 +516,7 @@ height of the bounding box (defaulting to <span class="math notranslate nohighli
 <p>Biopython 1.61 adds a new <code class="docutils literal notranslate"><span class="pre">BIGARROW</span></code> sigil which always straddles the
 axis, pointing left for the reverse strand or right otherwise:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># A large arrow straddling the axis:</span>
-<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;BIGARROW&quot;</span><span class="p">)</span>
+<span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"BIGARROW"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>All the shaft and arrow head options shown above for the <code class="docutils literal notranslate"><span class="pre">ARROW</span></code> sigil
@@ -536,14 +536,14 @@ position of some restriction digest sites.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqFeature</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqFeature</span><span class="p">,</span> <span class="n">SimpleLocation</span>
 
-<span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_005816.gb&quot;</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+<span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"NC_005816.gb"</span><span class="p">,</span> <span class="s2">"genbank"</span><span class="p">)</span>
 
 <span class="n">gd_diagram</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="n">gd_track_for_features</span> <span class="o">=</span> <span class="n">gd_diagram</span><span class="o">.</span><span class="n">new_track</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;Annotated Features&quot;</span><span class="p">)</span>
+<span class="n">gd_track_for_features</span> <span class="o">=</span> <span class="n">gd_diagram</span><span class="o">.</span><span class="n">new_track</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"Annotated Features"</span><span class="p">)</span>
 <span class="n">gd_feature_set</span> <span class="o">=</span> <span class="n">gd_track_for_features</span><span class="o">.</span><span class="n">new_set</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;gene&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">"gene"</span><span class="p">:</span>
         <span class="c1"># Exclude this feature</span>
         <span class="k">continue</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">gd_feature_set</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -551,16 +551,16 @@ position of some restriction digest sites.</p>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="o">.</span><span class="n">lightblue</span>
     <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
-        <span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label_size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">label_angle</span><span class="o">=</span><span class="mi">0</span>
+        <span class="n">feature</span><span class="p">,</span> <span class="n">sigil</span><span class="o">=</span><span class="s2">"ARROW"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label_size</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">label_angle</span><span class="o">=</span><span class="mi">0</span>
     <span class="p">)</span>
 
 <span class="c1"># I want to include some strandless features, so for an example</span>
 <span class="c1"># will use EcoRI recognition sites etc.</span>
 <span class="k">for</span> <span class="n">site</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;GAATTC&quot;</span><span class="p">,</span> <span class="s2">&quot;EcoRI&quot;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">green</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;CCCGGG&quot;</span><span class="p">,</span> <span class="s2">&quot;SmaI&quot;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">orange</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;AAGCTT&quot;</span><span class="p">,</span> <span class="s2">&quot;HindIII&quot;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">red</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;GGATCC&quot;</span><span class="p">,</span> <span class="s2">&quot;BamHI&quot;</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">purple</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"GAATTC"</span><span class="p">,</span> <span class="s2">"EcoRI"</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">green</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"CCCGGG"</span><span class="p">,</span> <span class="s2">"SmaI"</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">orange</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"AAGCTT"</span><span class="p">,</span> <span class="s2">"HindIII"</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">red</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"GGATCC"</span><span class="p">,</span> <span class="s2">"BamHI"</span><span class="p">,</span> <span class="n">colors</span><span class="o">.</span><span class="n">purple</span><span class="p">),</span>
 <span class="p">]:</span>
     <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -578,22 +578,22 @@ position of some restriction digest sites.</p>
         <span class="p">)</span>
         <span class="n">index</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">site</span><span class="p">)</span>
 
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="s2">&quot;A4&quot;</span><span class="p">,</span> <span class="n">fragments</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear_nice.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear_nice.eps&quot;</span><span class="p">,</span> <span class="s2">&quot;EPS&quot;</span><span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_linear_nice.svg&quot;</span><span class="p">,</span> <span class="s2">&quot;SVG&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="s2">"A4"</span><span class="p">,</span> <span class="n">fragments</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_linear_nice.pdf"</span><span class="p">,</span> <span class="s2">"PDF"</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_linear_nice.eps"</span><span class="p">,</span> <span class="s2">"EPS"</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_linear_nice.svg"</span><span class="p">,</span> <span class="s2">"SVG"</span><span class="p">)</span>
 
 <span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span>
-    <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;circular&quot;</span><span class="p">,</span>
+    <span class="nb">format</span><span class="o">=</span><span class="s2">"circular"</span><span class="p">,</span>
     <span class="n">circular</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">pagesize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">cm</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">cm</span><span class="p">),</span>
     <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="n">end</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">),</span>
     <span class="n">circle_core</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_circular_nice.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_circular_nice.eps&quot;</span><span class="p">,</span> <span class="s2">&quot;EPS&quot;</span><span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;plasmid_circular_nice.svg&quot;</span><span class="p">,</span> <span class="s2">&quot;SVG&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_circular_nice.pdf"</span><span class="p">,</span> <span class="s2">"PDF"</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_circular_nice.eps"</span><span class="p">,</span> <span class="s2">"EPS"</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"plasmid_circular_nice.svg"</span><span class="p">,</span> <span class="s2">"SVG"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The expected output is shown in
@@ -641,9 +641,9 @@ also reverse complement to match the orientation of the first two phage
 Section <a class="reference internal" href="chapter_seq_annot.html#sec-seqrecord-reverse-complement"><span class="std std-ref">Reverse-complementing SeqRecord objects</span></a>):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
-<span class="n">A_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_002703.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)</span>
-<span class="n">B_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;AF323668.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)</span>
-<span class="n">C_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;NC_003212.gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;gb&quot;</span><span class="p">)[</span><span class="mi">2587879</span><span class="p">:</span><span class="mi">2625807</span><span class="p">]</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">A_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"NC_002703.gbk"</span><span class="p">,</span> <span class="s2">"gb"</span><span class="p">)</span>
+<span class="n">B_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"AF323668.gbk"</span><span class="p">,</span> <span class="s2">"gb"</span><span class="p">)</span>
+<span class="n">C_rec</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"NC_003212.gbk"</span><span class="p">,</span> <span class="s2">"gb"</span><span class="p">)[</span><span class="mi">2587879</span><span class="p">:</span><span class="mi">2625807</span><span class="p">]</span><span class="o">.</span><span class="n">reverse_complement</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The figure we are imitating used different colors for different gene
@@ -714,7 +714,7 @@ also notice they are given different start/end values to reflect their
 different lengths (this requires Biopython 1.59 or later).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Graphics</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenomeDiagram</span>
 
-<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Proux Fig 6&quot;</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">"Proux Fig 6"</span>
 <span class="n">gd_diagram</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 <span class="n">max_len</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">record</span><span class="p">,</span> <span class="n">gene_colors</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">A_rec</span><span class="p">,</span> <span class="n">B_rec</span><span class="p">,</span> <span class="n">C_rec</span><span class="p">],</span> <span class="p">[</span><span class="n">A_colors</span><span class="p">,</span> <span class="n">B_colors</span><span class="p">,</span> <span class="n">C_colors</span><span class="p">]):</span>
@@ -726,25 +726,25 @@ different lengths (this requires Biopython 1.59 or later).</p>
 
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">&quot;gene&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">feature</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s2">"gene"</span><span class="p">:</span>
             <span class="c1"># Exclude this feature</span>
             <span class="k">continue</span>
         <span class="n">gd_feature_set</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span>
             <span class="n">feature</span><span class="p">,</span>
-            <span class="n">sigil</span><span class="o">=</span><span class="s2">&quot;ARROW&quot;</span><span class="p">,</span>
+            <span class="n">sigil</span><span class="o">=</span><span class="s2">"ARROW"</span><span class="p">,</span>
             <span class="n">color</span><span class="o">=</span><span class="n">gene_colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
             <span class="n">label</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
-            <span class="n">label_position</span><span class="o">=</span><span class="s2">&quot;start&quot;</span><span class="p">,</span>
+            <span class="n">label_position</span><span class="o">=</span><span class="s2">"start"</span><span class="p">,</span>
             <span class="n">label_size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
             <span class="n">label_angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
 
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="s2">&quot;A4&quot;</span><span class="p">,</span> <span class="n">fragments</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">max_len</span><span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;PDF&quot;</span><span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.eps&quot;</span><span class="p">,</span> <span class="s2">&quot;EPS&quot;</span><span class="p">)</span>
-<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;.svg&quot;</span><span class="p">,</span> <span class="s2">&quot;SVG&quot;</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span> <span class="n">pagesize</span><span class="o">=</span><span class="s2">"A4"</span><span class="p">,</span> <span class="n">fragments</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">max_len</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">".pdf"</span><span class="p">,</span> <span class="s2">"PDF"</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">".eps"</span><span class="p">,</span> <span class="s2">"EPS"</span><span class="p">)</span>
+<span class="n">gd_diagram</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s2">".svg"</span><span class="p">,</span> <span class="s2">"SVG"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The expected output is shown in
@@ -783,52 +783,52 @@ C. Here are the links we want to show between A and B, given as a list
 of tuples (percentage similarity score, gene in A, gene in B).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tuc2009 (NC_002703) vs bIL285 (AF323668)</span>
 <span class="n">A_vs_B</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_01&quot;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_03&quot;</span><span class="p">,</span> <span class="s2">&quot;orf4&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_05&quot;</span><span class="p">,</span> <span class="s2">&quot;orf6&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_06&quot;</span><span class="p">,</span> <span class="s2">&quot;orf7&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_07&quot;</span><span class="p">,</span> <span class="s2">&quot;orf8&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">98</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_08&quot;</span><span class="p">,</span> <span class="s2">&quot;orf9&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">98</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_09&quot;</span><span class="p">,</span> <span class="s2">&quot;orf10&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_10&quot;</span><span class="p">,</span> <span class="s2">&quot;orf12&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_11&quot;</span><span class="p">,</span> <span class="s2">&quot;orf13&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_12&quot;</span><span class="p">,</span> <span class="s2">&quot;orf14&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">87</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_13&quot;</span><span class="p">,</span> <span class="s2">&quot;orf15&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_14&quot;</span><span class="p">,</span> <span class="s2">&quot;orf16&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_15&quot;</span><span class="p">,</span> <span class="s2">&quot;orf17&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">88</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_17&quot;</span><span class="p">,</span> <span class="s2">&quot;rusA&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">91</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_18&quot;</span><span class="p">,</span> <span class="s2">&quot;orf20&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">93</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_19&quot;</span><span class="p">,</span> <span class="s2">&quot;orf22&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">71</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_20&quot;</span><span class="p">,</span> <span class="s2">&quot;orf23&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">51</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_22&quot;</span><span class="p">,</span> <span class="s2">&quot;orf27&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_23&quot;</span><span class="p">,</span> <span class="s2">&quot;orf28&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">88</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_24&quot;</span><span class="p">,</span> <span class="s2">&quot;orf29&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_26&quot;</span><span class="p">,</span> <span class="s2">&quot;orf38&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_46&quot;</span><span class="p">,</span> <span class="s2">&quot;orf52&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">77</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_48&quot;</span><span class="p">,</span> <span class="s2">&quot;orf54&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">91</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_49&quot;</span><span class="p">,</span> <span class="s2">&quot;orf55&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">95</span><span class="p">,</span> <span class="s2">&quot;Tuc2009_52&quot;</span><span class="p">,</span> <span class="s2">&quot;orf60&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="s2">"Tuc2009_01"</span><span class="p">,</span> <span class="s2">"int"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s2">"Tuc2009_03"</span><span class="p">,</span> <span class="s2">"orf4"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">"Tuc2009_05"</span><span class="p">,</span> <span class="s2">"orf6"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s2">"Tuc2009_06"</span><span class="p">,</span> <span class="s2">"orf7"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="s2">"Tuc2009_07"</span><span class="p">,</span> <span class="s2">"orf8"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">98</span><span class="p">,</span> <span class="s2">"Tuc2009_08"</span><span class="p">,</span> <span class="s2">"orf9"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">98</span><span class="p">,</span> <span class="s2">"Tuc2009_09"</span><span class="p">,</span> <span class="s2">"orf10"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s2">"Tuc2009_10"</span><span class="p">,</span> <span class="s2">"orf12"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s2">"Tuc2009_11"</span><span class="p">,</span> <span class="s2">"orf13"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">"Tuc2009_12"</span><span class="p">,</span> <span class="s2">"orf14"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">87</span><span class="p">,</span> <span class="s2">"Tuc2009_13"</span><span class="p">,</span> <span class="s2">"orf15"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">"Tuc2009_14"</span><span class="p">,</span> <span class="s2">"orf16"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s2">"Tuc2009_15"</span><span class="p">,</span> <span class="s2">"orf17"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">88</span><span class="p">,</span> <span class="s2">"Tuc2009_17"</span><span class="p">,</span> <span class="s2">"rusA"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">91</span><span class="p">,</span> <span class="s2">"Tuc2009_18"</span><span class="p">,</span> <span class="s2">"orf20"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">93</span><span class="p">,</span> <span class="s2">"Tuc2009_19"</span><span class="p">,</span> <span class="s2">"orf22"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">71</span><span class="p">,</span> <span class="s2">"Tuc2009_20"</span><span class="p">,</span> <span class="s2">"orf23"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">51</span><span class="p">,</span> <span class="s2">"Tuc2009_22"</span><span class="p">,</span> <span class="s2">"orf27"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="s2">"Tuc2009_23"</span><span class="p">,</span> <span class="s2">"orf28"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">88</span><span class="p">,</span> <span class="s2">"Tuc2009_24"</span><span class="p">,</span> <span class="s2">"orf29"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="s2">"Tuc2009_26"</span><span class="p">,</span> <span class="s2">"orf38"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s2">"Tuc2009_46"</span><span class="p">,</span> <span class="s2">"orf52"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">77</span><span class="p">,</span> <span class="s2">"Tuc2009_48"</span><span class="p">,</span> <span class="s2">"orf54"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">91</span><span class="p">,</span> <span class="s2">"Tuc2009_49"</span><span class="p">,</span> <span class="s2">"orf55"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">95</span><span class="p">,</span> <span class="s2">"Tuc2009_52"</span><span class="p">,</span> <span class="s2">"orf60"</span><span class="p">),</span>
 <span class="p">]</span>
 </pre></div>
 </div>
 <p>Likewise for B and C:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># bIL285 (AF323668) vs Listeria innocua prophage 5 (in NC_003212)</span>
 <span class="n">B_vs_C</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="s2">&quot;orf39&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2581&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">31</span><span class="p">,</span> <span class="s2">&quot;orf40&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2580&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="s2">&quot;orf41&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2579&quot;</span><span class="p">),</span>  <span class="c1"># terL</span>
-    <span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="s2">&quot;orf42&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2578&quot;</span><span class="p">),</span>  <span class="c1"># portal</span>
-    <span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="s2">&quot;orf43&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2577&quot;</span><span class="p">),</span>  <span class="c1"># protease</span>
-    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s2">&quot;orf44&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2576&quot;</span><span class="p">),</span>  <span class="c1"># mhp</span>
-    <span class="p">(</span><span class="mi">51</span><span class="p">,</span> <span class="s2">&quot;orf46&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2575&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s2">&quot;orf47&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2574&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="s2">&quot;orf48&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2573&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s2">&quot;orf49&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2572&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;orf50&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2571&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="s2">&quot;orf51&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2570&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="s2">&quot;orf52&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2568&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="s2">&quot;orf53&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2567&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="s2">&quot;orf54&quot;</span><span class="p">,</span> <span class="s2">&quot;lin2566&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="s2">"orf39"</span><span class="p">,</span> <span class="s2">"lin2581"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">31</span><span class="p">,</span> <span class="s2">"orf40"</span><span class="p">,</span> <span class="s2">"lin2580"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="s2">"orf41"</span><span class="p">,</span> <span class="s2">"lin2579"</span><span class="p">),</span>  <span class="c1"># terL</span>
+    <span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="s2">"orf42"</span><span class="p">,</span> <span class="s2">"lin2578"</span><span class="p">),</span>  <span class="c1"># portal</span>
+    <span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="s2">"orf43"</span><span class="p">,</span> <span class="s2">"lin2577"</span><span class="p">),</span>  <span class="c1"># protease</span>
+    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s2">"orf44"</span><span class="p">,</span> <span class="s2">"lin2576"</span><span class="p">),</span>  <span class="c1"># mhp</span>
+    <span class="p">(</span><span class="mi">51</span><span class="p">,</span> <span class="s2">"orf46"</span><span class="p">,</span> <span class="s2">"lin2575"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s2">"orf47"</span><span class="p">,</span> <span class="s2">"lin2574"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="s2">"orf48"</span><span class="p">,</span> <span class="s2">"lin2573"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s2">"orf49"</span><span class="p">,</span> <span class="s2">"lin2572"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s2">"orf50"</span><span class="p">,</span> <span class="s2">"lin2571"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="s2">"orf51"</span><span class="p">,</span> <span class="s2">"lin2570"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="s2">"orf52"</span><span class="p">,</span> <span class="s2">"lin2568"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="s2">"orf53"</span><span class="p">,</span> <span class="s2">"lin2567"</span><span class="p">),</span>
+    <span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="s2">"orf54"</span><span class="p">,</span> <span class="s2">"lin2566"</span><span class="p">),</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -836,8 +836,8 @@ of tuples (percentage similarity score, gene in A, gene in B).</p>
 middle phage there are no locus tags so I’ve used gene names instead.
 The following little helper function lets us lookup a feature using
 either a locus tag or gene name:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_feature</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;locus_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;gene&quot;</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Search list of SeqFeature objects for an identifier under the given tags.&quot;&quot;&quot;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_feature</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s2">"locus_tag"</span><span class="p">,</span> <span class="s2">"gene"</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">"""Search list of SeqFeature objects for an identifier under the given tags."""</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
             <span class="c1"># tag may not be present in this feature</span>
@@ -968,14 +968,14 @@ GenomeDiagram supported both.</p>
 <p>For example, if you used to have:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">GenomeDiagram</span><span class="w"> </span><span class="kn">import</span> <span class="n">GDFeatureSet</span><span class="p">,</span> <span class="n">GDDiagram</span>
 
-<span class="n">gdd</span> <span class="o">=</span> <span class="n">GDDiagram</span><span class="p">(</span><span class="s2">&quot;An example&quot;</span><span class="p">)</span>
+<span class="n">gdd</span> <span class="o">=</span> <span class="n">GDDiagram</span><span class="p">(</span><span class="s2">"An example"</span><span class="p">)</span>
 <span class="o">...</span>
 </pre></div>
 </div>
 <p>you could just switch the import statements like this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Graphics.GenomeDiagram</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeatureSet</span> <span class="k">as</span> <span class="n">GDFeatureSet</span><span class="p">,</span> <span class="n">Diagram</span> <span class="k">as</span> <span class="n">GDDiagram</span>
 
-<span class="n">gdd</span> <span class="o">=</span> <span class="n">GDDiagram</span><span class="p">(</span><span class="s2">&quot;An example&quot;</span><span class="p">)</span>
+<span class="n">gdd</span> <span class="o">=</span> <span class="n">GDDiagram</span><span class="p">(</span><span class="s2">"An example"</span><span class="p">)</span>
 <span class="o">...</span>
 </pre></div>
 </div>
@@ -983,14 +983,14 @@ GenomeDiagram supported both.</p>
 switch to the new names, but you would have to change more of your code:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Graphics.GenomeDiagram</span><span class="w"> </span><span class="kn">import</span> <span class="n">FeatureSet</span><span class="p">,</span> <span class="n">Diagram</span>
 
-<span class="n">gdd</span> <span class="o">=</span> <span class="n">Diagram</span><span class="p">(</span><span class="s2">&quot;An example&quot;</span><span class="p">)</span>
+<span class="n">gdd</span> <span class="o">=</span> <span class="n">Diagram</span><span class="p">(</span><span class="s2">"An example"</span><span class="p">)</span>
 <span class="o">...</span>
 </pre></div>
 </div>
 <p>or:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Graphics</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenomeDiagram</span>
 
-<span class="n">gdd</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">&quot;An example&quot;</span><span class="p">)</span>
+<span class="n">gdd</span> <span class="o">=</span> <span class="n">GenomeDiagram</span><span class="o">.</span><span class="n">Diagram</span><span class="p">(</span><span class="s2">"An example"</span><span class="p">)</span>
 <span class="o">...</span>
 </pre></div>
 </div>
@@ -1027,14 +1027,14 @@ to use the FASTA files for the whole chromosomes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
 
 <span class="n">entries</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;Chr I&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_I/NC_003070.fna&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr II&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_II/NC_003071.fna&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr III&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_III/NC_003074.fna&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr IV&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_IV/NC_003075.fna&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr V&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_V/NC_003076.fna&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr I"</span><span class="p">,</span> <span class="s2">"CHR_I/NC_003070.fna"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr II"</span><span class="p">,</span> <span class="s2">"CHR_II/NC_003071.fna"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr III"</span><span class="p">,</span> <span class="s2">"CHR_III/NC_003074.fna"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr IV"</span><span class="p">,</span> <span class="s2">"CHR_IV/NC_003075.fna"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr V"</span><span class="p">,</span> <span class="s2">"CHR_V/NC_003076.fna"</span><span class="p">),</span>
 <span class="p">]</span>
 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">entries</span><span class="p">:</span>
-    <span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;fasta&quot;</span><span class="p">)</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"fasta"</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -1044,11 +1044,11 @@ the following short demonstration of the <code class="docutils literal notransla
 <span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Graphics</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicChromosome</span>
 
 <span class="n">entries</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;Chr I&quot;</span><span class="p">,</span> <span class="mi">30432563</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr II&quot;</span><span class="p">,</span> <span class="mi">19705359</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr III&quot;</span><span class="p">,</span> <span class="mi">23470805</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr IV&quot;</span><span class="p">,</span> <span class="mi">18585042</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr V&quot;</span><span class="p">,</span> <span class="mi">26992728</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr I"</span><span class="p">,</span> <span class="mi">30432563</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr II"</span><span class="p">,</span> <span class="mi">19705359</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr III"</span><span class="p">,</span> <span class="mi">23470805</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr IV"</span><span class="p">,</span> <span class="mi">18585042</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr V"</span><span class="p">,</span> <span class="mi">26992728</span><span class="p">),</span>
 <span class="p">]</span>
 
 <span class="n">max_len</span> <span class="o">=</span> <span class="mi">30432563</span>  <span class="c1"># Could compute this from the entries dict</span>
@@ -1082,7 +1082,7 @@ the following short demonstration of the <code class="docutils literal notransla
     <span class="c1"># This chromosome is done</span>
     <span class="n">chr_diagram</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cur_chromosome</span><span class="p">)</span>
 
-<span class="n">chr_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;simple_chrom.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;Arabidopsis thaliana&quot;</span><span class="p">)</span>
+<span class="n">chr_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">"simple_chrom.pdf"</span><span class="p">,</span> <span class="s2">"Arabidopsis thaliana"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This should create a very simple PDF file, shown in
@@ -1109,11 +1109,11 @@ and preserve the subdirectory names or edit the paths below:</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Graphics</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicChromosome</span>
 
 <span class="n">entries</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">&quot;Chr I&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_I/NC_003070.gbk&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr II&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_II/NC_003071.gbk&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr III&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_III/NC_003074.gbk&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr IV&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_IV/NC_003075.gbk&quot;</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">&quot;Chr V&quot;</span><span class="p">,</span> <span class="s2">&quot;CHR_V/NC_003076.gbk&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr I"</span><span class="p">,</span> <span class="s2">"CHR_I/NC_003070.gbk"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr II"</span><span class="p">,</span> <span class="s2">"CHR_II/NC_003071.gbk"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr III"</span><span class="p">,</span> <span class="s2">"CHR_III/NC_003074.gbk"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr IV"</span><span class="p">,</span> <span class="s2">"CHR_IV/NC_003075.gbk"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"Chr V"</span><span class="p">,</span> <span class="s2">"CHR_V/NC_003076.gbk"</span><span class="p">),</span>
 <span class="p">]</span>
 
 <span class="n">max_len</span> <span class="o">=</span> <span class="mi">30432563</span>  <span class="c1"># Could compute this from the entries dict</span>
@@ -1123,13 +1123,13 @@ and preserve the subdirectory names or edit the paths below:</p>
 <span class="n">chr_diagram</span><span class="o">.</span><span class="n">page_size</span> <span class="o">=</span> <span class="p">(</span><span class="mf">29.7</span> <span class="o">*</span> <span class="n">cm</span><span class="p">,</span> <span class="mi">21</span> <span class="o">*</span> <span class="n">cm</span><span class="p">)</span>  <span class="c1"># A4 landscape</span>
 
 <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">entries</span><span class="p">):</span>
-    <span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;genbank&quot;</span><span class="p">)</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">"genbank"</span><span class="p">)</span>
     <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
-    <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;tRNA&quot;</span><span class="p">]</span>
-    <span class="c1"># Record an Artemis style integer color in the feature&#39;s qualifiers,</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">record</span><span class="o">.</span><span class="n">features</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"tRNA"</span><span class="p">]</span>
+    <span class="c1"># Record an Artemis style integer color in the feature's qualifiers,</span>
     <span class="c1"># 1 = Black, 2 = Red, 3 = Green, 4 = blue, 5 =cyan, 6 = purple</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">features</span><span class="p">:</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">qualifiers</span><span class="p">[</span><span class="s2">&quot;color&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">qualifiers</span><span class="p">[</span><span class="s2">"color"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
 
     <span class="n">cur_chromosome</span> <span class="o">=</span> <span class="n">BasicChromosome</span><span class="o">.</span><span class="n">Chromosome</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="c1"># Set the scale to the MAXIMUM length plus the two telomeres in bp,</span>
@@ -1155,7 +1155,7 @@ and preserve the subdirectory names or edit the paths below:</p>
     <span class="c1"># This chromosome is done</span>
     <span class="n">chr_diagram</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cur_chromosome</span><span class="p">)</span>
 
-<span class="n">chr_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">&quot;tRNA_chrom.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;Arabidopsis thaliana&quot;</span><span class="p">)</span>
+<span class="n">chr_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="s2">"tRNA_chrom.pdf"</span><span class="p">,</span> <span class="s2">"Arabidopsis thaliana"</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>It might warn you about the labels being too close together - have a
