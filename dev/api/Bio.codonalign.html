@@ -208,6 +208,44 @@ codon</p></li>
 <span class="go">ATG---CGT pro2</span>
 </pre></div>
 </div>
+<p>Using the newer codon aligner in Bio.Align, this analysis can be performed
+as follows:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">PairwiseAligner</span><span class="p">,</span> <span class="n">CodonAligner</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s1">'ATGTCTCGT'</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s1">'pro1'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s1">'ATGCGT'</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s1">'pro2'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pro1</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s1">'MSR'</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s1">'pro1'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pro2</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s1">'MR'</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s1">'pro2'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">PairwiseAligner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein_alignment</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">pro1</span><span class="p">,</span> <span class="n">pro2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">protein_alignment</span><span class="p">)</span>
+<span class="go">pro1              0 MSR 3</span>
+<span class="go">                  0 |-| 3</span>
+<span class="go">pro2              0 M-R 2</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">codon_aligner</span> <span class="o">=</span> <span class="n">CodonAligner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment1</span> <span class="o">=</span> <span class="n">codon_aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">pro1</span><span class="p">,</span> <span class="n">seq1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment2</span> <span class="o">=</span> <span class="n">codon_aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">pro2</span><span class="p">,</span> <span class="n">seq2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment1</span><span class="p">)</span>
+<span class="go">pro1              0 M  S  R   3</span>
+<span class="go">pro1              0 ATGTCTCGT 9</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment2</span><span class="p">)</span>
+<span class="go">pro2              0 M  R   2</span>
+<span class="go">pro2              0 ATGCGT 6</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">codon_alignment</span> <span class="o">=</span> <span class="n">protein_alignment</span><span class="o">.</span><span class="n">mapall</span><span class="p">([</span><span class="n">alignment1</span><span class="p">,</span> <span class="n">alignment2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">codon_alignment</span><span class="p">)</span>
+<span class="go">pro1              0 ATGTCTCGT 9</span>
+<span class="go">                  0 |||---||| 9</span>
+<span class="go">pro2              0 ATG---CGT 6</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">naive_alignment</span> <span class="o">=</span> <span class="n">aligner</span><span class="o">.</span><span class="n">align</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">naive_alignment</span><span class="p">)</span>
+<span class="go">pro1              0 ATGTCTCGT 9</span>
+<span class="go">                  0 |||-|--|| 9</span>
+<span class="go">pro2              0 ATG-C--GT 6</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
