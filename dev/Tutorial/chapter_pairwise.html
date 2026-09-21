@@ -55,7 +55,8 @@
 <li class="toctree-l2"><a class="reference internal" href="chapter_seqio.html">Sequence Input/Output</a></li>
 <li class="toctree-l2"><a class="reference internal" href="chapter_align.html">Sequence alignments</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Pairwise sequence alignment</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#basic-usage">Basic usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-quick-and-easy-approach-to-pairwise-sequence-alignments">The quick and easy approach to pairwise sequence alignments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pairwise-sequence-alignments-using-the-pairwise-aligner">Pairwise sequence alignments using the pairwise aligner</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#the-pairwise-aligner-object">The pairwise aligner object</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#substitution-scores">Substitution scores</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#affine-gap-scores">Affine gap scores</a></li>
@@ -144,17 +145,180 @@
 <span id="chapter-pairwise"></span><h1>Pairwise sequence alignment<a class="headerlink" href="#pairwise-sequence-alignment" title="Link to this heading"></a></h1>
 <p>Pairwise sequence alignment is the process of aligning two sequences to
 each other by optimizing the similarity score between them. The
-<code class="docutils literal notranslate"><span class="pre">Bio.Align</span></code> module contains the <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> class for global
+<code class="docutils literal notranslate"><span class="pre">Bio.Align</span></code> module provides a pairwise sequence aligner for global
 and local alignments using the Needleman-Wunsch, Smith-Waterman, Gotoh
 (three-state), and Waterman-Smith-Beyer global and local pairwise
 alignment algorithms, and the Fast Optimal Global Alignment Algorithm (FOGSAA),
 with numerous options to change the alignment parameters. We refer to Durbin
 <em>et al.</em> <a class="reference internal" href="chapter_bibliography.html#durbin1998" id="id1"><span>[Durbin1998]</span></a> for in-depth information on sequence alignment
 algorithms.</p>
-<section id="basic-usage">
-<span id="sec-pairwise-basic"></span><h2>Basic usage<a class="headerlink" href="#basic-usage" title="Link to this heading"></a></h2>
-<p>To generate pairwise alignments, first create a <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code>
-object:</p>
+<section id="the-quick-and-easy-approach-to-pairwise-sequence-alignments">
+<span id="sec-pairwise-quick"></span><h2>The quick and easy approach to pairwise sequence alignments<a class="headerlink" href="#the-quick-and-easy-approach-to-pairwise-sequence-alignments" title="Link to this heading"></a></h2>
+<p>In general, pairwise sequence alignments in Biopython are done by first
+creating a <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> object, and then performing the alignment by
+calling the appropriate methods of the <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> you created
+(see <a class="reference internal" href="#sec-pairwise-basic"><span class="std std-ref">Pairwise sequence alignments using the pairwise aligner</span></a>) . This is by far the fastest if you want to
+perform many alignments. Howeer, if you want to align a few sequences right
+here, right now, then you can use the convenience functions <code class="docutils literal notranslate"><span class="pre">global_align</span></code>
+and <code class="docutils literal notranslate"><span class="pre">local_align</span></code> for global and local alignments, respectively:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">global_align</span><span class="p">,</span> <span class="n">local_align</span>
+</pre></div>
+</div>
+<p>Or, if you want to minimize the amount of typing needed, use an alias:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">global_align</span> <span class="k">as</span> <span class="n">ga</span><span class="p">,</span> <span class="n">local_align</span> <span class="k">as</span> <span class="n">la</span>
+</pre></div>
+</div>
+<p>These functions create a <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> object on the fly, using the
+provided arguments to set the alignment parameters, and then aligns the two sequences
+using this aligner.</p>
+<p>Suppose you want to do a global pairwise alignment between the two hemoglobin sequences (HBA_HUMAN, HBB_HUMAN) stored in alpha.faa and beta.faa (in the <cite>examples</cite> directory in the Biopython distribution):</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq1</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"alpha.faa"</span><span class="p">,</span> <span class="s2">"fasta"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seq2</span> <span class="o">=</span> <span class="n">SeqIO</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">"beta.faa"</span><span class="p">,</span> <span class="s2">"fasta"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">ga</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">global_align</span></code> and <code class="docutils literal notranslate"><span class="pre">local_align</span></code> function take the two sequences to be aligned as input.
+By default, the pairwise aligner uses a match score of +1, a mismatch score of 0, and a gap score of -1.</p>
+<p>The variable <code class="docutils literal notranslate"><span class="pre">alignments</span></code> is an iterator over alignments (at least one) which have the same optimal score for the given parameters. In our example, there are 120 different alignments with the score 56.0. While <code class="docutils literal notranslate"><span class="pre">alignments</span></code> is an iterator, you can also use indexing to pull out one alignment:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">120</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">HBA_HUMAN         0 MV-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLSHGSAQ---</span>
+<span class="go">                  0 ||-|.|..|..|.|.||||...--|.|.|||.|.....|.|...|..|-|||...|.---</span>
+<span class="go">HBB_HUMAN         0 MVHLTPEEKSAVTALWGKVNVD--EVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGN</span>
+
+<span class="go">HBA_HUMAN        55 --VKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAH</span>
+<span class="go">                 60 --||.|||||..|.....||.|........||.||..||.|||.||.||...|...||.|</span>
+<span class="go">HBB_HUMAN        58 PKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHH</span>
+
+<span class="go">HBA_HUMAN       113 LPAEFTPAVHASLDKFLASVSTVLTSKYR 142</span>
+<span class="go">                120 ...||||.|.|...|..|.|...|..||. 149</span>
+<span class="go">HBB_HUMAN       118 FGKEFTPPVQAAYQKVVAGVANALAHKYH 147</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+<span class="go">56.0</span>
+</pre></div>
+</div>
+<p>Additionally, these functions accept a keyword argument <code class="docutils literal notranslate"><span class="pre">strand</span></code>, which you
+may use to align to the reverse strand by using <code class="docutils literal notranslate"><span class="pre">strand='-'</span></code>. Any other
+arguments will be passed to the <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> constructor to set the
+alignment parameters. Any strings as non-keyword arguments are interpreted as
+either the strand (if <code class="docutils literal notranslate"><span class="pre">'+'</span></code> or <code class="docutils literal notranslate"><span class="pre">'-'</span></code>), or otherwise as the scoring scheme
+(see <a class="reference internal" href="#sec-pairwise-predefined-scoring"><span class="std std-ref">Using a pre-defined substitution matrix and gap scores</span></a>). For example, you may want to align
+these two sequences using the BLASTP scoring parameters:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">ga</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="s2">"blastp"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">HBA_HUMAN         0 MV-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF------DLSHGS</span>
+<span class="go">                  0 ||-|.|..|..|.|.||||--...|.|.|||.|.....|.|...|..|------|...|.</span>
+<span class="go">HBB_HUMAN         0 MVHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGN</span>
+
+<span class="go">HBA_HUMAN        53 AQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAH</span>
+<span class="go">                 60 ..||.|||||..|.....||.|........||.||..||.|||.||.||...|...||.|</span>
+<span class="go">HBB_HUMAN        58 PKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHH</span>
+
+<span class="go">HBA_HUMAN       113 LPAEFTPAVHASLDKFLASVSTVLTSKYR 142</span>
+<span class="go">                120 ...||||.|.|...|..|.|...|..||. 149</span>
+<span class="go">HBB_HUMAN       118 FGKEFTPPVQAAYQKVVAGVANALAHKYH 147</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+<span class="go">282.0</span>
+</pre></div>
+</div>
+<p>Any keyword arguments to <code class="docutils literal notranslate"><span class="pre">global_align</span></code> or <code class="docutils literal notranslate"><span class="pre">local_align</span></code> are passed to the
+<code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> constructor to set the alignment parameters. See tables
+<a class="reference internal" href="#table-align-attributes"><span class="std std-ref">Attributes of the pairwise aligner objects.</span></a> and <a class="reference internal" href="#table-align-meta-attributes"><span class="std std-ref">Meta-attributes of the pairwise aligner objects.</span></a> for a list
+of aligner attributes and meta-attributes. In addition, you can use the
+following mnemonics:</p>
+<table class="docutils align-default" id="table-align-mnemonics">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Mnemonics to set pairwise alignment parameters</span><a class="headerlink" href="#table-align-mnemonics" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Mnemonic</p></th>
+<th class="head"><p>Parameters it maps to</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">m</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">match_score</span></code>, <code class="docutils literal notranslate"><span class="pre">mismatch_score</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">g</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gap_score</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">i</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">insertion_score</span></code> if one value;
+<code class="docutils literal notranslate"><span class="pre">open_insertion_score</span></code>, <code class="docutils literal notranslate"><span class="pre">extend_insertion_score</span></code> if two values</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">d</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deletion_score</span></code> if one value;
+<code class="docutils literal notranslate"><span class="pre">open_deletion_score</span></code>, <code class="docutils literal notranslate"><span class="pre">extend_deletion_score</span></code> if two values</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">o</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">open_gap_score</span></code> if one value;
+<code class="docutils literal notranslate"><span class="pre">open_insertion_score</span></code>, <code class="docutils literal notranslate"><span class="pre">open_deletion_score</span></code> if two values</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">extend_gap_score</span></code> if one value;
+<code class="docutils literal notranslate"><span class="pre">extend_insertion_score</span></code>, <code class="docutils literal notranslate"><span class="pre">extend_deletion_score</span></code> if two values</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">e</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">end_gap_score</span></code> if one value;
+<code class="docutils literal notranslate"><span class="pre">end_insertion_score</span></code>, <code class="docutils literal notranslate"><span class="pre">end_deletion_score</span></code> if two values</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">s</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">substitution_matrix</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p>Better alignments are usually obtained by penalizing gaps: higher costs for opening a gap and lower costs for extending an existing gap. For amino acid sequences, match scores are usually encoded in matrices like PAM or BLOSUM. Thus, a more meaningful alignment for our example can be obtained by using the BLOSUM62 matrix, together with a gap open penalty of 10 and a gap extension penalty of 0.5:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">substitution_matrices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">blosum62</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"BLOSUM62"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">ga</span><span class="p">(</span><span class="n">seq1</span><span class="p">,</span> <span class="n">seq2</span><span class="p">,</span> <span class="n">blosum62</span><span class="p">,</span> <span class="n">o</span><span class="o">=-</span><span class="mi">10</span><span class="p">,</span> <span class="n">x</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">blosum62</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">HBA_HUMAN         0 MV-LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLS-----HGS</span>
+<span class="go">                  0 ||-|.|..|..|.|.||||--...|.|.|||.|.....|.|...|..|-|||-----.|.</span>
+<span class="go">HBB_HUMAN         0 MVHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGN</span>
+
+<span class="go">HBA_HUMAN        53 AQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAH</span>
+<span class="go">                 60 ..||.|||||..|.....||.|........||.||..||.|||.||.||...|...||.|</span>
+<span class="go">HBB_HUMAN        58 PKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDPENFRLLGNVLVCVLAHH</span>
+
+<span class="go">HBA_HUMAN       113 LPAEFTPAVHASLDKFLASVSTVLTSKYR 142</span>
+<span class="go">                120 ...||||.|.|...|..|.|...|..||. 149</span>
+<span class="go">HBB_HUMAN       118 FGKEFTPPVQAAYQKVVAGVANALAHKYH 147</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+<span class="go">292.5</span>
+</pre></div>
+</div>
+<p>Instead of passing a match/mismatch matrix, you can specify a match score and a mismatch score. The next example uses match/mismatch scores of 5/-4 and gap penalties (open/extend) of 2/0.5 for a local alignment:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">la</span><span class="p">(</span><span class="s2">"ATTAGGGGAACCCCT"</span><span class="p">,</span> <span class="s2">"AGGGGAAAACCCC"</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">),</span> <span class="n">o</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">target            3 AGGGG--AACCCC 14</span>
+<span class="go">                  0 |||||--|||||| 13</span>
+<span class="go">query             0 AGGGGAAAACCCC 13</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+<span class="go">52.5</span>
+</pre></div>
+</div>
+<p>Add <code class="docutils literal notranslate"><span class="pre">'-'</span></code> as an argument if you want to align to the reverse strand:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">la</span><span class="p">(</span><span class="s2">"ATTAGGGGAACCCCT"</span><span class="p">,</span> <span class="s2">"AGGGGAAAACCCC"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">),</span> <span class="n">o</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">x</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">target            4 GGGG----AACCCCT 15</span>
+<span class="go">                  0 ||||------||||| 15</span>
+<span class="go">query            13 GGGGTTTT--CCCCT  0</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+<span class="go">39.0</span>
+</pre></div>
+</div>
+<p>(Note that in this example, the algorithm inserted gaps in the target strand followed by gaps in the query strand, rather than accepting mismatches in this region.  This is due to the gap extension score being larger (less negative) than the mismatch score.)</p>
+</section>
+<section id="pairwise-sequence-alignments-using-the-pairwise-aligner">
+<span id="sec-pairwise-basic"></span><h2>Pairwise sequence alignments using the pairwise aligner<a class="headerlink" href="#pairwise-sequence-alignments-using-the-pairwise-aligner" title="Link to this heading"></a></h2>
+<p>If you want to perform many pairwise alignments, it is faster to create a <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code> object and use it to generate the alignments:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio</span><span class="w"> </span><span class="kn">import</span> <span class="n">Align</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span> <span class="o">=</span> <span class="n">Align</span><span class="o">.</span><span class="n">PairwiseAligner</span><span class="p">()</span>
 </pre></div>
@@ -170,6 +334,7 @@ the constructor of the object:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">aligner</span><span class="o">.</span><span class="n">match_score</span> <span class="o">=</span> <span class="mf">1.0</span>
 </pre></div>
 </div>
+<p>You can also use the mnemonics listed in Table <a class="reference internal" href="#table-align-mnemonics"><span class="std std-ref">Mnemonics to set pairwise alignment parameters</span></a> to set the alignment parameters when constructing the aligner.</p>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">aligner.score</span></code> method to calculate the alignment score
 between two sequences:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="s2">"GAACTTT"</span>
@@ -450,7 +615,7 @@ all parameters, use</p>
 <a class="reference internal" href="#sec-pairwise-affine-gapscores"><span class="std std-ref">Affine gap scores</span></a>, and
 <a class="reference internal" href="#sec-pairwise-general-gapscores"><span class="std std-ref">General gap scores</span></a> below for the definition of
 these parameters. The attribute <code class="docutils literal notranslate"><span class="pre">mode</span></code> (described above in
-Section <a class="reference internal" href="#sec-pairwise-basic"><span class="std std-ref">Basic usage</span></a>) can be set equal to <code class="docutils literal notranslate"><span class="pre">&quot;global&quot;</span></code>
+Section <a class="reference internal" href="#sec-pairwise-basic"><span class="std std-ref">Pairwise sequence alignments using the pairwise aligner</span></a>) can be set equal to <code class="docutils literal notranslate"><span class="pre">&quot;global&quot;</span></code>
 or <code class="docutils literal notranslate"><span class="pre">&quot;local&quot;</span></code> to specify global or local pairwise alignment,
 respectively.</p>
 <p>Depending on the gap scoring parameters (see
@@ -580,7 +745,8 @@ extend an existing gap:</p>
 aligner allows fine-grained control over the gap scoring scheme by
 specifying the following twelve attributes of a <code class="docutils literal notranslate"><span class="pre">PairwiseAligner</span></code>
 object:</p>
-<table class="docutils align-default">
+<table class="docutils align-default" id="table-align-attributes">
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">Attributes of the pairwise aligner objects.</span><a class="headerlink" href="#table-align-attributes" title="Link to this table"></a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Opening scores</strong></p></th>
 <th class="head"><p><strong>Extending scores</strong></p></th>
@@ -607,6 +773,7 @@ object:</p>
 </tr>
 </tbody>
 </table>
+<p>This is a test: <a class="reference internal" href="#table-align-attributes"><span class="std std-ref">Attributes of the pairwise aligner objects.</span></a>.</p>
 <p>These attributes allow for different gap scores for internal gaps and on
 either end of the sequence, as shown in this example:</p>
 <table class="docutils align-default">
@@ -750,7 +917,7 @@ either end of the sequence, as shown in this example:</p>
 that refer to a number of these values collectively, as shown
 (hierarchically) in Table <a class="reference internal" href="#table-align-meta-attributes"><span class="std std-ref">Meta-attributes of the pairwise aligner objects.</span></a>.</p>
 <table class="docutils align-default" id="table-align-meta-attributes">
-<caption><span class="caption-number">Table 1 </span><span class="caption-text">Meta-attributes of the pairwise aligner objects.</span><a class="headerlink" href="#table-align-meta-attributes" title="Link to this table"></a></caption>
+<caption><span class="caption-number">Table 3 </span><span class="caption-text">Meta-attributes of the pairwise aligner objects.</span><a class="headerlink" href="#table-align-meta-attributes" title="Link to this table"></a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Meta-attribute</p></th>
 <th class="head"><p>Attributes it maps to</p></th>
@@ -2051,7 +2218,7 @@ class defines additional attributes that refer to a number of these
 values collectively, as shown in
 Table <a class="reference internal" href="#table-codonalign-meta-attributes"><span class="std std-ref">Meta-attributes of CodonAligner objects.</span></a>.</p>
 <table class="docutils align-default" id="table-codonalign-meta-attributes">
-<caption><span class="caption-number">Table 2 </span><span class="caption-text">Meta-attributes of CodonAligner objects.</span><a class="headerlink" href="#table-codonalign-meta-attributes" title="Link to this table"></a></caption>
+<caption><span class="caption-number">Table 4 </span><span class="caption-text">Meta-attributes of CodonAligner objects.</span><a class="headerlink" href="#table-codonalign-meta-attributes" title="Link to this table"></a></caption>
 <thead>
 <tr class="row-odd"><th class="head"><p>Meta-attribute</p></th>
 <th class="head"><p>Attributes it maps to</p></th>

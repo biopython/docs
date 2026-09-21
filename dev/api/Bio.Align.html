@@ -3005,7 +3005,7 @@ of the PairwiseAligner object by providing them as keyword arguments:</p>
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scoring</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAligner.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initialize a PairwiseAligner as specified by the keyword arguments.</p>
 <p>If scoring is None, use the default scoring scheme match = 1.0,
-mismatch = 0.0, gap score = 0.0
+mismatch = 0.0, gap score = -1.0.
 If scoring is “blastn”, “megablast”, or “blastp”, use the default
 substitution matrix and gap scores for BLASTN, MEGABLAST, or BLASTP,
 respectively.</p>
@@ -3046,6 +3046,288 @@ on the object.</p>
 <span class="sig-name descname"><span class="pre">__setstate__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.PairwiseAligner.__setstate__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Align.global_align">
+<span class="sig-prename descclassname"><span class="pre">Bio.Align.</span></span><span class="sig-name descname"><span class="pre">global_align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seqA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seqB</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.global_align" title="Link to this definition"></a></dt>
+<dd><p>Return the optimal global pairwise alignments for the two sequences.</p>
+<p>This function creates a PairwiseAligner object and uses it to perform a
+global pairwise sequence alignment of seqA and seqB.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>seqA   - the target sequence.</p></li>
+<li><p>seqB   - the query sequence.</p></li>
+<li><p>strand - if ‘+’ (default), align seqB against seqA. If ‘-’, align the
+reverse complement of seqB against seqA.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Other keyword arguments are passed to the PairwiseAligner initializer (see
+the PairwiseAligner documentation for details). This includes the following
+mnemonics:</p>
+<ul class="simple">
+<li><p>m: (match_score, mismatch_score).</p></li>
+<li><p>g: gap_score.</p></li>
+<li><p>i: insertion_score (if one value);
+(open_insertion_score, extend_insertion_score) if two values.</p></li>
+<li><p>d: deletion_score (if one value);
+(open_deletion_score, extend_deletion_score) if two values.</p></li>
+<li><p>o: open_gap_score (if one value);
+(open_insertion_score, open_deletion_score) if two values.</p></li>
+<li><p>x: extend_gap_score (if one value);
+(extend_insertion_score, extend_deletion_score) if two values.</p></li>
+<li><p>e: end_gap_score (if one value);
+(end_insertion_score, end_deletion_score) if two values.</p></li>
+<li><p>s: substitution_matrix.</p></li>
+</ul>
+<p>Non-keyword arguments ‘+’ or ‘-’ are interpreted as the strand (see above).
+Other non-keyword string arguments are interpreted as the scoring scheme
+(e.g. “blastn” for the BLASTN gap scores and default substitution matrix;
+see the PairwiseAligner documentation for details).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">global_align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">global_align</span><span class="p">(</span><span class="s2">"ACCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">&lt;PairwiseAlignments object (2 alignments; score=1) at 0x...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">score</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">alignments</span></code> object is an iterater that also supports indexing:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">score</span>
+<span class="go">1.0</span>
+</pre></div>
+</div>
+<p>Print out the alignment to visualize it:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">target            0 ACCGT 5</span>
+<span class="go">                  0 ||-|- 5</span>
+<span class="go">query             0 AC-G- 3</span>
+</pre></div>
+</div>
+<p>This alignment uses the default score parameters of the PairwiseAligner:
++1.0 for matches, 0.0 for mismatches, and -1.0 for gaps. To use different
+parameter values, provide them explicitly as keyword arguments, or use the
+mnemonic codes:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">global_align</span><span class="p">(</span><span class="s2">"ACCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">,</span>
+<span class="gp">... </span>                          <span class="n">match_score</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>                          <span class="n">mismatch_score</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span>
+<span class="go">&lt;PairwiseAlignments object (2 alignments; score=4) at 0x...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">global_align</span><span class="p">(</span><span class="s2">"ACCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span>
+<span class="go">&lt;PairwiseAlignments object (2 alignments; score=4) at 0x...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">target            0 ACCGT 5</span>
+<span class="go">                  0 ||-|- 5</span>
+<span class="go">query             0 AC-G- 3</span>
+
+<span class="go">target            0 ACCGT 5</span>
+<span class="go">                  0 |-||- 5</span>
+<span class="go">query             0 A-CG- 3</span>
+</pre></div>
+</div>
+<p>Same as above, except now 0.5 points are deducted when opening a gap,
+and 0.1 points are deducted when extending it.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">global_align</span><span class="p">(</span><span class="s2">"ACCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">o</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">x</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"score = </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">score</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">target            0 ACCGT 5</span>
+<span class="go">                  0 |-||- 5</span>
+<span class="go">query             0 A-CG- 3</span>
+<span class="go"> score = 5.0</span>
+<span class="go">target            0 ACCGT 5</span>
+<span class="go">                  0 ||-|- 5</span>
+<span class="go">query             0 AC-G- 3</span>
+<span class="go"> score = 5.0</span>
+</pre></div>
+</div>
+<p>Usually you would use the mnenonic <cite>g</cite> to specify the gap penalty. However,
+you can also use it to specify your own gap functions:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">gap_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>  <span class="c1"># x is gap position in seq, y is gap length</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># No gap</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="mi">0</span>
+<span class="gp">... </span>    <span class="k">elif</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Gap open penalty</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="o">-</span><span class="mi">2</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">/</span><span class="mf">4.0</span> <span class="o">+</span> <span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">global_align</span><span class="p">(</span><span class="s2">"ACCCCCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">),</span> <span class="n">g</span><span class="o">=</span><span class="n">gap_function</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">target            0 ACCCCCGT 8</span>
+<span class="go">                  0 |----||- 8</span>
+<span class="go">query             0 A----CG- 3</span>
+
+<span class="go">target            0 ACCCCCGT 8</span>
+<span class="go">                  0 ||----|- 8</span>
+<span class="go">query             0 AC----G- 3</span>
+</pre></div>
+</div>
+<p>Use <cite>i</cite> and <cite>d</cite> (or <cite>insertion_score</cite>, <cite>deletion_score</cite> to specify different
+gap scores or gap functions for insertions and deletions (i.e., gaps in the
+target or in the query sequence).</p>
+<p>The alignment function can use known substitution matrices included in
+Biopython (in <code class="docutils literal notranslate"><span class="pre">Bio.Align.substitution_matrices</span></code>):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">substitution_matrices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"BLOSUM62"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">global_align</span><span class="p">(</span><span class="s2">"KEVLA"</span><span class="p">,</span> <span class="s2">"EVL"</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">matrix</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"score = </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">score</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="go">target            0 KEVLA 5</span>
+<span class="go">                  0 -|||- 5</span>
+<span class="go">query             0 -EVL- 3</span>
+<span class="go"> score = 11.0</span>
+</pre></div>
+</div>
+<p>You can also use one of the predefined scoring schemes:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">global_align</span><span class="p">(</span><span class="s2">"ACCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">,</span> <span class="s2">"blastn"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span>
+<span class="go">&lt;PairwiseAlignments object (4 alignments; score=-8) at 0x...&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Align.local_align">
+<span class="sig-prename descclassname"><span class="pre">Bio.Align.</span></span><span class="sig-name descname"><span class="pre">local_align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seqA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seqB</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.local_align" title="Link to this definition"></a></dt>
+<dd><p>Return the optimal local pairwise alignments for the two sequences.</p>
+<p>This function creates a PairwiseAligner object and uses it to perform a
+local pairwise sequence alignment of seqA and seqB.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>seqA   - the target sequence.</p></li>
+<li><p>seqB   - the query sequence.</p></li>
+<li><p>strand - if ‘+’ (default), align seqB against seqA. If ‘-’, align the
+reverse complement of seqB against seqA.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Other keyword arguments are passed to the PairwiseAligner initializer (see
+the PairwiseAligner documentation for details). This includes the following
+mnemonics:</p>
+<ul class="simple">
+<li><p>m: (match_score, mismatch_score).</p></li>
+<li><p>g: gap_score.</p></li>
+<li><p>i: insertion_score (if one value);
+(open_insertion_score, extend_insertion_score) if two values.</p></li>
+<li><p>d: deletion_score (if one value);
+(open_deletion_score, extend_deletion_score) if two values.</p></li>
+<li><p>o: open_gap_score (if one value);
+(open_insertion_score, open_deletion_score) if two values.</p></li>
+<li><p>x: extend_gap_score (if one value);
+(extend_insertion_score, extend_deletion_score) if two values.</p></li>
+<li><p>e: end_gap_score (if one value);
+(end_insertion_score, end_deletion_score) if two values.</p></li>
+<li><p>s: substitution_matrix.</p></li>
+</ul>
+<p>Non-keyword arguments ‘+’ or ‘-’ are interpreted as the strand (see above).
+Other non-keyword string arguments are interpreted as the scoring scheme
+(e.g. “blastn” for the BLASTN gap scores and default substitution matrix;
+see the PairwiseAligner documentation for details).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">local_align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">local_align</span><span class="p">(</span><span class="s2">"ACCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
+<span class="go">&lt;PairwiseAlignments object (2 alignments; score=2) at 0x...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span><span class="o">.</span><span class="n">score</span>
+<span class="go">2.0</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">alignments</span></code> object is an iterater that also supports indexing:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">score</span>
+<span class="go">2.0</span>
+</pre></div>
+</div>
+<p>Print out the alignment to visualize it:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">target            0 AC 2</span>
+<span class="go">                  0 || 2</span>
+<span class="go">query             0 AC 2</span>
+</pre></div>
+</div>
+<p>This alignment uses the default score parameters of the PairwiseAligner:
++1.0 for matches, 0.0 for mismatches, and -1.0 for gaps. To use different
+parameter values, provide them explicitly as keyword arguments, or use the
+mnemonic codes:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">local_align</span><span class="p">(</span><span class="s2">"ACCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">,</span>
+<span class="gp">... </span>                         <span class="n">match_score</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span>                         <span class="n">mismatch_score</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span>
+<span class="go">&lt;PairwiseAlignments object (2 alignments; score=5) at 0x...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">local_align</span><span class="p">(</span><span class="s2">"ACCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span>
+<span class="go">&lt;PairwiseAlignments object (2 alignments; score=5) at 0x...&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">alignment</span> <span class="ow">in</span> <span class="n">alignments</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">target            0 ACCG 4</span>
+<span class="go">                  0 ||-| 4</span>
+<span class="go">query             0 AC-G 3</span>
+
+<span class="go">target            0 ACCG 4</span>
+<span class="go">                  0 |-|| 4</span>
+<span class="go">query             0 A-CG 3</span>
+</pre></div>
+</div>
+<p>Same as above, except now 0.5 points are deducted when opening a gap,
+and 0.1 points are deducted when extending it.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">local_align</span><span class="p">(</span><span class="s2">"ACCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">o</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">x</span><span class="o">=-</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"score = </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">score</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="go">target            0 ACCG 4</span>
+<span class="go">                  0 |-|| 4</span>
+<span class="go">query             0 A-CG 3</span>
+<span class="go"> score = 5.5</span>
+<span class="go">target            0 ACCG 4</span>
+<span class="go">                  0 ||-| 4</span>
+<span class="go">query             0 AC-G 3</span>
+<span class="go"> score = 5.5</span>
+</pre></div>
+</div>
+<p>Usually you would use the mnenonic <cite>g</cite> to specify the gap penalty. However,
+you can also use it to specify your own gap functions:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">log</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">gap_function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>  <span class="c1"># x is gap position in seq, y is gap length</span>
+<span class="gp">... </span>    <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># No gap</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="mi">0</span>
+<span class="gp">... </span>    <span class="k">elif</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Gap open penalty</span>
+<span class="gp">... </span>        <span class="k">return</span> <span class="o">-</span><span class="mi">2</span>
+<span class="gp">... </span>    <span class="k">return</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">/</span><span class="mf">4.0</span> <span class="o">+</span> <span class="n">log</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">local_align</span><span class="p">(</span><span class="s2">"ACCCCCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">),</span> <span class="n">g</span><span class="o">=</span><span class="n">gap_function</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="go">target            0 ACCCCCG 7</span>
+<span class="go">                  0 |----|| 7</span>
+<span class="go">query             0 A----CG 3</span>
+
+<span class="go">target            0 ACCCCCG 7</span>
+<span class="go">                  0 ||----| 7</span>
+<span class="go">query             0 AC----G 3</span>
+</pre></div>
+</div>
+<p>Use <cite>i</cite> and <cite>d</cite> (or <cite>insertion_score</cite>, <cite>deletion_score</cite> to specify different
+gap scores or gap functions for insertions and deletions (i.e., gaps in the
+target or in the query sequence).</p>
+<p>The alignment function can use known substitution matrices included in
+Biopython (in <code class="docutils literal notranslate"><span class="pre">Bio.Align.substitution_matrices</span></code>):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">substitution_matrices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">matrix</span> <span class="o">=</span> <span class="n">substitution_matrices</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">"BLOSUM62"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">local_align</span><span class="p">(</span><span class="s2">"KEVLA"</span><span class="p">,</span> <span class="s2">"EVL"</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">matrix</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"score = </span><span class="si">{</span><span class="n">a</span><span class="o">.</span><span class="n">score</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="go">target            1 EVL 4</span>
+<span class="go">                  0 ||| 3</span>
+<span class="go">query             0 EVL 3</span>
+<span class="go"> score = 13.0</span>
+</pre></div>
+</div>
+<p>You can also use one of the predefined scoring schemes:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">local_align</span><span class="p">(</span><span class="s2">"ACCGT"</span><span class="p">,</span> <span class="s2">"ACG"</span><span class="p">,</span> <span class="s2">"blastn"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span>
+<span class="go">&lt;PairwiseAlignments object (2 alignments; score=4) at 0x...&gt;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py class">
