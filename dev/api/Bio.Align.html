@@ -3009,8 +3009,7 @@ mismatch = 0.0, gap score = -1.0.
 If scoring is “blastn”, “megablast”, or “blastp”, use the default
 substitution matrix and gap scores for BLASTN, MEGABLAST, or BLASTP,
 respectively.</p>
-<p>Loops over the remaining keyword arguments and sets them as attributes
-on the object.</p>
+<p>Any further keyword arguments are set as attributes on the object.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3332,14 +3331,14 @@ Biopython (in <code class="docutils literal notranslate"><span class="pre">Bio.A
 
 <dl class="py class">
 <dt class="sig sig-object py" id="Bio.Align.CodonAligner">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.</span></span><span class="sig-name descname"><span class="pre">CodonAligner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">codon_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.CodonAligner" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.Align.</span></span><span class="sig-name descname"><span class="pre">CodonAligner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">codon_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.CodonAligner" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">CodonAligner</span></code></p>
 <p>Aligns a nucleotide sequence to an amino acid sequence.</p>
 <p>This class implements a dynamic programming algorithm to align a nucleotide
 sequence to an amino acid sequence.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="Bio.Align.CodonAligner.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">codon_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.CodonAligner.__init__" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">codon_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.CodonAligner.__init__" title="Link to this definition"></a></dt>
 <dd><p>Initialize a CodonAligner for a specific genetic code.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><ul class="simple">
@@ -3348,6 +3347,7 @@ If codon_table is None, the standard genetic code is used.</p></li>
 </ul>
 </dd>
 </dl>
+<p>Any further keyword arguments are set as attributes on the object.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -3476,6 +3476,69 @@ SeqRecord); both DNA and RNA sequences are accepted.</p></li>
 </div>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Bio.Align.codon_align">
+<span class="sig-prename descclassname"><span class="pre">Bio.Align.</span></span><span class="sig-name descname"><span class="pre">codon_align</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seqA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seqB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">codon_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.Align.codon_align" title="Link to this definition"></a></dt>
+<dd><p>Return the optimal alignment of a nucleotide sequence to an amino acid sequence.</p>
+<p>This function creates a CodonAligner object and uses it to find the
+optimal codon alignment of a nucleotide seqeuence seqA and an amino
+acid sequence seqB using a dynamic programming algorithm.</p>
+<dl class="simple">
+<dt>Arguments:</dt><dd><ul class="simple">
+<li><p>seqA        - the amino acid sequence (plain string, Seq, MutableSeq, or
+SeqRecord).</p></li>
+<li><p>seqB        - the nucleotide sequence (plain string, Seq, MutableSeq, or
+SeqRecord); both DNA and RNA sequences are accepted.</p></li>
+<li><p>codon_table - a CodonTable object representing the genetic code.
+If codon_table is None, the standard genetic code is used.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Other keyword arguments are passed to the CodonAligner initializer (see
+the CodonAligner documentation for details).  This includes the following
+mnemonics:</p>
+<ul class="simple">
+<li><p>m: (match_score, mismatch_score).</p></li>
+<li><p>f: frameshift_score.</p></li>
+<li><p>n: frameshift_minus_score  # negative</p></li>
+<li><p>p: frameshift_plus_score</p></li>
+<li><p>o: frameshift_one_score</p></li>
+<li><p>t: frameshift_two_score</p></li>
+</ul>
+<p>Returns an iterator of Alignment objects.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Seq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqRecord</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">codon_align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dna</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s1">'ATGTCTCGT'</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s1">'dna'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pro</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s1">'MSR'</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s1">'pro'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">codon_align</span><span class="p">(</span><span class="n">pro</span><span class="p">,</span> <span class="n">dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">pro               0 M  S  R   3</span>
+<span class="go">dna               0 ATGTCTCGT 9</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rna</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s1">'AUGUCUCGU'</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s1">'rna'</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">codon_align</span><span class="p">(</span><span class="n">pro</span><span class="p">,</span> <span class="n">rna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">pro               0 M  S  R   3</span>
+<span class="go">rna               0 AUGUCUCGU 9</span>
+</pre></div>
+</div>
+<p>This is an example with a frame shift in the DNA sequence:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dna</span> <span class="o">=</span> <span class="s2">"ATGCTGGGCTCGAACGAGTCCGTGTATGCCCTAAGCTGAGCCCGTCG"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pro</span> <span class="o">=</span> <span class="s2">"MLGSNESRVCPKLSPS"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">codon_align</span><span class="p">(</span><span class="n">pro</span><span class="p">,</span> <span class="n">dna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">target            0 M  L  G  S  N  E  S   7</span>
+<span class="go">query             0 ATGCTGGGCTCGAACGAGTCC 21</span>
+
+<span class="go">target            7 R  V  C  P  K  L  S  P  S   16</span>
+<span class="go">query            20 CGTGTATGCCCTAAGCTGAGCCCGTCG 47</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
