@@ -2194,42 +2194,74 @@ alignments.and then use this object to perform the alignments (see section
 to align many sequences. However, if you want to align just a few sequences,
 you may want to use the <code class="docutils literal notranslate"><span class="pre">codon_align</span></code> convenience function. This function
 creates a <code class="docutils literal notranslate"><span class="pre">CodonAligner</span></code> object, using the provided arguments to set the
-alignment parameters, and then aligns the two sequences to each other:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">codon_align</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">nuc</span> <span class="o">=</span> <span class="s2">"TCAGGGACTTCGAGAACCAAGCGCTCCTGCTGCTGGCTGCGCTCGGCGCCGCAGGTGGAGCACTGGAG"</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">aa</span> <span class="o">=</span> <span class="s2">"SGTSRTKRLLLLAALGAAGGALE"</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">codon_align</span><span class="p">(</span><span class="n">aa</span><span class="p">,</span> <span class="n">nuc</span><span class="p">)</span>
+alignment parameters, and then aligns the two sequences to each other. As an
+example, here we align the amino acid sequence around Leu-25 of peptide chain
+release factor RF2 of Escherichia coli against the corresponding genome sequence
+for this region. Note the +1 frameshift event after Leu-25:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Seq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">codon_align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nuc_ecoli</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">"TCCGACGTTCTTAGGGGGTATCTTTGACTACGACGCCAAGAAAGAGCGT"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pro_ecoli</span> <span class="o">=</span> <span class="n">Seq</span><span class="p">(</span><span class="s2">"SDVLRGYLDYDAKKER"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignments</span> <span class="o">=</span> <span class="n">codon_align</span><span class="p">(</span><span class="n">pro_ecoli</span><span class="p">,</span> <span class="n">nuc_ecoli</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">alignments</span><span class="p">)</span>
 <span class="go">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">alignments</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
-<span class="go">target            0 S  G  T  S  R  T  K  R   8</span>
-<span class="go">query             0 TCAGGGACTTCGAGAACCAAGCGC 24</span>
-
-<span class="go">target            8 L  L  L  L  A  A  L  G  A  A  G  G  A  L  E   23</span>
-<span class="go">query            23 CTCCTGCTGCTGGCTGCGCTCGGCGCCGCAGGTGGAGCACTGGAG 68</span>
+<span class="go">target            0 S  D  V  L  R  G  Y  L  -D  Y  D  A  K  K  E  R   16</span>
+<span class="go">query             0 TCCGACGTTCTTAGGGGGTATCTTTGACTACGACGCCAAGAAAGAGCGT 49</span>
 </pre></div>
 </div>
-<p>Note that the length of the nucleotide sequence (68) is one less than expected
-(<span class="math notranslate nohighlight">\(3 \times 23 = 69\)</span>) due to a frameshift event. You can see this frame
-shift by printing out the original sequence and the aligned sequence:</p>
-<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="nb">print</span><span class="p">(</span><span class="n">nuc</span><span class="p">)</span>
-<span class="go">TCAGGGACTTCGAGAACCAAGCGCCTCCTGCTGCTGGCTGCGCTCGGCGCCGCAGGTGGAGCACTGGAG</span>
-<span class="go">TCAGGGACTTCGAGAACCAAGCGCTCCTGCTGCTGGCTGCGCTCGGCGCCGCAGGTGGAGCACTGGAG</span>
-</pre></div>
-</div>
+<p>Note that the length of the nucleotide sequence (49) is one greater than expected
+(<span class="math notranslate nohighlight">\(3 \times 16 = 48\)</span>) due to a frameshift event.</p>
 <p>The alignment coordinates will tell you where exactly the frameshift occurs:</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span><span class="o">.</span><span class="n">coordinates</span>
-<span class="go">array([[ 0,  8,  8, 23],</span>
-<span class="go">       [ 0, 24, 23, 68]])</span>
+<span class="go">array([[ 0,  8,  8, 16],</span>
+<span class="go">       [ 0, 24, 25, 49]])</span>
 </pre></div>
 </div>
 <p>The first row shows the alignment coordinates for the amino acid sequence.
 The alignment coordinates for the nucleotide sequence, in the second row,
-shows a frameshift of -1 after 24 nucleotides.</p>
+shows a frameshift of +1 after 24 nucleotides.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">codon_align</span></code> convenience function accepts optional
 keyword arguments, which are passed to the <code class="docutils literal notranslate"><span class="pre">CodonAligner</span></code>
 constructor as is (see <a class="reference internal" href="#sec-codon-aligner"><span class="std std-ref">Aligning a nucleotide sequence to an amino acid sequence</span></a>).</p>
+<p>You can also use this convenience function to align nucleotide sequences
+to each other, given the corresponding protein alignment. For this purpose,
+supply a protein alignment as the first argument, and nucleotide sequences
+as the second argument, with each nucleotide sequence corresponding with
+one amino acid sequence in the protein alignment. The <code class="docutils literal notranslate"><span class="pre">codon_align</span></code>
+convenience function first creates a <code class="docutils literal notranslate"><span class="pre">CodonAligner</span></code> object and uses it
+to align each protein sequence to the corresponding nucleotide sequence.
+It then uses the <code class="docutils literal notranslate"><span class="pre">mapall</span></code> function (as described below) to generate a
+nucleotide alignment based on the protein alignment and the alignment of
+each protein sequence to the corresponding nucleotide sequence.</p>
+<p>This is an example for an amino acid alignment of the same protein region
+of peptide chain release factor RF2 in Escherichia coli and Shigella dysenteriae,
+in which no frame shift occurs:</p>
+<div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Seq</span><span class="w"> </span><span class="kn">import</span> <span class="n">Seq</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.SeqRecord</span><span class="w"> </span><span class="kn">import</span> <span class="n">SeqRecord</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">Bio.Align</span><span class="w"> </span><span class="kn">import</span> <span class="n">codon_align</span><span class="p">,</span> <span class="n">global_align</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nuc_ecoli</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span><span class="s2">"TCCGACGTTCTTAGGGGGTATCTTTGACTACGACGCCAAGAAAGAGCGT"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"E.coli"</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nuc_shigella</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">Seq</span><span class="p">(</span><span class="s2">"TCCGACGTTCTTAGGGGTATCTTTGACTACGACGCCAAGAAAGAGCGT"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"Shigella"</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pro_ecoli</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">"SDVLRGYLDYDAKKER"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"E.coli"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pro_shigella</span> <span class="o">=</span> <span class="n">SeqRecord</span><span class="p">(</span><span class="n">Seq</span><span class="p">(</span><span class="s2">"SDVLRGIFDYDAKKER"</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="s2">"Shigella"</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein_alignment</span> <span class="o">=</span> <span class="n">global_align</span><span class="p">(</span><span class="n">pro_ecoli</span><span class="p">,</span> <span class="n">pro_shigella</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">protein_alignment</span><span class="p">)</span>
+<span class="go">E.coli            0 SDVLRGYLDYDAKKER 16</span>
+<span class="go">                  0 ||||||..|||||||| 16</span>
+<span class="go">Shigella          0 SDVLRGIFDYDAKKER 16</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">codon_align</span><span class="p">(</span><span class="n">protein_alignment</span><span class="p">,</span> <span class="p">[</span><span class="n">nuc_ecoli</span><span class="p">,</span> <span class="n">nuc_shigella</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">E.coli            0 TCCGACGTTCTTAGGGGGTATCTTTGACTACGACGCCAAGAAAGAGCGT 49</span>
+<span class="go">                  0 |||||||||||||||||.....||-|||||||||||||||||||||||| 49</span>
+<span class="go">Shigella          0 TCCGACGTTCTTAGGGGTATCTTT-GACTACGACGCCAAGAAAGAGCGT 48</span>
+</pre></div>
+</div>
 <section id="aligning-a-nucleotide-sequence-to-an-amino-acid-sequence">
 <span id="sec-codon-aligner"></span><h3>Aligning a nucleotide sequence to an amino acid sequence<a class="headerlink" href="#aligning-a-nucleotide-sequence-to-an-amino-acid-sequence" title="Link to this heading"></a></h3>
 <p>To align a nucleotide sequence to an amino acid sequence, first create a

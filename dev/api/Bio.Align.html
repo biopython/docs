@@ -3539,6 +3539,30 @@ mnemonics:</p>
 <span class="go">query            20 CGTGTATGCCCTAAGCTGAGCCCGTCG 47</span>
 </pre></div>
 </div>
+<p>You can also use this function to generate a nucleotide
+alignment, given a protein alignment and the nucleotide
+sequences corresponding to each protein:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dna1</span> <span class="o">=</span> <span class="s2">"TCAGGGACTTCGAGAACCAAGCGCTCCTGCTGCTGGCTGCGCTCGGC"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dna2</span> <span class="o">=</span> <span class="s2">"TCAGGGACTGCGAGAACCAAGCTACTGCTGCTGCTGGCTGCGCTCTGC"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pro1</span> <span class="o">=</span> <span class="s2">"SGTSRTKRLLLLAALG"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pro2</span> <span class="o">=</span> <span class="s2">"SGTARTKLLLLLAALC"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">protein_alignment</span> <span class="o">=</span> <span class="n">Alignment</span><span class="p">([</span><span class="n">pro1</span><span class="p">,</span> <span class="n">pro2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">protein_alignment</span><span class="p">)</span>
+<span class="go">target            0 SGTSRTKRLLLLAALG 16</span>
+<span class="go">                  0 |||.|||.|||||||. 16</span>
+<span class="go">query             0 SGTARTKLLLLLAALC 16</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">alignment</span> <span class="o">=</span> <span class="n">codon_align</span><span class="p">(</span><span class="n">protein_alignment</span><span class="p">,</span> <span class="p">[</span><span class="n">dna1</span><span class="p">,</span> <span class="n">dna2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">alignment</span><span class="p">)</span>
+<span class="go">target            0 TCAGGGACTTCGAGAACCAAGCGC 24</span>
+<span class="go">                  0 |||||||||.||||||||||||..</span>
+<span class="go">query             0 TCAGGGACTGCGAGAACCAAGCTA 24</span>
+
+<span class="go">target           23 CTCCTGCTGCTGGCTGCGCTCGGC 47</span>
+<span class="go">                 24 ||.||||||||||||||||||.|| 48</span>
+<span class="go">query            24 CTGCTGCTGCTGGCTGCGCTCTGC 48</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
