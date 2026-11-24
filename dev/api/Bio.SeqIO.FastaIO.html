@@ -351,33 +351,14 @@ by the relaxed FASTA parser is offered.</p>
 starting with ‘#’, ‘!’, or ‘;’ are interpreted as comments and ignored.</p>
 <p>This iterator acts like calling Bio.SeqIO.parse(handle, “fasta-blast”)
 with no custom handling of the title lines:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"Fasta/dups.fasta"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text</span> <span class="o">=</span> <span class="s2">"#Comment</span><span class="se">\n</span><span class="s2">&gt;alpha</span><span class="se">\n</span><span class="s2">;first seq</span><span class="se">\n</span><span class="s2">ACT</span><span class="se">\n</span><span class="s2">&gt;beta</span><span class="se">\n</span><span class="s2">GGG</span><span class="se">\n</span><span class="s2">!The end</span><span class="se">\n</span><span class="s2">"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">FastaBlastIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="go">alpha</span>
-<span class="go">beta</span>
-<span class="go">gamma</span>
-<span class="go">alpha</span>
-<span class="go">delta</span>
-</pre></div>
-</div>
-<p>If you want to modify the records before writing, for example to change
-the ID of each record, you can use a generator function as follows:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">modify_records</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="n">record</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-<span class="gp">... </span>        <span class="k">yield</span> <span class="n">record</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'Fasta/dups.fasta'</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">modify_records</span><span class="p">(</span><span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">)):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">ALPHA</span>
-<span class="go">BETA</span>
-<span class="go">GAMMA</span>
-<span class="go">ALPHA</span>
-<span class="go">DELTA</span>
+<span class="go">alpha ACT</span>
+<span class="go">beta GGG</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -409,7 +390,7 @@ the ID of each record, you can use a generator function as follows:</p>
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaPearsonIterator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">Bio.SeqIO.FastaIO.</span></span><span class="sig-name descname"><span class="pre">FastaPearsonIterator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">IO</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphabet</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaPearsonIterator" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="Bio.SeqIO.Interfaces.html#Bio.SeqIO.Interfaces.SequenceIterator" title="Bio.SeqIO.Interfaces.SequenceIterator"><code class="xref py py-class docutils literal notranslate"><span class="pre">SequenceIterator</span></code></a></p>
-<p>Parser for Fasta files, allowing for comments as in the FASTA aligner.</p>
+<p>Parser for Fasta files, allowing for comments as in Pearson’s FASTA aligner.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="Bio.SeqIO.FastaIO.FastaPearsonIterator.modes">
 <span class="sig-name descname"><span class="pre">modes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'t'</span></em><a class="headerlink" href="#Bio.SeqIO.FastaIO.FastaPearsonIterator.modes" title="Link to this definition"></a></dt>
@@ -431,33 +412,14 @@ first sequence record) and comments (lines starting with ‘;’) as in
 William Pearson’s FASTA aligner software.</p>
 <p>This iterator acts as calling Bio.SeqIO.parse(handle, “fasta-pearson”)
 with no custom handling of the title lines:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"Fasta/dups.fasta"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">text</span> <span class="o">=</span> <span class="s2">"Free text</span><span class="se">\n</span><span class="s2">&gt;alpha</span><span class="se">\n</span><span class="s2">;first seq</span><span class="se">\n</span><span class="s2">ACTG</span><span class="se">\n</span><span class="s2">&gt;beta</span><span class="se">\n</span><span class="s2">AATT</span><span class="se">\n</span><span class="s2">;The end</span><span class="se">\n</span><span class="s2">"</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">FastaPearsonIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">seq</span><span class="p">)</span>
 <span class="gp">...</span>
-<span class="go">alpha</span>
-<span class="go">beta</span>
-<span class="go">gamma</span>
-<span class="go">alpha</span>
-<span class="go">delta</span>
-</pre></div>
-</div>
-<p>If you want to modify the records before writing, for example to change
-the ID of each record, you can use a generator function as follows:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span><span class="w"> </span><span class="nf">modify_records</span><span class="p">(</span><span class="n">records</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">:</span>
-<span class="gp">... </span>        <span class="n">record</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
-<span class="gp">... </span>        <span class="k">yield</span> <span class="n">record</span>
-<span class="gp">...</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'Fasta/dups.fasta'</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">modify_records</span><span class="p">(</span><span class="n">FastaIterator</span><span class="p">(</span><span class="n">handle</span><span class="p">)):</span>
-<span class="gp">... </span>        <span class="nb">print</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
-<span class="gp">...</span>
-<span class="go">ALPHA</span>
-<span class="go">BETA</span>
-<span class="go">GAMMA</span>
-<span class="go">ALPHA</span>
-<span class="go">DELTA</span>
+<span class="go">alpha ACTG</span>
+<span class="go">beta AATT</span>
 </pre></div>
 </div>
 </dd></dl>
